@@ -1,0 +1,46 @@
+.dark{
+	-fx-background-color: #004c40;
+}
+.actionbar{
+	-fx-background-color: #00796b;	
+}
+.actionbar:extreme-small-device{
+	-fx-pref-width: 100%;
+	-fx-pref-height: 10%;
+}
+
+.jfx-hamburger StackPane{
+	-fx-background-color: #ffffff;
+	
+}
+
+.apptitle{
+	-fx-width: 100%;
+	-fx-height: 100%;
+	-fx-position-shape: center;
+}
+.form{
+	-fx-background-color: #ffffff;
+	
+}
+
+.edittext{
+	-jfx-focus-color: #00796b;
+	-fx-width: 100%;
+	-fx-margin: 10%;
+}
+
+.button{
+	-fx-background-color: #c62828;
+	-fx-fill-color: #ffffff;
+	-jfx-rippler-fill-color: #eb3434;
+}
+
+.buttonDrawer{
+	-fx-background-color: ghostwhite;
+	-fx-fill-color: #ffffff;
+	-jfx-rippler-fill-color: #eb3434;
+}
+.buttonDrawer:hover{
+	-fx-background-color: lightgrey;
+}

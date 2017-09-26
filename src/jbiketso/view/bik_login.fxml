@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="676.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.LoginController">
+   <effect>
+      <DropShadow blurType="TWO_PASS_BOX" height="10.0" radius="4.5" width="10.0" />
+   </effect>
+   <children>
+      <VBox prefHeight="476.0" prefWidth="676.0">
+         <children>
+            <Pane prefHeight="63.0" prefWidth="676.0" styleClass="dark" stylesheets="@biketso.css">
+               <children>
+                  <Label fx:id="lblHora" layoutX="509.0" layoutY="-3.0" prefHeight="25.0" prefWidth="167.0" text="Fecha: 13/09/2017 07:47 P.M." textFill="WHITE" />
+               </children>
+            </Pane>
+            <Pane prefHeight="122.0" prefWidth="676.0" styleClass="actionbar" stylesheets="@biketso.css">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="276.0" layoutY="-1.0" prefHeight="49.0" prefWidth="125.0" styleClass="apptitle" stylesheets="@biketso.css" text="bikétsö" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
+                     <font>
+                        <Font name="Harlow Solid Italic" size="48.0" />
+                     </font>
+                     <effect>
+                        <DropShadow height="5.0" offsetX="1.0" offsetY="1.0" radius="2.0" spread="0.5" width="5.0" />
+                     </effect>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane prefHeight="423.0" prefWidth="600.0">
+               <children>
+                  <VBox layoutX="205.0" layoutY="20.0" prefHeight="230.0" prefWidth="266.0">
+                     <children>
+                        <Pane prefHeight="48.0" prefWidth="287.0" />
+                        <JFXTextField fx:id="txtUsuario" labelFloat="true" prefHeight="25.0" prefWidth="227.0" promptText="Usuario" styleClass="edittext" stylesheets="@biketso.css" unFocusColor="#171717" />
+                        <Pane prefHeight="23.0" prefWidth="287.0" />
+                        <JFXPasswordField fx:id="txtClave" labelFloat="true" prefHeight="25.0" prefWidth="227.0" promptText="Contraseña" styleClass="edittext" stylesheets="@biketso.css" />
+                        <Pane prefHeight="31.0" prefWidth="287.0" />
+                        <Pane prefHeight="80.0" prefWidth="266.0">
+                           <children>
+                              <JFXButton fx:id="btnIniciarSesion" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" layoutX="133.0" layoutY="14.0" onAction="#iniciarSesion" prefHeight="25.0" prefWidth="132.0" ripplerFill="#eb3434" stylesheets="@biketso.css" text="INICIAR SESIÓN" textAlignment="CENTER" textFill="WHITE" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
