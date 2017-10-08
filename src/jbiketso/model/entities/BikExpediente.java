@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jbiketso.model;
+package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Anayansy
  */
 @Entity
-@Table(name = "bik_expediente")
+@Table(name = "bik_expediente",schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikExpediente.findAll", query = "SELECT b FROM BikExpediente b")

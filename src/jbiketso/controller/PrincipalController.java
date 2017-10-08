@@ -71,8 +71,7 @@ public class PrincipalController implements Initializable {
                         drwMenu.close();                        
                         panMenu.setPrefWidth(0);
                         drwMenu.setPrefWidth(0);
-                    } else {
-                        
+                    } else {                        
                         panMenu.setPrefWidth(200);
                         drwMenu.setPrefWidth(200);
                         drwMenu.open();

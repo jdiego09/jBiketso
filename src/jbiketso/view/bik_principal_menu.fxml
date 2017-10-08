@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PrincipalMenuController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="205.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PrincipalMenuController">
    <children>
-      <ImageView fitHeight="83.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="120.0" fitWidth="205.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@back.jpg" />
          </image>
@@ -16,9 +16,9 @@
             <Rectangle2D />
          </viewport>
       </ImageView>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="314.0" prefWidth="144.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="659.0" prefWidth="205.0">
          <children>
-            <VBox fx:id="vbxMenu" prefHeight="314.0" prefWidth="147.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-3.0" AnchorPane.topAnchor="0.0" />
+            <VBox fx:id="vbxMenu" prefHeight="599.0" prefWidth="208.0" AnchorPane.bottomAnchor="-285.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-3.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
    </children>

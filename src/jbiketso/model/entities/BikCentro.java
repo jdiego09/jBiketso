@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jbiketso.model;
+package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Anayansy
  */
 @Entity
-@Table(name = "bik_centro")
+@Table(name = "bik_centro",schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikCentro.findAll", query = "SELECT b FROM BikCentro b")

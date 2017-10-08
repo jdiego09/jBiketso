@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jbiketso.model;
+package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Anayansy
  */
 @Entity
-@Table(name = "bik_roles_usuarios")
+@Table(name = "bik_roles_usuarios",schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikRolesUsuarios.findAll", query = "SELECT b FROM BikRolesUsuarios b")
