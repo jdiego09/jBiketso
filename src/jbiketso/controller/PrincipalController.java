@@ -56,8 +56,8 @@ public class PrincipalController implements Initializable {
         timeline.play();
         
         panMenu = (Pane) AppWindowController.getInstance().getView("bik_principal_menu");
-        
         drwMenu.setSidePane(panMenu);
+        
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hmbMenu);
         
         transition.setRate(
@@ -68,8 +68,13 @@ public class PrincipalController implements Initializable {
                     transition.play();
                     
                     if (drwMenu.isShown()) {
-                        drwMenu.close();
+                        drwMenu.close();                        
+                        panMenu.setPrefWidth(0);
+                        drwMenu.setPrefWidth(0);
                     } else {
+                        
+                        panMenu.setPrefWidth(200);
+                        drwMenu.setPrefWidth(200);
                         drwMenu.open();
                     }
                 }

@@ -5,15 +5,14 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PrincipalController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PrincipalController">
    <top>
       <VBox prefHeight="72.0" prefWidth="600.0" styleClass="form" BorderPane.alignment="CENTER">
          <children>
@@ -36,28 +35,26 @@
       </VBox>
    </top>
    <center>
-      <VBox fx:id="vbxContainer" prefHeight="321.0" prefWidth="400.0" styleClass="form" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbxContainer" prefHeight="768.0" prefWidth="1024.0" styleClass="form" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane prefHeight="328.0" prefWidth="449.0">
+            <AnchorPane prefHeight="768.0" prefWidth="1024.0">
                <children>
-                  <ImageView fitHeight="388.0" fitWidth="401.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+                  <ImageView fitHeight="722.0" fitWidth="1024.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="18.12847900390625" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-5.0">
                      <viewport>
                         <Rectangle2D />
                      </viewport>
                      <image>
-                        <Image url="@logo.jpg" />
+                        <Image url="@logo.png" />
                      </image>
                   </ImageView>
+                  <JFXDrawer fx:id="drwMenu" prefHeight="336.0" prefWidth="0.0" styleClass="form">
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </JFXDrawer>
                </children>
             </AnchorPane>
          </children>
       </VBox>
    </center>
-   <left>
-      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="form" BorderPane.alignment="CENTER">
-         <children>
-            <JFXDrawer fx:id="drwMenu" layoutX="-4.0" layoutY="2.0" prefHeight="318.0" prefWidth="210.0" styleClass="form" />
-         </children>
-      </Pane>
-   </left>
 </BorderPane>
