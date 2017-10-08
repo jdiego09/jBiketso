@@ -18,6 +18,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import jbiketso.model.dao.LoginDao;
+import jbiketso.model.entities.BikUsuariosSistema;
 import jbiketso.utils.AppWindowController;
 import jbiketso.utils.Parametros;
 
@@ -48,6 +50,8 @@ public class LoginController implements Initializable {
     @FXML
     private void iniciarSesion(ActionEvent event) {
         Parametros.getInstance().setParametro("Usuario", txtUsuario.getText());
+        LoginDao login = new LoginDao();
+        BikUsuariosSistema usuario = login.findByUssCodigo(txtUsuario.getText());
         try {
             Node boton = (Node) event.getSource();
             AppWindowController.getInstance().setMainStage((Stage) boton.getScene().getWindow());
