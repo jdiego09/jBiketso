@@ -2,14 +2,15 @@ package jbiketso.utils;
 //hola
 import java.util.HashMap;
 import javafx.scene.Parent;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+
+/*import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;*/
 
 public class Parametros {
     private String pathViews = "view/";
     private static HashMap<String, String> parametros = new HashMap<>();
     private static Parametros INSTANCE;
-    private static final EntityManagerFactory ENTITYMANAGERFACTORY = Persistence.createEntityManagerFactory("jBiketsoPU" );
+    //private static final EntityManagerFactory ENTITYMANAGERFACTORY = Persistence.createEntityManagerFactory("jBiketsoPU" );
 
     private Parametros() {
     }
@@ -50,8 +51,10 @@ public class Parametros {
         return parametros.get(parametro);
     }
     
+    /*
     public static EntityManagerFactory getEntityManagerFactory(){
         return ENTITYMANAGERFACTORY;
     }
+    */
 
 }
