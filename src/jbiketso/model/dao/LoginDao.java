@@ -1,8 +1,6 @@
 package jbiketso.model.dao;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikUsuariosSistema;
@@ -14,12 +12,12 @@ public class LoginDao implements DaoBase {
     protected EntityManager entityManager = Parametros.getEntityManagerFactory().createEntityManager();
 
     @Override
-    public void guardar(Object entity) {
+    public void save(Object entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void eliminar(Object entity) {
+    public void delete(Object entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

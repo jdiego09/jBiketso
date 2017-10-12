@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javax.persistence.NoResultException;
 import jbiketso.model.dao.LoginDao;
 import jbiketso.model.entities.BikUsuariosSistema;
 import jbiketso.utils.AppWindowController;
@@ -39,9 +40,6 @@ public class LoginController implements Initializable {
     @FXML
     private JFXButton btnIniciarSesion;
 
-    
-   
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -49,16 +47,22 @@ public class LoginController implements Initializable {
 
     @FXML
     private void iniciarSesion(ActionEvent event) {
-        Parametros.getInstance().setParametro("Usuario", txtUsuario.getText());
-        LoginDao login = new LoginDao();
-        BikUsuariosSistema usuario = login.findByUssCodigo(txtUsuario.getText());
-        try {
-            Node boton = (Node) event.getSource();
-            AppWindowController.getInstance().setMainStage((Stage) boton.getScene().getWindow());
-            AppWindowController.getInstance().abrirVentana("bik_principal","Bikétsö - Principal", true);
-            
-        } catch (Exception ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        if (txtUsuario.getText() != null && !txtUsuario.getText().isEmpty()) {
+            Parametros.getInstance().setParametro("Usuario", txtUsuario.getText());
+            LoginDao login = new LoginDao();
+            BikUsuariosSistema usuario = login.findByUssCodigo(Parametros.getInstance().getParametro("Usuario"));
+            try {
+                Node boton = (Node) event.getSource();
+                AppWindowController.getInstance().setMainStage((Stage) boton.getScene().getWindow());
+                AppWindowController.getInstance().abrirVentana("bik_principal", "Bikétsö - Principal", true);
+
+            } catch (NoResultException nre){
+                //mensaje el usuario no está registrado
+            }catch (Exception ex) {
+                Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+           //
         }
     }
 
