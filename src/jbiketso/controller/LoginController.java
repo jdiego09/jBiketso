@@ -16,12 +16,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javax.persistence.NoResultException;
 import jbiketso.model.dao.LoginDao;
 import jbiketso.model.entities.BikUsuariosSistema;
 import jbiketso.utils.AppWindowController;
+import jbiketso.utils.Encriptor;
 import jbiketso.utils.Parametros;
 
 /**
@@ -48,21 +51,35 @@ public class LoginController implements Initializable {
     @FXML
     private void iniciarSesion(ActionEvent event) {
         if (txtUsuario.getText() != null && !txtUsuario.getText().isEmpty()) {
-            Parametros.getInstance().setParametro("Usuario", txtUsuario.getText());
-            LoginDao login = new LoginDao();
-            BikUsuariosSistema usuario = login.findByUssCodigo(Parametros.getInstance().getParametro("Usuario"));
-            try {
-                Node boton = (Node) event.getSource();
-                AppWindowController.getInstance().setMainStage((Stage) boton.getScene().getWindow());
-                AppWindowController.getInstance().abrirVentana("bik_principal", "Bikétsö - Principal", true);
-
-            } catch (NoResultException nre){
-                //mensaje el usuario no está registrado
-            }catch (Exception ex) {
-                Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            if (txtClave.getText() == null || txtClave.getText().isEmpty()) {
+               AppWindowController.getInstance().mensaje(AlertType.WARNING, "Error", "Debe indicar la contraseña de acceso.");
+               txtClave.requestFocus();
+               return;
             }
+            
+            LoginDao login = new LoginDao();
+            BikUsuariosSistema usuario = login.findByUssCodigo(txtUsuario.getText());
+            if (usuario.getUssCodigo() != null && !usuario.getUssCodigo().isEmpty()) {
+                Parametros.getInstance().setParametro("Usuario", txtUsuario.getText());
+                if (usuario.getUssContrasena().equals(Encriptor.getInstance().encriptar(txtClave.getText()))) {
+                    Node boton = (Node) event.getSource();
+                    AppWindowController.getInstance().setMainStage((Stage) boton.getScene().getWindow());
+                    AppWindowController.getInstance().abrirVentana("bik_principal", "Bikétsö - Principal", true);
+                } else
+                {
+                    AppWindowController.getInstance().mensaje(AlertType.ERROR, "Acceso denegado", "Contraseña incorrecta.");
+                    txtClave.requestFocus();                    
+                    return;
+                }
+            } else{
+                AppWindowController.getInstance().mensaje(AlertType.ERROR, "Acceso denegado", "El usuario: " + txtUsuario.getText() + ", no se encuentra registrado.");
+                txtUsuario.requestFocus();
+                return;
+            }                
         } else {
-           //
+            AppWindowController.getInstance().mensaje(AlertType.WARNING, "Error", "Debe indicar el código de usuario.");
+            txtUsuario.requestFocus();
+            return;
         }
     }
 

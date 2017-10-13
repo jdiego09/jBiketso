@@ -58,6 +58,9 @@ public class BikUsuariosSistema implements Serializable {
     @Column(name = "uss_fechamodifica")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ussFechamodifica;
+    @Basic(optional = false)
+    @Column(name = "uss_contrasena")
+    private String ussContrasena;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bikUsuariosSistema", fetch = FetchType.LAZY)
     private List<BikRolesUsuarios> bikRolesUsuariosList;
 
@@ -121,6 +124,14 @@ public class BikUsuariosSistema implements Serializable {
         this.ussFechamodifica = ussFechamodifica;
     }
 
+    public String getUssContrasena() {
+        return ussContrasena;
+    }
+
+    public void setUssContrasena(String ussContrasena) {
+        this.ussContrasena = ussContrasena;
+    }    
+    
     @XmlTransient
     public List<BikRolesUsuarios> getBikRolesUsuariosList() {
         return bikRolesUsuariosList;

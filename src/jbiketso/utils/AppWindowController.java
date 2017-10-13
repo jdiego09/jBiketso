@@ -8,6 +8,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -117,6 +119,15 @@ public class AppWindowController {
         }
     }
 
+    public void mensaje(AlertType tipo, String titulo, String mensaje){
+        Alert alert = new Alert(tipo);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        
+        alert.showAndWait();
+    }
+    
     public void cerrarAplicacion() {
         Platform.exit();
     }

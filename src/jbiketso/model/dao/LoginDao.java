@@ -1,15 +1,9 @@
 package jbiketso.model.dao;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikUsuariosSistema;
-import jbiketso.utils.Parametros;
 
-public class LoginDao implements DaoBase {    
-
-    @PersistenceContext
-    protected EntityManager entityManager = Parametros.getEntityManagerFactory().createEntityManager();
+public class LoginDao extends BaseDao {    
 
     @Override
     public void save(Object entity) {
@@ -27,10 +21,9 @@ public class LoginDao implements DaoBase {
     }
 
     public BikUsuariosSistema findByUssCodigo(String codigo) {
-        BikUsuariosSistema usuario = new BikUsuariosSistema();
-                
+        BikUsuariosSistema usuario = new BikUsuariosSistema();                
         try{
-            Query query = entityManager.createNamedQuery("BikUsuariosSistema.findByUssCodigo");
+            Query query = getEntityManager().createNamedQuery("BikUsuariosSistema.findByUssCodigo");
             query.setParameter("ussCodigo", codigo);
             usuario = (BikUsuariosSistema) query.getSingleResult();
             return usuario;
