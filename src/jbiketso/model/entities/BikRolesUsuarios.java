@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Anayansy
  */
 @Entity
-@Table(name = "bik_roles_usuarios",schema = "biketso")
+@Table(name = "bik_roles_usuarios", schema="biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikRolesUsuarios.findAll", query = "SELECT b FROM BikRolesUsuarios b")
@@ -164,7 +164,7 @@ public class BikRolesUsuarios implements Serializable {
 
     @Override
     public String toString() {
-        return "jbiketso.model.BikRolesUsuarios[ bikRolesUsuariosPK=" + bikRolesUsuariosPK + " ]";
+        return "jbiketso.model.entities.BikRolesUsuarios[ bikRolesUsuariosPK=" + bikRolesUsuariosPK + " ]";
     }
     
 }

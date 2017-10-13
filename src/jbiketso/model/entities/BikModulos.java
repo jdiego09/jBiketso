@@ -61,9 +61,7 @@ public class BikModulos implements Serializable {
     private String modUsuariomodifica;
     @Column(name = "mod_fechamodifica")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date modFechamodifica;
-    @OneToMany(mappedBy = "rolModcodigo", fetch = FetchType.LAZY)
-    private List<BkRoles> bkRolesList;
+    private Date modFechamodifica;    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "menModcodigo", fetch = FetchType.LAZY)
     private List<BikMenu> bikMenuList;
 
@@ -135,16 +133,7 @@ public class BikModulos implements Serializable {
     public void setModFechamodifica(Date modFechamodifica) {
         this.modFechamodifica = modFechamodifica;
     }
-
-    @XmlTransient
-    public List<BkRoles> getBkRolesList() {
-        return bkRolesList;
-    }
-
-    public void setBkRolesList(List<BkRoles> bkRolesList) {
-        this.bkRolesList = bkRolesList;
-    }
-
+   
     @XmlTransient
     public List<BikMenu> getBikMenuList() {
         return bikMenuList;

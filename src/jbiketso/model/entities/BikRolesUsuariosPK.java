@@ -74,7 +74,7 @@ public class BikRolesUsuariosPK implements Serializable {
 
     @Override
     public String toString() {
-        return "jbiketso.model.BikRolesUsuariosPK[ rouUsscodigo=" + rouUsscodigo + ", rouRolcodigo=" + rouRolcodigo + " ]";
+        return "jbiketso.model.entities.BikRolesUsuariosPK[ rouUsscodigo=" + rouUsscodigo + ", rouRolcodigo=" + rouRolcodigo + " ]";
     }
     
 }

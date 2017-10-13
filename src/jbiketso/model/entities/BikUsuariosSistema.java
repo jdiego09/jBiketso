@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Anayansy
  */
 @Entity
-@Table(name = "bik_usuarios_sistema",schema = "biketso")
+@Table(name = "bik_usuarios_sistema", schema="biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikUsuariosSistema.findAll", query = "SELECT b FROM BikUsuariosSistema b")
@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "BikUsuariosSistema.findByUssUsuarioingresa", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussUsuarioingresa = :ussUsuarioingresa")
     , @NamedQuery(name = "BikUsuariosSistema.findByUssFechaingresa", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussFechaingresa = :ussFechaingresa")
     , @NamedQuery(name = "BikUsuariosSistema.findByUssUsuariomodifica", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussUsuariomodifica = :ussUsuariomodifica")
-    , @NamedQuery(name = "BikUsuariosSistema.findByUssFechamodifica", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussFechamodifica = :ussFechamodifica")})
+    , @NamedQuery(name = "BikUsuariosSistema.findByUssFechamodifica", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussFechamodifica = :ussFechamodifica")
+    , @NamedQuery(name = "BikUsuariosSistema.findByUssContrasena", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussContrasena = :ussContrasena")})
 public class BikUsuariosSistema implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,7 +59,6 @@ public class BikUsuariosSistema implements Serializable {
     @Column(name = "uss_fechamodifica")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ussFechamodifica;
-    @Basic(optional = false)
     @Column(name = "uss_contrasena")
     private String ussContrasena;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bikUsuariosSistema", fetch = FetchType.LAZY)
@@ -130,8 +130,8 @@ public class BikUsuariosSistema implements Serializable {
 
     public void setUssContrasena(String ussContrasena) {
         this.ussContrasena = ussContrasena;
-    }    
-    
+    }
+
     @XmlTransient
     public List<BikRolesUsuarios> getBikRolesUsuariosList() {
         return bikRolesUsuariosList;
@@ -163,7 +163,7 @@ public class BikUsuariosSistema implements Serializable {
 
     @Override
     public String toString() {
-        return "jbiketso.model.BikUsuariosSistema[ ussCodigo=" + ussCodigo + " ]";
+        return "jbiketso.model.entities.BikUsuariosSistema[ ussCodigo=" + ussCodigo + " ]";
     }
     
 }
