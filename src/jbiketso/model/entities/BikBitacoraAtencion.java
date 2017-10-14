@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jbiketso.model.entities;
 
 import java.io.Serializable;
@@ -21,10 +16,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author Anayansy
- */
 @Entity
 @Table(name = "bik_bitacora_atencion",schema = "biketso")
 @XmlRootElement

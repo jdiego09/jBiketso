@@ -2,7 +2,7 @@ package jbiketso.model.dao;
 
 public interface DaoBase<T> {
 
-    void save(T entity);
+    T save(T entity);
 
     void delete(T entity);
 

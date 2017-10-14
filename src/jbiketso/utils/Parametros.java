@@ -4,6 +4,7 @@ import java.util.HashMap;
 import javafx.scene.Parent;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceUnitUtil;
 
 /*import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;*/
@@ -13,6 +14,7 @@ public class Parametros {
     private static HashMap<String, String> parametros = new HashMap<>();
     private static Parametros INSTANCE;
     private static final EntityManagerFactory ENTITYMANAGERFACTORY = Persistence.createEntityManagerFactory("jBiketsoPU" );
+    private static final PersistenceUnitUtil PERSISTENCEUTIL = ENTITYMANAGERFACTORY.getPersistenceUnitUtil();
 
     private Parametros() {
     }
@@ -52,9 +54,15 @@ public class Parametros {
     public String getParametro(String parametro) {
         return parametros.get(parametro);
     }
-        
-    public static EntityManagerFactory getEntityManagerFactory(){
+
+    public static EntityManagerFactory getENTITYMANAGERFACTORY() {
         return ENTITYMANAGERFACTORY;
+    }
+        
+    
+
+    public static PersistenceUnitUtil getPERSISTENCEUTIL() {
+        return PERSISTENCEUTIL;
     }
     
 
