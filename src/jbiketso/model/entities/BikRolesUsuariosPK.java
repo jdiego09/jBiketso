@@ -10,10 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-/**
- *
- * @author Anayansy
- */
 @Embeddable
 public class BikRolesUsuariosPK implements Serializable {
 
