@@ -17,63 +17,76 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import jbiketso.model.dao.SeguridadDao;
+import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
 import jbiketso.utils.Parametros;
 
 public class PrincipalController implements Initializable {
-    
+
     @FXML
     private Label lblUsuario;
-    
+
     @FXML
     private Label lblFecha;
-    
+
     @FXML
     private JFXHamburger hmbMenu;
-    
+
     @FXML
     private VBox vbxContainer;
-    
+
     @FXML
     private JFXDrawer drwMenu;
     private Pane panMenu;
-    
+
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
-    
+
     @Override
-    public void initialize(URL location, ResourceBundle resources) {        
+    public void initialize(URL location, ResourceBundle resources) {
         lblUsuario.setText("Usuario: " + Parametros.getInstance().getParametro("Usuario"));
-        
+
         lblFecha.setText("Fecha: " + sdf.format(new Date()));
-            Timeline timeline = new Timeline(new KeyFrame(
+        Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(1000),
                 ae -> lblFecha.setText("Fecha: " + sdf.format(new Date()))));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
         
+        cargarSeguridad();
+        
         panMenu = (Pane) AppWindowController.getInstance().getView("bik_principal_menu");
+               
         drwMenu.setSidePane(panMenu);
-        
+
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hmbMenu);
-        
+
         transition.setRate(
                 -1);
         hmbMenu.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 (e) -> {
                     transition.setRate(transition.getRate() * -1);
                     transition.play();
-                    
+
                     if (drwMenu.isShown()) {
-                        drwMenu.close();                        
+                        drwMenu.close();
                         panMenu.setPrefWidth(0);
                         drwMenu.setPrefWidth(0);
-                    } else {                        
+                    } else {
                         panMenu.setPrefWidth(200);
                         drwMenu.setPrefWidth(200);
                         drwMenu.open();
                     }
                 }
         );
+    }
+
+    private void cargarSeguridad() {
+        SeguridadDao seguridadDao = new SeguridadDao();
+
+        Aplicacion.getInstance().setModulosUsuario(seguridadDao.getModulosUsuario(Parametros.getInstance().getParametro("Usuario")));
+        //Aplicacion.getInstance().setAccesosUsuario(seguridadDao.getAccesosUsuario(Parametros.getInstance().getParametro("Usuario")));
+
     }
     
 }

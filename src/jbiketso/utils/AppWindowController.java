@@ -2,6 +2,7 @@ package jbiketso.utils;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -10,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -123,9 +125,16 @@ public class AppWindowController {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        
+        alert.setContentText(mensaje);        
         alert.showAndWait();
+    }
+    
+    public boolean mensajeConfimacion(String titulo, String mensaje) {
+        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
+        dialog.setTitle(titulo);
+        dialog.setContentText(mensaje);        
+        final Optional<ButtonType> result = dialog.showAndWait();
+        return result.get() == ButtonType.OK;
     }
     
     public void cerrarAplicacion() {

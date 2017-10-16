@@ -48,30 +48,29 @@ public class LoginController implements Initializable {
     private void iniciarSesion(ActionEvent event) {
         if (txtUsuario.getText() != null && !txtUsuario.getText().isEmpty()) {
             if (txtClave.getText() == null || txtClave.getText().isEmpty()) {
-               AppWindowController.getInstance().mensaje(AlertType.WARNING, "Error", "Debe indicar la contraseña de acceso.");
-               txtClave.requestFocus();
-               return;
+                AppWindowController.getInstance().mensaje(AlertType.WARNING, "Error", "Debe indicar la contraseña de acceso.");
+                txtClave.requestFocus();
+                return;
             }
-            
+
             LoginDao login = new LoginDao();
             BikUsuariosSistema usuario = login.findByUssCodigo(txtUsuario.getText());
             if (usuario.getUssCodigo() != null && !usuario.getUssCodigo().isEmpty()) {
-                Parametros.getInstance().setParametro("Usuario", txtUsuario.getText());
                 if (usuario.getUssContrasena().equals(Encriptor.getInstance().encriptar(txtClave.getText()))) {
+                    Parametros.getInstance().setParametro("Usuario", txtUsuario.getText());
                     Node boton = (Node) event.getSource();
                     AppWindowController.getInstance().setMainStage((Stage) boton.getScene().getWindow());
                     AppWindowController.getInstance().abrirVentana("bik_principal", "Bikétsö - Principal", true);
-                } else
-                {
+                } else {
                     AppWindowController.getInstance().mensaje(AlertType.ERROR, "Acceso denegado", "Contraseña incorrecta.");
-                    txtClave.requestFocus();                    
+                    txtClave.requestFocus();
                     return;
                 }
-            } else{
+            } else {
                 AppWindowController.getInstance().mensaje(AlertType.ERROR, "Acceso denegado", "El usuario: " + txtUsuario.getText() + ", no se encuentra registrado.");
                 txtUsuario.requestFocus();
                 return;
-            }                
+            }
         } else {
             AppWindowController.getInstance().mensaje(AlertType.WARNING, "Error", "Debe indicar el código de usuario.");
             txtUsuario.requestFocus();

@@ -6,12 +6,12 @@
 package jbiketso.utils;
 
 import java.util.Objects;
-
 /**
  *
  * @author jdiego
  */
 public class AccesoPantalla {
+    
     private String modulo;
     private String pantalla;
     private String etiqueta;
