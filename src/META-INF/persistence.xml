@@ -27,6 +27,7 @@
     <class>jbiketso.model.entities.BikMenu</class>
     <class>jbiketso.model.entities.BikPermisoRol</class>
     <class>jbiketso.model.entities.BikAccesoModulosView</class>
+    <class>jbiketso.model.entities.BikAccesoPantallasView</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/biketso?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

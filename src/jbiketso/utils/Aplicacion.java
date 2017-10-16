@@ -7,6 +7,7 @@ package jbiketso.utils;
 
 import java.util.ArrayList;
 import jbiketso.model.entities.BikAccesoModulosView;
+import jbiketso.model.entities.BikAccesoPantallasView;
 import jbiketso.model.entities.BikRolesUsuarios;
 
 /**
@@ -18,7 +19,7 @@ public class Aplicacion {
     private static Aplicacion INSTANCE;
 
     private static ArrayList<BikRolesUsuarios> rolesUsuario;
-    private static ArrayList<AccesoPantalla> accesosUsuario;
+    private static ArrayList<BikAccesoPantallasView> accesosUsuario;
     private static ArrayList<BikAccesoModulosView> modulosUsuario;
 
     private Aplicacion() {
@@ -59,11 +60,11 @@ public class Aplicacion {
         Aplicacion.rolesUsuario = rolesUsuario;
     }
 
-    public ArrayList<AccesoPantalla> getAccesosUsuario() {
+    public ArrayList<BikAccesoPantallasView> getAccesosUsuario() {
         return accesosUsuario;
     }
 
-    public void setAccesosUsuario(ArrayList<AccesoPantalla> accesosUsuario) {
+    public void setAccesosUsuario(ArrayList<BikAccesoPantallasView> accesosUsuario) {
         Aplicacion.accesosUsuario = accesosUsuario;
     }
 
