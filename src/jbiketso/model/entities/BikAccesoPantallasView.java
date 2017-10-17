@@ -14,22 +14,26 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.ReadOnly;
 
 /**
  *
  * @author jdiego
  */
+@ReadOnly
 @Entity
-@Table(name = "bik_accesopantallas_vw", schema = "biktso")
+@Table(name = "bik_accesopantallas_vw", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BikAccesopantallasView.findByCodigoUsuario", query = "SELECT b.codigoUsuario,b.codigoModulo,b.pantalla,b.etiqueta,b.inserta,b.modifica,b.elimina FROM BikAccesopantallasView b WHERE b.codigoUsuario = :codigoUsuario")
-})
+    @NamedQuery(name = "BikAccesoPantallasView.findByCodigoUsuario", query = "SELECT b.codigoUsuario, b.codigoModulo, b.pantalla, b.etiqueta, b.consulta, b.inserta, b.modifica, b.elimina  FROM BikAccesoPantallasView b WHERE b.codigoUsuario = :codigoUsuario")})
+
 public class BikAccesoPantallasView implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     private Long id;
+
     @Basic(optional = false)
     @Column(name = "codigoUsuario")
     private String codigoUsuario;
@@ -68,7 +72,7 @@ public class BikAccesoPantallasView implements Serializable {
         this.modifica = modifica;
         this.elimina = elimina;
     }
-        
+
     public String getCodigoUsuario() {
         return codigoUsuario;
     }

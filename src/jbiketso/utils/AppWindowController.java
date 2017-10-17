@@ -132,6 +132,7 @@ public class AppWindowController {
     public boolean mensajeConfimacion(String titulo, String mensaje) {
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
         dialog.setTitle(titulo);
+        dialog.setHeaderText(null);
         dialog.setContentText(mensaje);        
         final Optional<ButtonType> result = dialog.showAndWait();
         return result.get() == ButtonType.OK;

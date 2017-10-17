@@ -85,7 +85,7 @@ public class PrincipalController implements Initializable {
         SeguridadDao seguridadDao = new SeguridadDao();
 
         Aplicacion.getInstance().setModulosUsuario(seguridadDao.getModulosUsuario(Parametros.getInstance().getParametro("Usuario")));
-        //Aplicacion.getInstance().setAccesosUsuario(seguridadDao.getAccesosUsuario(Parametros.getInstance().getParametro("Usuario")));
+        Aplicacion.getInstance().setAccesosUsuario(seguridadDao.getAccesosUsuario(Parametros.getInstance().getParametro("Usuario")));
 
     }
     

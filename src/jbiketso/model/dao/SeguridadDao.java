@@ -25,7 +25,7 @@ public class SeguridadDao extends BaseDao {
         ArrayList<BikAccesoPantallasView> accesos = new ArrayList<>();
         List<Object[]> resultados;
         try {
-            Query query = getEntityManager().createNamedQuery("BikAccesopantallasView.findByCodigoUsuario");
+            Query query = getEntityManager().createNamedQuery("BikAccesoPantallasView.findByCodigoUsuario");
             query.setParameter("codigoUsuario", codigoUsuario);
             resultados = query.getResultList();
             for (Object[] row : resultados) {

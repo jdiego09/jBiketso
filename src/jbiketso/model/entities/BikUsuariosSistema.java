@@ -31,14 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "bik_usuarios_sistema", schema="biketso")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BikUsuariosSistema.findAll", query = "SELECT b FROM BikUsuariosSistema b")
-    , @NamedQuery(name = "BikUsuariosSistema.findByUssCodigo", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussCodigo = :ussCodigo")
-    , @NamedQuery(name = "BikUsuariosSistema.findByUssEstado", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussEstado = :ussEstado")
-    , @NamedQuery(name = "BikUsuariosSistema.findByUssUsuarioingresa", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussUsuarioingresa = :ussUsuarioingresa")
-    , @NamedQuery(name = "BikUsuariosSistema.findByUssFechaingresa", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussFechaingresa = :ussFechaingresa")
-    , @NamedQuery(name = "BikUsuariosSistema.findByUssUsuariomodifica", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussUsuariomodifica = :ussUsuariomodifica")
-    , @NamedQuery(name = "BikUsuariosSistema.findByUssFechamodifica", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussFechamodifica = :ussFechamodifica")
-    , @NamedQuery(name = "BikUsuariosSistema.findByUssContrasena", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussContrasena = :ussContrasena")})
+    @NamedQuery(name = "BikUsuariosSistema.findByUssCodigo", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussCodigo = :ussCodigo")
+    })
 public class BikUsuariosSistema implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -2,18 +2,22 @@ package jbiketso.controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
+import jbiketso.model.entities.BikAccesoPantallasView;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
 
 public class PrincipalMenuController implements Initializable {
 
+    private final Integer ALTOBOTON = 35;
     @FXML
     private VBox vbxMenu;
 
@@ -24,10 +28,10 @@ public class PrincipalMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
-        setOpcionesMenu();
+        setMenuModulos();
     }
 
-    private void setOpcionesMenu() {
+    private void setMenuModulos() {
         vbxMenu.getChildren().clear();
 
         Aplicacion.getInstance().getModulosUsuario().stream().forEach(m -> {
@@ -35,8 +39,9 @@ public class PrincipalMenuController implements Initializable {
             btn.setText(m.getDescripcionModulo());
             btn.setId(m.getCodigoModulo());
             btn.setMaxWidth(Integer.MAX_VALUE);
+            btn.setMinHeight(ALTOBOTON);
             btn.getStyleClass().add("buttonDrawer");
-            btn.setOnAction(menuHandler);
+            btn.setOnAction(menuModulosHandler);
             vbxMenu.getChildren().add(btn);
         });
 
@@ -44,29 +49,75 @@ public class PrincipalMenuController implements Initializable {
         btn.setText("Salir");
         btn.setId("EXT");
         btn.setMaxWidth(Integer.MAX_VALUE);
+        btn.setMinHeight(ALTOBOTON);
         btn.getStyleClass().add("buttonDrawer");
-        btn.setOnAction(menuHandler);
+        btn.setOnAction(menuModulosHandler);
         vbxMenu.getChildren().add(btn);
     }
 
-    final EventHandler<ActionEvent> menuHandler = (final ActionEvent event) -> {
+    final EventHandler<ActionEvent> menuModulosHandler = (final ActionEvent event) -> {
         Object source = event.getSource();
-        String id = null;
+        String modulo = null;
         if (source instanceof JFXButton) {
-            id = ((JFXButton) source).getId();
+            modulo = ((JFXButton) source).getId();
         }
-        if (id.equalsIgnoreCase("EXT")){
-            if (AppWindowController.getInstance().mensajeConfimacion("Salir", "¿Desea salir del sistema?")){
+        if (modulo.equalsIgnoreCase("EXT")) {
+            if (AppWindowController.getInstance().mensajeConfimacion("Salir", "¿Desea salir del sistema?")) {
                 AppWindowController.getInstance().cerrarAplicacion();
             }
         } else {
-            accesaModulo(id);
+            accesaModulo(modulo);
         }
         event.consume();
     };
-    
-    private void accesaModulo(String modulo){
+
+    private void accesaModulo(String modulo) {
+        ArrayList<BikAccesoPantallasView> menuPantallas = new ArrayList<>();
+        Aplicacion.getInstance().getAccesosUsuario()
+                .stream().filter(m -> m.getCodigoModulo().equalsIgnoreCase(modulo)).forEach(menuPantallas::add);
+        setMenuPantallas(menuPantallas);
+    }
+
+    private void setMenuPantallas(ArrayList<BikAccesoPantallasView> menuPantallas) {
+        vbxMenu.getChildren().clear();
+
+        menuPantallas.stream().forEach(m -> {
+            JFXButton btn = new JFXButton();
+            btn.setText(m.getEtiqueta());
+            btn.setId(m.getPantalla());
+            btn.setMaxWidth(Integer.MAX_VALUE);
+            btn.setMinHeight(ALTOBOTON);
+            btn.getStyleClass().add("buttonDrawer");
+            btn.setOnAction(menuPantallasHandler);
+            vbxMenu.getChildren().add(btn);
+        });
+
+        JFXButton btn = new JFXButton();
+        btn.setText("Regresar");
+        btn.setId("BCK");
+        btn.setMaxWidth(Integer.MAX_VALUE);
+        btn.setMinHeight(ALTOBOTON);
+        btn.getStyleClass().add("buttonDrawer");
+        btn.setOnAction(menuPantallasHandler);
+        vbxMenu.getChildren().add(btn);
         
     }
 
+    final EventHandler<ActionEvent> menuPantallasHandler = (final ActionEvent event) -> {
+        Object source = event.getSource();
+        String pantalla = null;
+        if (source instanceof JFXButton) {
+            pantalla = ((JFXButton) source).getId();
+        }
+        if (pantalla.equalsIgnoreCase("BCK")) {
+            setMenuModulos();
+        } else {
+            accesaPantalla(pantalla);
+        }
+        event.consume();
+    };
+
+    private void accesaPantalla(String pantalla) {
+        AppWindowController.getInstance().abrirVentana(pantalla, "Bikétsö - Principal", true);
+    }
 }
