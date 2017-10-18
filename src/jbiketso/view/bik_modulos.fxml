@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="792.0" styleClass="form" stylesheets="@biketso.css" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.ModulosController">
+   <children>
+      <Pane prefHeight="43.0" prefWidth="610.0" styleClass="actionbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXButton fx:id="jbtnSalir" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="14.0" layoutY="9.0" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonsalir" textOverrun="WORD_ELLIPSIS">
+               <tooltip>
+                  <Tooltip text="Regresar" />
+               </tooltip>
+            </JFXButton>
+            <JFXButton fx:id="jbtnGuardar" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="752.0" layoutY="9.0" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonguardar" textOverrun="WORD_ELLIPSIS">
+               <tooltip>
+                  <Tooltip text="Guardar" />
+               </tooltip>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
+            </JFXButton>
+         </children>
+      </Pane>
+      <JFXTextField fx:id="jtxfCodigoModulo" labelFloat="true" layoutX="57.0" layoutY="60.0" promptText="Módulo" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfDescripcionModulo" layoutX="57.0" layoutY="93.0" prefHeight="25.0" prefWidth="384.0" promptText="Descripción" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbEstadoModulo" labelFloat="true" layoutX="57.0" layoutY="134.0" prefHeight="25.0" prefWidth="135.0" promptText="Estado" styleClass="edittext" visibleRowCount="2">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </JFXComboBox>
+      <TableView fx:id="tbvModulos" layoutX="25.0" layoutY="173.0" prefHeight="280.0" prefWidth="673.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+        <columns>
+          <TableColumn fx:id="tbcCodigoModulo" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" sortable="false" text="Módulo" />
+          <TableColumn fx:id="tbcDescipcionModulo" editable="false" maxWidth="265.0" minWidth="265.0" prefWidth="265.0" resizable="false" sortable="false" text="Descripción" />
+            <TableColumn fx:id="tbcEstadoModulo" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" sortable="false" text="Estado" />
+            <TableColumn fx:id="tbcUsuarioIngresa" editable="false" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" resizable="false" sortable="false" text="Ingresa" />
+            <TableColumn fx:id="tbcFechaIngresa" editable="false" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" resizable="false" sortable="false" text="Fec. Ingreso" />
+            <TableColumn fx:id="tbcUsuarioModifica" editable="false" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" resizable="false" sortable="false" text="Modifica" />
+            <TableColumn fx:id="tbcFechaModifica" editable="false" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" resizable="false" sortable="false" text="Fec. Modifica" />
+        </columns>
+      </TableView>
+   </children>
+</fx:root>
