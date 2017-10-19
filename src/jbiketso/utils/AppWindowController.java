@@ -112,7 +112,7 @@ public class AppWindowController {
             Scene scene = new Scene(roots.get(ventana));
             if (mainStage == null) {
                 mainStage = new Stage();
-                mainStage.initStyle(StageStyle.UNIFIED);
+                mainStage.initStyle(StageStyle.UNDECORATED);
             }
             mainStage.setScene(scene);
             mainStage.setTitle(titulo);
