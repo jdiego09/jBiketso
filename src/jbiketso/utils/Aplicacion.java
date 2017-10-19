@@ -6,9 +6,9 @@
 package jbiketso.utils;
 
 import java.util.ArrayList;
-import jbiketso.model.entities.BikAccesoModulosView;
-import jbiketso.model.entities.BikAccesoPantallasView;
-import jbiketso.model.entities.BikRolesUsuarios;
+import jbiketso.model.entities.BikModulos;
+import jbiketso.model.entities.BikPermisoRol;
+import jbiketso.model.entities.BikUsuariosSistema;
 
 /**
  *
@@ -18,9 +18,10 @@ public class Aplicacion {
 
     private static Aplicacion INSTANCE;
 
-    private static ArrayList<BikRolesUsuarios> rolesUsuario;
-    private static ArrayList<BikAccesoPantallasView> accesosUsuario;
-    private static ArrayList<BikAccesoModulosView> modulosUsuario;
+    private static BikUsuariosSistema usuario;
+    private static String rolesUsuario;
+    private static ArrayList<BikPermisoRol> accesosUsuario;
+    private static ArrayList<BikModulos> modulosUsuario;
 
     private Aplicacion() {
     }
@@ -52,30 +53,36 @@ public class Aplicacion {
         throw new CloneNotSupportedException();
     }
 
-    public static ArrayList<BikRolesUsuarios> getRolesUsuario() {
+    public BikUsuariosSistema getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(BikUsuariosSistema usuario) {
+        Aplicacion.usuario = usuario;
+    }
+
+    public String getRolesUsuario() {
         return rolesUsuario;
     }
 
-    public void setRolesUsuario(ArrayList<BikRolesUsuarios> rolesUsuario) {
+    public void setRolesUsuario(String rolesUsuario) {
         Aplicacion.rolesUsuario = rolesUsuario;
     }
 
-    public ArrayList<BikAccesoPantallasView> getAccesosUsuario() {
+    public ArrayList<BikPermisoRol> getAccesosUsuario() {
         return accesosUsuario;
     }
 
-    public void setAccesosUsuario(ArrayList<BikAccesoPantallasView> accesosUsuario) {
+    public void setAccesosUsuario(ArrayList<BikPermisoRol> accesosUsuario) {
         Aplicacion.accesosUsuario = accesosUsuario;
     }
 
-    public ArrayList<BikAccesoModulosView> getModulosUsuario() {
+    public ArrayList<BikModulos> getModulosUsuario() {
         return modulosUsuario;
     }
 
-    public void setModulosUsuario(ArrayList<BikAccesoModulosView> modulosUsuario) {
+    public void setModulosUsuario(ArrayList<BikModulos> modulosUsuario) {
         Aplicacion.modulosUsuario = modulosUsuario;
     }
-    
-    
-    
+
 }

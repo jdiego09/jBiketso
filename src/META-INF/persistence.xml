@@ -2,32 +2,30 @@
 <persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
   <persistence-unit name="jBiketsoPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>jbiketso.model.entities.BikExpediente</class>
-    <class>jbiketso.model.entities.BikUsuariosSistema</class>
-    <class>jbiketso.model.entities.BikModulos</class>
-    <class>jbiketso.model.entities.BikContacto</class>
-    <class>jbiketso.model.entities.BikMedicamento</class>
-    <class>jbiketso.model.entities.BikUsuario</class>
-    <class>jbiketso.model.entities.BikRequisitos</class>
     <class>jbiketso.model.entities.BikAccionesPersonal</class>
-    <class>jbiketso.model.entities.BikDetalleAgenda</class>
-    <class>jbiketso.model.entities.BikCentro</class>
-    <class>jbiketso.model.entities.BikSede</class>
-    <class>jbiketso.model.entities.BikFuncionario</class>
-    <class>jbiketso.model.entities.BikEvaluacion</class>
-    <class>jbiketso.model.entities.BikRequisitosExpediente</class>
-    <class>jbiketso.model.entities.BikPuesto</class>
-    <class>jbiketso.model.entities.BikDireccion</class>
-    <class>jbiketso.model.entities.BikBitacoraAtencion</class>
     <class>jbiketso.model.entities.BikAgenda</class>
-    <class>jbiketso.model.entities.BikPadecimiento</class>
-    <class>jbiketso.model.entities.BikPersona</class>
-    <class>jbiketso.model.entities.BikRolesUsuarios</class>
-    <class>jbiketso.model.entities.BkRoles</class>
+    <class>jbiketso.model.entities.BikBitacoraAtencion</class>
+    <class>jbiketso.model.entities.BikCentro</class>
+    <class>jbiketso.model.entities.BikContacto</class>
+    <class>jbiketso.model.entities.BikDetalleAgenda</class>
+    <class>jbiketso.model.entities.BikDireccion</class>
+    <class>jbiketso.model.entities.BikEvaluacion</class>
+    <class>jbiketso.model.entities.BikExpediente</class>
+    <class>jbiketso.model.entities.BikFuncionario</class>
+    <class>jbiketso.model.entities.BikMedicamento</class>
     <class>jbiketso.model.entities.BikMenu</class>
+    <class>jbiketso.model.entities.BikModulos</class>
+    <class>jbiketso.model.entities.BikPadecimiento</class>
     <class>jbiketso.model.entities.BikPermisoRol</class>
-    <class>jbiketso.model.entities.BikAccesoModulosView</class>
-    <class>jbiketso.model.entities.BikAccesoPantallasView</class>
+    <class>jbiketso.model.entities.BikPersona</class>
+    <class>jbiketso.model.entities.BikPuesto</class>
+    <class>jbiketso.model.entities.BikRequisitos</class>
+    <class>jbiketso.model.entities.BikRequisitosExpediente</class>
+    <class>jbiketso.model.entities.BikRoles</class>
+    <class>jbiketso.model.entities.BikRolesUsuarios</class>
+    <class>jbiketso.model.entities.BikSede</class>
+    <class>jbiketso.model.entities.BikUsuario</class>
+    <class>jbiketso.model.entities.BikUsuariosSistema</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/biketso?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

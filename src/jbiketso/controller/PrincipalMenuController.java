@@ -11,7 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
-import jbiketso.model.entities.BikAccesoPantallasView;
+import jbiketso.model.entities.BikPermisoRol;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
 
@@ -36,8 +36,8 @@ public class PrincipalMenuController implements Initializable {
 
         Aplicacion.getInstance().getModulosUsuario().stream().forEach(m -> {
             JFXButton btn = new JFXButton();
-            btn.setText(m.getDescripcionModulo());
-            btn.setId(m.getCodigoModulo());
+            btn.setText(m.getModDescripcion());
+            btn.setId(m.getModCodigo());
             btn.setMaxWidth(Integer.MAX_VALUE);
             btn.setMinHeight(ALTOBOTON);
             btn.getStyleClass().add("buttonDrawer");
@@ -72,19 +72,19 @@ public class PrincipalMenuController implements Initializable {
     };
 
     private void accesaModulo(String modulo) {
-        ArrayList<BikAccesoPantallasView> menuPantallas = new ArrayList<>();
+        ArrayList<BikPermisoRol> menuPantallas = new ArrayList<>();
         Aplicacion.getInstance().getAccesosUsuario()
-                .stream().filter(m -> m.getCodigoModulo().equalsIgnoreCase(modulo)).forEach(menuPantallas::add);
+                .stream().filter(m -> m.getProCodigomenu().getMenModcodigo().getModCodigo().equalsIgnoreCase(modulo)).forEach(menuPantallas::add);
         setMenuPantallas(menuPantallas);
     }
 
-    private void setMenuPantallas(ArrayList<BikAccesoPantallasView> menuPantallas) {
+    private void setMenuPantallas(ArrayList<BikPermisoRol> menuPantallas) {
         vbxMenu.getChildren().clear();
 
         menuPantallas.stream().forEach(m -> {
             JFXButton btn = new JFXButton();
-            btn.setText(m.getEtiqueta());
-            btn.setId(m.getPantalla());
+            btn.setText(m.getProCodigomenu().getMenEtiqueta());
+            btn.setId(String.valueOf(m.getProCodigomenu().getMenCodigo()));
             btn.setMaxWidth(Integer.MAX_VALUE);
             btn.setMinHeight(ALTOBOTON);
             btn.getStyleClass().add("buttonDrawer");

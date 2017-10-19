@@ -52,11 +52,11 @@ public class PrincipalController implements Initializable {
                 ae -> lblFecha.setText("Fecha: " + sdf.format(new Date()))));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-        
+
         cargarSeguridad();
-        
+
         panMenu = (Pane) AppWindowController.getInstance().getView("bik_principal_menu");
-               
+
         drwMenu.setSidePane(panMenu);
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hmbMenu);
@@ -84,9 +84,9 @@ public class PrincipalController implements Initializable {
     private void cargarSeguridad() {
         SeguridadDao seguridadDao = new SeguridadDao();
 
-        Aplicacion.getInstance().setModulosUsuario(seguridadDao.getModulosUsuario(Parametros.getInstance().getParametro("Usuario")));
-        Aplicacion.getInstance().setAccesosUsuario(seguridadDao.getAccesosUsuario(Parametros.getInstance().getParametro("Usuario")));
+        Aplicacion.getInstance().setModulosUsuario(seguridadDao.getModulosUsuario(Aplicacion.getInstance().getRolesUsuario()));
+        Aplicacion.getInstance().setAccesosUsuario(seguridadDao.getAccesosUsuario(Aplicacion.getInstance().getRolesUsuario()));
 
     }
-    
+
 }

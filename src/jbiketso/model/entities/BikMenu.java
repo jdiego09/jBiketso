@@ -7,7 +7,9 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,10 +20,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -41,6 +45,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "BikMenu.findByMenUsuariomodifica", query = "SELECT b FROM BikMenu b WHERE b.menUsuariomodifica = :menUsuariomodifica")
     , @NamedQuery(name = "BikMenu.findByMenFechamodifica", query = "SELECT b FROM BikMenu b WHERE b.menFechamodifica = :menFechamodifica")})
 public class BikMenu implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proCodigomenu", fetch = FetchType.LAZY)
+    private List<BikPermisoRol> bikPermisoRolList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -180,6 +187,15 @@ public class BikMenu implements Serializable {
     @Override
     public String toString() {
         return "jbiketso.model.BikMenu[ menCodigo=" + menCodigo + " ]";
+    }
+
+    @XmlTransient
+    public List<BikPermisoRol> getBikPermisoRolList() {
+        return bikPermisoRolList;
+    }
+
+    public void setBikPermisoRolList(List<BikPermisoRol> bikPermisoRolList) {
+        this.bikPermisoRolList = bikPermisoRolList;
     }
     
 }

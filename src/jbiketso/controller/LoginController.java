@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +19,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import jbiketso.model.dao.LoginDao;
+import jbiketso.model.entities.BikRoles;
+import jbiketso.model.entities.BikRolesUsuarios;
 import jbiketso.model.entities.BikUsuariosSistema;
+import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
 import jbiketso.utils.Encriptor;
 import jbiketso.utils.Parametros;
@@ -58,6 +62,18 @@ public class LoginController implements Initializable {
             if (usuario.getUssCodigo() != null && !usuario.getUssCodigo().isEmpty()) {
                 if (usuario.getUssContrasena().equals(Encriptor.getInstance().encriptar(txtClave.getText()))) {
                     Parametros.getInstance().setParametro("Usuario", txtUsuario.getText());
+                    Aplicacion.getInstance().setUsuario(usuario);
+                    String roles = "";
+                    String sep = "";
+                    for (BikRolesUsuarios r : Aplicacion.getInstance().getUsuario().getBikRolesUsuariosList()) {
+                        if (roles == null || roles.isEmpty()) {
+                            sep = "";
+                        } else {
+                            sep = ",";
+                        }
+                        roles = roles + sep + r.getBikRolesUsuariosPK().getRouRolcodigo();
+                    }
+                    Aplicacion.getInstance().setRolesUsuario(roles);
                     Node boton = (Node) event.getSource();
                     AppWindowController.getInstance().setMainStage((Stage) boton.getScene().getWindow());
                     AppWindowController.getInstance().abrirVentana("bik_principal", "Bikétsö - Principal", true);

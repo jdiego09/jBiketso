@@ -23,10 +23,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Anayansy
+ * @author jdiego
  */
 @Entity
-@Table(name = "bik_roles_usuarios", schema="biketso")
+@Table(name = "bik_roles_usuarios",schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikRolesUsuarios.findAll", query = "SELECT b FROM BikRolesUsuarios b")
@@ -57,7 +57,7 @@ public class BikRolesUsuarios implements Serializable {
     private Date rouFechamodifica;
     @JoinColumn(name = "rou_rolcodigo", referencedColumnName = "rol_codigo", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BkRoles bkRoles;
+    private BikRoles bikRoles;
     @JoinColumn(name = "rou_usscodigo", referencedColumnName = "uss_codigo", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BikUsuariosSistema bikUsuariosSistema;
@@ -126,12 +126,12 @@ public class BikRolesUsuarios implements Serializable {
         this.rouFechamodifica = rouFechamodifica;
     }
 
-    public BkRoles getBkRoles() {
-        return bkRoles;
+    public BikRoles getBikRoles() {
+        return bikRoles;
     }
 
-    public void setBkRoles(BkRoles bkRoles) {
-        this.bkRoles = bkRoles;
+    public void setBikRoles(BikRoles bikRoles) {
+        this.bikRoles = bikRoles;
     }
 
     public BikUsuariosSistema getBikUsuariosSistema() {

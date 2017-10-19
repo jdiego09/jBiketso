@@ -68,11 +68,18 @@ public class BikModulos implements Serializable {
         this.modCodigo = modCodigo;
     }
 
+    public BikModulos(String modCodigo, String modDescripcion) {
+        this.modCodigo = modCodigo;
+        this.modDescripcion = modDescripcion;
+    }
+
     public BikModulos(String modCodigo, String modDescripcion, String modEstado) {
         this.modCodigo = modCodigo;
         this.modDescripcion = modDescripcion;
         this.modEstado = modEstado;
     }
+    
+    
 
     public String getModCodigo() {
         return modCodigo;

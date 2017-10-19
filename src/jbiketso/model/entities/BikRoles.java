@@ -25,21 +25,21 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Anayansy
+ * @author jdiego
  */
 @Entity
-@Table(name = "bk_roles", schema="biketso")
+@Table(name = "bik_roles",schema = "biketso")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BkRoles.findAll", query = "SELECT b FROM BkRoles b")
-    , @NamedQuery(name = "BkRoles.findByRolCodigo", query = "SELECT b FROM BkRoles b WHERE b.rolCodigo = :rolCodigo")
-    , @NamedQuery(name = "BkRoles.findByRolDescripcion", query = "SELECT b FROM BkRoles b WHERE b.rolDescripcion = :rolDescripcion")
-    , @NamedQuery(name = "BkRoles.findByRolEstado", query = "SELECT b FROM BkRoles b WHERE b.rolEstado = :rolEstado")
-    , @NamedQuery(name = "BkRoles.findByRolUsuarioingresa", query = "SELECT b FROM BkRoles b WHERE b.rolUsuarioingresa = :rolUsuarioingresa")
-    , @NamedQuery(name = "BkRoles.findByRolFechaingresa", query = "SELECT b FROM BkRoles b WHERE b.rolFechaingresa = :rolFechaingresa")
-    , @NamedQuery(name = "BkRoles.findByRolUsuariomodifica", query = "SELECT b FROM BkRoles b WHERE b.rolUsuariomodifica = :rolUsuariomodifica")
-    , @NamedQuery(name = "BkRoles.findByRolFechamodifica", query = "SELECT b FROM BkRoles b WHERE b.rolFechamodifica = :rolFechamodifica")})
-public class BkRoles implements Serializable {
+    @NamedQuery(name = "BikRoles.findAll", query = "SELECT b FROM BikRoles b")
+    , @NamedQuery(name = "BikRoles.findByRolCodigo", query = "SELECT b FROM BikRoles b WHERE b.rolCodigo = :rolCodigo")
+    , @NamedQuery(name = "BikRoles.findByRolDescripcion", query = "SELECT b FROM BikRoles b WHERE b.rolDescripcion = :rolDescripcion")
+    , @NamedQuery(name = "BikRoles.findByRolEstado", query = "SELECT b FROM BikRoles b WHERE b.rolEstado = :rolEstado")
+    , @NamedQuery(name = "BikRoles.findByRolUsuarioingresa", query = "SELECT b FROM BikRoles b WHERE b.rolUsuarioingresa = :rolUsuarioingresa")
+    , @NamedQuery(name = "BikRoles.findByRolFechaingresa", query = "SELECT b FROM BikRoles b WHERE b.rolFechaingresa = :rolFechaingresa")
+    , @NamedQuery(name = "BikRoles.findByRolUsuariomodifica", query = "SELECT b FROM BikRoles b WHERE b.rolUsuariomodifica = :rolUsuariomodifica")
+    , @NamedQuery(name = "BikRoles.findByRolFechamodifica", query = "SELECT b FROM BikRoles b WHERE b.rolFechamodifica = :rolFechamodifica")})
+public class BikRoles implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -62,17 +62,17 @@ public class BkRoles implements Serializable {
     @Column(name = "rol_fechamodifica")
     @Temporal(TemporalType.TIMESTAMP)
     private Date rolFechamodifica;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bkRoles", fetch = FetchType.LAZY)
-    private List<BikRolesUsuarios> bikRolesUsuariosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proCodigorol", fetch = FetchType.LAZY)
+    private List<BikPermisoRol> bikPermisoRolList;
 
-    public BkRoles() {
+    public BikRoles() {
     }
 
-    public BkRoles(String rolCodigo) {
+    public BikRoles(String rolCodigo) {
         this.rolCodigo = rolCodigo;
     }
 
-    public BkRoles(String rolCodigo, String rolDescripcion, String rolEstado) {
+    public BikRoles(String rolCodigo, String rolDescripcion, String rolEstado) {
         this.rolCodigo = rolCodigo;
         this.rolDescripcion = rolDescripcion;
         this.rolEstado = rolEstado;
@@ -135,12 +135,12 @@ public class BkRoles implements Serializable {
     }
 
     @XmlTransient
-    public List<BikRolesUsuarios> getBikRolesUsuariosList() {
-        return bikRolesUsuariosList;
+    public List<BikPermisoRol> getBikPermisoRolList() {
+        return bikPermisoRolList;
     }
 
-    public void setBikRolesUsuariosList(List<BikRolesUsuarios> bikRolesUsuariosList) {
-        this.bikRolesUsuariosList = bikRolesUsuariosList;
+    public void setBikPermisoRolList(List<BikPermisoRol> bikPermisoRolList) {
+        this.bikPermisoRolList = bikPermisoRolList;
     }
 
     @Override
@@ -153,10 +153,10 @@ public class BkRoles implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BkRoles)) {
+        if (!(object instanceof BikRoles)) {
             return false;
         }
-        BkRoles other = (BkRoles) object;
+        BikRoles other = (BikRoles) object;
         if ((this.rolCodigo == null && other.rolCodigo != null) || (this.rolCodigo != null && !this.rolCodigo.equals(other.rolCodigo))) {
             return false;
         }
@@ -165,7 +165,7 @@ public class BkRoles implements Serializable {
 
     @Override
     public String toString() {
-        return "jbiketso.model.entities.BkRoles[ rolCodigo=" + rolCodigo + " ]";
+        return "jbiketso.model.entities.BikRoles[ rolCodigo=" + rolCodigo + " ]";
     }
     
 }
