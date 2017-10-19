@@ -24,45 +24,41 @@ import jbiketso.utils.AppWindowController;
  */
 public class SeguridadDao extends BaseDao {
 
-    public ArrayList<BikPermisoRol> getAccesosUsuario(String codigoRol) {
-        ArrayList<BikPermisoRol> accesos = new ArrayList<>();
-        List<Object[]> resultados;
-        try {
-            String[] rolesArray = codigoRol.split(",");
-            List<String> rol = Arrays.asList(rolesArray);
-            Query query = getEntityManager().createNamedQuery("BikPermisoRol.findMenuByRol");
-            query.setParameter("codigoRol", rol);
-            resultados = query.getResultList();
-            for (Object[] row : resultados) {
-                BikPermisoRol acceso = new BikPermisoRol((BikMenu) row[0], (String) row[1], (String) row[2], (String) row[3], (String) row[4]);
-                accesos.add(acceso);
-            }
-            return accesos;
-        } catch (Exception ex) {
-            Logger.getLogger(SeguridadDao.class.getName()).log(Level.SEVERE, null, ex);
-            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Error obteniendo accesos del usuario", "No se pudo cargar los accesos del usuario [" + Aplicacion.getInstance().getUsuario().getUssCodigo() + "].");
-            return accesos;
-        }
-    }
+   public ArrayList<BikPermisoRol> getAccesosUsuario(String codigoRol) {
+      ArrayList<BikPermisoRol> accesos = new ArrayList<>();
+      List<Object[]> resultados;
+      try {
+         Query query = getEntityManager().createNamedQuery("BikPermisoRol.findMenuByRol");
+         query.setParameter("codigoRol", Arrays.asList(codigoRol.split(",")));
+         resultados = query.getResultList();
+         for (Object[] row : resultados) {
+            BikPermisoRol acceso = new BikPermisoRol((BikMenu) row[0], (String) row[1], (String) row[2], (String) row[3], (String) row[4]);
+            accesos.add(acceso);
+         }
+         return accesos;
+      } catch (Exception ex) {
+         Logger.getLogger(SeguridadDao.class.getName()).log(Level.SEVERE, null, ex);
+         AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Error obteniendo accesos del usuario", "No se pudo cargar los accesos del usuario [" + Aplicacion.getInstance().getUsuario().getUssCodigo() + "].");
+         return accesos;
+      }
+   }
 
-    public ArrayList<BikModulos> getModulosUsuario(String codigoRol) {
-        ArrayList<BikModulos> modulos = new ArrayList<>();
-        List<Object[]> resultados;
-        try {
-            String[] rolesArray = codigoRol.split(",");
-            List<String> rol = Arrays.asList(rolesArray);
-            Query query = getEntityManager().createNamedQuery("BikPermisoRol.findModulosByRol");
-            query.setParameter("codigoRol", rol);
-            resultados = query.getResultList();
-            for (Object[] row : resultados) {
-                BikModulos acceso = new BikModulos((String) row[0], (String) row[1]);
-                modulos.add(acceso);
-            }
-            return modulos;
-        } catch (Exception ex) {
-            Logger.getLogger(SeguridadDao.class.getName()).log(Level.SEVERE, null, ex);
-            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Error obteniendo módulos del usuario", "No se pudo cargar los módulos del usuario [" + Aplicacion.getInstance().getUsuario().getUssCodigo() + "].");
-            return modulos;
-        }
-    }
+   public ArrayList<BikModulos> getModulosUsuario(String codigoRol) {
+      ArrayList<BikModulos> modulos = new ArrayList<>();
+      List<Object[]> resultados;
+      try {
+         Query query = getEntityManager().createNamedQuery("BikPermisoRol.findModulosByRol");
+         query.setParameter("codigoRol", Arrays.asList(codigoRol.split(",")));
+         resultados = query.getResultList();
+         for (Object[] row : resultados) {
+            BikModulos acceso = new BikModulos((String) row[0], (String) row[1]);
+            modulos.add(acceso);
+         }
+         return modulos;
+      } catch (Exception ex) {
+         Logger.getLogger(SeguridadDao.class.getName()).log(Level.SEVERE, null, ex);
+         AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Error obteniendo módulos del usuario", "No se pudo cargar los módulos del usuario [" + Aplicacion.getInstance().getUsuario().getUssCodigo() + "].");
+         return modulos;
+      }
+   }
 }
