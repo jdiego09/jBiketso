@@ -32,11 +32,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikPermisoRol.findById", query = "SELECT b FROM BikPermisoRol b WHERE b.id = :id")
-    , @NamedQuery(name = "BikPermisoRol.findModulosByRol", query = "select distinct b.proCodigomenu.menModcodigo.modCodigo, b.proCodigomenu.menModcodigo.modDescripcion from BikPermisoRol b\n"
-            + "where b.proCodigorol.rolCodigo in :codigoRol and b.proCodigomenu.menModcodigo.modEstado = 'A'")
-    , @NamedQuery(name = "BikPermisoRol.findMenuByRol", query = "select distinct b.proCodigomenu, b.proConsulta, b.proInserta, b.proModifica, b.proElimina from BikPermisoRol b\n"
-            + "where b.proCodigorol.rolCodigo in :codigoRol\n"
-            + "and b.proCodigomenu.menEstado = 'A'")
+    , @NamedQuery(name = "BikPermisoRol.findModulosByRol", query = "select distinct x from BikModulos x, BikMenu m, BikPermisoRol p\n"
+            + "            where x.modCodigo = m.menModcodigo.modCodigo\n"
+            + "and x.modEstado = 'A'\n"
+            + "and m.menCodigo = p.proCodigomenu.menCodigo\n"
+            + "and m.menEstado = 'A'\n"
+            + "and p.proCodigorol.rolCodigo in :codigoRol")
+    , @NamedQuery(name = "BikPermisoRol.findMenuByRol", query = "select distinct p from BikModulos x, BikMenu m, BikPermisoRol p\n"
+            + "            where x.modCodigo = m.menModcodigo.modCodigo\n"
+            + "and x.modEstado = 'A'\n"
+            + "and m.menCodigo = p.proCodigomenu.menCodigo\n"
+            + "and m.menEstado = 'A'\n"
+            + "and p.proCodigorol.rolCodigo in :codigoRol")
 })
 public class BikPermisoRol implements Serializable {
 

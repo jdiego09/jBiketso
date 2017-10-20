@@ -23,12 +23,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Access(AccessType.PROPERTY)
-@Table(name = "bik_modulos",schema = "biketso")
+@Access(AccessType.FIELD)
+@Table(name = "bik_modulos", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikModulos.findAll", query = "SELECT b FROM BikModulos b")
@@ -42,67 +43,79 @@ import javax.xml.bind.annotation.XmlTransient;
 public class BikModulos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private SimpleStringProperty modCodigo;
-    private SimpleStringProperty modDescripcion;
-    private SimpleStringProperty modEstado;
+    @Transient
+    private String modCodigo;
+    @Transient
+    private String modDescripcion;
+    @Transient
+    private String modEstado;
+    @Column(name = "mod_usuarioingresa")
     private String modUsuarioingresa;
+    @Column(name = "mod_fechaingresa")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date modFechaingresa;
+    @Column(name = "mod_usuariomodifica")
     private String modUsuariomodifica;
-    private Date modFechamodifica;    
+    @Column(name = "mod_fechamodifica")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modFechamodifica;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "menModcodigo", fetch = FetchType.LAZY)
+    @XmlTransient
     private List<BikMenu> bikMenuList;
 
     public BikModulos() {
     }
 
     public BikModulos(String modCodigo) {
-        this.modCodigo.set(modCodigo);
+        this.modCodigo = modCodigo;
     }
 
     public BikModulos(String modCodigo, String modDescripcion) {
-        this.modCodigo.set(modCodigo);
-        this.modDescripcion.set(modDescripcion);
+        this.modCodigo = modCodigo;
+        this.modDescripcion = modDescripcion;
     }
 
     public BikModulos(String modCodigo, String modDescripcion, String modEstado) {
-        this.modCodigo.set(modCodigo);
-        this.modDescripcion.set(modDescripcion);
-        this.modEstado.set(modEstado);
+        this.modCodigo = modCodigo;
+        this.modDescripcion = modDescripcion;
+        this.modEstado = modEstado;
     }
-    
-    
 
     @Id
     @Basic(optional = false)
     @Column(name = "mod_codigo")
+    @Access(AccessType.PROPERTY)
     public String getModCodigo() {
-        return modCodigo.get();
+        return modCodigo;
     }
 
     public void setModCodigo(String modCodigo) {
-        this.modCodigo.set(modCodigo);
+        this.modCodigo = modCodigo;
     }
 
     @Basic(optional = false)
     @Column(name = "mod_descripcion")
+    @Access(AccessType.PROPERTY)
     public String getModDescripcion() {
-        return modDescripcion.get();
+        return modDescripcion;
     }
 
     public void setModDescripcion(String modDescripcion) {
-        this.modDescripcion.set(modDescripcion);
+        this.modDescripcion = modDescripcion;
     }
 
     @Basic(optional = false)
     @Column(name = "mod_estado")
+    @Access(AccessType.PROPERTY)
     public String getModEstado() {
-        return modEstado.get();
+        return modEstado;
     }
 
     public void setModEstado(String modEstado) {
-        this.modEstado.set(modEstado);
+        this.modEstado = modEstado;
     }
 
-    @Column(name = "mod_usuarioingresa")
     public String getModUsuarioingresa() {
         return modUsuarioingresa;
     }
@@ -111,8 +124,6 @@ public class BikModulos implements Serializable {
         this.modUsuarioingresa = modUsuarioingresa;
     }
 
-    @Column(name = "mod_fechaingresa")
-    @Temporal(TemporalType.TIMESTAMP)
     public Date getModFechaingresa() {
         return modFechaingresa;
     }
@@ -121,7 +132,6 @@ public class BikModulos implements Serializable {
         this.modFechaingresa = modFechaingresa;
     }
 
-    @Column(name = "mod_usuariomodifica")
     public String getModUsuariomodifica() {
         return modUsuariomodifica;
     }
@@ -130,8 +140,6 @@ public class BikModulos implements Serializable {
         this.modUsuariomodifica = modUsuariomodifica;
     }
 
-    @Column(name = "mod_fechamodifica")
-    @Temporal(TemporalType.TIMESTAMP)
     public Date getModFechamodifica() {
         return modFechamodifica;
     }
@@ -139,9 +147,7 @@ public class BikModulos implements Serializable {
     public void setModFechamodifica(Date modFechamodifica) {
         this.modFechamodifica = modFechamodifica;
     }
-   
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "menModcodigo", fetch = FetchType.LAZY)
-    @XmlTransient
+    
     public List<BikMenu> getBikMenuList() {
         return bikMenuList;
     }
@@ -172,7 +178,7 @@ public class BikModulos implements Serializable {
 
     @Override
     public String toString() {
-        return "jbiketso.model.BikModulos[ modCodigo=" + modCodigo.get() + " ]";
+        return "jbiketso.model.BikModulos[ modCodigo=" + modCodigo + " ]";
     }
-    
+
 }
