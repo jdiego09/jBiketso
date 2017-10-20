@@ -8,6 +8,7 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -32,153 +33,158 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "bik_modulos", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BikModulos.findAll", query = "SELECT b FROM BikModulos b")
-    , @NamedQuery(name = "BikModulos.findByModCodigo", query = "SELECT b FROM BikModulos b WHERE b.modCodigo = :modCodigo")
-    , @NamedQuery(name = "BikModulos.findByModDescripcion", query = "SELECT b FROM BikModulos b WHERE b.modDescripcion = :modDescripcion")
-    , @NamedQuery(name = "BikModulos.findByModEstado", query = "SELECT b FROM BikModulos b WHERE b.modEstado = :modEstado")
-    , @NamedQuery(name = "BikModulos.findByModUsuarioingresa", query = "SELECT b FROM BikModulos b WHERE b.modUsuarioingresa = :modUsuarioingresa")
-    , @NamedQuery(name = "BikModulos.findByModFechaingresa", query = "SELECT b FROM BikModulos b WHERE b.modFechaingresa = :modFechaingresa")
-    , @NamedQuery(name = "BikModulos.findByModUsuariomodifica", query = "SELECT b FROM BikModulos b WHERE b.modUsuariomodifica = :modUsuariomodifica")
-    , @NamedQuery(name = "BikModulos.findByModFechamodifica", query = "SELECT b FROM BikModulos b WHERE b.modFechamodifica = :modFechamodifica")})
+   @NamedQuery(name = "BikModulos.findAll", query = "SELECT b FROM BikModulos b")
+   , @NamedQuery(name = "BikModulos.findByModCodigo", query = "SELECT b FROM BikModulos b WHERE b.modCodigo = :modCodigo")
+   , @NamedQuery(name = "BikModulos.findByModDescripcion", query = "SELECT b FROM BikModulos b WHERE b.modDescripcion = :modDescripcion")
+   , @NamedQuery(name = "BikModulos.findByModEstado", query = "SELECT b FROM BikModulos b WHERE b.modEstado = :modEstado")
+   , @NamedQuery(name = "BikModulos.findByModUsuarioingresa", query = "SELECT b FROM BikModulos b WHERE b.modUsuarioingresa = :modUsuarioingresa")
+   , @NamedQuery(name = "BikModulos.findByModFechaingresa", query = "SELECT b FROM BikModulos b WHERE b.modFechaingresa = :modFechaingresa")
+   , @NamedQuery(name = "BikModulos.findByModUsuariomodifica", query = "SELECT b FROM BikModulos b WHERE b.modUsuariomodifica = :modUsuariomodifica")
+   , @NamedQuery(name = "BikModulos.findByModFechamodifica", query = "SELECT b FROM BikModulos b WHERE b.modFechamodifica = :modFechamodifica")})
 public class BikModulos implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Transient
-    private String modCodigo;
-    @Transient
-    private String modDescripcion;
-    @Transient
-    private String modEstado;
-    @Column(name = "mod_usuarioingresa")
-    private String modUsuarioingresa;
-    @Column(name = "mod_fechaingresa")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modFechaingresa;
-    @Column(name = "mod_usuariomodifica")
-    private String modUsuariomodifica;
-    @Column(name = "mod_fechamodifica")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modFechamodifica;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "menModcodigo", fetch = FetchType.LAZY)
-    @XmlTransient
-    private List<BikMenu> bikMenuList;
+   private static final long serialVersionUID = 1L;
+   @Transient
+   private SimpleStringProperty modCodigo;
+   @Transient
+   private SimpleStringProperty modDescripcion;
+   @Transient
+   private SimpleStringProperty modEstado;
+   @Column(name = "mod_usuarioingresa")
+   private String modUsuarioingresa;
+   @Column(name = "mod_fechaingresa")
+   @Temporal(TemporalType.TIMESTAMP)
+   private Date modFechaingresa;
+   @Column(name = "mod_usuariomodifica")
+   private String modUsuariomodifica;
+   @Column(name = "mod_fechamodifica")
+   @Temporal(TemporalType.TIMESTAMP)
+   private Date modFechamodifica;
 
-    public BikModulos() {
-    }
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "menModcodigo", fetch = FetchType.LAZY)
+   @XmlTransient
+   private List<BikMenu> bikMenuList;
 
-    public BikModulos(String modCodigo) {
-        this.modCodigo = modCodigo;
-    }
+   public BikModulos() {
+   }
 
-    public BikModulos(String modCodigo, String modDescripcion) {
-        this.modCodigo = modCodigo;
-        this.modDescripcion = modDescripcion;
-    }
+   public BikModulos(String modCodigo) {
+      this.modCodigo.set(modCodigo);
+   }
 
-    public BikModulos(String modCodigo, String modDescripcion, String modEstado) {
-        this.modCodigo = modCodigo;
-        this.modDescripcion = modDescripcion;
-        this.modEstado = modEstado;
-    }
+   public BikModulos(String modCodigo, String modDescripcion) {
+      this.modCodigo.set(modCodigo);
+      this.modDescripcion.set(modDescripcion);
+   }
 
-    @Id
-    @Basic(optional = false)
-    @Column(name = "mod_codigo")
-    @Access(AccessType.PROPERTY)
-    public String getModCodigo() {
-        return modCodigo;
-    }
+   public BikModulos(String modCodigo, String modDescripcion, String modEstado) {
+      this.modCodigo.set(modCodigo);
+      this.modDescripcion.set(modDescripcion);
+      this.modEstado.set(modEstado);
+   }
 
-    public void setModCodigo(String modCodigo) {
-        this.modCodigo = modCodigo;
-    }
+   @Id
+   @Basic(optional = false)
+   @Column(name = "mod_codigo")
+   @Access(AccessType.PROPERTY)
+   public String getModCodigo() {
+      return modCodigo.get();
+   }
 
-    @Basic(optional = false)
-    @Column(name = "mod_descripcion")
-    @Access(AccessType.PROPERTY)
-    public String getModDescripcion() {
-        return modDescripcion;
-    }
+   public void setModCodigo(String modCodigo) {
+      this.modCodigo.set(modCodigo);
+   }
 
-    public void setModDescripcion(String modDescripcion) {
-        this.modDescripcion = modDescripcion;
-    }
+   @Basic(optional = false)
+   @Column(name = "mod_descripcion")
+   @Access(AccessType.PROPERTY)
+   public String getModDescripcion() {
+      return modDescripcion.get();
+   }
 
-    @Basic(optional = false)
-    @Column(name = "mod_estado")
-    @Access(AccessType.PROPERTY)
-    public String getModEstado() {
-        return modEstado;
-    }
+   public void setModDescripcion(String modDescripcion) {
+      this.modDescripcion.set(modDescripcion);
+   }
 
-    public void setModEstado(String modEstado) {
-        this.modEstado = modEstado;
-    }
+   @Basic(optional = false)
+   @Column(name = "mod_estado")
+   @Access(AccessType.PROPERTY)
+   public String getModEstado() {
+      return modEstado.get();
+   }
 
-    public String getModUsuarioingresa() {
-        return modUsuarioingresa;
-    }
+   public void setModEstado(String modEstado) {
+      this.modEstado.set(modEstado);
+   }
 
-    public void setModUsuarioingresa(String modUsuarioingresa) {
-        this.modUsuarioingresa = modUsuarioingresa;
-    }
+   public String getModUsuarioingresa() {
+      return modUsuarioingresa;
+   }
 
-    public Date getModFechaingresa() {
-        return modFechaingresa;
-    }
+   public void setModUsuarioingresa(String modUsuarioingresa) {
+      this.modUsuarioingresa = modUsuarioingresa;
+   }
 
-    public void setModFechaingresa(Date modFechaingresa) {
-        this.modFechaingresa = modFechaingresa;
-    }
+   public Date getModFechaingresa() {
+      return modFechaingresa;
+   }
 
-    public String getModUsuariomodifica() {
-        return modUsuariomodifica;
-    }
+   public void setModFechaingresa(Date modFechaingresa) {
+      this.modFechaingresa = modFechaingresa;
+   }
 
-    public void setModUsuariomodifica(String modUsuariomodifica) {
-        this.modUsuariomodifica = modUsuariomodifica;
-    }
+   public String getModUsuariomodifica() {
+      return modUsuariomodifica;
+   }
 
-    public Date getModFechamodifica() {
-        return modFechamodifica;
-    }
+   public void setModUsuariomodifica(String modUsuariomodifica) {
+      this.modUsuariomodifica = modUsuariomodifica;
+   }
 
-    public void setModFechamodifica(Date modFechamodifica) {
-        this.modFechamodifica = modFechamodifica;
-    }
-    
-    public List<BikMenu> getBikMenuList() {
-        return bikMenuList;
-    }
+   public Date getModFechamodifica() {
+      return modFechamodifica;
+   }
 
-    public void setBikMenuList(List<BikMenu> bikMenuList) {
-        this.bikMenuList = bikMenuList;
-    }
+   public void setModFechamodifica(Date modFechamodifica) {
+      this.modFechamodifica = modFechamodifica;
+   }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (modCodigo != null ? modCodigo.hashCode() : 0);
-        return hash;
-    }
+   public List<BikMenu> getBikMenuList() {
+      return bikMenuList;
+   }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BikModulos)) {
-            return false;
-        }
-        BikModulos other = (BikModulos) object;
-        if ((this.modCodigo == null && other.modCodigo != null) || (this.modCodigo != null && !this.modCodigo.equals(other.modCodigo))) {
-            return false;
-        }
-        return true;
-    }
+   public void setBikMenuList(List<BikMenu> bikMenuList) {
+      this.bikMenuList = bikMenuList;
+   }
 
-    @Override
-    public String toString() {
-        return "jbiketso.model.BikModulos[ modCodigo=" + modCodigo + " ]";
-    }
+   @Override
+   public int hashCode() {
+      int hash = 5;
+      hash = 83 * hash + Objects.hashCode(this.modCodigo);
+      return hash;
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+      if (this == obj) {
+         return true;
+      }
+      if (obj == null) {
+         return false;
+      }
+      if (getClass() != obj.getClass()) {
+         return false;
+      }
+      final BikModulos other = (BikModulos) obj;
+      if (!Objects.equals(this.modCodigo, other.modCodigo)) {
+         return false;
+      }
+      return true;
+   }
+
+   @Override
+   public String toString() {
+      return "jbiketso.model.BikModulos[ modCodigo=" + modCodigo.get() + " ]";
+   }
 
 }

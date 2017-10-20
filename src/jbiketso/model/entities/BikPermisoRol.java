@@ -32,6 +32,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikPermisoRol.findById", query = "SELECT b FROM BikPermisoRol b WHERE b.id = :id")
+        /*
+        "select distinct x from BikModulos x, BikMenu m, BikPermisoRol p join p.proCodigomenu m join m.menModCodigo x\n"
+            + "            where x.modEstado = 'A'\n"            
+            + "and m.menEstado = 'A'\n"
+            + "and p.proCodigorol.rolCodigo in :codigoRol"
+        */
     , @NamedQuery(name = "BikPermisoRol.findModulosByRol", query = "select distinct x from BikModulos x, BikMenu m, BikPermisoRol p\n"
             + "            where x.modCodigo = m.menModcodigo.modCodigo\n"
             + "and x.modEstado = 'A'\n"

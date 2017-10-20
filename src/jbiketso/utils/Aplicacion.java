@@ -6,7 +6,6 @@
 package jbiketso.utils;
 
 import java.util.ArrayList;
-import jbiketso.model.entities.BikMenu;
 import jbiketso.model.entities.BikModulos;
 import jbiketso.model.entities.BikPermisoRol;
 import jbiketso.model.entities.BikUsuariosSistema;
@@ -22,7 +21,7 @@ public class Aplicacion {
     private static BikUsuariosSistema usuario;
     private static String rolesUsuario;
     private static ArrayList<BikPermisoRol> accesosUsuario;
-    private static ArrayList<BikModulos> modulosUsuario;
+    private static ArrayList<BikModulos> modulosUsuario;    
 
     private Aplicacion() {
     }
