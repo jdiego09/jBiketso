@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="205.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PrincipalMenuController">
+<VBox fx:id="vbxMenuContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="205.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PrincipalMenuController">
    <children>
-      <ImageView fitHeight="120.0" fitWidth="205.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgMenu" fitHeight="120.0" fitWidth="205.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/back.jpg" />
          </image>
@@ -16,10 +20,6 @@
             <Rectangle2D />
          </viewport>
       </ImageView>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="659.0" prefWidth="205.0">
-         <children>
-            <VBox fx:id="vbxMenu" prefHeight="599.0" prefWidth="208.0" AnchorPane.bottomAnchor="-285.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-3.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
+      <VBox fx:id="vbxMenu" prefHeight="599.0" prefWidth="208.0" />
    </children>
 </VBox>
