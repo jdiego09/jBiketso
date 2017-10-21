@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -11,16 +17,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="576.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.ModulosController">
+<AnchorPane fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="576.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.ModulosController">
    <children>
       <Pane prefHeight="43.0" prefWidth="576.0" styleClass="actionbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <JFXButton fx:id="jbtnGuardar" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="536.0" layoutY="9.0" onAction="#guardarModulo" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonguardar" textOverrun="WORD_ELLIPSIS">
+            <JFXButton fx:id="jbtnGuardar" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="14.0" layoutY="9.0" onAction="#guardarModulo" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonguardar" textOverrun="WORD_ELLIPSIS">
                <tooltip>
                   <Tooltip text="Guardar" />
                </tooltip>
             </JFXButton>
-            <JFXButton fx:id="jbtnSalir" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="14.0" layoutY="9.0" onAction="#regresar" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonsalir" textOverrun="WORD_ELLIPSIS">
+            <JFXButton fx:id="jbtnSalir" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="543.0" layoutY="9.0" onAction="#regresar" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonsalir" textOverrun="WORD_ELLIPSIS">
                <tooltip>
                   <Tooltip text="Regresar" />
                </tooltip>

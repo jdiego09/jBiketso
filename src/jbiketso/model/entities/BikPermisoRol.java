@@ -8,6 +8,7 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -76,7 +77,7 @@ public class BikPermisoRol implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date proFechamodifica;
     @JoinColumn(name = "pro_codigomenu", referencedColumnName = "men_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private BikMenu proCodigomenu;
     @JoinColumn(name = "pro_codigorol", referencedColumnName = "rol_codigo")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
