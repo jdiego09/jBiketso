@@ -14,7 +14,7 @@ public class Parametros {
     private static HashMap<String, String> parametros = new HashMap<>();
     private static Parametros INSTANCE;
     private static final EntityManagerFactory ENTITYMANAGERFACTORY = Persistence.createEntityManagerFactory("jBiketsoPU" );
-    private static final PersistenceUnitUtil PERSISTENCEUTIL = ENTITYMANAGERFACTORY.getPersistenceUnitUtil();
+    public static final PersistenceUnitUtil PERSISTENCEUTIL = ENTITYMANAGERFACTORY.getPersistenceUnitUtil();
 
     private Parametros() {
     }
@@ -58,12 +58,4 @@ public class Parametros {
     public static EntityManagerFactory getENTITYMANAGERFACTORY() {
         return ENTITYMANAGERFACTORY;
     }
-        
-    
-
-    public static PersistenceUnitUtil getPERSISTENCEUTIL() {
-        return PERSISTENCEUTIL;
-    }
-    
-
 }

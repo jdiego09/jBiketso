@@ -20,10 +20,10 @@ public class BaseDao<K, E> implements DaoBase<K, E> {
     @Override
     public E save(E entity) {
         try {
-
-            if (entityManager.find(entity.getClass(), Parametros.getPERSISTENCEUTIL().getIdentifier(entity)) != null) {
+            K id = (K) Parametros.PERSISTENCEUTIL.getIdentifier(entity);
+            E existe = (E) entityManager.find(entity.getClass(), id);
+            if (existe != null) {
                 entityManager.merge(entity);
-
             } else {
                 entityManager.persist(entity);
             }
@@ -37,7 +37,7 @@ public class BaseDao<K, E> implements DaoBase<K, E> {
     @Override
     public void delete(E entity) {
         try {
-            if (entityManager.find(entity.getClass(), Parametros.getPERSISTENCEUTIL().getIdentifier(entity)) != null) {
+            if (entityManager.find(entity.getClass(), Parametros.PERSISTENCEUTIL.getIdentifier(entity)) != null) {
                 entityManager.remove(entity);
             }
         } catch (Exception ex) {
