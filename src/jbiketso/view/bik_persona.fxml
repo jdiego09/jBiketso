@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.validation.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="676.0" styleClass="form" stylesheets="@biketso.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="jbiketso.controller.PersonaController">
+   <children>
+      <VBox prefHeight="467.0" prefWidth="676.0">
+         <children>
+            <Pane prefHeight="22.0" prefWidth="676.0" styleClass="dark" stylesheets="@biketso.css">
+               <children>
+                  <Label fx:id="lblHora" layoutX="509.0" layoutY="-3.0" prefHeight="25.0" prefWidth="167.0" text="Fecha: 13/09/2017 07:47 P.M." textFill="WHITE" />
+               </children>
+            </Pane>
+            <Pane prefHeight="87.0" prefWidth="676.0" styleClass="actionbar" stylesheets="@biketso.css" />
+            <Pane prefHeight="359.0" prefWidth="676.0">
+               <children>
+                  <GridPane layoutX="5.0" prefHeight="119.0" prefWidth="662.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="183.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" prefWidth="12.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="10.0" prefWidth="268.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="0.0" prefWidth="16.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="10.0" prefWidth="195.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <JFXTextField fx:id="txtCedula" prefHeight="25.0" prefWidth="200.0" promptText="Cédula" />
+                        <JFXTextField fx:id="txtNombres" promptText="Nombres" GridPane.columnIndex="2" />
+                        <JFXTextField fx:id="txtPrimerApellido" promptText="Primer apellido" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <JFXTextField fx:id="txtSegundoApellido" promptText="Segundo apellido" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <JFXComboBox fx:id="cmbGenero" prefHeight="25.0" prefWidth="203.0" promptText="Genero" visibleRowCount="2" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <JFXTextField fx:id="txtNacionalidad" promptText="Nacionalidad" GridPane.rowIndex="3" />
+                        <JFXComboBox fx:id="cmbEstadoCivil" prefHeight="25.0" prefWidth="272.0" promptText="Estado civil" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <JFXTextField fx:id="txtProfesion" prefHeight="25.0" prefWidth="177.0" promptText="Profesión" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                        <DatePicker fx:id="dtpFechaNacimiento" prefHeight="25.0" prefWidth="199.0" promptText="Fecha de nacimiento" GridPane.columnIndex="4" />
+                     </children>
+                  </GridPane>
+                  <TableView layoutX="4.0" layoutY="132.0" prefHeight="222.0" prefWidth="668.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="Cédula" />
+                      <TableColumn prefWidth="170.0" text="Nombre" />
+                        <TableColumn prefWidth="106.0" text="Fecha nacimiento" />
+                        <TableColumn prefWidth="105.0" text="Nacionalidad" />
+                        <TableColumn text="Estado civil" />
+                        <TableColumn prefWidth="131.0" text="Profesión" />
+                    </columns>
+                  </TableView>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
