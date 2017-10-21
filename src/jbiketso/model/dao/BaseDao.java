@@ -5,8 +5,9 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import jbiketso.utils.Parametros;
 
-public class BaseDao<T> implements DaoBase<T> {
+public class BaseDao<K, E> implements DaoBase<K, E> {
 
+    private Class<E> entityClass;
     private EntityManager entityManager;
 
     public EntityManager getEntityManager() {
@@ -17,7 +18,7 @@ public class BaseDao<T> implements DaoBase<T> {
     }
 
     @Override
-    public T save(T entity) {
+    public E save(E entity) {
         try {
             if (entityManager.find(entity.getClass(), Parametros.getPERSISTENCEUTIL().getIdentifier(entity)) == null) {
                 entityManager.persist(entity);
@@ -32,19 +33,24 @@ public class BaseDao<T> implements DaoBase<T> {
     }
 
     @Override
-    public void delete(T entity) {
+    public void delete(E entity) {
         try {
             if (entityManager.find(entity.getClass(), Parametros.getPERSISTENCEUTIL().getIdentifier(entity)) != null) {
                 entityManager.remove(entity);
-            } 
+            }
         } catch (Exception ex) {
-            Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, null, ex);            
+            Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-    public T findById(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public E findById(K id) {
+        try {
+            return entityManager.find(entityClass, id);
+        } catch (Exception ex) {
+            Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
 }

@@ -12,16 +12,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class AppWindowController {
 
+    private static String VENTANAPRINCIPAL = "bik_principal";
     private static HashMap<String, FXMLLoader> loaders = new HashMap<>();
     private static HashMap<String, Parent> roots = new HashMap<>();
     private static AppWindowController INSTANCE;
 
     private Stage mainStage;
+    private BorderPane mainRoot;
     private FXMLLoader loader;
 
     private AppWindowController() {
@@ -61,6 +64,16 @@ public class AppWindowController {
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
     }
+
+    public BorderPane getMainRoot() {
+        return mainRoot;
+    }
+
+    public void setMainRoot(BorderPane mainRoot) {
+        this.mainRoot = mainRoot;
+    }
+    
+    
 
     public FXMLLoader getLoader(String view) {
         return loaders.get(view);
@@ -121,23 +134,32 @@ public class AppWindowController {
         }
     }
 
-    public void mensaje(AlertType tipo, String titulo, String mensaje){
+    public void abrirVentanaEnPrincipal(String ventana) {
+        if (cargarView(ventana)) {
+            Scene scene = new Scene(roots.get(ventana));
+            mainRoot.setCenter(scene.getRoot());
+            mainRoot.getCenter().setLayoutX(0);
+            mainRoot.getCenter().setLayoutY(0);
+        }
+    }
+
+    public void mensaje(AlertType tipo, String titulo, String mensaje) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
-        alert.setContentText(mensaje);        
+        alert.setContentText(mensaje);
         alert.showAndWait();
     }
-    
+
     public boolean mensajeConfimacion(String titulo, String mensaje) {
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
         dialog.setTitle(titulo);
         dialog.setHeaderText(null);
-        dialog.setContentText(mensaje);        
+        dialog.setContentText(mensaje);
         final Optional<ButtonType> result = dialog.showAndWait();
         return result.get() == ButtonType.OK;
     }
-    
+
     public void cerrarAplicacion() {
         Platform.exit();
     }

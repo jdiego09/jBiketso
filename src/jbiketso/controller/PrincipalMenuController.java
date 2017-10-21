@@ -84,7 +84,7 @@ public class PrincipalMenuController implements Initializable {
         menuPantallas.stream().forEach(m -> {
             JFXButton btn = new JFXButton();
             btn.setText(m.getProCodigomenu().getMenEtiqueta());
-            btn.setId(String.valueOf(m.getProCodigomenu().getMenCodigo()));
+            btn.setId(String.valueOf(m.getProCodigomenu().getMenPantalla()));
             btn.setMaxWidth(Integer.MAX_VALUE);
             btn.setMinHeight(ALTOBOTON);
             btn.getStyleClass().add("buttonDrawer");
@@ -107,6 +107,7 @@ public class PrincipalMenuController implements Initializable {
         Object source = event.getSource();
         String pantalla = null;
         if (source instanceof JFXButton) {
+            
             pantalla = ((JFXButton) source).getId();
         }
         if (pantalla.equalsIgnoreCase("BCK")) {
@@ -118,6 +119,6 @@ public class PrincipalMenuController implements Initializable {
     };
 
     private void accesaPantalla(String pantalla) {
-        AppWindowController.getInstance().abrirVentana(pantalla, "Bikétsö - Principal", true);
+        AppWindowController.getInstance().abrirVentanaEnPrincipal(pantalla);
     }
 }

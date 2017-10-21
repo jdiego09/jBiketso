@@ -1,10 +1,10 @@
 package jbiketso.model.dao;
 
-public interface DaoBase<T> {
+public interface DaoBase<K, E> {
 
-    T save(T entity);
+    E save (E entity);
 
-    void delete(T entity);
+    void delete(E entity);
 
-    T findById(Integer id);
+    E findById(K id);
 }

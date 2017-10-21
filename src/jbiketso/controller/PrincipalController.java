@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -23,6 +24,9 @@ import jbiketso.utils.AppWindowController;
 import jbiketso.utils.Parametros;
 
 public class PrincipalController implements Initializable {
+
+    @FXML
+    private BorderPane root;
 
     @FXML
     private Label lblUsuario;
@@ -44,6 +48,7 @@ public class PrincipalController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        AppWindowController.getInstance().setMainRoot(root);
         lblUsuario.setText("Usuario: " + Parametros.getInstance().getParametro("Usuario"));
 
         lblFecha.setText("Fecha: " + sdf.format(new Date()));
