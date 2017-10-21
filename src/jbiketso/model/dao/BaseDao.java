@@ -20,10 +20,12 @@ public class BaseDao<K, E> implements DaoBase<K, E> {
     @Override
     public E save(E entity) {
         try {
-            if (entityManager.find(entity.getClass(), Parametros.getPERSISTENCEUTIL().getIdentifier(entity)) == null) {
-                entityManager.persist(entity);
-            } else {
+
+            if (entityManager.find(entity.getClass(), Parametros.getPERSISTENCEUTIL().getIdentifier(entity)) != null) {
                 entityManager.merge(entity);
+
+            } else {
+                entityManager.persist(entity);
             }
             return entity;
         } catch (Exception ex) {
