@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.model.dao.ModuloDao;
 import jbiketso.model.entities.BikModulos;
+import jbiketso.utils.AppWindowController;
 
 public class ModulosController implements Initializable {
 
@@ -56,8 +58,34 @@ public class ModulosController implements Initializable {
 
         nuevoModulo();
         cargarModulos();
-        bindModulo();
+        bindListaModulos();
+        addListenerTable(tbvModulos);
 
+    }
+
+    private void bindModulo() {
+        jtxfCodigoModulo.textProperty().bindBidirectional(modulo.codigo);
+        jtxfDescripcionModulo.textProperty().bindBidirectional(modulo.descripcion);
+    }
+
+    private void unbindModulo() {
+        jtxfCodigoModulo.textProperty().unbindBidirectional(modulo.codigo);
+        jtxfDescripcionModulo.textProperty().unbindBidirectional(modulo.descripcion);
+    }
+
+    private void addListenerTable(TableView table) {
+        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                BikModulos modulo = (BikModulos) newSelection;
+                if (this.modulo == null){
+                    this.modulo = new ModuloDao(modulo.getModCodigo(),modulo.getModDescripcion(),modulo.getModEstado());
+                }else{
+                    this.modulo.codigo.set(modulo.getModCodigo());
+                    this.modulo.descripcion.set(modulo.getModDescripcion());                    
+                }
+                bindModulo();
+            }
+        });
     }
 
     private void cargarModulos() {
@@ -68,7 +96,7 @@ public class ModulosController implements Initializable {
         this.modulo = new ModuloDao();
     }
 
-    private void bindModulo() {
+    private void bindListaModulos() {
         if (modulos != null) {
             tbvModulos.setItems(modulos);
             tbvModulos.refresh();
@@ -77,12 +105,18 @@ public class ModulosController implements Initializable {
         tbcDescipcionModulo.setCellValueFactory(new PropertyValueFactory<>("modDescripcion"));
         tbcEstadoModulo.setCellValueFactory(new PropertyValueFactory<>("descripcionEstado"));
     }
-
+    
+    private void agregarModuloALista(BikModulos modulo){
+        if (!this.modulos.contains(modulo)){
+            this.modulos.add(modulo);
+        }
+        tbvModulos.refresh();
+    }
     @FXML
     void guardarModulo(ActionEvent event) {
         this.modulo = new ModuloDao(jtxfCodigoModulo.getText(), jtxfDescripcionModulo.getText(), "A");
-        this.modulos.add(this.modulo.save());
-        
+        agregarModuloALista(this.modulo.save());
+        unbindModulo();
     }
 
     @FXML

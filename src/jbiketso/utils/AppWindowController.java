@@ -127,6 +127,8 @@ public class AppWindowController {
                 mainStage = new Stage();
                 mainStage.initStyle(StageStyle.UNDECORATED);
             }
+            mainStage.setScene(null);
+            mainStage.centerOnScreen();
             mainStage.setScene(scene);
             mainStage.setTitle(titulo);
             mainStage.setResizable(resize);

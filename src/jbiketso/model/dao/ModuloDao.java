@@ -9,7 +9,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikModulos;
-import jbiketso.model.entities.BikPermisoRol;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
 
@@ -104,7 +103,10 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
             Query query = getEntityManager().createNamedQuery("BikModulos.findByModEstado");
             query.setParameter("modEstado", estado);
             resultados = query.getResultList();
-            resultados.forEach(modulos::add);
+            resultados.forEach(m -> {
+                m.getDescripcionEstado();
+                modulos.add(m);
+            });
             return modulos;
         } catch (Exception ex) {
             Logger.getLogger(SeguridadDao.class.getName()).log(Level.SEVERE, null, ex);

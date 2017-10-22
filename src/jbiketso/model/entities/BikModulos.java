@@ -69,9 +69,6 @@ public class BikModulos implements Serializable {
     @XmlTransient
     private List<BikMenu> bikMenuList;
 
-    @Transient
-    String error;
-
     public BikModulos() {
     }
 
@@ -142,14 +139,14 @@ public class BikModulos implements Serializable {
         this.modEstado.set(modEstado);
     }
 
-    public SimpleStringProperty getDescripcionEstado() {
+    public String getDescripcionEstado() {
         descripcionEstado = new SimpleStringProperty();
         if (getModEstado().equalsIgnoreCase("a")) {
             descripcionEstado.set("Activo");
         } else {
             descripcionEstado.set("Inactivo");
         }
-        return descripcionEstado;
+        return descripcionEstado.get();
     }
 
     public String getModUsuarioingresa() {
@@ -192,14 +189,6 @@ public class BikModulos implements Serializable {
         this.bikMenuList = bikMenuList;
     }
 
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-        
     @Override
     public int hashCode() {
         int hash = 5;
