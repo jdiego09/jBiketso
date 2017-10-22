@@ -136,10 +136,10 @@ public class AppWindowController {
 
     public void abrirVentanaEnPrincipal(String ventana) {
         if (cargarView(ventana)) {
-            Scene scene = new Scene(roots.get(ventana));
-            mainRoot.setCenter(scene.getRoot());
-            mainRoot.getCenter().setLayoutX(0);
-            mainRoot.getCenter().setLayoutY(0);
+            Stage stage = new Stage();
+            stage.initOwner(mainStage.getOwner());
+            stage.setScene(new Scene(roots.get(ventana)));
+            stage.showAndWait();
         }
     }
 

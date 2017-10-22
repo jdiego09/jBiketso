@@ -20,15 +20,18 @@ public class BaseDao<K, E> implements DaoBase<K, E> {
     @Override
     public E save(E entity) {
         try {
+            getEntityManager().getTransaction().begin();
             K id = (K) Parametros.PERSISTENCEUTIL.getIdentifier(entity);
-            E existe = (E) entityManager.find(entity.getClass(), id);
+            E existe = (E) getEntityManager().find(entity.getClass(), id);
             if (existe != null) {
-                entityManager.merge(entity);
+                getEntityManager().merge(entity);
             } else {
-                entityManager.persist(entity);
+                getEntityManager().persist(entity);
             }
+            getEntityManager().getTransaction().commit();
             return entity;
-        } catch (Exception ex) {
+        } catch (Exception ex) {            
+            getEntityManager().getTransaction().rollback();
             Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, null, ex);
             return entity;
         }
@@ -37,10 +40,13 @@ public class BaseDao<K, E> implements DaoBase<K, E> {
     @Override
     public void delete(E entity) {
         try {
-            if (entityManager.find(entity.getClass(), Parametros.PERSISTENCEUTIL.getIdentifier(entity)) != null) {
-                entityManager.remove(entity);
+            getEntityManager().getTransaction().begin();
+            if (getEntityManager().find(entity.getClass(), Parametros.PERSISTENCEUTIL.getIdentifier(entity)) != null) {
+                getEntityManager().remove(entity);
             }
+            getEntityManager().getTransaction().commit();
         } catch (Exception ex) {
+            getEntityManager().getTransaction().rollback();
             Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -48,7 +54,7 @@ public class BaseDao<K, E> implements DaoBase<K, E> {
     @Override
     public E findById(K id) {
         try {
-            return entityManager.find(entityClass, id);
+            return getEntityManager().find(entityClass, id);
         } catch (Exception ex) {
             Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, null, ex);
             return null;

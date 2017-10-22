@@ -21,72 +21,73 @@ import jbiketso.model.entities.BikModulos;
 
 public class ModulosController implements Initializable {
 
-   @FXML
-   private AnchorPane acpRoot;
+    @FXML
+    private AnchorPane acpRoot;
 
-   @FXML
-   private JFXButton jbtnSalir, jbtnGuardar;
+    @FXML
+    private JFXButton jbtnSalir, jbtnGuardar;
 
-   @FXML
-   private JFXTextField jtxfCodigoModulo, jtxfDescripcionModulo;
+    @FXML
+    private JFXTextField jtxfCodigoModulo, jtxfDescripcionModulo;
 
-   @FXML
-   private JFXComboBox<?> jcmbEstadoModulo;
+    @FXML
+    private JFXComboBox<?> jcmbEstadoModulo;
 
-   @FXML
-   private TableView<BikModulos> tbvModulos;
+    @FXML
+    private TableView<BikModulos> tbvModulos;
 
-   @FXML
-   private TableColumn<BikModulos, String> tbcCodigoModulo;
+    @FXML
+    private TableColumn<BikModulos, String> tbcCodigoModulo;
 
-   @FXML
-   private TableColumn<BikModulos, String> tbcDescipcionModulo;
+    @FXML
+    private TableColumn<BikModulos, String> tbcDescipcionModulo;
 
-   @FXML
-   private TableColumn<BikModulos, String> tbcEstadoModulo;
+    @FXML
+    private TableColumn<BikModulos, String> tbcEstadoModulo;
 
-   @XmlTransient
-   public ObservableList<BikModulos> modulos = FXCollections
-           .observableArrayList();
+    @XmlTransient
+    public ObservableList<BikModulos> modulos = FXCollections
+            .observableArrayList();
 
-   ModuloDao modulo;
+    ModuloDao modulo;
 
-   @Override
-   public void initialize(URL location, ResourceBundle resources) {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
-      nuevoModulo();
-      cargarModulos();
-      bindModulo();
+        nuevoModulo();
+        cargarModulos();
+        bindModulo();
 
-   }
+    }
 
-   private void cargarModulos() {
-      modulos = FXCollections.observableArrayList(this.modulo.findByEstado("A"));
-   }
+    private void cargarModulos() {
+        modulos = FXCollections.observableArrayList(this.modulo.findByEstado("A"));
+    }
 
-   private void nuevoModulo() {
-      this.modulo = new ModuloDao();
-   }
+    private void nuevoModulo() {
+        this.modulo = new ModuloDao();
+    }
 
-   private void bindModulo() {
-      if (modulos != null) {
-         tbvModulos.setItems(modulos);
-         tbvModulos.refresh();
-      }
-      tbcCodigoModulo.setCellValueFactory(new PropertyValueFactory<>("modCodigo"));
-      tbcDescipcionModulo.setCellValueFactory(new PropertyValueFactory<>("modDescripcion"));
-      tbcEstadoModulo.setCellValueFactory(new PropertyValueFactory<>("descripcionEstado"));
-   }
+    private void bindModulo() {
+        if (modulos != null) {
+            tbvModulos.setItems(modulos);
+            tbvModulos.refresh();
+        }
+        tbcCodigoModulo.setCellValueFactory(new PropertyValueFactory<>("modCodigo"));
+        tbcDescipcionModulo.setCellValueFactory(new PropertyValueFactory<>("modDescripcion"));
+        tbcEstadoModulo.setCellValueFactory(new PropertyValueFactory<>("descripcionEstado"));
+    }
 
-   @FXML
-   void guardarModulo(ActionEvent event) {
-      this.modulo = new ModuloDao(jtxfCodigoModulo.getText(), jtxfDescripcionModulo.getText(), "A");
-      this.modulo.save();
-   }
+    @FXML
+    void guardarModulo(ActionEvent event) {
+        this.modulo = new ModuloDao(jtxfCodigoModulo.getText(), jtxfDescripcionModulo.getText(), "A");
+        this.modulos.add(this.modulo.save());
+        
+    }
 
-   @FXML
-   void regresar(ActionEvent event) {
-
-   }
+    @FXML
+    void regresar(ActionEvent event) {
+        jbtnSalir.getScene().getWindow().hide();
+    }
 
 }
