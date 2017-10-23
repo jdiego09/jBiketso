@@ -80,9 +80,10 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
 
     public void delete() {
         try {
-
+            modulo = new BikModulos(getCodigo(), getDescripcion(), getEstado());
             if (modulo.getModCodigo() != null || !modulo.getModCodigo().isEmpty()) {
                 super.delete(modulo);
+                AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Información eliminada", "Módulo eliminado correctamente.");
             } else {
                 AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Error eliminando módulo", "No se indicó un módulo para eliminar.");
             }
@@ -92,6 +93,7 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
         }
     }
 
+    @Override
     public BikModulos findById(String id) {
         return (BikModulos) super.findById(id);
     }

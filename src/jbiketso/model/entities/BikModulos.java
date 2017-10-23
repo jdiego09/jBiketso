@@ -192,7 +192,7 @@ public class BikModulos implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 83 * hash + Objects.hashCode(this.modCodigo);
+        hash = 83 * hash + Objects.hashCode(this.modCodigo.get());
         return hash;
     }
 
@@ -208,7 +208,7 @@ public class BikModulos implements Serializable {
             return false;
         }
         final BikModulos other = (BikModulos) obj;
-        if (!Objects.equals(this.modCodigo, other.modCodigo)) {
+        if (!this.modCodigo.get().equals(other.modCodigo.get())) {
             return false;
         }
         return true;

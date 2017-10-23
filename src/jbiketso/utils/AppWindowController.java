@@ -141,8 +141,13 @@ public class AppWindowController {
             Stage stage = new Stage();
             stage.initOwner(mainStage.getOwner());
             stage.setScene(new Scene(roots.get(ventana)));
+            stage.centerOnScreen();
             stage.showAndWait();
         }
+    }
+    
+    public void cerrarVentana(){
+        mainStage.setScene(null);
     }
 
     public void mensaje(AlertType tipo, String titulo, String mensaje) {

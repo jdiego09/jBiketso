@@ -27,7 +27,7 @@ public class ModulosController implements Initializable {
     private AnchorPane acpRoot;
 
     @FXML
-    private JFXButton jbtnSalir, jbtnGuardar;
+    private JFXButton jbtnSalir, jbtnGuardar, jbtnEliminar;
 
     @FXML
     private JFXTextField jtxfCodigoModulo, jtxfDescripcionModulo;
@@ -52,6 +52,7 @@ public class ModulosController implements Initializable {
             .observableArrayList();
 
     ModuloDao modulo;
+    BikModulos moduloSeleccionado;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,12 +77,12 @@ public class ModulosController implements Initializable {
     private void addListenerTable(TableView table) {
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                BikModulos modulo = (BikModulos) newSelection;
-                if (this.modulo == null){
-                    this.modulo = new ModuloDao(modulo.getModCodigo(),modulo.getModDescripcion(),modulo.getModEstado());
-                }else{
-                    this.modulo.codigo.set(modulo.getModCodigo());
-                    this.modulo.descripcion.set(modulo.getModDescripcion());                    
+                moduloSeleccionado = (BikModulos) newSelection;
+                if (this.modulo == null) {
+                    this.modulo = new ModuloDao(moduloSeleccionado.getModCodigo(), moduloSeleccionado.getModDescripcion(), moduloSeleccionado.getModEstado());
+                } else {
+                    this.modulo.codigo.set(moduloSeleccionado.getModCodigo());
+                    this.modulo.descripcion.set(moduloSeleccionado.getModDescripcion());
                 }
                 bindModulo();
             }
@@ -105,23 +106,38 @@ public class ModulosController implements Initializable {
         tbcDescipcionModulo.setCellValueFactory(new PropertyValueFactory<>("modDescripcion"));
         tbcEstadoModulo.setCellValueFactory(new PropertyValueFactory<>("descripcionEstado"));
     }
-    
-    private void agregarModuloALista(BikModulos modulo){
-        if (!this.modulos.contains(modulo)){
+
+    private void agregarModuloALista(BikModulos modulo) {
+        if (!this.modulos.contains(modulo)) {
             this.modulos.add(modulo);
+        } else {
+            this.modulos.set(this.modulos.indexOf(modulo), modulo);
         }
         tbvModulos.refresh();
     }
+
     @FXML
     void guardarModulo(ActionEvent event) {
         this.modulo = new ModuloDao(jtxfCodigoModulo.getText(), jtxfDescripcionModulo.getText(), "A");
-        agregarModuloALista(this.modulo.save());
+        BikModulos nuevo = this.modulo.save();
+        agregarModuloALista(nuevo);
         unbindModulo();
     }
 
     @FXML
     void regresar(ActionEvent event) {
         jbtnSalir.getScene().getWindow().hide();
+        //AppWindowController.getInstance().cerrarVentana();
+    }
+
+    @FXML
+    void eliminarModulo(ActionEvent event) {
+        this.modulo.delete();        
+        if (this.modulos.contains(moduloSeleccionado)) {
+            this.modulos.remove(moduloSeleccionado);
+        }
+        unbindModulo();
+        nuevoModulo();
     }
 
 }
