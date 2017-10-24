@@ -9,6 +9,27 @@ package jbiketso.model.dao;
  *
  * @author Luis Diego
  */
-public class PersonaDao extends BaseDao{
-    
+public class PersonaDao extends BaseDao {
+
+   /* guardar entidad que tiene detalle
+   
+   hay que setear primero el detalle
+   
+   persona.direccionesDao.add(detalleDireccion);
+   for (DireccionDao direccionDao : persona.getDetallesDireccion()) {                
+                    persona.getDetallesDireccion().add(usuarioSorteoAct);
+                }
+    }
+   
+   if (sorteo.getId() == null) {
+                em.persist(sorteo);
+            } else {
+                for (UsuarioSorteo usuarioSorteo : sorteo.getUsuariosSorteo()) {
+                    if (usuarioSorteo.getId() == null) {
+                        em.persist(usuarioSorteo);
+                    }
+                }
+                sorteo = em.merge(sorteo);
+            }
+    */
 }
