@@ -109,6 +109,8 @@ public class PrincipalMenuController implements Initializable {
         if (source instanceof JFXButton) {
             
             pantalla = ((JFXButton) source).getId();
+        } else {
+           pantalla = "BCK";
         }
         if (pantalla.equalsIgnoreCase("BCK")) {
             setMenuModulos();
@@ -119,6 +121,6 @@ public class PrincipalMenuController implements Initializable {
     };
 
     private void accesaPantalla(String pantalla) {
-        AppWindowController.getInstance().abrirVentanaEnPrincipal(pantalla);
+        AppWindowController.getInstance().abrirVentanaEnPrincipal(pantalla,"Center");
     }
 }

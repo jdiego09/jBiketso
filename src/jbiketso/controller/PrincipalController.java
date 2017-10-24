@@ -63,6 +63,9 @@ public class PrincipalController implements Initializable {
         panMenu = (Pane) AppWindowController.getInstance().getView("bik_principal_menu");
 
         drwMenu.setSidePane(panMenu);
+        drwMenu.setDefaultDrawerSize(150);
+        drwMenu.setOverLayVisible(false);
+        drwMenu.setResizableOnDrag(true);
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hmbMenu);
 

@@ -19,7 +19,9 @@ import javafx.stage.StageStyle;
 
 public class AppWindowController {
 
-   private static String APP_CONTAINER = "bik_root";
+   private static final String APP_CONTAINER = "bik_root";
+   private static final String APP_FORMINI = "bik_principal";
+
    private static HashMap<String, FXMLLoader> loaders = new HashMap<>();
    private static HashMap<String, Parent> roots = new HashMap<>();
    private static AppWindowController INSTANCE;
@@ -175,6 +177,10 @@ public class AppWindowController {
                ((BorderPane) stage.getScene().getRoot()).setCenter(loader.getRoot());
          }
       }
+   }
+
+   public void goHome() {
+      abrirVentanaEnPrincipal(APP_FORMINI, "Center");
    }
 
    public void cerrarVentana() {

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -10,18 +16,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="676.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="676.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.LoginController">
    <effect>
       <DropShadow blurType="TWO_PASS_BOX" height="10.0" radius="4.5" width="10.0" />
    </effect>
    <children>
       <VBox prefHeight="476.0" prefWidth="676.0">
          <children>
-            <Pane prefHeight="63.0" prefWidth="676.0" styleClass="dark" stylesheets="@biketso.css">
-               <children>
-                  <Label fx:id="lblHora" layoutX="509.0" layoutY="-3.0" prefHeight="25.0" prefWidth="167.0" text="Fecha: 13/09/2017 07:47 P.M." textFill="WHITE" />
-               </children>
-            </Pane>
+            <Pane prefHeight="63.0" prefWidth="676.0" styleClass="dark" stylesheets="@biketso.css" />
             <Pane prefHeight="122.0" prefWidth="676.0" styleClass="actionbar" stylesheets="@biketso.css">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="276.0" layoutY="-1.0" prefHeight="49.0" prefWidth="125.0" styleClass="apptitle" stylesheets="@biketso.css" text="bikétsö" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">

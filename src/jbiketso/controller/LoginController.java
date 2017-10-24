@@ -9,7 +9,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,7 +18,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import jbiketso.model.dao.LoginDao;
-import jbiketso.model.entities.BikRoles;
 import jbiketso.model.entities.BikRolesUsuarios;
 import jbiketso.model.entities.BikUsuariosSistema;
 import jbiketso.utils.Aplicacion;
@@ -34,8 +32,6 @@ import jbiketso.utils.Parametros;
  */
 public class LoginController implements Initializable {
 
-    @FXML
-    private Label lblHora;
     @FXML
     private JFXTextField txtUsuario;
     @FXML
