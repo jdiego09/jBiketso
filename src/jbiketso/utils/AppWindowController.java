@@ -7,19 +7,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class AppWindowController {
 
-   private static final String APP_CONTAINER = "bik_root";
    private static final String APP_FORMINI = "bik_principal";
 
    private static HashMap<String, FXMLLoader> loaders = new HashMap<>();
@@ -122,12 +126,20 @@ public class AppWindowController {
    }
 
    public void initApplication() {
-      if (cargarView(APP_CONTAINER)) {
-         Scene scene = new Scene(roots.get(APP_CONTAINER));
+      Screen screen = Screen.getPrimary();
+      Rectangle2D bounds = screen.getVisualBounds();
+      if (cargarView(APP_FORMINI)) {
+         Scene scene = new Scene(roots.get(APP_FORMINI));
          if (mainStage == null) {
             mainStage = new Stage();
-            mainStage.initStyle(StageStyle.UNDECORATED);
+            mainStage.initStyle(StageStyle.UNIFIED);
          }
+         mainStage.setX(bounds.getMinX());
+         mainStage.setY(bounds.getMinY());
+         mainStage.setWidth(bounds.getWidth());
+         mainStage.setHeight(bounds.getHeight());
+         mainStage.setMaximized(true);
+
          mainStage.centerOnScreen();
          mainStage.setScene(scene);
          mainStage.setTitle("Bikétsö");
@@ -140,7 +152,7 @@ public class AppWindowController {
       if (cargarView(ventana)) {
          Scene scene = new Scene(roots.get(ventana));
          Stage stage = new Stage();
-         stage.initStyle(StageStyle.UNDECORATED);
+         stage.initStyle(StageStyle.UNIFIED);
          mainStage.setScene(scene);
          mainStage.centerOnScreen();
          mainStage.setScene(scene);
@@ -177,6 +189,17 @@ public class AppWindowController {
                ((BorderPane) stage.getScene().getRoot()).setCenter(loader.getRoot());
          }
       }
+   }
+
+   public void loadHomeImage() {
+      AnchorPane pane = new AnchorPane();
+      ImageView imageView = new ImageView();
+      Image image = new Image("file:/view/images/logo.png");
+
+      imageView.fitWidthProperty().bind(pane.widthProperty());
+      imageView.fitHeightProperty().bind(pane.heightProperty());
+      imageView.setImage(image);
+
    }
 
    public void goHome() {
