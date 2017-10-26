@@ -15,7 +15,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import jbiketso.model.dao.LoginDao;
 import jbiketso.model.entities.BikRolesUsuarios;
@@ -72,7 +71,9 @@ public class LoginController implements Initializable {
                     Aplicacion.getInstance().setRolesUsuario(roles);
                     Node boton = (Node) event.getSource();
                     AppWindowController.getInstance().setMainStage((Stage) boton.getScene().getWindow());
-                    AppWindowController.getInstance().abrirVentana("bik_principal", "Bikétsö - Principal", true);
+                    AppWindowController.getInstance().initApplication();
+                    
+                    AppWindowController.getInstance().abrirVentanaEnPrincipal("bik_principal", "Center");
                 } else {
                     AppWindowController.getInstance().mensaje(AlertType.ERROR, "Acceso denegado", "Contraseña incorrecta.");
                     txtClave.requestFocus();

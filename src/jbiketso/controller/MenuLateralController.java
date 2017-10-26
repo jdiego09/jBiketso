@@ -28,7 +28,7 @@ import javafx.util.Duration;
  *
  * @author esanchez
  */
-public class MenuLateralController extends Controller implements Initializable {
+public class MenuLateralController implements Initializable {
 
     @FXML
     AnchorPane root;
@@ -47,7 +47,7 @@ public class MenuLateralController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        List<MenuDto> modulos = (List<MenuDto>) AppContext.getInstance().get("Modulos");
+        /*List<MenuDto> modulos = (List<MenuDto>) AppContext.getInstance().get("Modulos");
         ToggleGroup grupo = new ToggleGroup();
         tgbInicio.setToggleGroup(grupo);
         grupo.selectToggle(tgbInicio);
@@ -73,15 +73,16 @@ public class MenuLateralController extends Controller implements Initializable {
 
                 tlbModulos.getItems().add(tgb);
             }
-        }
+        }*/
     }
 
     @FXML
     private void irInicio(ActionEvent event) {
-        if(!tgbInicio.isSelected())
+        /*if(!tgbInicio.isSelected())
             tgbInicio.fire();
         EncabezadoController encabezado = (EncabezadoController) FlowController.getInstance().getController("EncabezadoView");
         encabezado.setMenu("Inicio");
+*/
     }
 
     public void desplegarMenu() {
@@ -126,9 +127,5 @@ public class MenuLateralController extends Controller implements Initializable {
             parallelTransition.play();
         }
     }
-
-    @Override
-    public void initialize() {
-        
-    }
+    
 }

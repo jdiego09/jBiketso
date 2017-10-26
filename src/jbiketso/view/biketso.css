@@ -14,6 +14,12 @@
 	
 }
 
+.main{
+    -fx-background-image: url("../view/images/logo.png");
+    -fx-background-size: 1024 768;
+    -fx-background-position: center;
+}
+
 .apptitle{
 	-fx-width: 100%;
 	-fx-height: 100%;
@@ -37,6 +43,15 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;    
 }
+
+.actionbuttonguardar2{    
+    -fx-background-color: white;
+    -fx-background-image: url("../view/images/save.png");
+    -fx-background-size: 32px; 
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;    
+}
+
 .actionbuttonborrar{
     -fx-background-color: transparent;
     -fx-text-fill: transparent;

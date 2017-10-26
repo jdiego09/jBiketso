@@ -17,6 +17,7 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
     public SimpleStringProperty codigo;
     public SimpleStringProperty descripcion;
     public SimpleStringProperty estado;
+    //public SimpleObjectProperty estado; 
 
     private BikModulos modulo;
 

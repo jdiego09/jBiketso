@@ -2,59 +2,34 @@
 
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
-<?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PrincipalController">
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="860.0" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PrincipalController">
    <top>
-      <VBox prefHeight="72.0" prefWidth="600.0" styleClass="form" BorderPane.alignment="CENTER">
+      <VBox prefHeight="66.0" prefWidth="860.0" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane prefHeight="26.0" prefWidth="600.0" styleClass="dark">
+            <AnchorPane prefHeight="20.0" styleClass="dark" VBox.vgrow="NEVER">
                <children>
-                  <Label fx:id="lblUsuario" alignment="TOP_LEFT" centerShape="false" nodeOrientation="LEFT_TO_RIGHT" text="Label" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                  <Label fx:id="lblFecha" text="Label" textFill="WHITE" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                  <Label fx:id="lblUsuario" layoutX="7.0" layoutY="1.0" text="Label" textFill="WHITE" AnchorPane.leftAnchor="15.0" />
+                  <Label fx:id="lblFecha" layoutX="818.0" layoutY="1.0" text="Label" textFill="WHITE" AnchorPane.rightAnchor="15.0" />
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="46.0" prefWidth="600.0" styleClass="actionbar">
+            <AnchorPane prefHeight="46.0" styleClass="actionbar" VBox.vgrow="NEVER">
                <children>
-                  <JFXHamburger fx:id="hmbMenu" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
-                  <Label text="Principal" textFill="WHITE" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="15.0" />
+                  <JFXHamburger fx:id="hmbMenu" layoutX="14.0" layoutY="13.0" />
                </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
             </AnchorPane>
          </children>
       </VBox>
    </top>
    <center>
-      <VBox fx:id="vbxContainer" prefHeight="768.0" prefWidth="1024.0" styleClass="form" BorderPane.alignment="CENTER">
-         <children>
-            <AnchorPane prefHeight="768.0" prefWidth="1024.0">
-               <children>
-                  <ImageView fitHeight="722.0" fitWidth="1024.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="18.12847900390625" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-5.0">
-                     <viewport>
-                        <Rectangle2D />
-                     </viewport>
-                     <image>
-                        <Image url="@images/logo.png" />
-                     </image>
-                  </ImageView>
-                  <JFXDrawer fx:id="drwMenu" prefHeight="336.0" prefWidth="0.0" styleClass="form">
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </JFXDrawer>
-               </children>
-            </AnchorPane>
-         </children>
-      </VBox>
+      <VBox fx:id="vbxContainer" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </center>
+   <left>
+      <JFXDrawer fx:id="jdrwMenu" BorderPane.alignment="CENTER" />
+   </left>
 </BorderPane>

@@ -13,6 +13,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -25,7 +26,7 @@ import jbiketso.utils.Parametros;
 
 public class PrincipalController implements Initializable {
 
-    @FXML
+     @FXML
     private BorderPane root;
 
     @FXML
@@ -41,7 +42,7 @@ public class PrincipalController implements Initializable {
     private VBox vbxContainer;
 
     @FXML
-    private JFXDrawer drwMenu;
+    private JFXDrawer jdrwMenu;
     private Pane panMenu;
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
@@ -62,10 +63,10 @@ public class PrincipalController implements Initializable {
 
         panMenu = (Pane) AppWindowController.getInstance().getView("bik_principal_menu");
 
-        drwMenu.setSidePane(panMenu);
-        drwMenu.setDefaultDrawerSize(150);
-        drwMenu.setOverLayVisible(false);
-        drwMenu.setResizableOnDrag(true);
+        jdrwMenu.setSidePane(panMenu);
+        jdrwMenu.setDefaultDrawerSize(150);
+        jdrwMenu.setOverLayVisible(false);
+        jdrwMenu.setResizableOnDrag(true);
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hmbMenu);
 
@@ -76,14 +77,14 @@ public class PrincipalController implements Initializable {
                     transition.setRate(transition.getRate() * -1);
                     transition.play();
 
-                    if (drwMenu.isShown()) {
-                        drwMenu.close();
+                    if (jdrwMenu.isShown()) {
+                        jdrwMenu.close();
                         panMenu.setPrefWidth(0);
-                        drwMenu.setPrefWidth(0);
+                        jdrwMenu.setPrefWidth(0);
                     } else {
                         panMenu.setPrefWidth(200);
-                        drwMenu.setPrefWidth(200);
-                        drwMenu.open();
+                        jdrwMenu.setPrefWidth(200);
+                        jdrwMenu.open();
                     }
                 }
         );

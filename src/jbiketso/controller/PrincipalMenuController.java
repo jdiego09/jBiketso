@@ -113,6 +113,7 @@ public class PrincipalMenuController implements Initializable {
            pantalla = "BCK";
         }
         if (pantalla.equalsIgnoreCase("BCK")) {
+            AppWindowController.getInstance().goHome();
             setMenuModulos();
         } else {
             accesaPantalla(pantalla);
