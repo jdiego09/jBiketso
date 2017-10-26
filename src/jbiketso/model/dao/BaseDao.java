@@ -45,6 +45,7 @@ public class BaseDao<K, E> implements DaoBase<K, E> {
                 getEntityManager().remove(entity);
             }
             getEntityManager().getTransaction().commit();
+            
         } catch (Exception ex) {
             getEntityManager().getTransaction().rollback();
             Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, null, ex);

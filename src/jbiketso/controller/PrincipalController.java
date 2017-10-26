@@ -39,9 +39,6 @@ public class PrincipalController implements Initializable {
     private JFXHamburger hmbMenu;
 
     @FXML
-    private VBox vbxContainer;
-
-    @FXML
     private JFXDrawer jdrwMenu;
     private Pane panMenu;
 
@@ -64,7 +61,7 @@ public class PrincipalController implements Initializable {
         panMenu = (Pane) AppWindowController.getInstance().getView("bik_principal_menu");
 
         jdrwMenu.setSidePane(panMenu);
-        jdrwMenu.setDefaultDrawerSize(150);
+        jdrwMenu.setDefaultDrawerSize(200);
         jdrwMenu.setOverLayVisible(false);
         jdrwMenu.setResizableOnDrag(true);
 

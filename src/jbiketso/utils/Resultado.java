@@ -10,35 +10,36 @@ package jbiketso.utils;
  * @author jcalvo
  */
 public class Resultado<E> {
-	TipoResultado resultado;
-	String mensaje;
-	E object;
 
-	public Resultado() {
-		setResultado(TipoResultado.SUCCESS);
-	}
+    TipoResultado resultado;
+    String mensaje;
+    E object;
 
-	public TipoResultado getResultado() {
-		return resultado;
-	}
+    public Resultado() {
+        setResultado(TipoResultado.SUCCESS);
+    }
 
-	public void setResultado(TipoResultado resultado) {
-		this.resultado = resultado;
-	}
+    public TipoResultado getResultado() {
+        return resultado;
+    }
 
-	public String getMensaje() {
-		return mensaje;
-	}
+    public void setResultado(TipoResultado resultado) {
+        this.resultado = resultado;
+    }
 
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
-	}
+    public String getMensaje() {
+        return mensaje;
+    }
 
-	public E get() {
-		return object;
-	}
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
 
-	public void set(E object) {
-		this.object = object;
-	}
+    public E get() {
+        return object;
+    }
+
+    public void set(E object) {
+        this.object = object;
+    }
 }
