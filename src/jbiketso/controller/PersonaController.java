@@ -5,6 +5,7 @@
  */
 package jbiketso.controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
@@ -13,7 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikPersona;
 
 /**
@@ -21,41 +22,72 @@ import jbiketso.model.entities.BikPersona;
  * @author Luis Diego
  */
 public class PersonaController implements Initializable{
+    
+    @FXML
+    private JFXTextField jtxfCedula;
 
     @FXML
-    private JFXTextField txtCedula;
-    
+    private JFXTextField jtxfNombres;
+
     @FXML
-    private JFXTextField txtNombres;
-    
+    private JFXTextField jtxfPrimerApellido;
+
     @FXML
-    private JFXTextField txtPrimerApellido;
-    
+    private JFXTextField jtxfSegundoApellido;
+
     @FXML
-    private JFXTextField txtSegundoApellido;
-    
+    private JFXComboBox<?> jcmbEstadoCivil;
+
     @FXML
-    private JFXComboBox cmbGenero;
-    
-    @FXML
-    private JFXTextField txtNacionalidad;
-    
-    @FXML
-    private JFXComboBox cmbEstadoCivil;
-    
-    @FXML
-    private JFXTextField txtProfesion;
-    
+    private JFXTextField jtxfNacionalidad;
+
     @FXML
     private DatePicker dtpFechaNacimiento;
+
+    @FXML
+    private JFXComboBox<?> jcmbGenero;
+
+    @FXML
+    private JFXTextField jtxfProfesion;
+    
+    @FXML
+    private JFXButton jbtnGuardar;
+
+    @FXML
+    private JFXButton jbtnSalir;
+   
+    PersonaDao persona;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.persona = new PersonaDao();
     }
   
+    private void bindPersona(){
+        
+        jtxfCedula.textProperty().bindBidirectional(persona.cedula);
+        jtxfNombres.textProperty().bindBidirectional(persona.nombres);
+        jtxfPrimerApellido.textProperty().bindBidirectional(persona.primerApellido);
+        jtxfSegundoApellido.textProperty().bindBidirectional(persona.segundoApellido);
+        //jcmbEstadoCivil.o.bindBidirectional(persona.estadoCivil);
+        jtxfNacionalidad.textProperty().bindBidirectional(persona.nacionalidad);
+        //dtpFechaNacimiento.textProperty().bindBidirectional(persona.fechaNacimiento);
+        //jcmbGenero.textProperty().bindBidirectional(persona.genero);
+        jtxfProfesion.textProperty().bindBidirectional(persona.profesion);
+         
+    }
+    
     @FXML
     private void guardarPersona(ActionEvent event){
-        BikPersona persona;
+        this.persona = new PersonaDao(jtxfCedula.getText(), 
+                jtxfNombres.getText(), 
+                jtxfProfesion.getText(), 
+                jtxfSegundoApellido.getText(), 
+                dtpFechaNacimiento.getValue(), 
+                jcmbGenero.getValue().toString(), 
+                jtxfNacionalidad.getText(), 
+                jcmbEstadoCivil.getValue().toString(), 
+                jtxfProfesion.getText(), 
+                null);
     }
 }
