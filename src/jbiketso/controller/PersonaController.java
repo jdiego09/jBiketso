@@ -69,10 +69,10 @@ public class PersonaController implements Initializable{
         jtxfNombres.textProperty().bindBidirectional(persona.nombres);
         jtxfPrimerApellido.textProperty().bindBidirectional(persona.primerApellido);
         jtxfSegundoApellido.textProperty().bindBidirectional(persona.segundoApellido);
-        //jcmbEstadoCivil.o.bindBidirectional(persona.estadoCivil);
+        jcmbEstadoCivil.valueProperty().bindBidirectional(persona.estadoCivil);
         jtxfNacionalidad.textProperty().bindBidirectional(persona.nacionalidad);
-        //dtpFechaNacimiento.textProperty().bindBidirectional(persona.fechaNacimiento);
-        //jcmbGenero.textProperty().bindBidirectional(persona.genero);
+        dtpFechaNacimiento.valueProperty().bindBidirectional(persona.fechaNacimiento);
+        jcmbGenero.valueProperty().bindBidirectional(persona.genero);
         jtxfProfesion.textProperty().bindBidirectional(persona.profesion);
          
     }

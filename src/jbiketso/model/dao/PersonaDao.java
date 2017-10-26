@@ -28,9 +28,9 @@ public class PersonaDao extends BaseDao {
     public SimpleStringProperty primerApellido;
     public SimpleStringProperty segundoApellido;
     public SimpleObjectProperty fechaNacimiento;
-    public SimpleStringProperty genero;
+    public SimpleObjectProperty genero;
     public SimpleStringProperty nacionalidad;
-    public SimpleStringProperty estadoCivil;
+    public SimpleObjectProperty estadoCivil;
     public SimpleStringProperty profesion;
 
    /* guardar entidad que tiene detalle
@@ -65,9 +65,9 @@ public class PersonaDao extends BaseDao {
         this.primerApellido = new SimpleStringProperty();
         this.segundoApellido = new SimpleStringProperty();
         this.fechaNacimiento = new SimpleObjectProperty();
-        this.genero = new SimpleStringProperty();
+        this.genero = new SimpleObjectProperty();
         this.nacionalidad = new SimpleStringProperty();
-        this.estadoCivil = new SimpleStringProperty();
+        this.estadoCivil = new SimpleObjectProperty();
         this.profesion = new SimpleStringProperty();
         this.direccionDao = new ArrayList<>();
     }
@@ -127,7 +127,7 @@ public class PersonaDao extends BaseDao {
         this.fechaNacimiento.set(fechaNacimiento);
     }
 
-    public String getGenero() {
+    public Object getGenero() {
         return genero.get();
     }
 
@@ -143,7 +143,7 @@ public class PersonaDao extends BaseDao {
         this.nacionalidad.set(nacionalidad);
     }
 
-    public String getEstadoCivil() {
+    public Object getEstadoCivil() {
         return estadoCivil.get();
     }
 
@@ -183,7 +183,7 @@ public class PersonaDao extends BaseDao {
             Date fechaNac = null;
             fechaNac = df.parse(getFechaNacimiento().toString());
             
-            persona = new BikPersona(Integer.SIZE, getCedula(), getNombres(), getPrimerApellido(), getSegundoApellido(), fechaNac, getGenero());
+            persona = new BikPersona(Integer.SIZE, getCedula(), getNombres(), getPrimerApellido(), getSegundoApellido(), fechaNac, getGenero().toString());
             persona = (BikPersona) super.save(persona);
             return persona;
             
