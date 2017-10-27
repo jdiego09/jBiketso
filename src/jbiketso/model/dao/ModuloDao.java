@@ -1,18 +1,14 @@
 package jbiketso.model.dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.Alert;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikModulos;
-import jbiketso.utils.Aplicacion;
-import jbiketso.utils.AppWindowController;
 import jbiketso.utils.GenEstados;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
