@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import jbiketso.model.entities.BikPermisoRol;
 import jbiketso.utils.Aplicacion;
@@ -18,6 +19,9 @@ import jbiketso.utils.AppWindowController;
 public class PrincipalMenuController implements Initializable {
 
     private final Integer ALTOBOTON = 35;
+    @FXML
+    private ImageView imgMenu;
+
     @FXML
     private VBox vbxMenu;
 
@@ -100,17 +104,17 @@ public class PrincipalMenuController implements Initializable {
         btn.getStyleClass().add("buttonDrawer");
         btn.setOnAction(menuPantallasHandler);
         vbxMenu.getChildren().add(btn);
-        
+
     }
 
     final EventHandler<ActionEvent> menuPantallasHandler = (final ActionEvent event) -> {
         Object source = event.getSource();
         String pantalla = null;
         if (source instanceof JFXButton) {
-            
+
             pantalla = ((JFXButton) source).getId();
         } else {
-           pantalla = "BCK";
+            pantalla = "BCK";
         }
         if (pantalla.equalsIgnoreCase("BCK")) {
             AppWindowController.getInstance().goHome();
@@ -122,6 +126,6 @@ public class PrincipalMenuController implements Initializable {
     };
 
     private void accesaPantalla(String pantalla) {
-        AppWindowController.getInstance().abrirVentanaEnPrincipal(pantalla,"Center");
+        AppWindowController.getInstance().abrirVentanaEnPrincipal(pantalla, "Center");
     }
 }

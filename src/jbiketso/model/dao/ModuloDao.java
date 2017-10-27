@@ -5,36 +5,45 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikModulos;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
+import jbiketso.utils.GenEstados;
+import jbiketso.utils.Resultado;
+import jbiketso.utils.TipoResultado;
 
 public class ModuloDao extends BaseDao<String, BikModulos> {
 
     public SimpleStringProperty codigo;
     public SimpleStringProperty descripcion;
-    public SimpleStringProperty estado;
-    //public SimpleObjectProperty estado; 
+    public ObjectProperty<GenEstados> estado;
 
     private BikModulos modulo;
 
     public ModuloDao() {
         this.codigo = new SimpleStringProperty();
         this.descripcion = new SimpleStringProperty();
-        this.estado = new SimpleStringProperty();
+        this.estado = new SimpleObjectProperty<>();
     }
 
     public ModuloDao(String codigo, String descripcion, String estado) {
         this.codigo = new SimpleStringProperty();
         this.descripcion = new SimpleStringProperty();
-        this.estado = new SimpleStringProperty();
+        this.estado = new SimpleObjectProperty<>();
 
         this.codigo.set(codigo);
         this.descripcion.set(descripcion);
-        this.estado.set(estado);
+        if (estado.equalsIgnoreCase("a")) {
+            this.estado.set(new GenEstados("A", "Activo"));
+        } else {
+            this.estado.set(new GenEstados("I", "Inactivo"));
+        }
+
     }
 
     public String getCodigo() {
@@ -53,44 +62,61 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
         this.descripcion.set(descripcion);
     }
 
-    public String getEstado() {
+    public ObjectProperty<GenEstados> estadoProperty() {
+        return estado;
+    }
+
+    public GenEstados getEstado() {
         return estado.get();
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(GenEstados estado) {
         this.estado.set(estado);
     }
 
-    public BikModulos save() {
+    public Resultado<BikModulos> save() {
+        Resultado<BikModulos> result = new Resultado<>();
         try {
-            modulo = new BikModulos(getCodigo(), getDescripcion(), getEstado());
+            modulo = new BikModulos(getCodigo(), getDescripcion(), getEstado().getCodigo());
 
             if (modulo.getModCodigo() != null && !modulo.getModCodigo().isEmpty()) {
                 modulo = (BikModulos) super.save(modulo);
             } else {
-                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Error guardando módulo", "No hay información que guardar.");
+                result.setResultado(TipoResultado.ERROR);
+                result.setMensaje("No se ha indicado el código del módulo.");
+                return result;
             }
-            AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Información guardada", "Módulo guardado correctamente.");
-            return modulo;
+            result.setResultado(TipoResultado.SUCCESS);
+            result.set(modulo);
+            result.setMensaje("Módulo guardado correctamente.");
+            return result;
         } catch (Exception ex) {
             Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
-            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Error guardando módulo", "Error al guardar el módulo.");
-            return modulo;
+            result.setResultado(TipoResultado.ERROR);
+            result.setMensaje("Error al guardar el módulo [" + modulo.getModCodigo() + "].");
+            return result;
         }
     }
 
-    public void delete() {
+    public Resultado<BikModulos> delete() {
+        Resultado<BikModulos> result = new Resultado<>();
         try {
-            modulo = new BikModulos(getCodigo(), getDescripcion(), getEstado());
+            modulo = new BikModulos(getCodigo(), getDescripcion(), getEstado().getCodigo());
             if (modulo.getModCodigo() != null || !modulo.getModCodigo().isEmpty()) {
                 super.delete(modulo);
-                AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Información eliminada", "Módulo eliminado correctamente.");
+                result.setResultado(TipoResultado.SUCCESS);
+                result.setMensaje("El módulo [ " + modulo.getModCodigo() + "], fue eliminado correctamente.");
+                return result;
             } else {
-                AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Error eliminando módulo", "No se indicó un módulo para eliminar.");
+                result.setResultado(TipoResultado.ERROR);
+                result.setMensaje("No se indicó un módulo para eliminar.");
+                return result;
             }
         } catch (Exception ex) {
             Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
-            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Error eliminando módulo", "Error al eliminar el módulo.");
+            result.setResultado(TipoResultado.ERROR);
+            result.setMensaje("No se pudo eliminar el módulo [ " + modulo.getModCodigo() + "].");
+            return result;
         }
     }
 
@@ -99,7 +125,8 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
         return (BikModulos) super.findById(id);
     }
 
-    public ArrayList<BikModulos> findByEstado(String estado) {
+    public Resultado<ArrayList<BikModulos>> findByEstado(String estado) {
+        Resultado<ArrayList<BikModulos>> result = new Resultado<>();
         ArrayList<BikModulos> modulos = new ArrayList<>();
         List<BikModulos> resultados;
         try {
@@ -110,11 +137,14 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
                 m.getDescripcionEstado();
                 modulos.add(m);
             });
-            return modulos;
+            result.setResultado(TipoResultado.SUCCESS);
+            result.set(modulos);
+            return result;
         } catch (Exception ex) {
             Logger.getLogger(SeguridadDao.class.getName()).log(Level.SEVERE, null, ex);
-            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Error obteniendo módulos", "No se pudo cargar los módulos.");
-            return modulos;
+            result.setResultado(TipoResultado.SUCCESS);
+            result.setMensaje("Error consultando los módulos");
+            return result;
         }
     }
 

@@ -30,7 +30,7 @@ public class BaseDao<K, E> implements DaoBase<K, E> {
             }
             getEntityManager().getTransaction().commit();
             return entity;
-        } catch (Exception ex) {            
+        } catch (Exception ex) {
             getEntityManager().getTransaction().rollback();
             Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, null, ex);
             return entity;
@@ -41,10 +41,17 @@ public class BaseDao<K, E> implements DaoBase<K, E> {
     public void delete(E entity) {
         try {
             getEntityManager().getTransaction().begin();
-            if (getEntityManager().find(entity.getClass(), Parametros.PERSISTENCEUTIL.getIdentifier(entity)) != null) {
+            K id = (K) Parametros.PERSISTENCEUTIL.getIdentifier(entity);
+            E existe = (E) getEntityManager().find(entity.getClass(), id);
+
+            if (existe != null) {
+                if (!getEntityManager().contains(entity)) {
+                    entity = getEntityManager().merge(entity);
+                }
                 getEntityManager().remove(entity);
             }
             getEntityManager().getTransaction().commit();
+
         } catch (Exception ex) {
             getEntityManager().getTransaction().rollback();
             Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, null, ex);

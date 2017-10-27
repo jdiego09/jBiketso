@@ -119,7 +119,7 @@ public class AppWindowController {
         return true;
     }
 
-    public Parent getView(String ventana) {
+    public Pane getView(String ventana) {
         if (roots.get(ventana) == null) {
             cargarView(ventana);
         }
