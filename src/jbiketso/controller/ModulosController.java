@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,7 +37,7 @@ public class ModulosController implements Initializable {
     private JFXTextField jtxfCodigoModulo, jtxfDescripcionModulo;
 
     @FXML
-    private JFXComboBox<?> jcmbEstadoModulo;
+    private JFXComboBox<GenEstados> jcmbEstadoModulo;
 
     @FXML
     private TableView<BikModulos> tbvModulos;
@@ -57,14 +58,15 @@ public class ModulosController implements Initializable {
     ModuloDao modulo;
     BikModulos moduloSeleccionado;
 
-    ArrayList<GenEstados> estados;
+    @XmlTransient
+    ObservableList<GenEstados> estados = FXCollections
+            .observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        estados = new ArrayList<>();
         estados.add(new GenEstados("A", "Activo"));
         estados.add(new GenEstados("I", "Inactivo"));
-        
+        jcmbEstadoModulo.setItems(estados);
         nuevoModulo();
         cargarModulos();
         bindListaModulos();
@@ -75,22 +77,30 @@ public class ModulosController implements Initializable {
     private void bindModulo() {
         jtxfCodigoModulo.textProperty().bindBidirectional(modulo.codigo);
         jtxfDescripcionModulo.textProperty().bindBidirectional(modulo.descripcion);
+        jcmbEstadoModulo.valueProperty().bindBidirectional(modulo.estadoProperty());
     }
 
     private void unbindModulo() {
         jtxfCodigoModulo.textProperty().unbindBidirectional(modulo.codigo);
         jtxfDescripcionModulo.textProperty().unbindBidirectional(modulo.descripcion);
+        jcmbEstadoModulo.valueProperty().unbindBidirectional(modulo.estadoProperty());
     }
 
     private void addListenerTable(TableView table) {
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
+                unbindModulo();
                 moduloSeleccionado = (BikModulos) newSelection;
                 if (this.modulo == null) {
                     this.modulo = new ModuloDao(moduloSeleccionado.getModCodigo(), moduloSeleccionado.getModDescripcion(), moduloSeleccionado.getModEstado());
                 } else {
                     this.modulo.codigo.set(moduloSeleccionado.getModCodigo());
                     this.modulo.descripcion.set(moduloSeleccionado.getModDescripcion());
+                    if (moduloSeleccionado.getModEstado().equalsIgnoreCase("a")) {
+                        this.modulo.estado.set(new GenEstados("A", "Activo"));
+                    } else {
+                        this.modulo.estado.set(new GenEstados("I", "Inactivo"));
+                    }
                 }
                 bindModulo();
             }
@@ -108,6 +118,7 @@ public class ModulosController implements Initializable {
 
     private void nuevoModulo() {
         this.modulo = new ModuloDao();
+
     }
 
     private void bindListaModulos() {
