@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PuestoController">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Pane prefHeight="18.0" prefWidth="600.0" styleClass="dark" stylesheets="@biketso.css" />
+            <Pane prefHeight="37.0" prefWidth="600.0" styleClass="actionbar" stylesheets="@biketso.css">
+               <children>
+                  <JFXButton fx:id="jbtnEliminar" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="52.0" layoutY="7.0" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonborrar" textOverrun="WORD_ELLIPSIS">
+                     <tooltip>
+                        <Tooltip text="Eliminar" />
+                     </tooltip>
+                  </JFXButton>
+                  <JFXButton fx:id="jbtnSalir" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="566.0" layoutY="6.0" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonsalir" textOverrun="WORD_ELLIPSIS">
+                     <tooltip>
+                        <Tooltip text="Regresar" />
+                     </tooltip>
+                  </JFXButton>
+                  <JFXButton fx:id="jbtnGuardar" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="16.0" layoutY="7.0" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonguardar" textOverrun="WORD_ELLIPSIS">
+                     <tooltip>
+                        <Tooltip text="Guardar" />
+                     </tooltip>
+                  </JFXButton>
+               </children>
+            </Pane>
+            <GridPane>
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="515.0" minWidth="10.0" prefWidth="24.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="516.0" minWidth="10.0" prefWidth="430.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="13.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="155.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="9.0" prefWidth="10.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <JFXTextField fx:id="jtxfDescripcion" prefHeight="25.0" prefWidth="402.0" text="Descripción" GridPane.columnIndex="1" />
+                  <JFXComboBox fx:id="jcmbEstado" prefHeight="25.0" prefWidth="182.0" promptText="Estado" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="jtxfSede" text="Sede" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <TableView fx:id="tbvPuestos" prefHeight="216.0" prefWidth="600.0">
+              <columns>
+                <TableColumn fx:id="tbcDescripcion" prefWidth="75.0" text="Descripción" />
+                <TableColumn fx:id="tbcSede" prefWidth="75.0" text="Sede" />
+                  <TableColumn fx:id="tbcEstado" prefWidth="75.0" text="Estado" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
