@@ -6,7 +6,6 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,11 +31,8 @@ public class ModulosController implements Initializable {
     private AnchorPane acpRoot;
 
     @FXML
-    private JFXButton jbtnGuardar, jbtnEliminar;
-    
-    @FXML
-    private Button btnGuardar;
-    
+    private Button btnGuardar, btnLimpiar;
+
     @FXML
     private JFXTextField jtxfCodigoModulo, jtxfDescripcionModulo;
 
@@ -81,7 +77,7 @@ public class ModulosController implements Initializable {
     private void bindModulo() {
         jtxfCodigoModulo.textProperty().bindBidirectional(modulo.codigo);
         jtxfDescripcionModulo.textProperty().bindBidirectional(modulo.descripcion);
-        jcmbEstadoModulo.valueProperty().bindBidirectional(modulo.estadoProperty());
+        jcmbEstadoModulo.valueProperty().bindBidirectional(modulo.estado);
     }
 
     private void unbindModulo() {
@@ -145,20 +141,27 @@ public class ModulosController implements Initializable {
     }
 
     @FXML
+    void impiarModulo(ActionEvent event) {
+        unbindModulo();
+        this.modulo = new ModuloDao();
+        bindModulo();
+    }
+
+    @FXML
     void guardarModulo(ActionEvent event) {
-        this.modulo = new ModuloDao(jtxfCodigoModulo.getText(), jtxfDescripcionModulo.getText(), "A");
+        //this.modulo = new ModuloDao(jtxfCodigoModulo.getText(), jtxfDescripcionModulo.getText(), jcmbEstadoModulo.getValue().getCodigo());
         Resultado<BikModulos> nuevo = this.modulo.save();
         if (nuevo.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar módulo", nuevo.getMensaje());
             return;
         }
-        agregarModuloALista(nuevo.get());        
+        agregarModuloALista(nuevo.get());
         AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Guardar módulo", nuevo.getMensaje());
     }
 
     @FXML
     void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
-    }   
+    }
 
 }

@@ -53,6 +53,16 @@
     -fx-background-position: center;
 }
 
+.actionbuttonlimpiar{
+    -fx-background-color: white;
+    -fx-text-fill: transparent;
+    -fx-fill: transparent;
+    -fx-background-image: url("../view/images/clear.png");
+    -fx-background-size: 32px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:  center;
+}
+
 .actionbuttonsalir{
     -fx-background-color: transparent;
     -fx-text-fill: transparent;
