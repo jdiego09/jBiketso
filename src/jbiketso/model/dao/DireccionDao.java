@@ -8,6 +8,7 @@ package jbiketso.model.dao;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import jbiketso.model.entities.BikDireccion;
 
 /**
  *
@@ -36,7 +37,19 @@ public class DireccionDao {
         this.detDireccion.set(detDireccion);
 
     }
+    
+   public DireccionDao(BikDireccion direccion) {
 
+        this.codigoDireccion = new SimpleObjectProperty<>();
+        this.codigoPersona = new SimpleObjectProperty<>();
+        this.detDireccion = new SimpleStringProperty();
+        
+        this.codigoDireccion.set(direccion.getDirCodigo());
+        this.codigoPersona.set(direccion.getDirPercodigo().getPerCodigo());
+        this.detDireccion.set(direccion.getDirDetalle());
+
+    }
+    
     public ObjectProperty<Integer> getCodigoPersona() {
         return codigoPersona;
     }

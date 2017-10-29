@@ -82,7 +82,7 @@ public class BikContacto implements Serializable {
     }
 
     public BikContacto(ContactoDao contactoDao) {
-        this.conTipo = contactoDao.getTipo();
+        this.conTipo = contactoDao.getTipo().getCodigo();
         this.conDetalle = contactoDao.getDetContacto();
     }
 

@@ -18,13 +18,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.model.dao.ContactoDao;
 import jbiketso.model.dao.DireccionDao;
 import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikContacto;
 import jbiketso.model.entities.BikDireccion;
 import jbiketso.model.entities.BikModulos;
+import jbiketso.model.entities.BikPersona;
 import jbiketso.utils.GenValorCombo;
+import jbiketso.utils.Resultado;
 
 /**
  *
@@ -51,7 +55,7 @@ public class PersonaController implements Initializable {
     private JFXTextField jtxfSegundoApellido;
 
     @FXML
-    private TableColumn<?, ?> tbcDetDireccion;
+    private TableColumn<BikDireccion, String> tbcDetDireccion;
 
     @FXML
     private TableView<BikContacto> tbvContactos;
@@ -75,13 +79,13 @@ public class PersonaController implements Initializable {
     private JFXTextField jtxfProfesion;
 
     @FXML
-    private TableColumn<?, ?> tbcDetContacto;
+    private TableColumn<BikContacto, String> tbcDetContacto;
 
     @FXML
     private JFXTextField jtxfNombres;
 
     @FXML
-    private TableColumn<?, ?> tbcTipoContacto;
+    private TableColumn<BikContacto, String> tbcTipoContacto;
 
     @FXML
     private JFXComboBox<GenValorCombo> jcmbTipoContacto;
@@ -102,10 +106,14 @@ public class PersonaController implements Initializable {
 
     PersonaDao personaDao;
     DireccionDao direccionDao;
+    ContactoDao contactoDao;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.personaDao = new PersonaDao();
+        bindPersona();
+        bindListaDirecciones();
+        bindListaContactos();
     }
 
     private void bindPersona() {
@@ -120,16 +128,42 @@ public class PersonaController implements Initializable {
         jcmbGenero.valueProperty().bindBidirectional(personaDao.genero);
         jtxfProfesion.textProperty().bindBidirectional(personaDao.profesion);
 
+        jtxfDetaDireccion.textProperty().bindBidirectional(direccionDao.detDireccion);
+
+        jtxfDetContacto.textProperty().bindBidirectional(contactoDao.detContacto);
+        jcmbTipoContacto.valueProperty().bindBidirectional(contactoDao.tipo);
+
+    }
+
+    private void bindListaDirecciones() {
+        if (direcciones != null) {
+            tbvDirecciones.setItems(direcciones);
+            tbvDirecciones.refresh();
+        }
+        tbcDetDireccion.setCellValueFactory(new PropertyValueFactory<>("dir_detalle"));
+    }
+
+    private void bindListaContactos() {
+        if (contactos != null) {
+            tbvContactos.setItems(contactos);
+            tbvContactos.refresh();
+        }
+        tbcDetContacto.setCellValueFactory(new PropertyValueFactory<>("con_detalle"));
+        tbcTipoContacto.setCellValueFactory(new PropertyValueFactory<>("con_tipo"));
     }
 
     @FXML
     private void guardarPersona(ActionEvent event) {
-
+        
+        Resultado<BikPersona> resultado = new Resultado<>();
+        
+        direcciones.stream().forEach(d->personaDao.getDireccionDao().add(new DireccionDao(d)));
+        contactos.stream().forEach(d->personaDao.getContactoDao().add(new ContactoDao(d)));
     }
 
     @FXML
     private void agregarDireccion(ActionEvent event) {
-        //contactos.add(new BikDireccion(personaDao));
+        new BikDireccion(direccionDao);
     }
 
 }

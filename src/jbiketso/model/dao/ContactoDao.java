@@ -5,8 +5,12 @@
  */
 package jbiketso.model.dao;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import jbiketso.model.entities.BikContacto;
+import jbiketso.model.entities.BikDireccion;
+import jbiketso.utils.GenValorCombo;
 
 /**
  *
@@ -16,13 +20,13 @@ public class ContactoDao {
     
     public SimpleObjectProperty<Integer> codigoContacto;
     public SimpleObjectProperty<Integer> codigoPersona;
-    public SimpleStringProperty tipo;
+    public ObjectProperty<GenValorCombo> tipo;
     public SimpleStringProperty detContacto;
 
     public ContactoDao() {
         this.codigoContacto = new SimpleObjectProperty();
         this.codigoPersona = new SimpleObjectProperty<>();
-        this.tipo = new SimpleStringProperty();
+        this.tipo = new SimpleObjectProperty();
         this.detContacto = new SimpleStringProperty();        
     }
     
@@ -30,14 +34,40 @@ public class ContactoDao {
         
         this.codigoContacto = new SimpleObjectProperty();
         this.codigoPersona = new SimpleObjectProperty<>();
-        this.tipo = new SimpleStringProperty();
+        this.tipo = new SimpleObjectProperty();
         this.detContacto = new SimpleStringProperty();        
         
         this.codigoContacto.set(codigoContacto);
         this.codigoPersona.set(codigoPersona);
-        this.tipo.set(tipo);
+        if (tipo.equalsIgnoreCase("t")) {
+            this.tipo.set(new GenValorCombo("T", "Teléfono"));
+        } else if (tipo.equalsIgnoreCase("c")){
+            this.tipo.set(new GenValorCombo("C", "Correo"));
+        } else if (tipo.equalsIgnoreCase("f")) {
+            this.tipo.set(new GenValorCombo("F", "Fax"));
+        }
         this.detContacto.set(detContacto);
         
+    }
+
+      public ContactoDao(BikContacto contacto) {
+
+        this.codigoContacto = new SimpleObjectProperty();
+        this.codigoPersona = new SimpleObjectProperty<>();
+        this.tipo = new SimpleObjectProperty();
+        this.detContacto = new SimpleStringProperty();        
+        
+        this.codigoContacto.set(contacto.getConCodigo());
+        this.codigoPersona.set(contacto.getConPercodigo().getPerCodigo());
+        if (contacto.getConTipo().equalsIgnoreCase("t")) {
+            this.tipo.set(new GenValorCombo("T", "Teléfono"));
+        } else if (contacto.getConTipo().equalsIgnoreCase("c")){
+            this.tipo.set(new GenValorCombo("C", "Correo"));
+        } else if (contacto.getConTipo().equalsIgnoreCase("f")) {
+            this.tipo.set(new GenValorCombo("F", "Fax"));
+        }
+        this.detContacto.set(contacto.getConDetalle());
+
     }
 
     public Integer getCodigoPersona() {
@@ -48,11 +78,11 @@ public class ContactoDao {
         this.codigoPersona.set(codigoPersona);
     }
 
-    public String getTipo() {
+    public GenValorCombo getTipo() {
         return tipo.get();
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(GenValorCombo tipo) {
         this.tipo.set(tipo);
     }
 
