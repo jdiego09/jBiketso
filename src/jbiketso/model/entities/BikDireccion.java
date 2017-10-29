@@ -22,13 +22,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import jbiketso.model.dao.DireccionDao;
 
 /**
  *
  * @author Anayansy
  */
 @Entity
-@Table(name = "bik_direccion",schema = "biketso")
+@Table(name = "bik_direccion", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikDireccion.findAll", query = "SELECT b FROM BikDireccion b")
@@ -73,6 +74,10 @@ public class BikDireccion implements Serializable {
     public BikDireccion(Integer dirCodigo, String dirDetalle) {
         this.dirCodigo = dirCodigo;
         this.dirDetalle = dirDetalle;
+    }
+
+    public BikDireccion(DireccionDao direccionDao) {
+        this.dirDetalle = direccionDao.getDetDireccion();
     }
 
     public Integer getDirCodigo() {
@@ -155,5 +160,5 @@ public class BikDireccion implements Serializable {
     public String toString() {
         return "jbiketso.model.BikDireccion[ dirCodigo=" + dirCodigo + " ]";
     }
-    
+
 }

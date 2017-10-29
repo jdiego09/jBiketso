@@ -15,8 +15,11 @@
       <VBox prefHeight="467.0" prefWidth="676.0">
          <children>
             <Pane prefHeight="22.0" prefWidth="676.0" styleClass="dark" stylesheets="@biketso.css" />
-            <Pane prefHeight="87.0" prefWidth="676.0" styleClass="actionbar" stylesheets="@biketso.css" />
-            <Pane prefHeight="359.0" prefWidth="676.0">
+            <Pane prefHeight="46.0" prefWidth="676.0" styleClass="actionbar" stylesheets="@biketso.css">
+               <children>
+                  <Button fx:id="btnGuardarPersona" layoutX="15.0" layoutY="8.0" mnemonicParsing="false" styleClass="actionbuttonguardar" text="Button" />
+               </children></Pane>
+            <Pane prefHeight="416.0" prefWidth="676.0">
                <children>
                   <GridPane layoutX="5.0" prefHeight="119.0" prefWidth="662.0">
                     <columnConstraints>
@@ -44,16 +47,73 @@
                         <DatePicker fx:id="dtpFechaNacimiento" prefHeight="25.0" prefWidth="199.0" promptText="Fecha de nacimiento" GridPane.columnIndex="4" />
                      </children>
                   </GridPane>
-                  <TableView layoutX="4.0" layoutY="132.0" prefHeight="222.0" prefWidth="668.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="Cédula" />
-                      <TableColumn prefWidth="170.0" text="Nombre" />
-                        <TableColumn prefWidth="106.0" text="Fecha nacimiento" />
-                        <TableColumn prefWidth="105.0" text="Nacionalidad" />
-                        <TableColumn text="Estado civil" />
-                        <TableColumn prefWidth="131.0" text="Profesión" />
-                    </columns>
-                  </TableView>
+                  <Pane layoutX="-2.0" layoutY="130.0" prefHeight="293.0" prefWidth="676.0">
+                     <children>
+                        <TabPane layoutX="4.0" layoutY="7.0" prefHeight="274.0" prefWidth="670.0" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                            <Tab closable="false" text="Direcciones">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <GridPane layoutX="6.0" layoutY="6.0" prefHeight="54.0" prefWidth="662.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="597.0" minWidth="10.0" prefWidth="592.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="326.0" minWidth="10.0" prefWidth="20.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="326.0" minWidth="10.0" prefWidth="84.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="22.0" minHeight="9.0" prefHeight="13.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <JFXTextField fx:id="jtxfDetaDireccion" prefHeight="25.0" prefWidth="574.0" promptText="Detalle dirección" />
+                                                <Button fx:id="btnGuardarDireccion" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" styleClass="actionbuttonguardar" text="Guardar" GridPane.columnIndex="2" />
+                                             </children>
+                                          </GridPane>
+                                          <TableView fx:id="tbvDirecciones" layoutY="68.0" prefHeight="171.0" prefWidth="670.0">
+                                            <columns>
+                                              <TableColumn fx:id="tbcDetDireccion" prefWidth="668.0" text="Detalle dirección" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                            <Tab closable="false" text="Contactos">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <GridPane layoutY="7.0" prefHeight="90.0" prefWidth="670.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="610.0" minWidth="10.0" prefWidth="548.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="268.0" minWidth="0.0" prefWidth="9.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="10.0" prefWidth="113.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="49.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="11.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <JFXComboBox fx:id="jcmbTipoContacto" prefHeight="25.0" prefWidth="340.0" promptText="Tipo contacto" />
+                                                <JFXTextField fx:id="jtxfDetContacto" text="Detalle contacto" GridPane.rowIndex="1" />
+                                                <Button fx:id="btnGuardarContacto" mnemonicParsing="false" prefHeight="25.0" prefWidth="119.0" styleClass="actionbuttonguardar" text="Guardar" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                             </children>
+                                          </GridPane>
+                                          <TableView fx:id="tbvContactos" layoutY="88.0" prefHeight="150.0" prefWidth="670.0">
+                                            <columns>
+                                              <TableColumn fx:id="tbcTipoContacto" editable="false" prefWidth="105.0" text="Tipo contacto" />
+                                              <TableColumn fx:id="tbcDetContacto" editable="false" prefWidth="309.0" text="Detalle contacto" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children>
+                  </Pane>
                </children>
             </Pane>
          </children>

@@ -5,17 +5,17 @@
  */
 package jbiketso.model.dao;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.Alert;
+import jbiketso.model.entities.BikContacto;
+import jbiketso.model.entities.BikDireccion;
 import jbiketso.model.entities.BikPersona;
-import jbiketso.utils.AppWindowController;
+import jbiketso.utils.Resultado;
+import jbiketso.utils.TipoResultado;
 
 /**
  *
@@ -27,52 +27,43 @@ public class PersonaDao extends BaseDao {
     public SimpleStringProperty nombres;
     public SimpleStringProperty primerApellido;
     public SimpleStringProperty segundoApellido;
-    public SimpleObjectProperty fechaNacimiento;
+    public SimpleObjectProperty<Date> fechaNacimiento;
     public SimpleObjectProperty genero;
     public SimpleStringProperty nacionalidad;
-    public SimpleObjectProperty estadoCivil;
+    public SimpleStringProperty estadoCivil;
     public SimpleStringProperty profesion;
 
-   /* guardar entidad que tiene detalle
-   
-   hay que setear primero el detalle
-   
-   persona.direccionesDao.add(detalleDireccion);
-   for (DireccionDao direccionDao : persona.getDetallesDireccion()) {                
-                    persona.getDetallesDireccion().add(usuarioSorteoAct);
-                }
-    }
-   
-   if (sorteo.getId() == null) {
-                em.persist(sorteo);
-            } else {
-                for (UsuarioSorteo usuarioSorteo : sorteo.getUsuariosSorteo()) {
-                    if (usuarioSorteo.getId() == null) {
-                        em.persist(usuarioSorteo);
-                    }
-                }
-                sorteo = em.merge(sorteo);
-            }
-    */
-
     public ArrayList<DireccionDao> direccionDao;
-    
+    public ArrayList<ContactoDao> contactoDao;
+
     private BikPersona persona;
 
-    public PersonaDao(){
+    public PersonaDao() {
         this.cedula = new SimpleStringProperty();
         this.nombres = new SimpleStringProperty();
         this.primerApellido = new SimpleStringProperty();
         this.segundoApellido = new SimpleStringProperty();
         this.fechaNacimiento = new SimpleObjectProperty();
-        this.genero = new SimpleObjectProperty();
+        //this.genero = new SimpleStringProperty();
         this.nacionalidad = new SimpleStringProperty();
-        this.estadoCivil = new SimpleObjectProperty();
+        this.estadoCivil = new SimpleStringProperty();
         this.profesion = new SimpleStringProperty();
         this.direccionDao = new ArrayList<>();
     }
-    
-    public PersonaDao(String cedula, String nombres, String primerApellido, String segundoApellido, Object fechaNacimiento, String genero, String nacionalidad, String estadoCivil, String profesion, ArrayList<DireccionDao> direccionDao) {
+
+    public PersonaDao(String cedula, String nombres, String primerApellido, String segundoApellido, Date fechaNacimiento, String genero, String nacionalidad, String estadoCivil, String profesion, ArrayList<DireccionDao> direccionDao, ArrayList<ContactoDao> contactoDao) {
+
+        this.cedula = new SimpleStringProperty();
+        this.nombres = new SimpleStringProperty();
+        this.primerApellido = new SimpleStringProperty();
+        this.segundoApellido = new SimpleStringProperty();
+        this.fechaNacimiento = new SimpleObjectProperty();
+        this.genero = new SimpleStringProperty();
+        this.nacionalidad = new SimpleStringProperty();
+        this.estadoCivil = new SimpleStringProperty();
+        this.profesion = new SimpleStringProperty();
+        this.direccionDao = new ArrayList<>();
+
         this.cedula.set(cedula);
         this.nombres.set(nombres);
         this.primerApellido.set(primerApellido);
@@ -83,10 +74,9 @@ public class PersonaDao extends BaseDao {
         this.estadoCivil.set(estadoCivil);
         this.profesion.set(profesion);
         this.direccionDao = direccionDao;
+
     }
 
-    
-    
     public String getCedula() {
         return cedula.get();
     }
@@ -119,15 +109,15 @@ public class PersonaDao extends BaseDao {
         this.segundoApellido.set(segundoApellido);
     }
 
-    public Object getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento.get();
     }
 
-    public void setFechaNacimiento(Object fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento.set(fechaNacimiento);
     }
 
-    public Object getGenero() {
+    public String getGenero() {
         return genero.get();
     }
 
@@ -143,7 +133,7 @@ public class PersonaDao extends BaseDao {
         this.nacionalidad.set(nacionalidad);
     }
 
-    public Object getEstadoCivil() {
+    public String getEstadoCivil() {
         return estadoCivil.get();
     }
 
@@ -167,6 +157,14 @@ public class PersonaDao extends BaseDao {
         this.direccionDao = direccionDao;
     }
 
+    public ArrayList<ContactoDao> getContactoDao() {
+        return contactoDao;
+    }
+
+    public void setContactoDao(ArrayList<ContactoDao> contactoDao) {
+        this.contactoDao = contactoDao;
+    }
+
     public BikPersona getPersona() {
         return persona;
     }
@@ -176,22 +174,41 @@ public class PersonaDao extends BaseDao {
     }
 
     // Procedimiento para guardar la información de la persona.
-    public BikPersona save(){
+    public Resultado<BikPersona> save() {
+        Resultado<BikPersona> resultado = new Resultado<>();
         try {
-            
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            Date fechaNac = null;
-            fechaNac = df.parse(getFechaNacimiento().toString());
-            
-            persona = new BikPersona(Integer.SIZE, getCedula(), getNombres(), getPrimerApellido(), getSegundoApellido(), fechaNac, getGenero().toString());
+
+            persona = new BikPersona(getCedula(), getNombres(), getPrimerApellido(), getSegundoApellido(), getFechaNacimiento(), getGenero());
             persona = (BikPersona) super.save(persona);
-            return persona;
-            
+
+            for (DireccionDao direccion : this.getDireccionDao()) {
+                if (direccion.getCodigoDireccion() == null) {
+                    BikDireccion nuevaDireccion = new BikDireccion(direccion);
+                    persona.getBikDireccionList().add(nuevaDireccion);
+                    getEntityManager().persist(nuevaDireccion);
+                }
+            }
+
+            for (ContactoDao contacto : this.getContactoDao()) {
+                if (contacto.getCodigoContacto() == null) {
+                    BikContacto nuevoContacto = new BikContacto(contacto);
+                    persona.getBikContactoList().add(nuevoContacto);
+                    getEntityManager().persist(nuevoContacto);
+                }
+            }
+
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(persona);
+            resultado.setMensaje("Persona guardada correctamente.");
+
+            return resultado;
+
         } catch (Exception ex) {
             Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
-            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Error guardando la persona", "Error al guardar la persona.");
-            return persona;
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al guardar la persona.");
+            return resultado;
         }
-    }    
+    }
 
 }

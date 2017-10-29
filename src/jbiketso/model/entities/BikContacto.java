@@ -22,13 +22,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import jbiketso.model.dao.ContactoDao;
+import jbiketso.model.dao.DireccionDao;
 
 /**
  *
  * @author Anayansy
  */
 @Entity
-@Table(name = "bik_contacto",schema = "biketso")
+@Table(name = "bik_contacto", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikContacto.findAll", query = "SELECT b FROM BikContacto b")
@@ -51,9 +53,6 @@ public class BikContacto implements Serializable {
     @Basic(optional = false)
     @Column(name = "con_tipo")
     private String conTipo;
-    @Basic(optional = false)
-    @Column(name = "con_direccion exacta")
-    private String conDireccionExacta;
     @Column(name = "con_detalle")
     private String conDetalle;
     @Column(name = "con_usuarioingresa")
@@ -77,10 +76,15 @@ public class BikContacto implements Serializable {
         this.conCodigo = conCodigo;
     }
 
-    public BikContacto(Integer conCodigo, String conTipo, String conDireccionExacta) {
+    public BikContacto(Integer conCodigo, String conTipo, String conDetalle) {
         this.conCodigo = conCodigo;
         this.conTipo = conTipo;
-        this.conDireccionExacta = conDireccionExacta;
+        this.conDetalle = conDetalle;
+    }
+
+    public BikContacto(ContactoDao contactoDao) {
+        this.conTipo = contactoDao.getTipo();
+        this.conDetalle = contactoDao.getDetContacto();
     }
 
     public Integer getConCodigo() {
@@ -97,14 +101,6 @@ public class BikContacto implements Serializable {
 
     public void setConTipo(String conTipo) {
         this.conTipo = conTipo;
-    }
-
-    public String getConDireccionExacta() {
-        return conDireccionExacta;
-    }
-
-    public void setConDireccionExacta(String conDireccionExacta) {
-        this.conDireccionExacta = conDireccionExacta;
     }
 
     public String getConDetalle() {
@@ -179,5 +175,5 @@ public class BikContacto implements Serializable {
     public String toString() {
         return "jbiketso.model.BikContacto[ conCodigo=" + conCodigo + " ]";
     }
-    
+
 }

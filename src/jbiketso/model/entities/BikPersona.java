@@ -115,8 +115,7 @@ public class BikPersona implements Serializable {
         this.perCodigo = perCodigo;
     }
 
-    public BikPersona(Integer perCodigo, String perCedula, String perNombres, String perPrimerapellido, String perSegundoapellido, Date perFechanacimiento, String perGenero) {
-        this.perCodigo = perCodigo;
+    public BikPersona(String perCedula, String perNombres, String perPrimerapellido, String perSegundoapellido, Date perFechanacimiento, String perGenero) {
         this.perCedula = perCedula;
         this.perNombres = perNombres;
         this.perPrimerapellido = perPrimerapellido;
