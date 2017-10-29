@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -29,6 +30,8 @@ import jbiketso.model.entities.BikModulos;
 import jbiketso.model.entities.BikPersona;
 import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
+import jbiketso.utils.AppWindowController;
+import jbiketso.utils.TipoResultado;
 
 /**
  *
@@ -112,8 +115,8 @@ public class PersonaController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.personaDao = new PersonaDao();
         bindPersona();
-        bindListaDirecciones();
-        bindListaContactos();
+        //bindListaDirecciones();
+        //bindListaContactos();
     }
 
     private void bindPersona() {
@@ -159,6 +162,14 @@ public class PersonaController implements Initializable {
         
         direcciones.stream().forEach(d->personaDao.getDireccionDao().add(new DireccionDao(d)));
         contactos.stream().forEach(d->personaDao.getContactoDao().add(new ContactoDao(d)));
+        
+        resultado = personaDao.save();
+        
+       if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar persona", resultado.getMensaje());
+            return;
+        }
+        AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Guardar persona", resultado.getMensaje());
     }
 
     @FXML

@@ -10,14 +10,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="676.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PersonaController">
+<AnchorPane fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="676.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PersonaController">
    <children>
       <VBox prefHeight="467.0" prefWidth="676.0">
          <children>
             <Pane prefHeight="22.0" prefWidth="676.0" styleClass="dark" stylesheets="@biketso.css" />
             <Pane prefHeight="46.0" prefWidth="676.0" styleClass="actionbar" stylesheets="@biketso.css">
                <children>
-                  <Button fx:id="btnGuardarPersona" layoutX="15.0" layoutY="8.0" mnemonicParsing="false" styleClass="actionbuttonguardar" text="Button" />
+                  <Button fx:id="btnGuardarPersona" layoutX="15.0" layoutY="8.0" mnemonicParsing="false" onAction="#guardarPersona" styleClass="actionbuttonguardar" text="Button" />
                </children></Pane>
             <Pane prefHeight="416.0" prefWidth="676.0">
                <children>
@@ -67,7 +67,7 @@
                                             </rowConstraints>
                                              <children>
                                                 <JFXTextField fx:id="jtxfDetaDireccion" prefHeight="25.0" prefWidth="574.0" promptText="Detalle dirección" />
-                                                <Button fx:id="btnGuardarDireccion" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" styleClass="actionbuttonguardar" text="Guardar" GridPane.columnIndex="2" />
+                                                <Button fx:id="btnGuardarDireccion" mnemonicParsing="false" onAction="#agregarDireccion" prefHeight="25.0" prefWidth="75.0" styleClass="actionbuttonguardar" text="Guardar" GridPane.columnIndex="2" />
                                              </children>
                                           </GridPane>
                                           <TableView fx:id="tbvDirecciones" layoutY="68.0" prefHeight="171.0" prefWidth="670.0">
