@@ -36,7 +36,6 @@ import jbiketso.model.dao.DireccionDao;
     @NamedQuery(name = "BikContacto.findAll", query = "SELECT b FROM BikContacto b")
     , @NamedQuery(name = "BikContacto.findByConCodigo", query = "SELECT b FROM BikContacto b WHERE b.conCodigo = :conCodigo")
     , @NamedQuery(name = "BikContacto.findByConTipo", query = "SELECT b FROM BikContacto b WHERE b.conTipo = :conTipo")
-    , @NamedQuery(name = "BikContacto.findByConDireccionExacta", query = "SELECT b FROM BikContacto b WHERE b.conDireccionExacta = :conDireccionExacta")
     , @NamedQuery(name = "BikContacto.findByConDetalle", query = "SELECT b FROM BikContacto b WHERE b.conDetalle = :conDetalle")
     , @NamedQuery(name = "BikContacto.findByConUsuarioingresa", query = "SELECT b FROM BikContacto b WHERE b.conUsuarioingresa = :conUsuarioingresa")
     , @NamedQuery(name = "BikContacto.findByConFechaingresa", query = "SELECT b FROM BikContacto b WHERE b.conFechaingresa = :conFechaingresa")
