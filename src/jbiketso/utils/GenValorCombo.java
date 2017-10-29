@@ -9,12 +9,12 @@ package jbiketso.utils;
  *
  * @author jdiego
  */
-public class GenEstados {
+public class GenValorCombo {
 
     String codigo;
     String descripcion;
 
-    public GenEstados(String codigo, String descripcion) {
+    public GenValorCombo(String codigo, String descripcion) {
         this.codigo = codigo;
         this.descripcion = descripcion;
     }

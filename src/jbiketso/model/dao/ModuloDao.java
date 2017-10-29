@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectProperty;    
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikModulos;
-import jbiketso.utils.GenEstados;
+import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -17,7 +17,7 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
 
     public SimpleStringProperty codigo;
     public SimpleStringProperty descripcion;
-    public ObjectProperty<GenEstados> estado;
+    public ObjectProperty<GenValorCombo> estado;
 
     private BikModulos modulo;
 
@@ -35,9 +35,9 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
         this.codigo.set(codigo);
         this.descripcion.set(descripcion);
         if (estado.equalsIgnoreCase("a")) {
-            this.estado.set(new GenEstados("A", "Activo"));
+            this.estado.set(new GenValorCombo("A", "Activo"));
         } else {
-            this.estado.set(new GenEstados("I", "Inactivo"));
+            this.estado.set(new GenValorCombo("I", "Inactivo"));
         }
 
     }
@@ -58,15 +58,15 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
         this.descripcion.set(descripcion);
     }
 
-    public ObjectProperty<GenEstados> estadoProperty() {
+    public ObjectProperty<GenValorCombo> estadoProperty() {
         return estado;
     }
 
-    public GenEstados getEstado() {
+    public GenValorCombo getEstado() {
         return estado.get();
     }
 
-    public void setEstado(GenEstados estado) {
+    public void setEstado(GenValorCombo estado) {
         this.estado.set(estado);
     }
 

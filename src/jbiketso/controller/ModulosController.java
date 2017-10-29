@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -21,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.model.dao.ModuloDao;
 import jbiketso.model.entities.BikModulos;
 import jbiketso.utils.AppWindowController;
-import jbiketso.utils.GenEstados;
+import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -31,13 +32,16 @@ public class ModulosController implements Initializable {
     private AnchorPane acpRoot;
 
     @FXML
-    private JFXButton jbtnSalir, jbtnGuardar, jbtnEliminar;
-
+    private JFXButton jbtnGuardar, jbtnEliminar;
+    
+    @FXML
+    private Button btnGuardar;
+    
     @FXML
     private JFXTextField jtxfCodigoModulo, jtxfDescripcionModulo;
 
     @FXML
-    private JFXComboBox<GenEstados> jcmbEstadoModulo;
+    private JFXComboBox<GenValorCombo> jcmbEstadoModulo;
 
     @FXML
     private TableView<BikModulos> tbvModulos;
@@ -59,13 +63,13 @@ public class ModulosController implements Initializable {
     BikModulos moduloSeleccionado;
 
     @XmlTransient
-    ObservableList<GenEstados> estados = FXCollections
+    ObservableList<GenValorCombo> estados = FXCollections
             .observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        estados.add(new GenEstados("A", "Activo"));
-        estados.add(new GenEstados("I", "Inactivo"));
+        estados.add(new GenValorCombo("A", "Activo"));
+        estados.add(new GenValorCombo("I", "Inactivo"));
         jcmbEstadoModulo.setItems(estados);
         nuevoModulo();
         cargarModulos();
@@ -97,9 +101,9 @@ public class ModulosController implements Initializable {
                     this.modulo.codigo.set(moduloSeleccionado.getModCodigo());
                     this.modulo.descripcion.set(moduloSeleccionado.getModDescripcion());
                     if (moduloSeleccionado.getModEstado().equalsIgnoreCase("a")) {
-                        this.modulo.estado.set(new GenEstados("A", "Activo"));
+                        this.modulo.estado.set(new GenValorCombo("A", "Activo"));
                     } else {
-                        this.modulo.estado.set(new GenEstados("I", "Inactivo"));
+                        this.modulo.estado.set(new GenValorCombo("I", "Inactivo"));
                     }
                 }
                 bindModulo();
@@ -148,35 +152,13 @@ public class ModulosController implements Initializable {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar módulo", nuevo.getMensaje());
             return;
         }
-        agregarModuloALista(nuevo.get());
-        unbindModulo();
+        agregarModuloALista(nuevo.get());        
         AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Guardar módulo", nuevo.getMensaje());
     }
 
     @FXML
     void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
-    }
-
-    @FXML
-    void eliminarModulo(ActionEvent event) {
-        if (moduloSeleccionado.getModCodigo() == null || moduloSeleccionado.getModCodigo().isEmpty()) {
-            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Eliminar módulo", "No se ha seleccionado ningún módulo para eliminar.");
-            return;
-
-        }
-        if (AppWindowController.getInstance().mensajeConfimacion("Eliminar módulo", "Se eliminará el módulo [" + moduloSeleccionado.getModCodigo() + "]. ¿Desea continuar?")) {
-            Resultado<BikModulos> result = this.modulo.delete();
-            if (!result.getResultado().equals(TipoResultado.ERROR)) {
-                if (this.modulos.contains(moduloSeleccionado)) {
-                    this.modulos.remove(moduloSeleccionado);
-                }
-            } else {
-                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Eliminar módulo", result.getMensaje());
-            }
-        }
-        unbindModulo();
-        nuevoModulo();
-    }
+    }   
 
 }
