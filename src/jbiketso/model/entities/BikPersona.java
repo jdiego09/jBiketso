@@ -115,12 +115,15 @@ public class BikPersona implements Serializable {
         this.perCodigo = perCodigo;
     }
 
-    public BikPersona(String perCedula, String perNombres, String perPrimerapellido, String perSegundoapellido, Date perFechanacimiento, String perGenero) {
+    public BikPersona(String perCedula, String perNombres, String perPrimerapellido, String perSegundoapellido, Date perFechanacimiento, String perGenero, String perNacionalidad, String perEstadocivil, String perProfesion) {
         this.perCedula = perCedula;
         this.perNombres = perNombres;
         this.perPrimerapellido = perPrimerapellido;
         this.perSegundoapellido = perSegundoapellido;
         this.perFechanacimiento = perFechanacimiento;
+        this.perNacionalidad = perNacionalidad;
+        this.perEstadocivil = perEstadocivil;
+        this.perProfesion = perProfesion;
         this.perGenero = perGenero;
     }
 

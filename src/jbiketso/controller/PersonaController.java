@@ -9,6 +9,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +18,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.model.dao.DireccionDao;
 import jbiketso.model.dao.PersonaDao;
+import jbiketso.model.entities.BikContacto;
+import jbiketso.model.entities.BikDireccion;
+import jbiketso.model.entities.BikModulos;
+import jbiketso.utils.GenValorCombo;
 
 /**
  *
@@ -31,7 +39,7 @@ public class PersonaController implements Initializable {
     private JFXTextField jtxfDetaDireccion;
 
     @FXML
-    private JFXComboBox<?> jcmbEstadoCivil;
+    private JFXComboBox<GenValorCombo> jcmbEstadoCivil;
 
     @FXML
     private JFXTextField jtxfDetContacto;
@@ -46,7 +54,7 @@ public class PersonaController implements Initializable {
     private TableColumn<?, ?> tbcDetDireccion;
 
     @FXML
-    private TableView<?> tbvContactos;
+    private TableView<BikContacto> tbvContactos;
 
     @FXML
     private Button btnGuardarContacto;
@@ -58,7 +66,7 @@ public class PersonaController implements Initializable {
     private Button btnGuardarPersona;
 
     @FXML
-    private JFXComboBox<?> jcmbGenero;
+    private JFXComboBox<GenValorCombo> jcmbGenero;
 
     @FXML
     private JFXTextField jtxfNacionalidad;
@@ -76,15 +84,24 @@ public class PersonaController implements Initializable {
     private TableColumn<?, ?> tbcTipoContacto;
 
     @FXML
-    private JFXComboBox<?> jcmbTipoContacto;
+    private JFXComboBox<GenValorCombo> jcmbTipoContacto;
 
     @FXML
     private DatePicker dtpFechaNacimiento;
 
     @FXML
-    private TableView<?> tbvDirecciones;
+    private TableView<BikDireccion> tbvDirecciones;
+
+    @XmlTransient
+    public ObservableList<BikDireccion> direcciones = FXCollections
+            .observableArrayList();
+
+    @XmlTransient
+    public ObservableList<BikContacto> contactos = FXCollections
+            .observableArrayList();
 
     PersonaDao personaDao;
+    DireccionDao direccionDao;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -99,7 +116,7 @@ public class PersonaController implements Initializable {
         jtxfSegundoApellido.textProperty().bindBidirectional(personaDao.segundoApellido);
         jcmbEstadoCivil.valueProperty().bindBidirectional(personaDao.estadoCivil);
         jtxfNacionalidad.textProperty().bindBidirectional(personaDao.nacionalidad);
-        dtpFechaNacimiento.valueProperty().bindBidirectional(personaDao.fechaNacimiento);
+        //dtpFechaNacimiento.valueProperty().bindBidirectional(personaDao.fechaNacimiento);
         jcmbGenero.valueProperty().bindBidirectional(personaDao.genero);
         jtxfProfesion.textProperty().bindBidirectional(personaDao.profesion);
 
@@ -107,16 +124,12 @@ public class PersonaController implements Initializable {
 
     @FXML
     private void guardarPersona(ActionEvent event) {
-        this.persona = new PersonaDao(jtxfCedula.getText(),
-                jtxfNombres.getText(),
-                jtxfProfesion.getText(),
-                jtxfSegundoApellido.getText(),
-                dtpFechaNacimiento.getValue(),
-                jcmbGenero.getValue().toString(),
-                jtxfNacionalidad.getText(),
-                jcmbEstadoCivil.getValue().toString(),
-                jtxfProfesion.getText(),
-                null);
+
+    }
+
+    @FXML
+    private void agregarDireccion(ActionEvent event) {
+        //contactos.add(new BikDireccion(personaDao));
     }
 
 }

@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import jbiketso.model.entities.BikContacto;
 import jbiketso.model.entities.BikDireccion;
 import jbiketso.model.entities.BikPersona;
+import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -27,10 +29,10 @@ public class PersonaDao extends BaseDao {
     public SimpleStringProperty nombres;
     public SimpleStringProperty primerApellido;
     public SimpleStringProperty segundoApellido;
-    public SimpleObjectProperty<Date> fechaNacimiento;
-    public SimpleObjectProperty genero;
+    public ObjectProperty<Date> fechaNacimiento;
+    public ObjectProperty<GenValorCombo> genero;
     public SimpleStringProperty nacionalidad;
-    public SimpleStringProperty estadoCivil;
+    public ObjectProperty<GenValorCombo> estadoCivil;
     public SimpleStringProperty profesion;
 
     public ArrayList<DireccionDao> direccionDao;
@@ -44,9 +46,9 @@ public class PersonaDao extends BaseDao {
         this.primerApellido = new SimpleStringProperty();
         this.segundoApellido = new SimpleStringProperty();
         this.fechaNacimiento = new SimpleObjectProperty();
-        //this.genero = new SimpleStringProperty();
+        this.genero = new SimpleObjectProperty();
         this.nacionalidad = new SimpleStringProperty();
-        this.estadoCivil = new SimpleStringProperty();
+        this.estadoCivil = new SimpleObjectProperty();
         this.profesion = new SimpleStringProperty();
         this.direccionDao = new ArrayList<>();
     }
@@ -58,20 +60,35 @@ public class PersonaDao extends BaseDao {
         this.primerApellido = new SimpleStringProperty();
         this.segundoApellido = new SimpleStringProperty();
         this.fechaNacimiento = new SimpleObjectProperty();
-        this.genero = new SimpleStringProperty();
+        this.genero = new SimpleObjectProperty();
         this.nacionalidad = new SimpleStringProperty();
-        this.estadoCivil = new SimpleStringProperty();
+        this.estadoCivil = new SimpleObjectProperty();
         this.profesion = new SimpleStringProperty();
         this.direccionDao = new ArrayList<>();
+        
 
         this.cedula.set(cedula);
         this.nombres.set(nombres);
         this.primerApellido.set(primerApellido);
         this.segundoApellido.set(segundoApellido);
         this.fechaNacimiento.set(fechaNacimiento);
-        this.genero.set(genero);
+        if (genero.equalsIgnoreCase("m")) {
+            this.genero.set(new GenValorCombo("M", "Masculino"));
+        } else {
+            this.genero.set(new GenValorCombo("F", "Femenino"));
+        }
         this.nacionalidad.set(nacionalidad);
-        this.estadoCivil.set(estadoCivil);
+        if (estadoCivil.equalsIgnoreCase("s")) {
+            this.genero.set(new GenValorCombo("S", "Soltero"));
+        } else if (estadoCivil.equalsIgnoreCase("c")){
+            this.genero.set(new GenValorCombo("C", "Casado"));
+        } else if (estadoCivil.equalsIgnoreCase("d")) {
+            this.genero.set(new GenValorCombo("D", "Divorsiado"));
+        } else if (estadoCivil.equalsIgnoreCase("u")){
+            this.genero.set(new GenValorCombo("U", "Unión libre"));
+        } else if (estadoCivil.equalsIgnoreCase("o")){
+            this.genero.set(new GenValorCombo("O", "Otro"));
+        }
         this.profesion.set(profesion);
         this.direccionDao = direccionDao;
 
@@ -117,11 +134,11 @@ public class PersonaDao extends BaseDao {
         this.fechaNacimiento.set(fechaNacimiento);
     }
 
-    public String getGenero() {
+    public GenValorCombo getGenero() {
         return genero.get();
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(GenValorCombo genero) {
         this.genero.set(genero);
     }
 
@@ -133,11 +150,11 @@ public class PersonaDao extends BaseDao {
         this.nacionalidad.set(nacionalidad);
     }
 
-    public String getEstadoCivil() {
+    public GenValorCombo getEstadoCivil() {
         return estadoCivil.get();
     }
 
-    public void setEstadoCivil(String estadoCivil) {
+    public void setEstadoCivil(GenValorCombo estadoCivil) {
         this.estadoCivil.set(estadoCivil);
     }
 
@@ -178,7 +195,7 @@ public class PersonaDao extends BaseDao {
         Resultado<BikPersona> resultado = new Resultado<>();
         try {
 
-            persona = new BikPersona(getCedula(), getNombres(), getPrimerApellido(), getSegundoApellido(), getFechaNacimiento(), getGenero());
+            persona = new BikPersona(getCedula(), getNombres(), getPrimerApellido(), getSegundoApellido(), getFechaNacimiento(), getGenero().getCodigo(), getNacionalidad(), getEstadoCivil().getCodigo(), getProfesion());
             persona = (BikPersona) super.save(persona);
 
             for (DireccionDao direccion : this.getDireccionDao()) {
