@@ -5,6 +5,7 @@
  */
 package jbiketso.controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
@@ -20,13 +21,13 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.model.dao.ContactoDao;
 import jbiketso.model.dao.DireccionDao;
 import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikContacto;
 import jbiketso.model.entities.BikDireccion;
-import jbiketso.model.entities.BikModulos;
 import jbiketso.model.entities.BikPersona;
 import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
@@ -40,6 +41,9 @@ import jbiketso.utils.TipoResultado;
 public class PersonaController implements Initializable {
 
     @FXML
+    private AnchorPane acpRoot;
+    
+    @FXML
     private JFXTextField jtxfPrimerApellido;
 
     @FXML
@@ -49,13 +53,19 @@ public class PersonaController implements Initializable {
     private JFXComboBox<GenValorCombo> jcmbEstadoCivil;
 
     @FXML
-    private JFXTextField jtxfDetContacto;
+    private JFXTextField jtxfDetaContacto;
 
     @FXML
     private JFXTextField jtxfCedula;
 
     @FXML
     private JFXTextField jtxfSegundoApellido;
+    
+    @FXML
+    private JFXButton jbtnSalir;
+    
+    @FXML
+    private Button btnLimpiar;
 
     @FXML
     private TableColumn<BikDireccion, String> tbcDetDireccion;
@@ -107,16 +117,49 @@ public class PersonaController implements Initializable {
     public ObservableList<BikContacto> contactos = FXCollections
             .observableArrayList();
 
+    @XmlTransient
+    ObservableList<GenValorCombo> generos = FXCollections
+            .observableArrayList();
+    
+    @XmlTransient
+    ObservableList<GenValorCombo> estadosCivil = FXCollections
+            .observableArrayList();
+    
+    @XmlTransient
+    ObservableList<GenValorCombo> tiposContacto = FXCollections
+            .observableArrayList();
+    
     PersonaDao personaDao;
     DireccionDao direccionDao;
     ContactoDao contactoDao;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        
         this.personaDao = new PersonaDao();
+        this.direccionDao = new DireccionDao();
+        this.contactoDao = new ContactoDao();
+        
+        generos.add(new GenValorCombo("M", "Masculino"));
+        generos.add(new GenValorCombo("F", "Femenino"));
+        jcmbGenero.setItems(generos);
+        
+        estadosCivil.add(new GenValorCombo("S", "Soltero"));
+        estadosCivil.add(new GenValorCombo("C", "Casado"));
+        estadosCivil.add(new GenValorCombo("D", "Divorsiado"));
+        estadosCivil.add(new GenValorCombo("U", "Unión libre"));
+        estadosCivil.add(new GenValorCombo("O", "Otro"));
+        jcmbEstadoCivil.setItems(estadosCivil);
+        
+        tiposContacto.add(new GenValorCombo("T", "Teléfono"));
+        tiposContacto.add(new GenValorCombo("C", "Correo"));
+        tiposContacto.add(new GenValorCombo("F", "Fax"));
+        jcmbTipoContacto.setItems(tiposContacto);
+        
         bindPersona();
-        //bindListaDirecciones();
-        //bindListaContactos();
+        bindListaDirecciones();
+        bindListaContactos();
+        
     }
 
     private void bindPersona() {
@@ -133,7 +176,7 @@ public class PersonaController implements Initializable {
 
         jtxfDetaDireccion.textProperty().bindBidirectional(direccionDao.detDireccion);
 
-        jtxfDetContacto.textProperty().bindBidirectional(contactoDao.detContacto);
+        jtxfDetaContacto.textProperty().bindBidirectional(contactoDao.detContacto);
         jcmbTipoContacto.valueProperty().bindBidirectional(contactoDao.tipo);
 
     }
@@ -175,6 +218,16 @@ public class PersonaController implements Initializable {
     @FXML
     private void agregarDireccion(ActionEvent event) {
         new BikDireccion(direccionDao);
+    }
+
+    @FXML
+    void regresar(ActionEvent event) {
+        AppWindowController.getInstance().goHome();
+    }
+
+    @FXML
+    void limpiarModulo(ActionEvent event) {
+        
     }
 
 }
