@@ -4,12 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import jbiketso.model.entities.BikPermisoRol;
@@ -18,7 +16,7 @@ import jbiketso.utils.AppWindowController;
 
 public class PrincipalMenuController implements Initializable {
 
-    private final Integer ALTOBOTON = 35;
+    private final Integer ALTOBOTON = 40;
     @FXML
     private ImageView imgMenu;
 
@@ -40,22 +38,29 @@ public class PrincipalMenuController implements Initializable {
 
         Aplicacion.getInstance().getModulosUsuario().stream().forEach(m -> {
             JFXButton btn = new JFXButton();
+            btn.getStyleClass().add("buttonDrawer");
+            btn.getStyleClass().add("buttonmenu" + m.getModCodigo().toLowerCase());
             btn.setText(m.getModDescripcion());
             btn.setId(m.getModCodigo());
             btn.setMaxWidth(Integer.MAX_VALUE);
             btn.setMinHeight(ALTOBOTON);
-            btn.getStyleClass().add("buttonDrawer");
             btn.setOnAction(menuModulosHandler);
             vbxMenu.getChildren().add(btn);
-        });
+        }
+        );
 
         JFXButton btn = new JFXButton();
+        btn.getStyleClass().add("buttonDrawer");
+        btn.getStyleClass().add("buttonmenuext");
         btn.setText("Salir");
         btn.setId("EXT");
         btn.setMaxWidth(Integer.MAX_VALUE);
         btn.setMinHeight(ALTOBOTON);
+
+        btn.getStyleClass().add("buttonmenu");
         btn.getStyleClass().add("buttonDrawer");
         btn.setOnAction(menuModulosHandler);
+
         vbxMenu.getChildren().add(btn);
     }
 
@@ -89,6 +94,7 @@ public class PrincipalMenuController implements Initializable {
             JFXButton btn = new JFXButton();
             btn.setText(m.getProCodigomenu().getMenEtiqueta());
             btn.setId(String.valueOf(m.getProCodigomenu().getMenPantalla()));
+            btn.getStyleClass().add("buttonmenu");
             btn.setMaxWidth(Integer.MAX_VALUE);
             btn.setMinHeight(ALTOBOTON);
             btn.getStyleClass().add("buttonDrawer");
@@ -101,6 +107,7 @@ public class PrincipalMenuController implements Initializable {
         btn.setId("BCK");
         btn.setMaxWidth(Integer.MAX_VALUE);
         btn.setMinHeight(ALTOBOTON);
+        btn.getStyleClass().add("buttonmenu");
         btn.getStyleClass().add("buttonDrawer");
         btn.setOnAction(menuPantallasHandler);
         vbxMenu.getChildren().add(btn);

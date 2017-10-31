@@ -27,7 +27,7 @@
       </VBox>
    </top>
    <center>
-      <VBox fx:id="vbxContainer" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+      <VBox fx:id="vbxContainer" prefHeight="200.0" prefWidth="100.0" styleClass="form" BorderPane.alignment="CENTER" />
    </center>
    <left>
       <JFXDrawer fx:id="jdrwMenu" BorderPane.alignment="CENTER">

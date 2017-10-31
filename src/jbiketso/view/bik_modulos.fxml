@@ -49,6 +49,6 @@
       </TableView>
    </children>
    <effect>
-      <DropShadow />
+      <DropShadow blurType="TWO_PASS_BOX" />
    </effect>
 </AnchorPane>
