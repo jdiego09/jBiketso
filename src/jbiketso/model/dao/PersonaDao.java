@@ -23,7 +23,7 @@ import jbiketso.utils.TipoResultado;
  *
  * @author Luis Diego
  */
-public class PersonaDao extends BaseDao {
+public class PersonaDao extends BaseDao<Integer, BikPersona> {
 
     public SimpleStringProperty cedula;
     public SimpleStringProperty nombres;
@@ -65,7 +65,6 @@ public class PersonaDao extends BaseDao {
         this.estadoCivil = new SimpleObjectProperty();
         this.profesion = new SimpleStringProperty();
         this.direccionDao = new ArrayList<>();
-        
 
         this.cedula.set(cedula);
         this.nombres.set(nombres);
@@ -80,13 +79,13 @@ public class PersonaDao extends BaseDao {
         this.nacionalidad.set(nacionalidad);
         if (estadoCivil.equalsIgnoreCase("s")) {
             this.genero.set(new GenValorCombo("S", "Soltero"));
-        } else if (estadoCivil.equalsIgnoreCase("c")){
+        } else if (estadoCivil.equalsIgnoreCase("c")) {
             this.genero.set(new GenValorCombo("C", "Casado"));
         } else if (estadoCivil.equalsIgnoreCase("d")) {
             this.genero.set(new GenValorCombo("D", "Divorsiado"));
-        } else if (estadoCivil.equalsIgnoreCase("u")){
+        } else if (estadoCivil.equalsIgnoreCase("u")) {
             this.genero.set(new GenValorCombo("U", "Unión libre"));
-        } else if (estadoCivil.equalsIgnoreCase("o")){
+        } else if (estadoCivil.equalsIgnoreCase("o")) {
             this.genero.set(new GenValorCombo("O", "Otro"));
         }
         this.profesion.set(profesion);
@@ -198,27 +197,39 @@ public class PersonaDao extends BaseDao {
             persona = new BikPersona(getCedula(), getNombres(), getPrimerApellido(), getSegundoApellido(), getFechaNacimiento(), getGenero().getCodigo(), getNacionalidad(), getEstadoCivil().getCodigo(), getProfesion());
             persona = (BikPersona) super.save(persona);
 
-            for (DireccionDao direccion : this.getDireccionDao()) {
-                if (direccion.getCodigoDireccion() == null) {
-                    BikDireccion nuevaDireccion = new BikDireccion(direccion);
-                    nuevaDireccion.setDirPercodigo(persona);
-                    persona.getBikDireccionList().add(nuevaDireccion);
-                    getEntityManager().persist(nuevaDireccion);
-                }
-            }
+            if (persona.getPerCodigo() != null) {
 
-            for (ContactoDao contacto : this.getContactoDao()) {
-                if (contacto.getCodigoContacto() == null) {
-                    BikContacto nuevoContacto = new BikContacto(contacto);
-                    nuevoContacto.setConPercodigo(persona);
-                    persona.getBikContactoList().add(nuevoContacto);
-                    getEntityManager().persist(nuevoContacto);
+                if (!persona.getBikDireccionList().isEmpty()) {
+                    for (DireccionDao direccion : this.getDireccionDao()) {
+                        if (direccion.getCodigoDireccion() == null) {
+                            BikDireccion nuevaDireccion = new BikDireccion(direccion);
+                            nuevaDireccion.setDirPercodigo(persona);
+                            persona.getBikDireccionList().add(nuevaDireccion);
+                            getEntityManager().persist(nuevaDireccion);
+                        }
+                    }
                 }
-            }
 
-            resultado.setResultado(TipoResultado.SUCCESS);
-            resultado.set(persona);
-            resultado.setMensaje("Persona guardada correctamente.");
+                if (!persona.getBikContactoList().isEmpty()) {
+                    for (ContactoDao contacto : this.getContactoDao()) {
+                        if (contacto.getCodigoContacto() == null) {
+                            BikContacto nuevoContacto = new BikContacto(contacto);
+                            nuevoContacto.setConPercodigo(persona);
+                            persona.getBikContactoList().add(nuevoContacto);
+                            getEntityManager().persist(nuevoContacto);
+                        }
+                    }
+                }
+
+                resultado.setResultado(TipoResultado.SUCCESS);
+                resultado.set(persona);
+                resultado.setMensaje("Persona guardada correctamente.");
+
+            } else {
+                resultado.setResultado(TipoResultado.ERROR);
+                resultado.set(persona);
+                resultado.setMensaje("No se pudo guardar la persona.");
+            }
 
             return resultado;
 

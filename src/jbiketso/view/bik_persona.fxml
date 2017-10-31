@@ -10,14 +10,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="676.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PersonaController">
+<AnchorPane fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="676.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PersonaController">
    <children>
       <VBox prefHeight="467.0" prefWidth="676.0">
          <children>
-            <Pane prefHeight="22.0" prefWidth="676.0" styleClass="dark" stylesheets="@biketso.css" />
+            <Pane prefHeight="27.0" prefWidth="676.0" styleClass="dark" stylesheets="@biketso.css" />
             <Pane prefHeight="46.0" prefWidth="676.0" styleClass="actionbar" stylesheets="@biketso.css">
                <children>
-                  <Button fx:id="btnGuardarPersona" layoutX="15.0" layoutY="8.0" mnemonicParsing="false" styleClass="actionbuttonguardar" text="Button" />
+                  <Button fx:id="btnGuardarPersona" layoutX="15.0" layoutY="3.0" mnemonicParsing="false" onAction="#guardarPersona" prefHeight="30.0" prefWidth="37.0" styleClass="actionbuttonguardar" text="Button" />
+                  <JFXButton fx:id="jbtnSalir" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="641.0" layoutY="8.0" onAction="#regresar" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonsalir" textOverrun="WORD_ELLIPSIS">
+                     <tooltip>
+                        <Tooltip text="Regresar" />
+                     </tooltip>
+                  </JFXButton>
+                  <Button fx:id="btnLimpiar" layoutX="61.0" layoutY="4.0" mnemonicParsing="false" onAction="#limpiarModulo" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonlimpiar" text="Button">
+                     <tooltip>
+                        <Tooltip text="Limpiar" />
+                     </tooltip>
+                  </Button>
                </children></Pane>
             <Pane prefHeight="416.0" prefWidth="676.0">
                <children>
@@ -67,7 +77,7 @@
                                             </rowConstraints>
                                              <children>
                                                 <JFXTextField fx:id="jtxfDetaDireccion" prefHeight="25.0" prefWidth="574.0" promptText="Detalle dirección" />
-                                                <Button fx:id="btnGuardarDireccion" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" styleClass="actionbuttonguardar" text="Guardar" GridPane.columnIndex="2" />
+                                                <Button fx:id="btnGuardarDireccion" mnemonicParsing="false" onAction="#agregarDireccion" prefHeight="25.0" prefWidth="75.0" styleClass="actionbuttonguardar" text="Guardar" GridPane.columnIndex="2" />
                                              </children>
                                           </GridPane>
                                           <TableView fx:id="tbvDirecciones" layoutY="68.0" prefHeight="171.0" prefWidth="670.0">
@@ -96,8 +106,12 @@
                                             </rowConstraints>
                                              <children>
                                                 <JFXComboBox fx:id="jcmbTipoContacto" prefHeight="25.0" prefWidth="340.0" promptText="Tipo contacto" />
-                                                <JFXTextField fx:id="jtxfDetContacto" text="Detalle contacto" GridPane.rowIndex="1" />
-                                                <Button fx:id="btnGuardarContacto" mnemonicParsing="false" prefHeight="25.0" prefWidth="119.0" styleClass="actionbuttonguardar" text="Guardar" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                <JFXTextField fx:id="jtxfDetaContacto" text="Detalle contacto" GridPane.rowIndex="1" />
+                                                <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                   <children>
+                                                      <Button fx:id="btnGuardarContacto" layoutX="35.0" layoutY="11.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" styleClass="actionbuttonguardar" text="Guardar" />
+                                                   </children>
+                                                </Pane>
                                              </children>
                                           </GridPane>
                                           <TableView fx:id="tbvContactos" layoutY="88.0" prefHeight="150.0" prefWidth="670.0">
