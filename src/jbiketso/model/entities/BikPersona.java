@@ -52,9 +52,9 @@ public class BikPersona implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)//IDENTITY)
     @Basic(optional = false)
-    @Column(name = "per_codigo")
+    @Column(name = "per_codigo", nullable = false)
     private Integer perCodigo;
     @Basic(optional = false)
     @Column(name = "per_cedula")
@@ -115,7 +115,8 @@ public class BikPersona implements Serializable {
         this.perCodigo = perCodigo;
     }
 
-    public BikPersona(String perCedula, String perNombres, String perPrimerapellido, String perSegundoapellido, Date perFechanacimiento, String perGenero, String perNacionalidad, String perEstadocivil, String perProfesion) {
+    public BikPersona(Integer perCodigo, String perCedula, String perNombres, String perPrimerapellido, String perSegundoapellido, Date perFechanacimiento, String perGenero, String perNacionalidad, String perEstadocivil, String perProfesion) {
+        this.perCodigo = perCodigo;
         this.perCedula = perCedula;
         this.perNombres = perNombres;
         this.perPrimerapellido = perPrimerapellido;
