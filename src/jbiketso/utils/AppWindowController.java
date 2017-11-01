@@ -192,16 +192,7 @@ public class AppWindowController {
     }
 
     public void loadHomeImage() {
-        AnchorPane pane = new AnchorPane();
-        ImageView imageView = new ImageView();
-        Image image = new Image("file:/view/images/logo.png");
-
-        imageView.fitWidthProperty().bind(pane.widthProperty());
-        imageView.fitHeightProperty().bind(pane.heightProperty());
-        imageView.setImage(image);
-        ((VBox) ((BorderPane) mainStage.getScene().getRoot()).getCenter()).getChildren().clear();
-        ((VBox) ((BorderPane) mainStage.getScene().getRoot()).getCenter()).getChildren().add(pane);
-        pane.setPrefSize(((VBox) ((BorderPane) mainStage.getScene().getRoot()).getCenter()).getPrefWidth(), ((VBox) ((BorderPane) mainStage.getScene().getRoot()).getCenter()).getPrefHeight());
+        AppWindowController.getInstance().abrirVentanaEnPrincipal("bik_inicio", "Center");
     }
 
     public void goHome() {

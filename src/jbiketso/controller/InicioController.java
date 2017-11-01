@@ -7,7 +7,9 @@ package jbiketso.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
@@ -15,6 +17,8 @@ import javafx.fxml.Initializable;
  * @author jcalvo
  */
 public class InicioController implements Initializable {
+    @FXML
+    private AnchorPane acpRoot;
 
    /**
     * Initializes the controller class.

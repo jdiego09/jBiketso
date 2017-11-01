@@ -47,6 +47,7 @@ public class PrincipalController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         AppWindowController.getInstance().setMainRoot(root);
+        
         lblUsuario.setText("Usuario: " + Parametros.getInstance().getParametro("Usuario"));
 
         lblFecha.setText("Fecha: " + sdf.format(new Date()));
@@ -59,7 +60,9 @@ public class PrincipalController implements Initializable {
         cargarSeguridad();
 
         panMenu = (Pane) AppWindowController.getInstance().getView("bik_principal_menu");
-
+        //Pane pane = (Pane) AppWindowController.getInstance().getView("bik_inicio");
+        //((VBox)AppWindowController.getInstance().getMainRoot().getCenter()).getChildren().add(pane);
+        
         jdrwMenu.setSidePane(panMenu);
         jdrwMenu.setDefaultDrawerSize(200);
         jdrwMenu.setOverLayVisible(false);

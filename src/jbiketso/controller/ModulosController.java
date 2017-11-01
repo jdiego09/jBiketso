@@ -68,6 +68,7 @@ public class ModulosController implements Initializable {
         estados.add(new GenValorCombo("I", "Inactivo"));
         jcmbEstadoModulo.setItems(estados);
         nuevoModulo();
+        bindModulo()                                                                                                                                                                                                            ;
         cargarModulos();
         bindListaModulos();
         addListenerTable(tbvModulos);
@@ -148,8 +149,7 @@ public class ModulosController implements Initializable {
     }
 
     @FXML
-    void guardarModulo(ActionEvent event) {
-        //this.modulo = new ModuloDao(jtxfCodigoModulo.getText(), jtxfDescripcionModulo.getText(), jcmbEstadoModulo.getValue().getCodigo());
+    void guardarModulo(ActionEvent event) {        
         Resultado<BikModulos> nuevo = this.modulo.save();
         if (nuevo.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar módulo", nuevo.getMensaje());
