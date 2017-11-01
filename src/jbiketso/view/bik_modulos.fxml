@@ -43,8 +43,8 @@
       <TableView fx:id="tbvModulos" layoutX="25.0" layoutY="173.0" prefHeight="280.0" prefWidth="525.0">
         <columns>
           <TableColumn fx:id="tbcCodigoModulo" editable="false" maxWidth="95.0" minWidth="75.0" prefWidth="90.0" resizable="false" sortable="false" text="Módulo" />
-          <TableColumn fx:id="tbcDescipcionModulo" editable="false" maxWidth="340.0" minWidth="262.0" prefWidth="315.0" resizable="false" sortable="false" text="Descripción" />
-            <TableColumn fx:id="tbcEstadoModulo" editable="false" maxWidth="185.0" minWidth="0.0" prefWidth="117.0" resizable="false" sortable="false" text="Estado" />
+          <TableColumn fx:id="tbcDescipcionModulo" editable="false" maxWidth="340.0" minWidth="262.0" prefWidth="306.0" resizable="false" sortable="false" text="Descripción" />
+            <TableColumn fx:id="tbcEstadoModulo" editable="false" maxWidth="121.0" minWidth="121.0" prefWidth="121.0" resizable="false" sortable="false" text="Estado" />
         </columns>
       </TableView>
    </children>

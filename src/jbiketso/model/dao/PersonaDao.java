@@ -5,6 +5,9 @@
  */
 package jbiketso.model.dao;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -195,41 +198,42 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
         try {
 
             persona = new BikPersona(0, getCedula(), getNombres(), getPrimerApellido(), getSegundoApellido(), getFechaNacimiento(), getGenero().getCodigo(), getNacionalidad(), getEstadoCivil().getCodigo(), getProfesion());
+            persona.setPerFechanacimiento(new Date());
             persona = (BikPersona) super.save(persona);
 
-            if (persona.getPerCodigo() != null) {
-
-                if (!persona.getBikDireccionList().isEmpty()) {
-                    for (DireccionDao direccion : this.getDireccionDao()) {
-                        if (direccion.getCodigoDireccion() == null) {
-                            BikDireccion nuevaDireccion = new BikDireccion(direccion);
-                            nuevaDireccion.setDirPercodigo(persona);
-                            persona.getBikDireccionList().add(nuevaDireccion);
-                            getEntityManager().persist(nuevaDireccion);
-                        }
-                    }
-                }
-
-                if (!persona.getBikContactoList().isEmpty()) {
-                    for (ContactoDao contacto : this.getContactoDao()) {
-                        if (contacto.getCodigoContacto() == null) {
-                            BikContacto nuevoContacto = new BikContacto(contacto);
-                            nuevoContacto.setConPercodigo(persona);
-                            persona.getBikContactoList().add(nuevoContacto);
-                            getEntityManager().persist(nuevoContacto);
-                        }
-                    }
-                }
-
-                resultado.setResultado(TipoResultado.SUCCESS);
-                resultado.set(persona);
-                resultado.setMensaje("Persona guardada correctamente.");
-
-            } else {
+//            if (persona.getPerCodigo() != null) {
+//
+//                if (!persona.getBikDireccionList().isEmpty()) {
+//                    for (DireccionDao direccion : this.getDireccionDao()) {
+//                        if (direccion.getCodigoDireccion() == null) {
+//                            BikDireccion nuevaDireccion = new BikDireccion(direccion);
+//                            nuevaDireccion.setDirPercodigo(persona);
+//                            persona.getBikDireccionList().add(nuevaDireccion);
+//                            getEntityManager().persist(nuevaDireccion);
+//                        }
+//                    }
+//                }
+//
+//                if (!persona.getBikContactoList().isEmpty()) {
+//                    for (ContactoDao contacto : this.getContactoDao()) {
+//                        if (contacto.getCodigoContacto() == null) {
+//                            BikContacto nuevoContacto = new BikContacto(contacto);
+//                            nuevoContacto.setConPercodigo(persona);
+//                            persona.getBikContactoList().add(nuevoContacto);
+//                            getEntityManager().persist(nuevoContacto);
+//                        }
+//                    }
+//                }
+//
+//                resultado.setResultado(TipoResultado.SUCCESS);
+//                resultado.set(persona);
+//                resultado.setMensaje("Persona guardada correctamente.");
+//
+//            } else {
                 resultado.setResultado(TipoResultado.ERROR);
                 resultado.set(persona);
                 resultado.setMensaje("No se pudo guardar la persona.");
-            }
+//            }
 
             return resultado;
 

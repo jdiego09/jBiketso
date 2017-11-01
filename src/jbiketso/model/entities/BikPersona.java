@@ -25,10 +25,6 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author Anayansy
- */
 @Entity
 @Table(name = "bik_persona",schema = "biketso")
 @XmlRootElement
@@ -52,7 +48,7 @@ public class BikPersona implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)//IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "per_codigo", nullable = false)
     private Integer perCodigo;

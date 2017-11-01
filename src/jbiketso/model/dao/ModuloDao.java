@@ -126,8 +126,7 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
         ArrayList<BikModulos> modulos = new ArrayList<>();
         List<BikModulos> resultados;
         try {
-            Query query = getEntityManager().createNamedQuery("BikModulos.findByModEstado");
-            query.setParameter("modEstado", estado);
+            Query query = getEntityManager().createNamedQuery("BikModulos.findAll");
             resultados = query.getResultList();
             resultados.forEach(m -> {
                 m.getDescripcionEstado();
