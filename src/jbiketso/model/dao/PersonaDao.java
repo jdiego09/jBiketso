@@ -194,7 +194,7 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
         Resultado<BikPersona> resultado = new Resultado<>();
         try {
 
-            persona = new BikPersona(getCedula(), getNombres(), getPrimerApellido(), getSegundoApellido(), getFechaNacimiento(), getGenero().getCodigo(), getNacionalidad(), getEstadoCivil().getCodigo(), getProfesion());
+            persona = new BikPersona(0, getCedula(), getNombres(), getPrimerApellido(), getSegundoApellido(), getFechaNacimiento(), getGenero().getCodigo(), getNacionalidad(), getEstadoCivil().getCodigo(), getProfesion());
             persona = (BikPersona) super.save(persona);
 
             if (persona.getPerCodigo() != null) {

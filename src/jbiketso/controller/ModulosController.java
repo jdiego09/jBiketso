@@ -149,7 +149,7 @@ public class ModulosController implements Initializable {
 
     @FXML
     void guardarModulo(ActionEvent event) {
-        //this.modulo = new ModuloDao(jtxfCodigoModulo.getText(), jtxfDescripcionModulo.getText(), jcmbEstadoModulo.getValue().getCodigo());
+        this.modulo = new ModuloDao(jtxfCodigoModulo.getText(), jtxfDescripcionModulo.getText(), jcmbEstadoModulo.getValue().getCodigo());
         Resultado<BikModulos> nuevo = this.modulo.save();
         if (nuevo.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar módulo", nuevo.getMensaje());
