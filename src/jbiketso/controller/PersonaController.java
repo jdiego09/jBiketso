@@ -42,30 +42,12 @@ public class PersonaController implements Initializable {
 
     @FXML
     private AnchorPane acpRoot;
-    
-    @FXML
-    private JFXTextField jtxfPrimerApellido;
 
     @FXML
-    private JFXTextField jtxfDetaDireccion;
+    private JFXTextField jtxfPrimerApellido, jtxfDetaDireccion, jtxfDetaContacto, jtxfCedula, jtxfSegundoApellido, jtxfNacionalidad, jtxfProfesion, jtxfNombres;
 
-    @FXML
-    private JFXComboBox<GenValorCombo> jcmbEstadoCivil;
-
-    @FXML
-    private JFXTextField jtxfDetaContacto;
-
-    @FXML
-    private JFXTextField jtxfCedula;
-
-    @FXML
-    private JFXTextField jtxfSegundoApellido;
-    
     @FXML
     private JFXButton jbtnSalir;
-    
-    @FXML
-    private Button btnLimpiar;
 
     @FXML
     private TableColumn<BikDireccion, String> tbcDetDireccion;
@@ -74,34 +56,13 @@ public class PersonaController implements Initializable {
     private TableView<BikContacto> tbvContactos;
 
     @FXML
-    private Button btnGuardarContacto;
+    private Button btnAgregarContacto, btnAgregarDireccion, btnGuardarPersona, btnLimpiar;
 
     @FXML
-    private Button btnGuardarDireccion;
+    private JFXComboBox<GenValorCombo> jcmbGenero, jcmbTipoContacto, jcmbEstadoCivil;
 
     @FXML
-    private Button btnGuardarPersona;
-
-    @FXML
-    private JFXComboBox<GenValorCombo> jcmbGenero;
-
-    @FXML
-    private JFXTextField jtxfNacionalidad;
-
-    @FXML
-    private JFXTextField jtxfProfesion;
-
-    @FXML
-    private TableColumn<BikContacto, String> tbcDetContacto;
-
-    @FXML
-    private JFXTextField jtxfNombres;
-
-    @FXML
-    private TableColumn<BikContacto, String> tbcTipoContacto;
-
-    @FXML
-    private JFXComboBox<GenValorCombo> jcmbTipoContacto;
+    private TableColumn<BikContacto, String> tbcDetContacto, tbcTipoContacto;
 
     @FXML
     private DatePicker dtpFechaNacimiento;
@@ -120,46 +81,46 @@ public class PersonaController implements Initializable {
     @XmlTransient
     ObservableList<GenValorCombo> generos = FXCollections
             .observableArrayList();
-    
+
     @XmlTransient
     ObservableList<GenValorCombo> estadosCivil = FXCollections
             .observableArrayList();
-    
+
     @XmlTransient
     ObservableList<GenValorCombo> tiposContacto = FXCollections
             .observableArrayList();
-    
+
     PersonaDao personaDao;
     DireccionDao direccionDao;
     ContactoDao contactoDao;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
+
         this.personaDao = new PersonaDao();
         this.direccionDao = new DireccionDao();
         this.contactoDao = new ContactoDao();
-        
+
         generos.add(new GenValorCombo("M", "Masculino"));
         generos.add(new GenValorCombo("F", "Femenino"));
         jcmbGenero.setItems(generos);
-        
+
         estadosCivil.add(new GenValorCombo("S", "Soltero"));
         estadosCivil.add(new GenValorCombo("C", "Casado"));
-        estadosCivil.add(new GenValorCombo("D", "Divorsiado"));
+        estadosCivil.add(new GenValorCombo("D", "Divorciado"));
         estadosCivil.add(new GenValorCombo("U", "Unión libre"));
         estadosCivil.add(new GenValorCombo("O", "Otro"));
         jcmbEstadoCivil.setItems(estadosCivil);
-        
+
         tiposContacto.add(new GenValorCombo("T", "Teléfono"));
         tiposContacto.add(new GenValorCombo("C", "Correo"));
         tiposContacto.add(new GenValorCombo("F", "Fax"));
         jcmbTipoContacto.setItems(tiposContacto);
-        
+
         bindPersona();
         bindListaDirecciones();
         bindListaContactos();
-        
+
     }
 
     private void bindPersona() {
@@ -198,17 +159,26 @@ public class PersonaController implements Initializable {
         tbcTipoContacto.setCellValueFactory(new PropertyValueFactory<>("con_tipo"));
     }
 
+    private void agregarDireccionALista(BikDireccion direccion) {
+        if (!this.direcciones.contains(direccion)) {
+            this.direcciones.add(direccion);
+        } else {
+            this.direcciones.set(this.direcciones.indexOf(direccion), direccion);
+        }
+        tbvDirecciones.refresh();
+    }
+
     @FXML
     private void guardarPersona(ActionEvent event) {
-        
+
         Resultado<BikPersona> resultado = new Resultado<>();
-        
-        direcciones.stream().forEach(d->personaDao.getDireccionDao().add(new DireccionDao(d)));
-        contactos.stream().forEach(d->personaDao.getContactoDao().add(new ContactoDao(d)));
-        
+
+        direcciones.stream().forEach(d -> personaDao.getDireccionDao().add(new DireccionDao(d)));
+        contactos.stream().forEach(d -> personaDao.getContactoDao().add(new ContactoDao(d)));
+
         resultado = personaDao.save();
-        
-       if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+
+        if (resultado.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar persona", resultado.getMensaje());
             return;
         }
@@ -217,7 +187,7 @@ public class PersonaController implements Initializable {
 
     @FXML
     private void agregarDireccion(ActionEvent event) {
-        new BikDireccion(direccionDao);
+        agregarDireccionALista(new BikDireccion(direccionDao));
     }
 
     @FXML
@@ -227,7 +197,7 @@ public class PersonaController implements Initializable {
 
     @FXML
     void limpiarModulo(ActionEvent event) {
-        
+
     }
 
 }

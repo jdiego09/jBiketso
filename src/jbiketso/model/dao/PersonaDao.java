@@ -201,18 +201,18 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
             persona.setPerFechanacimiento(new Date());
             persona = (BikPersona) super.save(persona);
 
-//            if (persona.getPerCodigo() != null) {
-//
-//                if (!persona.getBikDireccionList().isEmpty()) {
-//                    for (DireccionDao direccion : this.getDireccionDao()) {
-//                        if (direccion.getCodigoDireccion() == null) {
-//                            BikDireccion nuevaDireccion = new BikDireccion(direccion);
-//                            nuevaDireccion.setDirPercodigo(persona);
-//                            persona.getBikDireccionList().add(nuevaDireccion);
-//                            getEntityManager().persist(nuevaDireccion);
-//                        }
-//                    }
-//                }
+            if (persona.getPerCodigo() != null) {
+
+                if (!persona.getBikDireccionList().isEmpty()) {
+                    for (DireccionDao direccion : this.getDireccionDao()) {
+                        if (direccion.getCodigoDireccion() == null) {
+                            BikDireccion nuevaDireccion = new BikDireccion(direccion);
+                            nuevaDireccion.setDirPercodigo(persona);
+                            persona.getBikDireccionList().add(nuevaDireccion);
+                            getEntityManager().persist(nuevaDireccion);
+                        }
+                    }
+                }
 //
 //                if (!persona.getBikContactoList().isEmpty()) {
 //                    for (ContactoDao contacto : this.getContactoDao()) {
@@ -225,15 +225,15 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
 //                    }
 //                }
 //
-//                resultado.setResultado(TipoResultado.SUCCESS);
-//                resultado.set(persona);
-//                resultado.setMensaje("Persona guardada correctamente.");
-//
-//            } else {
+                resultado.setResultado(TipoResultado.SUCCESS);
+                resultado.set(persona);
+                resultado.setMensaje("Persona guardada correctamente.");
+
+            } else {
                 resultado.setResultado(TipoResultado.ERROR);
                 resultado.set(persona);
                 resultado.setMensaje("No se pudo guardar la persona.");
-//            }
+            }
 
             return resultado;
 
