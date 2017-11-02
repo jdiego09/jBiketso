@@ -136,8 +136,8 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
             result.set(modulos);
             return result;
         } catch (Exception ex) {
-            Logger.getLogger(SeguridadDao.class.getName()).log(Level.SEVERE, null, ex);
-            result.setResultado(TipoResultado.SUCCESS);
+            Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
+            result.setResultado(TipoResultado.ERROR);
             result.setMensaje("Error consultando los módulos");
             return result;
         }
