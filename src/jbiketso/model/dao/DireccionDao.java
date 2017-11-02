@@ -17,45 +17,46 @@ import jbiketso.model.entities.BikDireccion;
 public class DireccionDao {
     
     public SimpleObjectProperty<Integer> codigoDireccion;
-    public SimpleObjectProperty<Integer> codigoPersona;
     public SimpleStringProperty detDireccion;
+    public PersonaDao personaDao;
 
     public DireccionDao() {
         this.codigoDireccion = new SimpleObjectProperty();
-        this.codigoPersona = new SimpleObjectProperty();
         this.detDireccion = new SimpleStringProperty();
+        this.personaDao = new PersonaDao();
     }    
     
-    public DireccionDao(Integer codigoDireccion, Integer codigoPersona, String detDireccion) {
+    public DireccionDao(Integer codigoDireccion, PersonaDao personaDao, String detDireccion) {
 
         this.codigoDireccion = new SimpleObjectProperty<>();
-        this.codigoPersona = new SimpleObjectProperty<>();
         this.detDireccion = new SimpleStringProperty();
+        this.personaDao = new PersonaDao();
         
         this.codigoDireccion.set(codigoDireccion);
-        this.codigoPersona.set(codigoPersona);
         this.detDireccion.set(detDireccion);
+        this.personaDao = personaDao;
 
     }
     
    public DireccionDao(BikDireccion direccion) {
 
         this.codigoDireccion = new SimpleObjectProperty<>();
-        this.codigoPersona = new SimpleObjectProperty<>();
         this.detDireccion = new SimpleStringProperty();
+        this.personaDao = new PersonaDao();
         
         this.codigoDireccion.set(direccion.getDirCodigo());
-        this.codigoPersona.set(direccion.getDirPercodigo().getPerCodigo());
+        if (direccion.getDirPercodigo() != null)
+            //this.personaDao.getset(direccion.getDirPercodigo().getPerCodigo());
         this.detDireccion.set(direccion.getDirDetalle());
 
     }
     
-    public ObjectProperty<Integer> getCodigoPersona() {
-        return codigoPersona;
+    public PersonaDao getPersonaDao() {
+        return personaDao;
     }
 
-    public void setCodigoPersona(Integer codigoPersona) {
-        this.codigoPersona.set(codigoPersona);
+    public void setPersonaDao(PersonaDao personaDao) {
+        this.personaDao = personaDao;
     }
 
     public String getDetDireccion() {

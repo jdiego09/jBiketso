@@ -26,6 +26,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.model.dao.PersonaDao;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -107,6 +108,10 @@ public class BikPersona implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuPercodigo", fetch = FetchType.LAZY)
     private List<BikUsuario> bikUsuarioList1;
 
+    public BikPersona(PersonaDao personDao) {
+        // Se debe descomponer
+    }
+    
     public BikPersona() {
     }
 

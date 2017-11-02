@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -173,6 +174,9 @@ public class PersonaController implements Initializable {
 
         Resultado<BikPersona> resultado = new Resultado<>();
 
+        if(personaDao.getDireccionDao().isEmpty())
+            personaDao.setDireccionDao(new ArrayList<>());
+        
         direcciones.stream().forEach(d -> personaDao.getDireccionDao().add(new DireccionDao(d)));
         contactos.stream().forEach(d -> personaDao.getContactoDao().add(new ContactoDao(d)));
 

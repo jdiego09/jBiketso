@@ -43,6 +43,10 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
 
     private BikPersona persona;
 
+    public PersonaDao(BikPersona persona) {
+        // Se debe descomponer.
+    }
+    
     public PersonaDao() {
         this.cedula = new SimpleStringProperty();
         this.nombres = new SimpleStringProperty();
