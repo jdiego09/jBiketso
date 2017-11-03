@@ -7,6 +7,8 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,6 +31,7 @@ import jbiketso.model.dao.DireccionDao;
  * @author Anayansy
  */
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "bik_direccion", schema = "biketso")
 @XmlRootElement
 @NamedQueries({

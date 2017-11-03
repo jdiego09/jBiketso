@@ -119,7 +119,6 @@ public class BikPersona implements Serializable {
         this.perEstadocivil = personaDao.getEstadoCivil().getCodigo();
         this.perProfesion = personaDao.getProfesion();
         this.perGenero = personaDao.getGenero().getCodigo();
-        this.bikDireccionList = personaDao.getDireccionDao();
     }
 
     public BikPersona() {

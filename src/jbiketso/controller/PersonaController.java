@@ -148,7 +148,7 @@ public class PersonaController implements Initializable {
             tbvDirecciones.setItems(direcciones);
             tbvDirecciones.refresh();
         }
-        tbcDetDireccion.setCellValueFactory(new PropertyValueFactory<>("dir_detalle"));
+        tbcDetDireccion.setCellValueFactory(new PropertyValueFactory<>("dirDetalle"));
     }
 
     private void bindListaContactos() {
@@ -156,16 +156,17 @@ public class PersonaController implements Initializable {
             tbvContactos.setItems(contactos);
             tbvContactos.refresh();
         }
-        tbcDetContacto.setCellValueFactory(new PropertyValueFactory<>("con_detalle"));
-        tbcTipoContacto.setCellValueFactory(new PropertyValueFactory<>("con_tipo"));
+        tbcDetContacto.setCellValueFactory(new PropertyValueFactory<>("conDetalle"));
+        tbcTipoContacto.setCellValueFactory(new PropertyValueFactory<>("conTipo"));
     }
 
     private void agregarDireccionALista(BikDireccion direccion) {
-        if (!this.direcciones.contains(direccion)) {
+        /*if (!this.direcciones.contains(direccion)) {
             this.direcciones.add(direccion);
         } else {
             this.direcciones.set(this.direcciones.indexOf(direccion), direccion);
-        }
+        }*/
+        this.direcciones.add(direccion);
         tbvDirecciones.refresh();
     }
 
@@ -177,7 +178,7 @@ public class PersonaController implements Initializable {
         if(personaDao.getDireccionDao().isEmpty())
             personaDao.setDireccionDao(new ArrayList<>());
         
-        //direcciones.stream().forEach(d -> personaDao.getDireccionDao().add(new DireccionDao(d)));
+        direcciones.stream().forEach(d -> personaDao.getDireccionDao().add(new DireccionDao(d)));
         //contactos.stream().forEach(d -> personaDao.getContactoDao().add(new ContactoDao(d)));
 
         resultado = personaDao.save();
