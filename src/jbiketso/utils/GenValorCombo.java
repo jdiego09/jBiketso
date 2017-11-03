@@ -14,6 +14,8 @@ public class GenValorCombo {
     String codigo;
     String descripcion;
 
+    
+    
     public GenValorCombo(String codigo, String descripcion) {
         this.codigo = codigo;
         this.descripcion = descripcion;
