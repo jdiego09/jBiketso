@@ -38,13 +38,48 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
     public ObjectProperty<GenValorCombo> estadoCivil;
     public SimpleStringProperty profesion;
 
-    public ArrayList<DireccionDao> direccionDao;
-    public ArrayList<ContactoDao> contactoDao;
+    public ArrayList<BikDireccion> direccionDao;
+    public ArrayList<BikContacto> contactoDao;
 
     private BikPersona persona;
 
     public PersonaDao(BikPersona persona) {
-        // Se debe descomponer.
+        
+        this.cedula = new SimpleStringProperty();
+        this.nombres = new SimpleStringProperty();
+        this.primerApellido = new SimpleStringProperty();
+        this.segundoApellido = new SimpleStringProperty();
+        this.fechaNacimiento = new SimpleObjectProperty();
+        this.genero = new SimpleObjectProperty();
+        this.nacionalidad = new SimpleStringProperty();
+        this.estadoCivil = new SimpleObjectProperty();
+        this.profesion = new SimpleStringProperty();
+        this.direccionDao = new ArrayList<>();
+
+        this.cedula.set(persona.getPerCedula());
+        this.nombres.set(persona.getPerNombres());
+        this.primerApellido.set(persona.getPerPrimerapellido());
+        this.segundoApellido.set(persona.getPerSegundoapellido());
+        this.fechaNacimiento.set(persona.getPerFechanacimiento());
+        if (persona.getPerGenero().equalsIgnoreCase("m")) {
+            this.genero.set(new GenValorCombo("M", "Masculino"));
+        } else {
+            this.genero.set(new GenValorCombo("F", "Femenino"));
+        }
+        this.nacionalidad.set(persona.getPerNacionalidad());
+        if (persona.getPerEstadocivil().equalsIgnoreCase("s")) {
+            this.genero.set(new GenValorCombo("S", "Soltero"));
+        } else if (persona.getPerEstadocivil().equalsIgnoreCase("c")) {
+            this.genero.set(new GenValorCombo("C", "Casado"));
+        } else if (persona.getPerEstadocivil().equalsIgnoreCase("d")) {
+            this.genero.set(new GenValorCombo("D", "Divorsiado"));
+        } else if (persona.getPerEstadocivil().equalsIgnoreCase("u")) {
+            this.genero.set(new GenValorCombo("U", "Unión libre"));
+        } else if (persona.getPerEstadocivil().equalsIgnoreCase("o")) {
+            this.genero.set(new GenValorCombo("O", "Otro"));
+        }
+        this.profesion.set(persona.getPerProfesion());
+        //this.direccionDao = persona.getBikDireccionList().;
     }
     
     public PersonaDao() {
@@ -96,7 +131,7 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
             this.genero.set(new GenValorCombo("O", "Otro"));
         }
         this.profesion.set(profesion);
-        this.direccionDao = direccionDao;
+        //this.direccionDao = direccionDao;
 
     }
 
@@ -172,19 +207,19 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
         this.profesion.set(profesion);
     }
 
-    public ArrayList<DireccionDao> getDireccionDao() {
+    public ArrayList<BikDireccion> getDireccionDao() {
         return direccionDao;
     }
 
-    public void setDireccionDao(ArrayList<DireccionDao> direccionDao) {
+    public void setDireccionDao(ArrayList<BikDireccion> direccionDao) {
         this.direccionDao = direccionDao;
     }
 
-    public ArrayList<ContactoDao> getContactoDao() {
+    public ArrayList<BikContacto> getContactoDao() {
         return contactoDao;
     }
 
-    public void setContactoDao(ArrayList<ContactoDao> contactoDao) {
+    public void setContactoDao(ArrayList<BikContacto> contactoDao) {
         this.contactoDao = contactoDao;
     }
 
@@ -205,18 +240,18 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
             persona.setPerFechanacimiento(new Date());
             persona = (BikPersona) super.save(persona);
 
-            if (persona.getPerCodigo() != null) {
+           if (persona.getPerCodigo() != null) {
 
-                if (!persona.getBikDireccionList().isEmpty()) {
-                    for (DireccionDao direccion : this.getDireccionDao()) {
-                        if (direccion.getCodigoDireccion() == null) {
+           /*      if (!persona.getBikDireccionList().isEmpty()) {
+                    for (BikDireccion direccion : this.getDireccionDao()) {
+                        if (direccion.getDirCodigo() == null) {
                             BikDireccion nuevaDireccion = new BikDireccion(direccion);
                             nuevaDireccion.setDirPercodigo(persona);
                             persona.getBikDireccionList().add(nuevaDireccion);
                             getEntityManager().persist(nuevaDireccion);
                         }
                     }
-                }
+                }*/
 //
 //                if (!persona.getBikContactoList().isEmpty()) {
 //                    for (ContactoDao contacto : this.getContactoDao()) {

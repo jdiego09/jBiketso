@@ -177,8 +177,8 @@ public class PersonaController implements Initializable {
         if(personaDao.getDireccionDao().isEmpty())
             personaDao.setDireccionDao(new ArrayList<>());
         
-        direcciones.stream().forEach(d -> personaDao.getDireccionDao().add(new DireccionDao(d)));
-        contactos.stream().forEach(d -> personaDao.getContactoDao().add(new ContactoDao(d)));
+        //direcciones.stream().forEach(d -> personaDao.getDireccionDao().add(new DireccionDao(d)));
+        //contactos.stream().forEach(d -> personaDao.getContactoDao().add(new ContactoDao(d)));
 
         resultado = personaDao.save();
 
