@@ -8,6 +8,9 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Basic;
@@ -24,9 +27,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.model.dao.PersonaDao;
+import jbiketso.utils.GenValorCombo;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -51,36 +56,27 @@ import jbiketso.model.dao.PersonaDao;
 public class BikPersona implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "per_codigo", nullable = false)
+    @Transient
     private Integer perCodigo;
-    @Basic(optional = false)
-    @Column(name = "per_cedula")
-    private String perCedula;
-    @Basic(optional = false)
-    @Column(name = "per_nombres")
-    private String perNombres;
-    @Basic(optional = false)
-    @Column(name = "per_primerapellido")
-    private String perPrimerapellido;
-    @Basic(optional = false)
-    @Column(name = "per_segundoapellido")
-    private String perSegundoapellido;
-    @Basic(optional = false)
-    @Column(name = "per_fechanacimiento")
-    @Temporal(TemporalType.DATE)
-    private Date perFechanacimiento;
-    @Basic(optional = false)
-    @Column(name = "per_genero")
-    private String perGenero;
-    @Column(name = "per_nacionalidad")
-    private String perNacionalidad;
-    @Column(name = "per_estadocivil")
-    private String perEstadocivil;
-    @Column(name = "per_profesion")
-    private String perProfesion;
+    @Transient
+    private SimpleStringProperty perCedula;
+    @Transient
+    private SimpleStringProperty perNombres;
+    @Transient
+    private SimpleStringProperty perPrimerapellido;
+    @Transient
+    private SimpleStringProperty perSegundoapellido;
+    @Transient
+    private SimpleObjectProperty<Date> perFechanacimiento;
+    @Transient
+    private ObjectProperty<GenValorCombo> perGenero;
+    @Transient
+    private SimpleStringProperty perNacionalidad;
+    @Transient
+    private ObjectProperty<GenValorCombo> perEstadocivil;
+    @Transient
+    private SimpleStringProperty perProfesion;
+
     @Column(name = "per_usuarioingresa")
     private String perUsuarioingresa;
     @Column(name = "per_fechaingresa")
@@ -91,6 +87,7 @@ public class BikPersona implements Serializable {
     @Column(name = "per_fechamodifica")
     @Temporal(TemporalType.TIMESTAMP)
     private Date perFechamodifica;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dirPercodigo", fetch = FetchType.LAZY)
     private List<BikDireccion> bikDireccionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funPercodigo", fetch = FetchType.LAZY)
@@ -109,16 +106,45 @@ public class BikPersona implements Serializable {
     private List<BikUsuario> bikUsuarioList1;
 
     public BikPersona(PersonaDao personaDao) {
+
+        this.perCedula = new SimpleStringProperty();
+        this.perNombres = new SimpleStringProperty();
+        this.perPrimerapellido = new SimpleStringProperty();
+        this.perSegundoapellido = new SimpleStringProperty();
+        this.perFechanacimiento = new SimpleObjectProperty<>();
+        this.perGenero = new SimpleObjectProperty<>();
+        this.perNacionalidad = new SimpleStringProperty();
+        this.perEstadocivil = new SimpleObjectProperty<>();
+        this.perProfesion = new SimpleStringProperty();
+
         this.perCodigo = personaDao.getPersona().getPerCodigo();
-        this.perCedula = personaDao.getCedula();
-        this.perNombres = personaDao.getNombres();
-        this.perPrimerapellido = personaDao.getPrimerApellido();
-        this.perSegundoapellido = personaDao.getSegundoApellido();
-        this.perFechanacimiento = personaDao.getFechaNacimiento();
-        this.perNacionalidad = personaDao.getNacionalidad();
-        this.perEstadocivil = personaDao.getEstadoCivil().getCodigo();
-        this.perProfesion = personaDao.getProfesion();
-        this.perGenero = personaDao.getGenero().getCodigo();
+        this.perCedula.set(personaDao.getCedula());
+        this.perNombres.set(personaDao.getNombres());
+        this.perPrimerapellido.set(personaDao.getPrimerApellido());
+        this.perSegundoapellido.set(personaDao.getSegundoApellido());
+        this.perFechanacimiento.set(personaDao.getFechaNacimiento());
+        GenValorCombo valorGenero = null;
+        if (personaDao.getGenero().getCodigo().equalsIgnoreCase("m")) {
+            valorGenero = new GenValorCombo("M", "Masculino");
+        } else {
+            valorGenero = new GenValorCombo("F", "Femenino");
+        }
+        this.perGenero.set(valorGenero);
+        this.perNacionalidad.set(personaDao.getNacionalidad());
+        GenValorCombo valorEstadoCivil = null;
+        if (personaDao.getEstadoCivil().getCodigo().equalsIgnoreCase("s")) {
+            valorEstadoCivil = new GenValorCombo("S", "Soltero");
+        } else if (personaDao.getEstadoCivil().getCodigo().equalsIgnoreCase("c")) {
+            valorEstadoCivil = new GenValorCombo("C", "Casado");
+        } else if (personaDao.getEstadoCivil().getCodigo().equalsIgnoreCase("d")) {
+            valorEstadoCivil = new GenValorCombo("D", "Divorsiado");
+        } else if (personaDao.getEstadoCivil().getCodigo().equalsIgnoreCase("u")) {
+            valorEstadoCivil = new GenValorCombo("U", "Unión libre");
+        } else if (personaDao.getEstadoCivil().getCodigo().equalsIgnoreCase("o")) {
+            valorEstadoCivil = new GenValorCombo("O", "Otro");
+        }
+        this.perEstadocivil.set(valorEstadoCivil);
+        this.perProfesion.set(personaDao.getProfesion());
     }
 
     public BikPersona() {
@@ -129,18 +155,52 @@ public class BikPersona implements Serializable {
     }
 
     public BikPersona(Integer perCodigo, String perCedula, String perNombres, String perPrimerapellido, String perSegundoapellido, Date perFechanacimiento, String perGenero, String perNacionalidad, String perEstadocivil, String perProfesion) {
+
+        this.perCedula = new SimpleStringProperty();
+        this.perNombres = new SimpleStringProperty();
+        this.perPrimerapellido = new SimpleStringProperty();
+        this.perSegundoapellido = new SimpleStringProperty();
+        this.perFechanacimiento = new SimpleObjectProperty<>();
+        this.perGenero = new SimpleObjectProperty<>();
+        this.perNacionalidad = new SimpleStringProperty();
+        this.perEstadocivil = new SimpleObjectProperty<>();
+        this.perProfesion = new SimpleStringProperty();
+
         this.perCodigo = perCodigo;
-        this.perCedula = perCedula;
-        this.perNombres = perNombres;
-        this.perPrimerapellido = perPrimerapellido;
-        this.perSegundoapellido = perSegundoapellido;
-        this.perFechanacimiento = perFechanacimiento;
-        this.perNacionalidad = perNacionalidad;
-        this.perEstadocivil = perEstadocivil;
-        this.perProfesion = perProfesion;
-        this.perGenero = perGenero;
+        this.perCedula.set(perCedula);
+        this.perNombres.set(perNombres);
+        this.perPrimerapellido.set(perPrimerapellido);
+        this.perSegundoapellido.set(perSegundoapellido);
+        this.perFechanacimiento.set(perFechanacimiento);
+        GenValorCombo valorGenero = null;
+        if (perGenero.equalsIgnoreCase("m")) {
+            valorGenero = new GenValorCombo("M", "Masculino");
+        } else {
+            valorGenero = new GenValorCombo("F", "Femenino");
+        }
+        this.perGenero.set(valorGenero);
+        this.perNacionalidad.set(perNacionalidad);
+        GenValorCombo valorEstadoCivil = null;
+        if (perEstadocivil.equalsIgnoreCase("s")) {
+            valorEstadoCivil = new GenValorCombo("S", "Soltero");
+        } else if (perEstadocivil.equalsIgnoreCase("c")) {
+            valorEstadoCivil = new GenValorCombo("C", "Casado");
+        } else if (perEstadocivil.equalsIgnoreCase("d")) {
+            valorEstadoCivil = new GenValorCombo("D", "Divorsiado");
+        } else if (perEstadocivil.equalsIgnoreCase("u")) {
+            valorEstadoCivil = new GenValorCombo("U", "Unión libre");
+        } else if (perEstadocivil.equalsIgnoreCase("o")) {
+            valorEstadoCivil = new GenValorCombo("O", "Otro");
+        }
+        this.perEstadocivil.set(valorEstadoCivil);
+        this.perProfesion.set(perProfesion);
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "per_codigo", nullable = false)
+    @Access(AccessType.PROPERTY)
     public Integer getPerCodigo() {
         return perCodigo;
     }
@@ -149,76 +209,129 @@ public class BikPersona implements Serializable {
         this.perCodigo = perCodigo;
     }
 
+    @Basic(optional = false)
+    @Column(name = "per_cedula")
+    @Access(AccessType.PROPERTY)
     public String getPerCedula() {
-        return perCedula;
+        return perCedula.get();
     }
 
     public void setPerCedula(String perCedula) {
-        this.perCedula = perCedula;
+        this.perCedula.set(perCedula);
+    }
+    
+    public SimpleStringProperty getPerCedulaProperty() {
+        return perCedula;
     }
 
+    @Basic(optional = false)
+    @Column(name = "per_nombres")
+    @Access(AccessType.PROPERTY)
     public String getPerNombres() {
-        return perNombres;
+        return perNombres.get();
     }
 
     public void setPerNombres(String perNombres) {
-        this.perNombres = perNombres;
+        this.perNombres.set(perNombres);
     }
 
+    @Basic(optional = false)
+    @Column(name = "per_primerapellido")
+    @Access(AccessType.PROPERTY)
     public String getPerPrimerapellido() {
-        return perPrimerapellido;
+        return perPrimerapellido.get();
     }
 
     public void setPerPrimerapellido(String perPrimerapellido) {
-        this.perPrimerapellido = perPrimerapellido;
+        this.perPrimerapellido.set(perPrimerapellido);
     }
 
+    @Basic(optional = false)
+    @Column(name = "per_segundoapellido")
+    @Access(AccessType.PROPERTY)
     public String getPerSegundoapellido() {
-        return perSegundoapellido;
+        return perSegundoapellido.get();
     }
 
     public void setPerSegundoapellido(String perSegundoapellido) {
-        this.perSegundoapellido = perSegundoapellido;
+        this.perSegundoapellido.set(perSegundoapellido);
     }
 
+    @Basic(optional = false)
+    @Column(name = "per_fechanacimiento")
+    @Temporal(TemporalType.DATE)
+    @Access(AccessType.PROPERTY)
     public Date getPerFechanacimiento() {
-        return perFechanacimiento;
+        return perFechanacimiento.get();
     }
 
     public void setPerFechanacimiento(Date perFechanacimiento) {
-        this.perFechanacimiento = perFechanacimiento;
+        this.perFechanacimiento.set(perFechanacimiento);
     }
 
+    @Basic(optional = false)
+    @Column(name = "per_genero")
+    @Access(AccessType.PROPERTY)
     public String getPerGenero() {
-        return perGenero;
+        return perGenero.get().getCodigo();
     }
 
     public void setPerGenero(String perGenero) {
-        this.perGenero = perGenero;
+        GenValorCombo valorGenero = null;
+        if (this.perGenero == null) {
+            this.perGenero = new SimpleObjectProperty();
+        }
+        if (perGenero.equalsIgnoreCase("m")) {
+            valorGenero = new GenValorCombo("M", "Masculino");
+        } else {
+            valorGenero = new GenValorCombo("F", "Femenino");
+        }
+        this.perGenero.set(valorGenero);
     }
 
+    @Column(name = "per_nacionalidad")
+    @Access(AccessType.PROPERTY)
     public String getPerNacionalidad() {
-        return perNacionalidad;
+        return perNacionalidad.get();
     }
 
     public void setPerNacionalidad(String perNacionalidad) {
-        this.perNacionalidad = perNacionalidad;
+        this.perNacionalidad.set(perNacionalidad);
     }
 
+    @Column(name = "per_estadocivil")
+    @Access(AccessType.PROPERTY)
     public String getPerEstadocivil() {
-        return perEstadocivil;
+        return perEstadocivil.getName();
     }
 
     public void setPerEstadocivil(String perEstadocivil) {
-        this.perEstadocivil = perEstadocivil;
+        GenValorCombo valorEstadoCivil = null;
+        if (this.perEstadocivil == null) {
+            this.perEstadocivil = new SimpleObjectProperty();
+        }
+        if (perEstadocivil.equalsIgnoreCase("s")) {
+            valorEstadoCivil = new GenValorCombo("S", "Soltero");
+        } else if (perEstadocivil.equalsIgnoreCase("c")) {
+            valorEstadoCivil = new GenValorCombo("C", "Casado");
+        } else if (perEstadocivil.equalsIgnoreCase("d")) {
+            valorEstadoCivil = new GenValorCombo("D", "Divorsiado");
+        } else if (perEstadocivil.equalsIgnoreCase("u")) {
+            valorEstadoCivil = new GenValorCombo("U", "Unión libre");
+        } else if (perEstadocivil.equalsIgnoreCase("o")) {
+            valorEstadoCivil = new GenValorCombo("O", "Otro");
+        }
+        this.perEstadocivil.set(valorEstadoCivil);
     }
 
+    @Column(name = "per_profesion")
+    @Access(AccessType.PROPERTY)
     public String getPerProfesion() {
-        return perProfesion;
+        return perProfesion.get();
     }
 
     public void setPerProfesion(String perProfesion) {
-        this.perProfesion = perProfesion;
+        this.perProfesion.set(perProfesion);
     }
 
     public String getPerUsuarioingresa() {
