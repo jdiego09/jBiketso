@@ -93,6 +93,7 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
         this.estadoCivil = new SimpleObjectProperty();
         this.profesion = new SimpleStringProperty();
         this.direccionDao = new ArrayList<>();
+        this.persona = new BikPersona();
     }
 
     public PersonaDao(String cedula, String nombres, String primerApellido, String segundoApellido, Date fechaNacimiento, String genero, String nacionalidad, String estadoCivil, String profesion, ArrayList<DireccionDao> direccionDao, ArrayList<ContactoDao> contactoDao) {

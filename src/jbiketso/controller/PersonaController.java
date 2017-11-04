@@ -126,7 +126,9 @@ public class PersonaController implements Initializable {
 
     private void bindPersona() {
 
-        jtxfCedula.textProperty().bindBidirectional(personaDao.cedula);
+        jtxfCedula.textProperty().bindBidirectional(personaDao.getPersona().getPerCedulaProperty());
+        
+        
         jtxfNombres.textProperty().bindBidirectional(personaDao.nombres);
         jtxfPrimerApellido.textProperty().bindBidirectional(personaDao.primerApellido);
         jtxfSegundoApellido.textProperty().bindBidirectional(personaDao.segundoApellido);

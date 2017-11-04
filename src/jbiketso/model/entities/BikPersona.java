@@ -117,7 +117,7 @@ public class BikPersona implements Serializable {
         this.perEstadocivil = new SimpleObjectProperty<>();
         this.perProfesion = new SimpleStringProperty();
 
-        this.perCodigo = personaDao.getPersona().getPerCodigo();
+        //this.perCodigo = personaDao.getPersona().getPerCodigo();
         this.perCedula.set(personaDao.getCedula());
         this.perNombres.set(personaDao.getNombres());
         this.perPrimerapellido.set(personaDao.getPrimerApellido());
