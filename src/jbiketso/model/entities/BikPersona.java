@@ -221,7 +221,10 @@ public class BikPersona implements Serializable {
     }
     
     public SimpleStringProperty getPerCedulaProperty() {
-        return perCedula;
+        if (this.perCedula == null){
+            this.perCedula = new SimpleStringProperty();
+        }
+        return this.perCedula;
     }
 
     @Basic(optional = false)
@@ -234,6 +237,13 @@ public class BikPersona implements Serializable {
     public void setPerNombres(String perNombres) {
         this.perNombres.set(perNombres);
     }
+    
+    public SimpleStringProperty getPerNombresProperty() {
+        if (this.perNombres == null){
+            this.perNombres = new SimpleStringProperty();
+        }
+        return this.perNombres;
+    }
 
     @Basic(optional = false)
     @Column(name = "per_primerapellido")
@@ -244,6 +254,13 @@ public class BikPersona implements Serializable {
 
     public void setPerPrimerapellido(String perPrimerapellido) {
         this.perPrimerapellido.set(perPrimerapellido);
+    }
+    
+    public SimpleStringProperty getPerPrimerapellidoProperty() {
+        if (this.perPrimerapellido == null){
+            this.perPrimerapellido = new SimpleStringProperty();
+        }
+        return this.perPrimerapellido;
     }
 
     @Basic(optional = false)
@@ -256,6 +273,13 @@ public class BikPersona implements Serializable {
     public void setPerSegundoapellido(String perSegundoapellido) {
         this.perSegundoapellido.set(perSegundoapellido);
     }
+    
+    public SimpleStringProperty getPerSegundoapellidoProperty() {
+        if (this.perSegundoapellido == null){
+            this.perSegundoapellido = new SimpleStringProperty();
+        }
+        return this.perSegundoapellido;
+    }
 
     @Basic(optional = false)
     @Column(name = "per_fechanacimiento")
@@ -267,6 +291,13 @@ public class BikPersona implements Serializable {
 
     public void setPerFechanacimiento(Date perFechanacimiento) {
         this.perFechanacimiento.set(perFechanacimiento);
+    }
+    
+    public SimpleObjectProperty getPerFechanacimientoProperty() {
+        if (this.perFechanacimiento == null){
+            this.perFechanacimiento = new SimpleObjectProperty();
+        }
+        return this.perFechanacimiento;
     }
 
     @Basic(optional = false)
@@ -288,6 +319,13 @@ public class BikPersona implements Serializable {
         }
         this.perGenero.set(valorGenero);
     }
+    
+    public ObjectProperty getPerGeneroProperty() {
+        if (this.perGenero == null){
+            this.perGenero = new SimpleObjectProperty();
+        }
+        return this.perGenero;
+    }
 
     @Column(name = "per_nacionalidad")
     @Access(AccessType.PROPERTY)
@@ -297,6 +335,13 @@ public class BikPersona implements Serializable {
 
     public void setPerNacionalidad(String perNacionalidad) {
         this.perNacionalidad.set(perNacionalidad);
+    }
+    
+    public SimpleStringProperty getPerNacionalidadProperty() {
+        if (this.perNacionalidad == null){
+            this.perNacionalidad = new SimpleStringProperty();
+        }
+        return this.perNacionalidad;
     }
 
     @Column(name = "per_estadocivil")
@@ -323,6 +368,13 @@ public class BikPersona implements Serializable {
         }
         this.perEstadocivil.set(valorEstadoCivil);
     }
+    
+    public ObjectProperty getPerEstadocivilProperty() {
+        if (this.perEstadocivil == null){
+            this.perEstadocivil = new SimpleObjectProperty();
+        }
+        return this.perEstadocivil;
+    }
 
     @Column(name = "per_profesion")
     @Access(AccessType.PROPERTY)
@@ -332,6 +384,13 @@ public class BikPersona implements Serializable {
 
     public void setPerProfesion(String perProfesion) {
         this.perProfesion.set(perProfesion);
+    }
+    
+    public SimpleStringProperty getPerProfesionProperty() {
+        if (this.perProfesion == null){
+            this.perProfesion = new SimpleStringProperty();
+        }
+        return this.perProfesion;
     }
 
     public String getPerUsuarioingresa() {

@@ -44,7 +44,7 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
     private BikPersona persona;
 
     public PersonaDao(BikPersona persona) {
-        
+
         this.cedula = new SimpleStringProperty();
         this.nombres = new SimpleStringProperty();
         this.primerApellido = new SimpleStringProperty();
@@ -81,7 +81,7 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
         this.profesion.set(persona.getPerProfesion());
         //this.direccionDao = persona.getBikDireccionList(new ArrayList());
     }
-    
+
     public PersonaDao() {
         this.cedula = new SimpleStringProperty();
         this.nombres = new SimpleStringProperty();
@@ -237,13 +237,21 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
         Resultado<BikPersona> resultado = new Resultado<>();
         try {
 
-            persona = new BikPersona(0, getCedula(), getNombres(), getPrimerApellido(), getSegundoApellido(), getFechaNacimiento(), getGenero().getCodigo(), getNacionalidad(), getEstadoCivil().getCodigo(), getProfesion());
+            persona = new BikPersona(0, this.persona.getPerCedula(),
+                    this.persona.getPerNombres(),
+                    this.persona.getPerPrimerapellido(),
+                    this.persona.getPerSegundoapellido(),
+                    this.persona.getPerFechanacimiento(),
+                    this.persona.getPerGenero(),
+                    this.persona.getPerNacionalidad(),
+                    this.persona.getPerEstadocivil(),
+                    this.persona.getPerProfesion());
             persona.setPerFechanacimiento(new Date());
             persona = (BikPersona) super.save(persona);
 
-           if (persona.getPerCodigo() != null) {
+            if (persona.getPerCodigo() != null) {
 
-                 if (persona.getBikDireccionList().isEmpty()) {
+                if (persona.getBikDireccionList().isEmpty()) {
                     for (DireccionDao direccion : this.getDireccionDao()) {
                         if (direccion.getCodigoDireccion() == null) {
                             BikDireccion nuevaDireccion = new BikDireccion(0, direccion.detDireccion.get());

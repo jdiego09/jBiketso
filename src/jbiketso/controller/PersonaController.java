@@ -127,16 +127,14 @@ public class PersonaController implements Initializable {
     private void bindPersona() {
 
         jtxfCedula.textProperty().bindBidirectional(personaDao.getPersona().getPerCedulaProperty());
-        
-        
-        jtxfNombres.textProperty().bindBidirectional(personaDao.nombres);
-        jtxfPrimerApellido.textProperty().bindBidirectional(personaDao.primerApellido);
-        jtxfSegundoApellido.textProperty().bindBidirectional(personaDao.segundoApellido);
-        jcmbEstadoCivil.valueProperty().bindBidirectional(personaDao.estadoCivil);
-        jtxfNacionalidad.textProperty().bindBidirectional(personaDao.nacionalidad);
-        //dtpFechaNacimiento.valueProperty().bindBidirectional(personaDao.fechaNacimiento);
-        jcmbGenero.valueProperty().bindBidirectional(personaDao.genero);
-        jtxfProfesion.textProperty().bindBidirectional(personaDao.profesion);
+        jtxfNombres.textProperty().bindBidirectional(personaDao.getPersona().getPerNombresProperty());
+        jtxfPrimerApellido.textProperty().bindBidirectional(personaDao.getPersona().getPerPrimerapellidoProperty());
+        jtxfSegundoApellido.textProperty().bindBidirectional(personaDao.getPersona().getPerSegundoapellidoProperty());
+        jcmbEstadoCivil.valueProperty().bindBidirectional(personaDao.getPersona().getPerEstadocivilProperty());
+        jtxfNacionalidad.textProperty().bindBidirectional(personaDao.getPersona().getPerNacionalidadProperty());
+        dtpFechaNacimiento.valueProperty().bindBidirectional(personaDao.getPersona().getPerFechanacimientoProperty());
+        jcmbGenero.valueProperty().bindBidirectional(personaDao.getPersona().getPerGeneroProperty());
+        jtxfProfesion.textProperty().bindBidirectional(personaDao.getPersona().getPerProfesionProperty());
 
         jtxfDetaDireccion.textProperty().bindBidirectional(direccionDao.detDireccion);
 
