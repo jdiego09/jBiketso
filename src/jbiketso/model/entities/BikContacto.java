@@ -7,6 +7,11 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,16 +26,17 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-import jbiketso.model.dao.ContactoDao;
-import jbiketso.model.dao.DireccionDao;
+import jbiketso.utils.GenValorCombo;
 
 /**
  *
- * @author Anayansy
+ * @author jdiego
  */
 @Entity
-@Table(name = "bik_contacto", schema = "biketso")
+@Access(AccessType.FIELD)
+@Table(name = "bik_contacto")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikContacto.findAll", query = "SELECT b FROM BikContacto b")
@@ -44,16 +50,14 @@ import jbiketso.model.dao.DireccionDao;
 public class BikContacto implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "con_codigo")
+
+    @Transient
     private Integer conCodigo;
-    @Basic(optional = false)
-    @Column(name = "con_tipo")
-    private String conTipo;
-    @Column(name = "con_detalle")
-    private String conDetalle;
+
+    @Transient
+    private ObjectProperty<GenValorCombo> conTipo;
+    @Transient
+    private SimpleStringProperty conDetalle;
     @Column(name = "con_usuarioingresa")
     private String conUsuarioingresa;
     @Column(name = "con_fechaingresa")
@@ -71,21 +75,33 @@ public class BikContacto implements Serializable {
     public BikContacto() {
     }
 
-    public BikContacto(Integer conCodigo) {
-        this.conCodigo = conCodigo;
+    public BikContacto(String conTipo, String detalle) {
+        String valor = null;
+        this.conTipo = new SimpleObjectProperty();
+        this.conDetalle = new SimpleStringProperty();
+        switch (conTipo.toLowerCase()) {
+            case "t":
+                valor = "Teléfono";
+                break;
+            case "c":
+                valor = "Correo";
+                break;
+            case "f":
+                valor = "Fax";
+                break;
+            default:
+                valor = "Otro";
+                break;
+        }
+        this.conTipo.set(new GenValorCombo(conTipo, valor));
+        this.conDetalle.set(detalle);
     }
 
-    public BikContacto(Integer conCodigo, String conTipo, String conDetalle) {
-        this.conCodigo = conCodigo;
-        this.conTipo = conTipo;
-        this.conDetalle = conDetalle;
-    }
-
-    public BikContacto(ContactoDao contactoDao) {
-        this.conTipo = contactoDao.getTipo().getCodigo();
-        this.conDetalle = contactoDao.getDetContacto();
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "con_codigo")
+    @Access(AccessType.PROPERTY)
     public Integer getConCodigo() {
         return conCodigo;
     }
@@ -94,20 +110,60 @@ public class BikContacto implements Serializable {
         this.conCodigo = conCodigo;
     }
 
+    @Access(AccessType.PROPERTY)
+    @Basic(optional = false)
+    @Column(name = "con_tipo")
     public String getConTipo() {
-        return conTipo;
+        return conTipo.get().getCodigo();
     }
 
     public void setConTipo(String conTipo) {
-        this.conTipo = conTipo;
+        if (this.conTipo == null) {
+            this.conTipo = new SimpleObjectProperty();
+        }
+        String valor = null;
+        switch (conTipo.toLowerCase()) {
+            case "t":
+                valor = "Teléfono";
+                break;
+            case "c":
+                valor = "Correo";
+                break;
+            case "f":
+                valor = "Fax";
+                break;
+            default:
+                valor = "Otro";
+                break;
+        }
+        this.conTipo.set(new GenValorCombo(conTipo, valor));
     }
 
+    public ObjectProperty getTipoContactoProperty() {
+        if (this.conTipo == null) {
+            this.conTipo = new SimpleObjectProperty();
+        }
+        return this.conTipo;
+    }
+
+    @Access(AccessType.PROPERTY)
+    @Column(name = "con_detalle")
     public String getConDetalle() {
-        return conDetalle;
+        return conDetalle.get();
     }
 
     public void setConDetalle(String conDetalle) {
-        this.conDetalle = conDetalle;
+        if (this.conDetalle == null) {
+            this.conDetalle = new SimpleStringProperty();
+        }
+        this.conDetalle.set(conDetalle);
+    }
+
+    public SimpleStringProperty getDetalleContactoProperty() {
+        if (this.conDetalle == null) {
+            this.conDetalle = new SimpleStringProperty();
+        }
+        return this.conDetalle;
     }
 
     public String getConUsuarioingresa() {
@@ -172,7 +228,7 @@ public class BikContacto implements Serializable {
 
     @Override
     public String toString() {
-        return "jbiketso.model.BikContacto[ conCodigo=" + conCodigo + " ]";
+        return "jbiketso.model.entities.BikContacto[ conCodigo=" + conCodigo + " ]";
     }
 
 }

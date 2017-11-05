@@ -9,7 +9,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,8 +23,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javax.xml.bind.annotation.XmlTransient;
-import jbiketso.model.dao.ContactoDao;
-import jbiketso.model.dao.DireccionDao;
 import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikContacto;
 import jbiketso.model.entities.BikDireccion;
@@ -40,6 +37,10 @@ import jbiketso.utils.TipoResultado;
  * @author Luis Diego
  */
 public class PersonaController implements Initializable {
+
+    private BikPersona persona;
+    private BikDireccion direccion;
+    private BikContacto contacto;
 
     @FXML
     private AnchorPane acpRoot;
@@ -91,16 +92,8 @@ public class PersonaController implements Initializable {
     ObservableList<GenValorCombo> tiposContacto = FXCollections
             .observableArrayList();
 
-    PersonaDao personaDao;
-    DireccionDao direccionDao;
-    ContactoDao contactoDao;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        this.personaDao = new PersonaDao();
-        this.direccionDao = new DireccionDao();
-        this.contactoDao = new ContactoDao();
 
         generos.add(new GenValorCombo("M", "Masculino"));
         generos.add(new GenValorCombo("F", "Femenino"));
@@ -118,6 +111,9 @@ public class PersonaController implements Initializable {
         tiposContacto.add(new GenValorCombo("F", "Fax"));
         jcmbTipoContacto.setItems(tiposContacto);
 
+        nuevaPersona();
+        nuevaDireccion();
+        nuevoContacto();
         bindPersona();
         bindListaDirecciones();
         bindListaContactos();
@@ -126,21 +122,33 @@ public class PersonaController implements Initializable {
 
     private void bindPersona() {
 
-        jtxfCedula.textProperty().bindBidirectional(personaDao.getPersona().getPerCedulaProperty());
-        jtxfNombres.textProperty().bindBidirectional(personaDao.getPersona().getPerNombresProperty());
-        jtxfPrimerApellido.textProperty().bindBidirectional(personaDao.getPersona().getPerPrimerapellidoProperty());
-        jtxfSegundoApellido.textProperty().bindBidirectional(personaDao.getPersona().getPerSegundoapellidoProperty());
-        jcmbEstadoCivil.valueProperty().bindBidirectional(personaDao.getPersona().getPerEstadocivilProperty());
-        jtxfNacionalidad.textProperty().bindBidirectional(personaDao.getPersona().getPerNacionalidadProperty());
-        dtpFechaNacimiento.valueProperty().bindBidirectional(personaDao.getPersona().getPerFechanacimientoProperty());
-        jcmbGenero.valueProperty().bindBidirectional(personaDao.getPersona().getPerGeneroProperty());
-        jtxfProfesion.textProperty().bindBidirectional(personaDao.getPersona().getPerProfesionProperty());
+        jtxfCedula.textProperty().bindBidirectional(persona.getPerCedulaProperty());
+        jtxfNombres.textProperty().bindBidirectional(persona.getPerNombresProperty());
+        jtxfPrimerApellido.textProperty().bindBidirectional(persona.getPerPrimerapellidoProperty());
+        jtxfSegundoApellido.textProperty().bindBidirectional(persona.getPerSegundoapellidoProperty());
+        jcmbEstadoCivil.valueProperty().bindBidirectional(persona.getPerEstadocivilProperty());
+        jtxfNacionalidad.textProperty().bindBidirectional(persona.getPerNacionalidadProperty());
+        dtpFechaNacimiento.valueProperty().bindBidirectional(persona.getPerFechanacimientoProperty());
+        jcmbGenero.valueProperty().bindBidirectional(persona.getPerGeneroProperty());
+        jtxfProfesion.textProperty().bindBidirectional(persona.getPerProfesionProperty());
 
-        jtxfDetaDireccion.textProperty().bindBidirectional(direccionDao.detDireccion);
+        jtxfDetaDireccion.textProperty().bindBidirectional(direccion.getDetalleDireccionProperty());
 
-        jtxfDetaContacto.textProperty().bindBidirectional(contactoDao.detContacto);
-        jcmbTipoContacto.valueProperty().bindBidirectional(contactoDao.tipo);
+        jtxfDetaContacto.textProperty().bindBidirectional(contacto.getDetalleContactoProperty());
+        jcmbTipoContacto.valueProperty().bindBidirectional(contacto.getTipoContactoProperty());
 
+    }
+
+    private void nuevaPersona() {
+        this.persona = new BikPersona();
+    }
+
+    private void nuevaDireccion() {
+        this.direccion = new BikDireccion();
+    }
+
+    private void nuevoContacto() {
+        this.contacto = new BikContacto();
     }
 
     private void bindListaDirecciones() {
@@ -166,22 +174,16 @@ public class PersonaController implements Initializable {
         } else {
             this.direcciones.set(this.direcciones.indexOf(direccion), direccion);
         }*/
+        this.direccion.setDirPercodigo(persona);
+        this.persona.getBikDireccionList().add(direccion);
         this.direcciones.add(direccion);
         tbvDirecciones.refresh();
     }
 
     @FXML
     private void guardarPersona(ActionEvent event) {
-
-        Resultado<BikPersona> resultado = new Resultado<>();
-
-        if(personaDao.getDireccionDao().isEmpty())
-            personaDao.setDireccionDao(new ArrayList<>());
-        
-        direcciones.stream().forEach(d -> personaDao.getDireccionDao().add(new DireccionDao(d)));
-        //contactos.stream().forEach(d -> personaDao.getContactoDao().add(new ContactoDao(d)));
-
-        resultado = personaDao.save();
+        PersonaDao.getInstance().setPersona(this.persona);
+        Resultado<BikPersona> resultado = PersonaDao.getInstance().save();
 
         if (resultado.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar persona", resultado.getMensaje());
@@ -192,7 +194,7 @@ public class PersonaController implements Initializable {
 
     @FXML
     private void agregarDireccion(ActionEvent event) {
-        agregarDireccionALista(new BikDireccion(direccionDao));
+        agregarDireccionALista(direccion);
     }
 
     @FXML

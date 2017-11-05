@@ -7,6 +7,7 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Basic;
@@ -23,8 +24,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-import jbiketso.model.dao.DireccionDao;
 
 /**
  *
@@ -45,14 +46,12 @@ import jbiketso.model.dao.DireccionDao;
 public class BikDireccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "dir_codigo")
+
+    @Transient
     private Integer dirCodigo;
-    @Basic(optional = false)
-    @Column(name = "dir_detalle")
-    private String dirDetalle;
+
+    @Transient
+    private SimpleStringProperty dirDetalle;
     @Column(name = "dir_usuarioingresa")
     private String dirUsuarioingresa;
     @Column(name = "dir_fechaingresa")
@@ -70,19 +69,19 @@ public class BikDireccion implements Serializable {
     public BikDireccion() {
     }
 
-    public BikDireccion(Integer dirCodigo) {
-        this.dirCodigo = dirCodigo;
+    public BikDireccion(String dirDetalle) {
+        if (this.dirDetalle == null) {
+            this.dirDetalle = new SimpleStringProperty();
+        }
+        this.dirDetalle.set(dirDetalle);
     }
 
-    public BikDireccion(Integer dirCodigo, String dirDetalle) {
-        this.dirCodigo = dirCodigo;
-        this.dirDetalle = dirDetalle;
-    }
 
-    public BikDireccion(DireccionDao direccionDao) {
-        this.dirDetalle = direccionDao.getDetDireccion();
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "dir_codigo")
+    @Access(AccessType.PROPERTY)
     public Integer getDirCodigo() {
         return dirCodigo;
     }
@@ -91,14 +90,27 @@ public class BikDireccion implements Serializable {
         this.dirCodigo = dirCodigo;
     }
 
+    @Basic(optional = false)
+    @Column(name = "dir_detalle")
+    @Access(AccessType.PROPERTY)
     public String getDirDetalle() {
-        return dirDetalle;
+        return dirDetalle.get();
     }
 
     public void setDirDetalle(String dirDetalle) {
-        this.dirDetalle = dirDetalle;
+        if (this.dirDetalle == null) {
+            this.dirDetalle = new SimpleStringProperty();
+        }
+        this.dirDetalle.set(dirDetalle);
     }
 
+    public SimpleStringProperty getDetalleDireccionProperty(){
+        if (this.dirDetalle == null) {
+            this.dirDetalle = new SimpleStringProperty();
+        }
+        return this.dirDetalle;
+    }
+    
     public String getDirUsuarioingresa() {
         return dirUsuarioingresa;
     }

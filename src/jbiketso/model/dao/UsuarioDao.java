@@ -20,104 +20,66 @@ import jbiketso.utils.TipoResultado;
  */
 public class UsuarioDao extends BaseDao<Integer, BikUsuario> {
 
-   private BikUsuario usuario;
+    private BikUsuario usuario;
 
-   public PersonaDao usuarioDao;
-   public PersonaDao encargadoDao;
+    private static UsuarioDao INSTANCE;
 
-   public SimpleStringProperty nombreUsuario;
-   public SimpleStringProperty nombreEncargado;
+    private UsuarioDao() {
+    }
 
-   public UsuarioDao() {
-      this.usuarioDao = new PersonaDao();
-      this.encargadoDao = new PersonaDao();
-      this.nombreUsuario = new SimpleStringProperty();
-      this.nombreEncargado = new SimpleStringProperty();
-   }
+    private static void createInstance() {
+        if (INSTANCE == null) {
+            // Sólo se accede a la zona sincronizada
+            // cuando la instancia no está creada
+            synchronized (UsuarioDao.class) {
+                // En la zona sincronizada sería necesario volver
+                // a comprobar que no se ha creado la instancia
+                if (INSTANCE == null) {
+                    INSTANCE = new UsuarioDao();
+                }
+            }
+        }
+    }
 
-   public PersonaDao getUsuarioDao() {
-      return usuarioDao;
-   }
+    public static UsuarioDao getInstance() {
+        if (INSTANCE == null) {
+            createInstance();
+        }
+        return INSTANCE;
+    }
 
-   public void setUsuarioDao(PersonaDao usuarioDao) {
-      this.usuarioDao = usuarioDao;
-   }
+    public void setUsuario(BikUsuario usuario) {
+        this.usuario = usuario;
+    }
 
-   public PersonaDao getEncargadoDao() {
-      return encargadoDao;
-   }
+    //para que solamente exista una instancia del objeto
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
+    }
+    
 
-   public void setEncargadoDao(PersonaDao encargadoDao) {
-      this.encargadoDao = encargadoDao;
-   }
-
-   public SimpleStringProperty getNombreUsuario() {
-      return nombreUsuario;
-   }
-
-   public void setNombreUsuario(SimpleStringProperty nombreUsuario) {
-      this.nombreUsuario = nombreUsuario;
-   }
-
-   public SimpleStringProperty getNombreEncargado() {
-      return nombreEncargado;
-   }
-
-   public void setNombreEncargado(SimpleStringProperty nombreEncargado) {
-      this.nombreEncargado = nombreEncargado;
-   }
-
-   
-   
-   /**
-    * *
-    * Función para obtener la información de una persona de acuerdo a su número
-    * de identificación.
-    *
-    * @param cedula número de identificación de la persona buscada
-    * @return la información de la persona buscada
-    */
-   public Resultado<BikPersona> getPersona(String cedula) {
-      Resultado<BikPersona> result = new Resultado<>();
-      BikPersona persona;
-
-      try {
-         Query query = getEntityManager().createNamedQuery("BikPersona.findByPerCedula");
-         query.setParameter("perCedula", cedula);
-         persona = (BikPersona) query.getSingleResult();
-
-         result.setResultado(TipoResultado.SUCCESS);
-         result.set(persona);
-         return result;
-      } catch (Exception ex) {
-         Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-         result.setResultado(TipoResultado.ERROR);
-         result.setMensaje("Error al traer información de la persona con la cédula [" + cedula + "].");
-         return result;
-      }
-   }
-
-   /**
-    * *
-    * Función para guardar la información de un usuario del centro.
-    *
-    * @return el usuario guardado
-    */
-   public Resultado<BikUsuario> save() {
-      Resultado<BikUsuario> result = new Resultado<>();
-      try {
-         usuario = new BikUsuario();
-         usuario = (BikUsuario) super.save(usuario);
-         result.setResultado(TipoResultado.SUCCESS);
-         result.set(usuario);
-         result.setMensaje("La información del usuario se guardó correctamente.");
-         return result;
-      } catch (Exception ex) {
-         Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
-         result.setResultado(TipoResultado.ERROR);
-         result.setMensaje("Error al guardar la información del usuario [" + usuario.getUsuPercodigo().getNombreCompleto() + "].");
-         return result;
-      }
-   }
+    /**
+     * *
+     * Función para guardar la información de un usuario del centro.
+     *
+     * @return el usuario guardado
+     */
+    public Resultado<BikUsuario> save() {
+        Resultado<BikUsuario> result = new Resultado<>();
+        try {
+            usuario = new BikUsuario();
+            usuario = (BikUsuario) super.save(usuario);
+            result.setResultado(TipoResultado.SUCCESS);
+            result.set(usuario);
+            result.setMensaje("La información del usuario se guardó correctamente.");
+            return result;
+        } catch (Exception ex) {
+            Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
+            result.setResultado(TipoResultado.ERROR);
+            result.setMensaje("Error al guardar la información del usuario [" + usuario.getUsuPercodigo().getNombreCompleto() + "].");
+            return result;
+        }
+    }
 
 }

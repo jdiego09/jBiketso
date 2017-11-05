@@ -23,10 +23,6 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author Anayansy
- */
 @Entity
 @Table(name = "bik_usuarios_sistema", schema="biketso")
 @XmlRootElement

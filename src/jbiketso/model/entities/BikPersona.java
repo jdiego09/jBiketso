@@ -6,6 +6,7 @@
 package jbiketso.model.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
@@ -67,7 +68,7 @@ public class BikPersona implements Serializable {
     @Transient
     private SimpleStringProperty perSegundoapellido;
     @Transient
-    private SimpleObjectProperty<Date> perFechanacimiento;
+    private SimpleObjectProperty<LocalDate> perFechanacimiento;
     @Transient
     private ObjectProperty<GenValorCombo> perGenero;
     @Transient
@@ -87,7 +88,7 @@ public class BikPersona implements Serializable {
     @Column(name = "per_fechamodifica")
     @Temporal(TemporalType.TIMESTAMP)
     private Date perFechamodifica;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dirPercodigo", fetch = FetchType.LAZY)
     private List<BikDireccion> bikDireccionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funPercodigo", fetch = FetchType.LAZY)
@@ -105,95 +106,17 @@ public class BikPersona implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuPercodigo", fetch = FetchType.LAZY)
     private List<BikUsuario> bikUsuarioList1;
 
-    public BikPersona(PersonaDao personaDao) {
-
-        this.perCedula = new SimpleStringProperty();
-        this.perNombres = new SimpleStringProperty();
-        this.perPrimerapellido = new SimpleStringProperty();
-        this.perSegundoapellido = new SimpleStringProperty();
-        this.perFechanacimiento = new SimpleObjectProperty<>();
-        this.perGenero = new SimpleObjectProperty<>();
-        this.perNacionalidad = new SimpleStringProperty();
-        this.perEstadocivil = new SimpleObjectProperty<>();
-        this.perProfesion = new SimpleStringProperty();
-
-        //this.perCodigo = personaDao.getPersona().getPerCodigo();
-        this.perCedula.set(personaDao.getCedula());
-        this.perNombres.set(personaDao.getNombres());
-        this.perPrimerapellido.set(personaDao.getPrimerApellido());
-        this.perSegundoapellido.set(personaDao.getSegundoApellido());
-        this.perFechanacimiento.set(personaDao.getFechaNacimiento());
-        GenValorCombo valorGenero = null;
-        if (personaDao.getGenero().getCodigo().equalsIgnoreCase("m")) {
-            valorGenero = new GenValorCombo("M", "Masculino");
-        } else {
-            valorGenero = new GenValorCombo("F", "Femenino");
-        }
-        this.perGenero.set(valorGenero);
-        this.perNacionalidad.set(personaDao.getNacionalidad());
-        GenValorCombo valorEstadoCivil = null;
-        if (personaDao.getEstadoCivil().getCodigo().equalsIgnoreCase("s")) {
-            valorEstadoCivil = new GenValorCombo("S", "Soltero");
-        } else if (personaDao.getEstadoCivil().getCodigo().equalsIgnoreCase("c")) {
-            valorEstadoCivil = new GenValorCombo("C", "Casado");
-        } else if (personaDao.getEstadoCivil().getCodigo().equalsIgnoreCase("d")) {
-            valorEstadoCivil = new GenValorCombo("D", "Divorsiado");
-        } else if (personaDao.getEstadoCivil().getCodigo().equalsIgnoreCase("u")) {
-            valorEstadoCivil = new GenValorCombo("U", "Unión libre");
-        } else if (personaDao.getEstadoCivil().getCodigo().equalsIgnoreCase("o")) {
-            valorEstadoCivil = new GenValorCombo("O", "Otro");
-        }
-        this.perEstadocivil.set(valorEstadoCivil);
-        this.perProfesion.set(personaDao.getProfesion());
-    }
-
     public BikPersona() {
-    }
-
-    public BikPersona(Integer perCodigo) {
-        this.perCodigo = perCodigo;
-    }
-
-    public BikPersona(Integer perCodigo, String perCedula, String perNombres, String perPrimerapellido, String perSegundoapellido, Date perFechanacimiento, String perGenero, String perNacionalidad, String perEstadocivil, String perProfesion) {
-
+        this.perCodigo = null;
         this.perCedula = new SimpleStringProperty();
         this.perNombres = new SimpleStringProperty();
         this.perPrimerapellido = new SimpleStringProperty();
         this.perSegundoapellido = new SimpleStringProperty();
-        this.perFechanacimiento = new SimpleObjectProperty<>();
-        this.perGenero = new SimpleObjectProperty<>();
+        this.perFechanacimiento = new SimpleObjectProperty();
+        this.perGenero = new SimpleObjectProperty();
         this.perNacionalidad = new SimpleStringProperty();
-        this.perEstadocivil = new SimpleObjectProperty<>();
+        this.perEstadocivil = new SimpleObjectProperty();
         this.perProfesion = new SimpleStringProperty();
-
-        this.perCodigo = perCodigo;
-        this.perCedula.set(perCedula);
-        this.perNombres.set(perNombres);
-        this.perPrimerapellido.set(perPrimerapellido);
-        this.perSegundoapellido.set(perSegundoapellido);
-        this.perFechanacimiento.set(perFechanacimiento);
-        GenValorCombo valorGenero = null;
-        if (perGenero.equalsIgnoreCase("m")) {
-            valorGenero = new GenValorCombo("M", "Masculino");
-        } else {
-            valorGenero = new GenValorCombo("F", "Femenino");
-        }
-        this.perGenero.set(valorGenero);
-        this.perNacionalidad.set(perNacionalidad);
-        GenValorCombo valorEstadoCivil = null;
-        if (perEstadocivil.equalsIgnoreCase("s")) {
-            valorEstadoCivil = new GenValorCombo("S", "Soltero");
-        } else if (perEstadocivil.equalsIgnoreCase("c")) {
-            valorEstadoCivil = new GenValorCombo("C", "Casado");
-        } else if (perEstadocivil.equalsIgnoreCase("d")) {
-            valorEstadoCivil = new GenValorCombo("D", "Divorsiado");
-        } else if (perEstadocivil.equalsIgnoreCase("u")) {
-            valorEstadoCivil = new GenValorCombo("U", "Unión libre");
-        } else if (perEstadocivil.equalsIgnoreCase("o")) {
-            valorEstadoCivil = new GenValorCombo("O", "Otro");
-        }
-        this.perEstadocivil.set(valorEstadoCivil);
-        this.perProfesion.set(perProfesion);
     }
 
     @Id
@@ -219,9 +142,9 @@ public class BikPersona implements Serializable {
     public void setPerCedula(String perCedula) {
         this.perCedula.set(perCedula);
     }
-    
+
     public SimpleStringProperty getPerCedulaProperty() {
-        if (this.perCedula == null){
+        if (this.perCedula == null) {
             this.perCedula = new SimpleStringProperty();
         }
         return this.perCedula;
@@ -237,9 +160,9 @@ public class BikPersona implements Serializable {
     public void setPerNombres(String perNombres) {
         this.perNombres.set(perNombres);
     }
-    
+
     public SimpleStringProperty getPerNombresProperty() {
-        if (this.perNombres == null){
+        if (this.perNombres == null) {
             this.perNombres = new SimpleStringProperty();
         }
         return this.perNombres;
@@ -255,9 +178,9 @@ public class BikPersona implements Serializable {
     public void setPerPrimerapellido(String perPrimerapellido) {
         this.perPrimerapellido.set(perPrimerapellido);
     }
-    
+
     public SimpleStringProperty getPerPrimerapellidoProperty() {
-        if (this.perPrimerapellido == null){
+        if (this.perPrimerapellido == null) {
             this.perPrimerapellido = new SimpleStringProperty();
         }
         return this.perPrimerapellido;
@@ -273,9 +196,9 @@ public class BikPersona implements Serializable {
     public void setPerSegundoapellido(String perSegundoapellido) {
         this.perSegundoapellido.set(perSegundoapellido);
     }
-    
+
     public SimpleStringProperty getPerSegundoapellidoProperty() {
-        if (this.perSegundoapellido == null){
+        if (this.perSegundoapellido == null) {
             this.perSegundoapellido = new SimpleStringProperty();
         }
         return this.perSegundoapellido;
@@ -286,15 +209,15 @@ public class BikPersona implements Serializable {
     @Temporal(TemporalType.DATE)
     @Access(AccessType.PROPERTY)
     public Date getPerFechanacimiento() {
-        return perFechanacimiento.get();
+        return java.sql.Date.valueOf(perFechanacimiento.get());
     }
 
     public void setPerFechanacimiento(Date perFechanacimiento) {
-        this.perFechanacimiento.set(perFechanacimiento);
+        this.perFechanacimiento.set(new java.sql.Date(perFechanacimiento.getTime()).toLocalDate());
     }
-    
+
     public SimpleObjectProperty getPerFechanacimientoProperty() {
-        if (this.perFechanacimiento == null){
+        if (this.perFechanacimiento == null) {
             this.perFechanacimiento = new SimpleObjectProperty();
         }
         return this.perFechanacimiento;
@@ -319,9 +242,9 @@ public class BikPersona implements Serializable {
         }
         this.perGenero.set(valorGenero);
     }
-    
+
     public ObjectProperty getPerGeneroProperty() {
-        if (this.perGenero == null){
+        if (this.perGenero == null) {
             this.perGenero = new SimpleObjectProperty();
         }
         return this.perGenero;
@@ -336,9 +259,9 @@ public class BikPersona implements Serializable {
     public void setPerNacionalidad(String perNacionalidad) {
         this.perNacionalidad.set(perNacionalidad);
     }
-    
+
     public SimpleStringProperty getPerNacionalidadProperty() {
-        if (this.perNacionalidad == null){
+        if (this.perNacionalidad == null) {
             this.perNacionalidad = new SimpleStringProperty();
         }
         return this.perNacionalidad;
@@ -368,9 +291,9 @@ public class BikPersona implements Serializable {
         }
         this.perEstadocivil.set(valorEstadoCivil);
     }
-    
+
     public ObjectProperty getPerEstadocivilProperty() {
-        if (this.perEstadocivil == null){
+        if (this.perEstadocivil == null) {
             this.perEstadocivil = new SimpleObjectProperty();
         }
         return this.perEstadocivil;
@@ -385,9 +308,9 @@ public class BikPersona implements Serializable {
     public void setPerProfesion(String perProfesion) {
         this.perProfesion.set(perProfesion);
     }
-    
+
     public SimpleStringProperty getPerProfesionProperty() {
-        if (this.perProfesion == null){
+        if (this.perProfesion == null) {
             this.perProfesion = new SimpleStringProperty();
         }
         return this.perProfesion;

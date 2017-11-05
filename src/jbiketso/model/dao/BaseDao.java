@@ -20,9 +20,12 @@ public class BaseDao<K, E> implements DaoBase<K, E> {
     @Override
     public E save(E entity) {
         try {
+            E existe = null;
             getEntityManager().getTransaction().begin();
             K id = (K) Parametros.PERSISTENCEUTIL.getIdentifier(entity);
-            E existe = (E) getEntityManager().find(entity.getClass(), id);
+            if (id != null) {
+                existe = (E) getEntityManager().find(entity.getClass(), id);
+            }
             if (existe != null) {
                 getEntityManager().merge(entity);
             } else {

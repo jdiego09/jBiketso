@@ -75,8 +75,11 @@ public class BikUsuario implements Serializable {
     @JoinColumn(name = "usu_codencargadolegal", referencedColumnName = "per_codigo")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BikPersona usuCodencargadolegal;
+    @JoinColumn(name = "usu_percodigo", referencedColumnName = "per_codigo")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private BikPersona usuPercodigo;
     @Transient
-    private ObjectProperty<BikPersona> usuPercodigo;
+    private ObjectProperty<BikPersona> personaProperty;
     @JoinColumn(name = "usu_sedcodigo", referencedColumnName = "sed_codigo")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BikSede usuSedcodigo;
@@ -176,25 +179,20 @@ public class BikUsuario implements Serializable {
         this.usuCodencargadolegal = usuCodencargadolegal;
     }
 
-    @Access(AccessType.PROPERTY)
-    @JoinColumn(name = "usu_percodigo", referencedColumnName = "per_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     public BikPersona getUsuPercodigo() {
-        return usuPercodigo.get();
+        return usuPercodigo;
     }
 
-    public void setUsuPercodigo(BikPersona usuPercodigo) {
-        if (this.usuPercodigo == null) {
-            this.usuPercodigo = new SimpleObjectProperty();
-        }
-        this.usuPercodigo.set(usuPercodigo);
+    public void setUsuPercodigo(BikPersona usuPercodigo) {       
+        this.usuPercodigo = usuPercodigo;
     }
     
     public ObjectProperty getPersonaProperty() {
-        if (this.usuPercodigo == null) {
-            this.usuPercodigo = new SimpleObjectProperty();
+        if (this.personaProperty == null) {
+            this.personaProperty = new SimpleObjectProperty();
         }
-        return this.usuPercodigo;
+        personaProperty.set(usuPercodigo);
+        return this.personaProperty;
     }
 
     public BikSede getUsuSedcodigo() {
