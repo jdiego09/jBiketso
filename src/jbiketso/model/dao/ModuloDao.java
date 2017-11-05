@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.ObjectProperty;    
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Query;
@@ -15,81 +15,61 @@ import jbiketso.utils.TipoResultado;
 
 public class ModuloDao extends BaseDao<String, BikModulos> {
 
-    public SimpleStringProperty codigo;
-    public SimpleStringProperty descripcion;
-    public ObjectProperty<GenValorCombo> estado;
-
+    private static ModuloDao INSTANCE;
     private BikModulos modulo;
 
-    public ModuloDao() {
-        this.codigo = new SimpleStringProperty();
-        this.descripcion = new SimpleStringProperty();
-        this.estado = new SimpleObjectProperty<>();
+    private ModuloDao() {
     }
 
-    public ModuloDao(String codigo, String descripcion, String estado) {
-        this.codigo = new SimpleStringProperty();
-        this.descripcion = new SimpleStringProperty();
-        this.estado = new SimpleObjectProperty<>();
-
-        this.codigo.set(codigo);
-        this.descripcion.set(descripcion);
-        if (estado.equalsIgnoreCase("a")) {
-            this.estado.set(new GenValorCombo("A", "Activo"));
-        } else {
-            this.estado.set(new GenValorCombo("I", "Inactivo"));
+    private static void createInstance() {
+        if (INSTANCE == null) {
+            // Sólo se accede a la zona sincronizada
+            // cuando la instancia no está creada
+            synchronized (ModuloDao.class) {
+                // En la zona sincronizada sería necesario volver
+                // a comprobar que no se ha creado la instancia
+                if (INSTANCE == null) {
+                    INSTANCE = new ModuloDao();
+                }
+            }
         }
-
     }
 
-    public String getCodigo() {
-        return codigo.get();
+    public static ModuloDao getInstance() {
+        if (INSTANCE == null) {
+            createInstance();
+        }
+        return INSTANCE;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo.set(codigo);
+    public void setModulo(BikModulos modulo) {
+        this.modulo = modulo;
     }
 
-    public String getDescripcion() {
-        return descripcion.get();
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion.set(descripcion);
-    }
-
-    public ObjectProperty<GenValorCombo> estadoProperty() {
-        return estado;
-    }
-
-    public GenValorCombo getEstado() {
-        return estado.get();
-    }
-
-    public void setEstado(GenValorCombo estado) {
-        this.estado.set(estado);
+    //para que solamente exista una instancia del objeto
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
     }
 
     public Resultado<BikModulos> save() {
         Resultado<BikModulos> result = new Resultado<>();
         try {
-            modulo = new BikModulos(getCodigo(), getDescripcion(), getEstado().getCodigo());
-
-            if (modulo.getModCodigo() != null && !modulo.getModCodigo().isEmpty()) {
-                modulo = (BikModulos) super.save(modulo);
+            if (this.modulo.getModCodigo() != null && !this.modulo.getModCodigo().isEmpty()) {
+                this.modulo = (BikModulos) super.save(this.modulo);
             } else {
                 result.setResultado(TipoResultado.ERROR);
                 result.setMensaje("No se ha indicado el código del módulo.");
                 return result;
             }
             result.setResultado(TipoResultado.SUCCESS);
-            result.set(modulo);
+            result.set(this.modulo);
             result.setMensaje("Módulo guardado correctamente.");
             return result;
         } catch (Exception ex) {
             Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
             result.setResultado(TipoResultado.ERROR);
-            result.setMensaje("Error al guardar el módulo [" + modulo.getModCodigo() + "].");
+            result.setMensaje("Error al guardar el módulo [" + this.modulo.getModCodigo() + "].");
             return result;
         }
     }
@@ -97,11 +77,10 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
     public Resultado<BikModulos> delete() {
         Resultado<BikModulos> result = new Resultado<>();
         try {
-            modulo = new BikModulos(getCodigo(), getDescripcion(), getEstado().getCodigo());
-            if (modulo.getModCodigo() != null || !modulo.getModCodigo().isEmpty()) {
-                super.delete(modulo);
+            if (this.modulo.getModCodigo() != null || !modulo.getModCodigo().isEmpty()) {
+                super.delete(this.modulo);
                 result.setResultado(TipoResultado.SUCCESS);
-                result.setMensaje("El módulo [ " + modulo.getModCodigo() + "], fue eliminado correctamente.");
+                result.setMensaje("El módulo [ " + this.modulo.getModCodigo() + "], fue eliminado correctamente.");
                 return result;
             } else {
                 result.setResultado(TipoResultado.ERROR);
@@ -111,7 +90,7 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
         } catch (Exception ex) {
             Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
             result.setResultado(TipoResultado.ERROR);
-            result.setMensaje("No se pudo eliminar el módulo [ " + modulo.getModCodigo() + "].");
+            result.setMensaje("No se pudo eliminar el módulo [ " + this.modulo.getModCodigo() + "].");
             return result;
         }
     }
@@ -121,7 +100,7 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
         return (BikModulos) super.findById(id);
     }
 
-    public Resultado<ArrayList<BikModulos>> findByEstado(String estado) {
+    public Resultado<ArrayList<BikModulos>> findAll() {
         Resultado<ArrayList<BikModulos>> result = new Resultado<>();
         ArrayList<BikModulos> modulos = new ArrayList<>();
         List<BikModulos> resultados;
@@ -143,4 +122,26 @@ public class ModuloDao extends BaseDao<String, BikModulos> {
         }
     }
 
+    public Resultado<ArrayList<BikModulos>> findByEstado(String estado) {
+        Resultado<ArrayList<BikModulos>> result = new Resultado<>();
+        ArrayList<BikModulos> modulos = new ArrayList<>();
+        List<BikModulos> resultados;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikModulos.findByEstado");
+            query.setParameter("estado", estado);
+            resultados = query.getResultList();
+            resultados.forEach(m -> {
+                m.getDescripcionEstado();
+                modulos.add(m);
+            });
+            result.setResultado(TipoResultado.SUCCESS);
+            result.set(modulos);
+            return result;
+        } catch (Exception ex) {
+            Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
+            result.setResultado(TipoResultado.ERROR);
+            result.setMensaje("Error consultando los módulos con estado [" + estado + "].");
+            return result;
+        }
+    }
 }

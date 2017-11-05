@@ -8,6 +8,10 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,11 +28,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "bik_usuario",schema = "biketso")
+
+@Table(name = "bik_usuario", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikUsuario.findAll", query = "SELECT b FROM BikUsuario b")
@@ -41,6 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class BikUsuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -68,9 +75,8 @@ public class BikUsuario implements Serializable {
     @JoinColumn(name = "usu_codencargadolegal", referencedColumnName = "per_codigo")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BikPersona usuCodencargadolegal;
-    @JoinColumn(name = "usu_percodigo", referencedColumnName = "per_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikPersona usuPercodigo;
+    @Transient
+    private ObjectProperty<BikPersona> usuPercodigo;
     @JoinColumn(name = "usu_sedcodigo", referencedColumnName = "sed_codigo")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BikSede usuSedcodigo;
@@ -170,12 +176,25 @@ public class BikUsuario implements Serializable {
         this.usuCodencargadolegal = usuCodencargadolegal;
     }
 
+    @Access(AccessType.PROPERTY)
+    @JoinColumn(name = "usu_percodigo", referencedColumnName = "per_codigo")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     public BikPersona getUsuPercodigo() {
-        return usuPercodigo;
+        return usuPercodigo.get();
     }
 
     public void setUsuPercodigo(BikPersona usuPercodigo) {
-        this.usuPercodigo = usuPercodigo;
+        if (this.usuPercodigo == null) {
+            this.usuPercodigo = new SimpleObjectProperty();
+        }
+        this.usuPercodigo.set(usuPercodigo);
+    }
+    
+    public ObjectProperty getPersonaProperty() {
+        if (this.usuPercodigo == null) {
+            this.usuPercodigo = new SimpleObjectProperty();
+        }
+        return this.usuPercodigo;
     }
 
     public BikSede getUsuSedcodigo() {
@@ -210,5 +229,5 @@ public class BikUsuario implements Serializable {
     public String toString() {
         return "jbiketso.model.BikUsuario[ usuCodigo=" + usuCodigo + " ]";
     }
-    
+
 }

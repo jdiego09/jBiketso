@@ -52,11 +52,10 @@ public class ModulosController implements Initializable {
     private TableColumn<BikModulos, String> tbcEstadoModulo;
 
     @XmlTransient
-    public ObservableList<BikModulos> modulos = FXCollections
+    private ObservableList<BikModulos> modulos = FXCollections
             .observableArrayList();
 
-    ModuloDao modulo;
-    BikModulos moduloSeleccionado;
+    BikModulos modulo;
 
     @XmlTransient
     ObservableList<GenValorCombo> estados = FXCollections
@@ -68,7 +67,7 @@ public class ModulosController implements Initializable {
         estados.add(new GenValorCombo("I", "Inactivo"));
         jcmbEstadoModulo.setItems(estados);
         nuevoModulo();
-        bindModulo()                                                                                                                                                                                                            ;
+        bindModulo();
         cargarModulos();
         bindListaModulos();
         addListenerTable(tbvModulos);
@@ -76,50 +75,38 @@ public class ModulosController implements Initializable {
     }
 
     private void bindModulo() {
-        jtxfCodigoModulo.textProperty().bindBidirectional(modulo.codigo);
-        jtxfDescripcionModulo.textProperty().bindBidirectional(modulo.descripcion);
-        jcmbEstadoModulo.valueProperty().bindBidirectional(modulo.estado);
+        jtxfCodigoModulo.textProperty().bindBidirectional(modulo.getCodigoModuloProperty());
+        jtxfDescripcionModulo.textProperty().bindBidirectional(modulo.getDescripcionModuloProperty());
+        jcmbEstadoModulo.valueProperty().bindBidirectional(modulo.getEstadoProperty());
     }
 
     private void unbindModulo() {
-        jtxfCodigoModulo.textProperty().unbindBidirectional(modulo.codigo);
-        jtxfDescripcionModulo.textProperty().unbindBidirectional(modulo.descripcion);
-        jcmbEstadoModulo.valueProperty().unbindBidirectional(modulo.estadoProperty());
+        jtxfCodigoModulo.textProperty().unbindBidirectional(modulo.getCodigoModuloProperty());
+        jtxfDescripcionModulo.textProperty().unbindBidirectional(modulo.getDescripcionModuloProperty());
+        jcmbEstadoModulo.valueProperty().unbindBidirectional(modulo.getEstadoProperty());
     }
 
     private void addListenerTable(TableView table) {
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 unbindModulo();
-                moduloSeleccionado = (BikModulos) newSelection;
-                if (this.modulo == null) {
-                    this.modulo = new ModuloDao(moduloSeleccionado.getModCodigo(), moduloSeleccionado.getModDescripcion(), moduloSeleccionado.getModEstado());
-                } else {
-                    this.modulo.codigo.set(moduloSeleccionado.getModCodigo());
-                    this.modulo.descripcion.set(moduloSeleccionado.getModDescripcion());
-                    if (moduloSeleccionado.getModEstado().equalsIgnoreCase("a")) {
-                        this.modulo.estado.set(new GenValorCombo("A", "Activo"));
-                    } else {
-                        this.modulo.estado.set(new GenValorCombo("I", "Inactivo"));
-                    }
-                }
+                this.modulo = (BikModulos) newSelection;
                 bindModulo();
             }
         });
     }
 
+    private void nuevoModulo() {
+        this.modulo = new BikModulos();
+    }
+
     private void cargarModulos() {
-        Resultado<ArrayList<BikModulos>> result = this.modulo.findByEstado("A");
+        Resultado<ArrayList<BikModulos>> result = ModuloDao.getInstance().findAll();
         if (!result.getResultado().equals(TipoResultado.ERROR)) {
             modulos = FXCollections.observableArrayList(result.get());
         } else {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Consultar módulos", result.getMensaje());
         }
-    }
-
-    private void nuevoModulo() {
-        this.modulo = new ModuloDao();
-
     }
 
     private void bindListaModulos() {
@@ -144,13 +131,14 @@ public class ModulosController implements Initializable {
     @FXML
     void impiarModulo(ActionEvent event) {
         unbindModulo();
-        this.modulo = new ModuloDao();
+        nuevoModulo();
         bindModulo();
     }
 
     @FXML
-    void guardarModulo(ActionEvent event) {        
-        Resultado<BikModulos> nuevo = this.modulo.save();
+    void guardarModulo(ActionEvent event) {
+        ModuloDao.getInstance().setModulo(this.modulo);
+        Resultado<BikModulos> nuevo = ModuloDao.getInstance().save();
         if (nuevo.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar módulo", nuevo.getMensaje());
             return;

@@ -60,7 +60,12 @@ public class UsuariosController {
     private JFXTextField jtxfEstSocioEco;
 
     @FXML
-    void guardarModulo(ActionEvent event) {
+    void guardarUsuario(ActionEvent event) {
+
+    }
+
+    @FXML
+    void limpiar(ActionEvent event) {
 
     }
 
@@ -69,4 +74,13 @@ public class UsuariosController {
         AppWindowController.getInstance().goHome();
     }
 
+    @FXML
+    void agregarMedicamento(ActionEvent event) {
+
+    }
+
+    @FXML
+    void agregarPadecimiento(ActionEvent event) {
+
+    }
 }
