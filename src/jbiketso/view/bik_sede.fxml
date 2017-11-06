@@ -7,8 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="form" stylesheets="@biketso.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="jbiketso.controller.SedeController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.SedeController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -48,14 +47,14 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <JFXTextField fx:id="jtxfNombre" text="Nombre" GridPane.columnIndex="1" />
-                  <JFXComboBox fx:id="jcmbCentro" prefHeight="25.0" prefWidth="317.0" promptText="Centro" GridPane.columnIndex="3" />
                   <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <JFXTextField fx:id="jtxfDescripcion" layoutX="21.0" layoutY="43.0" text="Descripción" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <JFXTextField fx:id="jtxfTelefonos" text="Teléfonos" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <JFXTextField fx:id="jtxfFax" text="Fax" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <JFXTextField fx:id="jtxfEmail" text="Email" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                   <JFXTextField fx:id="jtxfEncargado" text="Encargado" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <JFXTextField fx:id="jtxfNombre" text="Nombre" GridPane.columnIndex="3" />
+                  <JFXComboBox fx:id="jcmbCentro" prefHeight="25.0" prefWidth="317.0" promptText="Centro" GridPane.columnIndex="1" />
                </children>
             </GridPane>
             <TableView fx:id="tbvSedes" prefHeight="200.0" prefWidth="200.0">
