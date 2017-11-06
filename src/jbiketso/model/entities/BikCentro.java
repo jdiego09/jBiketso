@@ -8,6 +8,11 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,15 +29,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.utils.GenValorCombo;
 
 /**
  *
  * @author Anayansy
  */
 @Entity
-@Table(name = "bik_centro",schema = "biketso")
+@Access(AccessType.FIELD)
+@Table(name = "bik_centro", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikCentro.findAll", query = "SELECT b FROM BikCentro b")
@@ -48,21 +56,16 @@ import javax.xml.bind.annotation.XmlTransient;
 public class BikCentro implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "cen_codigo")
+    @Transient
     private Integer cenCodigo;
-    @Basic(optional = false)
-    @Column(name = "cen_nombre")
-    private String cenNombre;
-    @Basic(optional = false)
-    @Column(name = "cen_estado")
-    private String cenEstado;
-    @Column(name = "cen_cedulajuridica")
-    private String cenCedulajuridica;
-    @Column(name = "cen_logo")
-    private String cenLogo;
+    @Transient
+    private SimpleStringProperty cenNombre;
+    @Transient
+    private ObjectProperty<GenValorCombo> cenEstado;
+    @Transient
+    private SimpleStringProperty cenCedulajuridica;
+    @Transient
+    private SimpleStringProperty cenLogo;
     @Column(name = "cen_usuarioingresa")
     private String cenUsuarioingresa;
     @Column(name = "cen_fechaingresa")
@@ -75,23 +78,35 @@ public class BikCentro implements Serializable {
     private Date cenFechamodifica;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sedCencodigo", fetch = FetchType.LAZY)
     private List<BikSede> bikSedeList;
-    @JoinColumn(name = "cen_codrepresentantelegal", referencedColumnName = "per_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikPersona cenCodrepresentantelegal;
+    @Transient
+    private ObjectProperty<BikPersona> cenCodrepresentantelegal;
 
     public BikCentro() {
+        this.cenNombre = new SimpleStringProperty();
+        this.cenEstado = new SimpleObjectProperty();
+        this.cenCedulajuridica = new SimpleStringProperty();
+        this.cenLogo = new SimpleStringProperty();
+        this.cenCodrepresentantelegal = new SimpleObjectProperty();
     }
 
-    public BikCentro(Integer cenCodigo) {
+    /*public BikCentro(Integer cenCodigo) {
         this.cenCodigo = cenCodigo;
     }
 
     public BikCentro(Integer cenCodigo, String cenNombre, String cenEstado) {
+        
+        this.cenNombre = new SimpleStringProperty();
+        this.cenEstado = new SimpleObjectProperty();
+        
         this.cenCodigo = cenCodigo;
-        this.cenNombre = cenNombre;
+        this.cenNombre.set(cenEstado);
         this.cenEstado = cenEstado;
-    }
-
+    }*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "cen_codigo")
+    @Access(AccessType.PROPERTY)
     public Integer getCenCodigo() {
         return cenCodigo;
     }
@@ -100,36 +115,75 @@ public class BikCentro implements Serializable {
         this.cenCodigo = cenCodigo;
     }
 
+    @Basic(optional = false)
+    @Column(name = "cen_nombre")
+    @Access(AccessType.PROPERTY)
     public String getCenNombre() {
-        return cenNombre;
+        return cenNombre.get();
     }
 
     public void setCenNombre(String cenNombre) {
-        this.cenNombre = cenNombre;
+        this.cenNombre.set(cenNombre);
     }
 
+    public SimpleStringProperty getCenNombreProperty() {
+        return cenNombre;
+    }
+
+    @Basic(optional = false)
+    @Column(name = "cen_estado")
+    @Access(AccessType.PROPERTY)
     public String getCenEstado() {
-        return cenEstado;
+        return cenEstado.get().getCodigo();
     }
 
     public void setCenEstado(String cenEstado) {
-        this.cenEstado = cenEstado;
+        GenValorCombo valorEstado = null;
+        if (this.cenEstado == null) {
+            this.cenEstado = new SimpleObjectProperty();
+        }
+        if (cenEstado.equalsIgnoreCase("a")) {
+            valorEstado = new GenValorCombo("A", "Activo");
+        } else {
+            valorEstado = new GenValorCombo("I", "Inactivo");
+        }
+        this.cenEstado.set(valorEstado);
+    }
+    
+    public ObjectProperty getCenEstadoProperty() {
+        return cenEstado;
+    }
+    
+    public String getDescripcionEstado() {
+        return this.cenEstado.get().getDescripcion();
     }
 
+    @Column(name = "cen_cedulajuridica")
+    @Access(AccessType.PROPERTY)
     public String getCenCedulajuridica() {
-        return cenCedulajuridica;
+        return cenCedulajuridica.get();
     }
 
     public void setCenCedulajuridica(String cenCedulajuridica) {
-        this.cenCedulajuridica = cenCedulajuridica;
+        this.cenCedulajuridica.set(cenCedulajuridica);
+    }
+    
+    public SimpleStringProperty getCenCedulajuridicaProperty() {
+        return cenCedulajuridica;
     }
 
+    @Column(name = "cen_logo")
+    @Access(AccessType.PROPERTY)
     public String getCenLogo() {
-        return cenLogo;
+        return cenLogo.get();
     }
 
     public void setCenLogo(String cenLogo) {
-        this.cenLogo = cenLogo;
+        this.cenLogo.set(cenLogo);
+    }
+    
+    public SimpleStringProperty getCenLogoProperty() {
+        return cenLogo;
     }
 
     public String getCenUsuarioingresa() {
@@ -173,12 +227,19 @@ public class BikCentro implements Serializable {
         this.bikSedeList = bikSedeList;
     }
 
-    public BikPersona getCenCodrepresentantelegal() {
-        return cenCodrepresentantelegal;
+    @JoinColumn(name = "cen_codrepresentantelegal", referencedColumnName = "per_codigo")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @Access(AccessType.PROPERTY)
+    public BikPersona getCenCodrepresentantelegal()  {
+        return cenCodrepresentantelegal.get();
     }
 
     public void setCenCodrepresentantelegal(BikPersona cenCodrepresentantelegal) {
-        this.cenCodrepresentantelegal = cenCodrepresentantelegal;
+        this.cenCodrepresentantelegal.set(cenCodrepresentantelegal);
+    }
+    
+    public ObjectProperty<BikPersona> getCenCodrepresentantelegalProperty() {
+        return cenCodrepresentantelegal;
     }
 
     @Override
@@ -205,5 +266,5 @@ public class BikCentro implements Serializable {
     public String toString() {
         return "jbiketso.model.BikCentro[ cenCodigo=" + cenCodigo + " ]";
     }
-    
+
 }
