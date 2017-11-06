@@ -118,13 +118,14 @@ public class PersonaController implements Initializable {
         nuevaDireccion();
         nuevoContacto();
         bindPersona();
+        bindDireccion();
+        bindContacto();
         bindListaDirecciones();
         bindListaContactos();
 
     }
 
     private void bindPersona() {
-
         jtxfCedula.textProperty().bindBidirectional(persona.getPerCedulaProperty());
         jtxfNombres.textProperty().bindBidirectional(persona.getPerNombresProperty());
         jtxfPrimerApellido.textProperty().bindBidirectional(persona.getPerPrimerapellidoProperty());
@@ -134,16 +135,9 @@ public class PersonaController implements Initializable {
         dtpFechaNacimiento.valueProperty().bindBidirectional(persona.getPerFechanacimientoProperty());
         jcmbGenero.valueProperty().bindBidirectional(persona.getPerGeneroProperty());
         jtxfProfesion.textProperty().bindBidirectional(persona.getPerProfesionProperty());
-
-        jtxfDetaDireccion.textProperty().bindBidirectional(direccion.getDetalleDireccionProperty());
-
-        jtxfDetaContacto.textProperty().bindBidirectional(contacto.getDetalleContactoProperty());
-        jcmbTipoContacto.valueProperty().bindBidirectional(contacto.getTipoContactoProperty());
-
     }
 
     private void unbindPersona() {
-
         jtxfCedula.textProperty().unbindBidirectional(persona.getPerCedulaProperty());
         jtxfNombres.textProperty().unbindBidirectional(persona.getPerNombresProperty());
         jtxfPrimerApellido.textProperty().unbindBidirectional(persona.getPerPrimerapellidoProperty());
@@ -153,9 +147,27 @@ public class PersonaController implements Initializable {
         dtpFechaNacimiento.valueProperty().unbindBidirectional(persona.getPerFechanacimientoProperty());
         jcmbGenero.valueProperty().unbindBidirectional(persona.getPerGeneroProperty());
         jtxfProfesion.textProperty().unbindBidirectional(persona.getPerProfesionProperty());
+    }
+
+    private void bindDireccion() {
+        jtxfDetaDireccion.textProperty().bindBidirectional(direccion.getDetalleDireccionProperty());
+    }
+
+    private void unbindDireccion() {
         jtxfDetaDireccion.textProperty().unbindBidirectional(direccion.getDetalleDireccionProperty());
+        direcciones.clear();
+    }
+
+    private void bindContacto() {
+        jtxfDetaContacto.textProperty().bindBidirectional(contacto.getDetalleContactoProperty());
+        jcmbTipoContacto.valueProperty().bindBidirectional(contacto.getTipoContactoProperty());
+    }
+
+    private void unbindContacto() {
         jtxfDetaContacto.textProperty().unbindBidirectional(contacto.getDetalleContactoProperty());
         jcmbTipoContacto.valueProperty().unbindBidirectional(contacto.getTipoContactoProperty());
+        
+        contactos.clear();
     }
 
     private void nuevaPersona() {
@@ -210,6 +222,10 @@ public class PersonaController implements Initializable {
     private void validarPersona() {
         String cedula = jtxfCedula.getText();
         unbindPersona();
+        unbindDireccion();
+        unbindContacto();
+        nuevaDireccion();
+        nuevoContacto();
         Resultado<BikPersona> resultado = PersonaDao.getInstance().getPersona(cedula);
         if (resultado.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Buscar persona", resultado.getMensaje());
@@ -222,11 +238,18 @@ public class PersonaController implements Initializable {
             Resultado<ArrayList<BikDireccion>> direccionesResult = PersonaDao.getInstance().getDirecciones(this.persona);
             direcciones.clear();
             direccionesResult.get().stream().forEach(direcciones::add);
+            
+            //carga los contactos
+            Resultado<ArrayList<BikContacto>> contactosResult = PersonaDao.getInstance().getContactos(this.persona);
+            contactos.clear();
+            contactosResult.get().stream().forEach(contactos::add);
         } else {
             nuevaPersona();
-            this.persona.setPerCedula(cedula);            
+            this.persona.setPerCedula(cedula);
         }
         bindPersona();
+        bindDireccion();
+        bindContacto();
     }
 
     @FXML
@@ -252,10 +275,14 @@ public class PersonaController implements Initializable {
     @FXML
     private void limpiarPersona(ActionEvent event) {
         unbindPersona();
+        unbindDireccion();
+        unbindContacto();
         nuevaPersona();
         nuevaDireccion();
         nuevoContacto();
         bindPersona();
+        bindDireccion();
+        bindContacto();
     }
 
     private void agregarContactoALista(BikContacto contacto) {

@@ -98,6 +98,11 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
         }
     }
 
+    /***
+     * Función para obtener las direcciones registradas para una persona.
+     * @param persona persona para la que se consultan las direcciones.
+     * @return lista de direcciones registradas para la persona.
+     */
     public Resultado<ArrayList<BikDireccion>> getDirecciones(BikPersona persona) {
         Resultado<ArrayList<BikDireccion>> resultado = new Resultado<>();
         ArrayList<BikDireccion> listaDirecciones = new ArrayList<>();
@@ -117,6 +122,34 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
             Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
             resultado.setResultado(TipoResultado.ERROR);
             resultado.setMensaje("Error al traer direcciones de [" + persona.getNombreCompleto() + "].");
+            return resultado;
+        }
+    }
+    
+    /***
+     * Función para obtener las direcciones registradas para una persona.
+     * @param persona persona para la que se consultan las direcciones.
+     * @return lista de direcciones registradas para la persona.
+     */
+    public Resultado<ArrayList<BikContacto>> getContactos(BikPersona persona) {
+        Resultado<ArrayList<BikContacto>> resultado = new Resultado<>();
+        ArrayList<BikContacto> listaContactos = new ArrayList<>();
+        List<BikContacto> contactos;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikContacto.findByCodigoPersona");
+            query.setParameter("codigoPersona", persona.getPerCodigo());
+            contactos = query.getResultList();
+            contactos.stream().forEach(listaContactos::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaContactos);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);            
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer contactos de [" + persona.getNombreCompleto() + "].");
             return resultado;
         }
     }
