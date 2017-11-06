@@ -10,11 +10,13 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikContacto;
 import jbiketso.model.entities.BikDireccion;
@@ -84,11 +86,38 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
             result.setResultado(TipoResultado.SUCCESS);
             result.set(persona);
             return result;
+        } catch (NoResultException nre) {
+            result.setResultado(TipoResultado.WARNING);
+            result.setMensaje("La persona con la cédula [" + cedula + "], no se encuentra registrada");
+            return result;
         } catch (Exception ex) {
             Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
             result.setResultado(TipoResultado.ERROR);
             result.setMensaje("Error al traer información de la persona con la cédula [" + cedula + "].");
             return result;
+        }
+    }
+
+    public Resultado<ArrayList<BikDireccion>> getDirecciones(BikPersona persona) {
+        Resultado<ArrayList<BikDireccion>> resultado = new Resultado<>();
+        ArrayList<BikDireccion> listaDirecciones = new ArrayList<>();
+        List<BikDireccion> direcciones;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikDireccion.findByCodigoPersona");
+            query.setParameter("codigoPersona", persona.getPerCodigo());
+            direcciones = query.getResultList();
+            direcciones.stream().forEach(listaDirecciones::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaDirecciones);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);            
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer direcciones de [" + persona.getNombreCompleto() + "].");
+            return resultado;
         }
     }
 

@@ -57,6 +57,8 @@ public class BikContacto implements Serializable {
     @Transient
     private ObjectProperty<GenValorCombo> conTipo;
     @Transient
+    private SimpleStringProperty descTipoContacto;
+    @Transient
     private SimpleStringProperty conDetalle;
     @Column(name = "con_usuarioingresa")
     private String conUsuarioingresa;
@@ -137,6 +139,10 @@ public class BikContacto implements Serializable {
                 break;
         }
         this.conTipo.set(new GenValorCombo(conTipo, valor));
+    }
+    
+    public String getDescripcionTipoContacto(){        
+        return this.conTipo.get().getDescripcion();        
     }
 
     public ObjectProperty getTipoContactoProperty() {

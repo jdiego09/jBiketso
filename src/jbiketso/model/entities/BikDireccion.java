@@ -37,12 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikDireccion.findAll", query = "SELECT b FROM BikDireccion b")
-    , @NamedQuery(name = "BikDireccion.findByDirCodigo", query = "SELECT b FROM BikDireccion b WHERE b.dirCodigo = :dirCodigo")
-    , @NamedQuery(name = "BikDireccion.findByDirDetalle", query = "SELECT b FROM BikDireccion b WHERE b.dirDetalle = :dirDetalle")
-    , @NamedQuery(name = "BikDireccion.findByDirUsuarioingresa", query = "SELECT b FROM BikDireccion b WHERE b.dirUsuarioingresa = :dirUsuarioingresa")
-    , @NamedQuery(name = "BikDireccion.findByDirFechaingresa", query = "SELECT b FROM BikDireccion b WHERE b.dirFechaingresa = :dirFechaingresa")
-    , @NamedQuery(name = "BikDireccion.findByDirUsuariomodifica", query = "SELECT b FROM BikDireccion b WHERE b.dirUsuariomodifica = :dirUsuariomodifica")
-    , @NamedQuery(name = "BikDireccion.findByDirFechamodifica", query = "SELECT b FROM BikDireccion b WHERE b.dirFechamodifica = :dirFechamodifica")})
+    , @NamedQuery(name = "BikDireccion.findByCodigoPersona", query = "SELECT d FROM BikPersona p join BikDireccion d  WHERE p.perCodigo = :codigoPersona")})
 public class BikDireccion implements Serializable {
 
     private static final long serialVersionUID = 1L;

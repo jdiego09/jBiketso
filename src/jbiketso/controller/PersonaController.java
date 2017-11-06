@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +22,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.model.dao.PersonaDao;
@@ -49,7 +52,7 @@ public class PersonaController implements Initializable {
     private JFXTextField jtxfPrimerApellido, jtxfDetaDireccion, jtxfDetaContacto, jtxfCedula, jtxfSegundoApellido, jtxfNacionalidad, jtxfProfesion, jtxfNombres;
 
     @FXML
-    private JFXButton jbtnSalir;
+    private JFXButton jbtnBuscar, jbtnSalir;
 
     @FXML
     private TableColumn<BikDireccion, String> tbcDetDireccion;
@@ -139,8 +142,25 @@ public class PersonaController implements Initializable {
 
     }
 
+    private void unbindPersona() {
+
+        jtxfCedula.textProperty().unbindBidirectional(persona.getPerCedulaProperty());
+        jtxfNombres.textProperty().unbindBidirectional(persona.getPerNombresProperty());
+        jtxfPrimerApellido.textProperty().unbindBidirectional(persona.getPerPrimerapellidoProperty());
+        jtxfSegundoApellido.textProperty().unbindBidirectional(persona.getPerSegundoapellidoProperty());
+        jcmbEstadoCivil.valueProperty().unbindBidirectional(persona.getPerEstadocivilProperty());
+        jtxfNacionalidad.textProperty().unbindBidirectional(persona.getPerNacionalidadProperty());
+        dtpFechaNacimiento.valueProperty().unbindBidirectional(persona.getPerFechanacimientoProperty());
+        jcmbGenero.valueProperty().unbindBidirectional(persona.getPerGeneroProperty());
+        jtxfProfesion.textProperty().unbindBidirectional(persona.getPerProfesionProperty());
+        jtxfDetaDireccion.textProperty().unbindBidirectional(direccion.getDetalleDireccionProperty());
+        jtxfDetaContacto.textProperty().unbindBidirectional(contacto.getDetalleContactoProperty());
+        jcmbTipoContacto.valueProperty().unbindBidirectional(contacto.getTipoContactoProperty());
+    }
+
     private void nuevaPersona() {
         this.persona = new BikPersona();
+        jtxfCedula.setDisable(false);
     }
 
     private void nuevaDireccion() {
@@ -165,15 +185,10 @@ public class PersonaController implements Initializable {
             tbvContactos.refresh();
         }
         tbcDetContacto.setCellValueFactory(new PropertyValueFactory<>("conDetalle"));
-        tbcTipoContacto.setCellValueFactory(new PropertyValueFactory<>("conTipo"));
+        tbcTipoContacto.setCellValueFactory(new PropertyValueFactory<>("descripcionTipoContacto"));
     }
 
     private void agregarDireccionALista(BikDireccion direccion) {
-        /*if (!this.direcciones.contains(direccion)) {
-            this.direcciones.add(direccion);
-        } else {
-            this.direcciones.set(this.direcciones.indexOf(direccion), direccion);
-        }*/
         this.direccion.setDirPercodigo(persona);
         this.persona.getBikDireccionList().add(direccion);
         this.direcciones.add(direccion);
@@ -192,19 +207,68 @@ public class PersonaController implements Initializable {
         AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Guardar persona", resultado.getMensaje());
     }
 
+    private void validarPersona() {
+        String cedula = jtxfCedula.getText();
+        unbindPersona();
+        Resultado<BikPersona> resultado = PersonaDao.getInstance().getPersona(cedula);
+        if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Buscar persona", resultado.getMensaje());
+            return;
+        }
+        if (resultado.get() != null && resultado.get().getPerCodigo() != null && resultado.get().getPerCodigo() > 0) {
+            this.persona = resultado.get();
+            jtxfCedula.setDisable(true);
+            //carga las direcciones
+            Resultado<ArrayList<BikDireccion>> direccionesResult = PersonaDao.getInstance().getDirecciones(this.persona);
+            direcciones.clear();
+            direccionesResult.get().stream().forEach(direcciones::add);
+        } else {
+            nuevaPersona();
+            this.persona.setPerCedula(cedula);            
+        }
+        bindPersona();
+    }
+
+    @FXML
+    void buscarPersona(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void agregarContacto(ActionEvent event) {
+        agregarContactoALista(contacto);
+    }
+
     @FXML
     private void agregarDireccion(ActionEvent event) {
         agregarDireccionALista(direccion);
     }
 
     @FXML
-    void regresar(ActionEvent event) {
+    private void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
     }
 
     @FXML
-    void limpiarModulo(ActionEvent event) {
-
+    private void limpiarPersona(ActionEvent event) {
+        unbindPersona();
+        nuevaPersona();
+        nuevaDireccion();
+        nuevoContacto();
+        bindPersona();
     }
 
+    private void agregarContactoALista(BikContacto contacto) {
+        this.contacto.setConPercodigo(persona);
+        this.persona.getBikContactoList().add(contacto);
+        this.contactos.add(contacto);
+        tbvContactos.refresh();
+    }
+
+    @FXML
+    void cedulaOnEnterKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            validarPersona();
+        }
+    }
 }
