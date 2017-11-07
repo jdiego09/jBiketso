@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikDireccion.findAll", query = "SELECT b FROM BikDireccion b")
-    , @NamedQuery(name = "BikDireccion.findByCodigoPersona", query = "SELECT d FROM BikPersona p join BikDireccion d  WHERE p.perCodigo = :codigoPersona")})
+    , @NamedQuery(name = "BikDireccion.findByCodigoPersona", query = "SELECT d FROM BikDireccion d join d.dirPercodigo p where p.perCodigo = :codigoPersona")})
 public class BikDireccion implements Serializable {
 
     private static final long serialVersionUID = 1L;

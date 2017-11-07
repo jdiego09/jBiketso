@@ -22,6 +22,7 @@ import jbiketso.model.entities.BikContacto;
 import jbiketso.model.entities.BikDireccion;
 import jbiketso.model.entities.BikPersona;
 import jbiketso.utils.GenValorCombo;
+import jbiketso.utils.Parametros;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -98,8 +99,10 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
         }
     }
 
-    /***
+    /**
+     * *
      * Función para obtener las direcciones registradas para una persona.
+     *
      * @param persona persona para la que se consultan las direcciones.
      * @return lista de direcciones registradas para la persona.
      */
@@ -116,7 +119,7 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
             resultado.set(listaDirecciones);
             return resultado;
         } catch (NoResultException nre) {
-            resultado.setResultado(TipoResultado.WARNING);            
+            resultado.setResultado(TipoResultado.WARNING);
             return resultado;
         } catch (Exception ex) {
             Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,9 +128,11 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
             return resultado;
         }
     }
-    
-    /***
+
+    /**
+     * *
      * Función para obtener las direcciones registradas para una persona.
+     *
      * @param persona persona para la que se consultan las direcciones.
      * @return lista de direcciones registradas para la persona.
      */
@@ -144,7 +149,7 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
             resultado.set(listaContactos);
             return resultado;
         } catch (NoResultException nre) {
-            resultado.setResultado(TipoResultado.WARNING);            
+            resultado.setResultado(TipoResultado.WARNING);
             return resultado;
         } catch (Exception ex) {
             Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -177,6 +182,58 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
             Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
             resultado.setResultado(TipoResultado.ERROR);
             resultado.setMensaje("Error al guardar la persona.");
+            return resultado;
+        }
+    }
+
+    public Resultado<String> deleteDireccion(BikDireccion direccion) {
+        Resultado<String> resultado = new Resultado<>();
+        try {
+
+            getEntityManager().getTransaction().begin();
+            Integer id = (Integer) Parametros.PERSISTENCEUTIL.getIdentifier(direccion);
+            BikDireccion existe = (BikDireccion) getEntityManager().find(BikDireccion.class, id);
+
+            if (existe != null) {
+                if (!getEntityManager().contains(direccion)) {
+                    direccion = getEntityManager().merge(direccion);
+                }
+                getEntityManager().remove(direccion);
+            }
+            getEntityManager().getTransaction().commit();
+            resultado.setResultado(TipoResultado.SUCCESS);
+            return resultado;
+        } catch (Exception ex) {
+            getEntityManager().getTransaction().rollback();
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al eliminar dirección de la persona.");
+            return resultado;
+        }
+    }
+    
+    public Resultado<String> deleteContacto(BikContacto contacto) {
+        Resultado<String> resultado = new Resultado<>();
+        try {
+
+            getEntityManager().getTransaction().begin();
+            Integer id = (Integer) Parametros.PERSISTENCEUTIL.getIdentifier(contacto);
+            BikContacto existe = (BikContacto) getEntityManager().find(BikContacto.class, id);
+
+            if (existe != null) {
+                if (!getEntityManager().contains(contacto)) {
+                    contacto = getEntityManager().merge(contacto);
+                }
+                getEntityManager().remove(contacto);
+            }
+            getEntityManager().getTransaction().commit();
+            resultado.setResultado(TipoResultado.SUCCESS);
+            return resultado;
+        } catch (Exception ex) {
+            getEntityManager().getTransaction().rollback();
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al eliminar contacto de la persona.");
             return resultado;
         }
     }

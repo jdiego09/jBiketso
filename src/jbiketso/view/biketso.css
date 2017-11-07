@@ -83,6 +83,16 @@
     -fx-background-position:  center;
 }
 
+.actionbuttoneliminar{
+    -fx-background-color: transparent;
+    -fx-text-fill: transparent;
+    -fx-fill: transparent;
+    -fx-background-image: url("../view/images/remove.png");
+    -fx-background-size: 32px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:  center;
+}
+
 .buttonbuscar{
     -fx-background-color: transparent;
     -fx-text-fill: transparent;

@@ -40,7 +40,7 @@ import jbiketso.utils.GenValorCombo;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikContacto.findAll", query = "SELECT b FROM BikContacto b")
-    , @NamedQuery(name = "BikContacto.findByCodigoPersona", query = "SELECT c FROM BikPersona p join BikContacto c WHERE p.perCodigo = :codigoPersona")})
+    , @NamedQuery(name = "BikContacto.findByCodigoPersona", query = "SELECT c FROM BikContacto c join c.conPercodigo p WHERE p.perCodigo = :codigoPersona")})
 public class BikContacto implements Serializable {
 
     private static final long serialVersionUID = 1L;

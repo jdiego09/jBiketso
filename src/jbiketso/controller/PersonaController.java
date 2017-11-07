@@ -61,7 +61,7 @@ public class PersonaController implements Initializable {
     private TableView<BikContacto> tbvContactos;
 
     @FXML
-    private Button btnAgregarContacto, btnAgregarDireccion, btnGuardarPersona, btnLimpiar;
+    private Button btnAgregarContacto, btnAgregarDireccion, btnGuardarPersona, btnLimpiar, btnEliminarDireccion, btnEliminarContacto;
 
     @FXML
     private JFXComboBox<GenValorCombo> jcmbGenero, jcmbTipoContacto, jcmbEstadoCivil;
@@ -123,6 +123,29 @@ public class PersonaController implements Initializable {
         bindListaDirecciones();
         bindListaContactos();
 
+        addListenerTableDireccion(tbvDirecciones);
+        addListenerTableContacto(tbvContactos);
+
+    }
+
+    private void addListenerTableDireccion(TableView table) {
+        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                unbindDireccion();
+                this.direccion = (BikDireccion) newSelection;
+                bindDireccion();
+            }
+        });
+    }
+
+    private void addListenerTableContacto(TableView table) {
+        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                unbindContacto();
+                this.contacto = (BikContacto) newSelection;
+                bindContacto();
+            }
+        });
     }
 
     private void bindPersona() {
@@ -155,7 +178,6 @@ public class PersonaController implements Initializable {
 
     private void unbindDireccion() {
         jtxfDetaDireccion.textProperty().unbindBidirectional(direccion.getDetalleDireccionProperty());
-        direcciones.clear();
     }
 
     private void bindContacto() {
@@ -166,8 +188,6 @@ public class PersonaController implements Initializable {
     private void unbindContacto() {
         jtxfDetaContacto.textProperty().unbindBidirectional(contacto.getDetalleContactoProperty());
         jcmbTipoContacto.valueProperty().unbindBidirectional(contacto.getTipoContactoProperty());
-
-        contactos.clear();
     }
 
     private void nuevaPersona() {
@@ -203,9 +223,17 @@ public class PersonaController implements Initializable {
     }
 
     private void agregarDireccionALista(BikDireccion direccion) {
-        this.direccion.setDirPercodigo(persona);
-        this.persona.getBikDireccionList().add(new BikDireccion(direccion.getDirDetalle()));
-        this.direcciones.add(direccion);
+        BikDireccion nueva = new BikDireccion();
+        nueva.setDirDetalle(direccion.getDirDetalle());
+        nueva.setDirPercodigo(this.persona);
+
+        if (!this.persona.getBikDireccionList().contains(nueva)) {
+            this.persona.getBikDireccionList().add(nueva);
+            this.direcciones.add(nueva);
+        } else {
+            this.persona.getBikDireccionList().set(this.persona.getBikDireccionList().indexOf(nueva), nueva);
+            this.direcciones.set(this.direcciones.indexOf(nueva), nueva);
+        }
         tbvDirecciones.refresh();
     }
 
@@ -285,6 +313,8 @@ public class PersonaController implements Initializable {
         unbindPersona();
         unbindDireccion();
         unbindContacto();
+        this.direcciones.clear();
+        this.contactos.clear();
         nuevaPersona();
         nuevaDireccion();
         nuevoContacto();
@@ -294,10 +324,42 @@ public class PersonaController implements Initializable {
     }
 
     private void agregarContactoALista(BikContacto contacto) {
-        this.contacto.setConPercodigo(persona);
-        this.persona.getBikContactoList().add(new BikContacto(contacto.getConTipo(), contacto.getConDetalle()));
-        this.contactos.add(contacto);
+        BikContacto nuevo = new BikContacto();
+        nuevo.setConTipo(contacto.getConTipo());
+        nuevo.setConDetalle(contacto.getConDetalle());
+        nuevo.setConPercodigo(this.persona);
+        if (!this.persona.getBikContactoList().contains(nuevo)) {
+            this.persona.getBikContactoList().add(nuevo);
+            this.contactos.add(nuevo);
+        } else {
+            this.persona.getBikContactoList().set(this.persona.getBikContactoList().indexOf(nuevo), nuevo);
+            this.contactos.set(this.contactos.indexOf(nuevo), nuevo);
+        }
         tbvContactos.refresh();
+    }
+
+    @FXML
+    void eliminarContacto(ActionEvent event) {
+Resultado<String> resultado = PersonaDao.getInstance().deleteContacto(contacto);
+        if (resultado.getResultado().equals(TipoResultado.SUCCESS)){
+            this.persona.getBikContactoList().remove(contacto);
+            this.contactos.remove(contacto);
+            nuevoContacto();
+        }else{
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Eliminar contacto", resultado.getMensaje());
+        }
+    }
+
+    @FXML
+    void eliminarDireccion(ActionEvent event) {
+        Resultado<String> resultado = PersonaDao.getInstance().deleteDireccion(direccion);
+        if (resultado.getResultado().equals(TipoResultado.SUCCESS)) {
+            this.persona.getBikDireccionList().remove(direccion);
+            this.direcciones.remove(direccion);
+            nuevaDireccion();
+        } else {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Eliminar dirección", resultado.getMensaje());
+        }
     }
 
     @FXML
