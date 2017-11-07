@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -9,10 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="800.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.BusquedaController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="800.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.BusquedaController">
    <top>
-      <Pane fx:id="tbvResultados" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="800.0" styleClass="actionbar" BorderPane.alignment="CENTER" />
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="800.0" styleClass="actionbar" BorderPane.alignment="CENTER" />
    </top>
    <left>
       <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="220.0" BorderPane.alignment="CENTER">
@@ -25,7 +31,13 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <VBox fx:id="vbxCriterios" prefHeight="502.0" prefWidth="220.0" />
+            <VBox fx:id="vbxCriterios" prefHeight="468.0" prefWidth="220.0" />
+            <Pane prefHeight="40.0" prefWidth="220.0">
+               <children>
+                  <JFXButton fx:id="jbtnLimpiar" layoutX="7.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="80.0" styleClass="actionbuttonaceptar" text="LIMPIAR" />
+                  <JFXButton fx:id="jbtnFiltrar" layoutX="140.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="80.0" styleClass="actionbuttonaceptar" text="FILTRAR" />
+               </children>
+            </Pane>
          </children>
       </VBox>
    </left>
@@ -40,10 +52,14 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <TableView layoutX="14.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="446.0" prefWidth="559.0" />
+            <TableView fx:id="tbvResultados" layoutX="24.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="446.0" prefWidth="549.0" />
             <JFXButton fx:id="jbtnAceptar" layoutX="507.0" layoutY="485.0" styleClass="actionbuttonaceptar" text="ACEPTAR" />
-            <JFXButton fx:id="jbtnCancelar" layoutX="425.0" layoutY="485.0" styleClass="actionbuttonaceptar" text="CANCELAR" />
+            <JFXButton fx:id="jbtnCancelar" layoutX="425.0" layoutY="485.0" onAction="#regresar" styleClass="actionbuttonaceptar" text="CANCELAR" />
+            <Separator layoutX="9.0" layoutY="7.0" orientation="VERTICAL" prefHeight="507.0" prefWidth="8.0" />
          </children>
       </Pane>
    </center>
+   <effect>
+      <DropShadow />
+   </effect>
 </BorderPane>
