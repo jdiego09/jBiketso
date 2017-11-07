@@ -166,12 +166,14 @@ public class PersonaController implements Initializable {
     private void unbindContacto() {
         jtxfDetaContacto.textProperty().unbindBidirectional(contacto.getDetalleContactoProperty());
         jcmbTipoContacto.valueProperty().unbindBidirectional(contacto.getTipoContactoProperty());
-        
+
         contactos.clear();
     }
 
     private void nuevaPersona() {
         this.persona = new BikPersona();
+        this.persona.setBikDireccionList(new ArrayList<>());
+        this.persona.setBikContactoList(new ArrayList<>());
         jtxfCedula.setDisable(false);
     }
 
@@ -202,7 +204,7 @@ public class PersonaController implements Initializable {
 
     private void agregarDireccionALista(BikDireccion direccion) {
         this.direccion.setDirPercodigo(persona);
-        this.persona.getBikDireccionList().add(direccion);
+        this.persona.getBikDireccionList().add(new BikDireccion(direccion.getDirDetalle()));
         this.direcciones.add(direccion);
         tbvDirecciones.refresh();
     }
@@ -238,7 +240,7 @@ public class PersonaController implements Initializable {
             Resultado<ArrayList<BikDireccion>> direccionesResult = PersonaDao.getInstance().getDirecciones(this.persona);
             direcciones.clear();
             direccionesResult.get().stream().forEach(direcciones::add);
-            
+
             //carga los contactos
             Resultado<ArrayList<BikContacto>> contactosResult = PersonaDao.getInstance().getContactos(this.persona);
             contactos.clear();
@@ -260,11 +262,17 @@ public class PersonaController implements Initializable {
     @FXML
     private void agregarContacto(ActionEvent event) {
         agregarContactoALista(contacto);
+        unbindContacto();
+        nuevoContacto();
+        bindContacto();
     }
 
     @FXML
     private void agregarDireccion(ActionEvent event) {
         agregarDireccionALista(direccion);
+        unbindDireccion();
+        nuevaDireccion();
+        bindDireccion();
     }
 
     @FXML
@@ -287,7 +295,7 @@ public class PersonaController implements Initializable {
 
     private void agregarContactoALista(BikContacto contacto) {
         this.contacto.setConPercodigo(persona);
-        this.persona.getBikContactoList().add(contacto);
+        this.persona.getBikContactoList().add(new BikContacto(contacto.getConTipo(), contacto.getConDetalle()));
         this.contactos.add(contacto);
         tbvContactos.refresh();
     }
