@@ -93,6 +93,12 @@
     -fx-background-position:  center;
 }
 
+.actionbuttonaceptar{
+    -fx-background-color: #00796b;
+    -fx-text-fill: whitesmoke;
+    -fx-fill: transparent;
+}
+
 .buttonbuscar{
     -fx-background-color: transparent;
     -fx-text-fill: transparent;

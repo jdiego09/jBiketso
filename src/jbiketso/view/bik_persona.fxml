@@ -90,9 +90,9 @@
                                                 <JFXTextField fx:id="jtxfDetaDireccion" labelFloat="true" prefHeight="25.0" prefWidth="667.0" promptText="Detalle dirección" styleClass="edittext" />
                                                 <Button fx:id="btnAgregarDireccion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#agregarDireccion" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" text="Agregar dirección" GridPane.columnIndex="1">
                                                    <tooltip>
-                                                      <Tooltip text="AgregarDireccion" />
+                                                      <Tooltip text="Agregar dirección" />
                                                    </tooltip></Button>
-                                                <Button fx:id="btnEliminarDireccion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#eliminarDireccion" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttoneliminar" text="Agregar dirección" GridPane.columnIndex="2">
+                                                <Button fx:id="btnEliminarDireccion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#eliminarDireccion" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttoneliminar" text="Eliminar dirección" GridPane.columnIndex="2">
                                                    <tooltip>
                                                       <Tooltip text="Eliminar dirección" />
                                                    </tooltip>
@@ -130,7 +130,7 @@
                                                    <tooltip>
                                                       <Tooltip text="Agregar contacto" />
                                                    </tooltip></Button>
-                                                <Button fx:id="btnEliminarContacto" layoutX="632.0" layoutY="47.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#eliminarContacto" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttoneliminar" text="Agregar contacto" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                <Button fx:id="btnEliminarContacto" layoutX="632.0" layoutY="47.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#eliminarContacto" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttoneliminar" text="Eliminar contacto" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                                    <tooltip>
                                                       <Tooltip text="Eliminar contacto" />
                                                    </tooltip>

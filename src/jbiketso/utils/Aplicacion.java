@@ -21,7 +21,7 @@ public class Aplicacion {
     private static BikUsuariosSistema usuario;
     private static String rolesUsuario;
     private static ArrayList<BikPermisoRol> accesosUsuario;
-    private static ArrayList<BikModulos> modulosUsuario;    
+    private static ArrayList<BikModulos> modulosUsuario;
 
     private Aplicacion() {
     }

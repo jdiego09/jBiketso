@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="800.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.BusquedaController">
+   <top>
+      <Pane fx:id="tbvResultados" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="800.0" styleClass="actionbar" BorderPane.alignment="CENTER" />
+   </top>
+   <left>
+      <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="220.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" prefHeight="20.0" prefWidth="228.0" text="Criterios de búsqueda" textAlignment="CENTER">
+               <padding>
+                  <Insets left="25.0" right="25.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <VBox fx:id="vbxCriterios" prefHeight="502.0" prefWidth="220.0" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <Pane fx:id="pnlResultados" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" layoutX="165.0" layoutY="1.0" prefHeight="20.0" prefWidth="250.0" text="Resultados" textAlignment="CENTER">
+               <padding>
+                  <Insets left="75.0" right="75.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <TableView layoutX="14.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="446.0" prefWidth="559.0" />
+            <JFXButton fx:id="jbtnAceptar" layoutX="507.0" layoutY="485.0" styleClass="actionbuttonaceptar" text="ACEPTAR" />
+            <JFXButton fx:id="jbtnCancelar" layoutX="425.0" layoutY="485.0" styleClass="actionbuttonaceptar" text="CANCELAR" />
+         </children>
+      </Pane>
+   </center>
+</BorderPane>
