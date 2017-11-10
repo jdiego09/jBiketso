@@ -31,7 +31,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import jbiketso.model.dao.PersonaDao;
 import jbiketso.utils.GenValorCombo;
 
 @Entity
@@ -127,7 +126,7 @@ public class BikPersona implements Serializable {
     public Integer getPerCodigo() {
         return perCodigo;
     }
-
+    
     public void setPerCodigo(Integer perCodigo) {
         this.perCodigo = perCodigo;
     }

@@ -7,9 +7,8 @@ package jbiketso.model.dao;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import jbiketso.model.entities.BikPersona;
 import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
@@ -58,7 +57,29 @@ public class UsuarioDao extends BaseDao<Integer, BikUsuario> {
         throw new CloneNotSupportedException();
     }
     
+    
+    public Resultado<BikUsuario> getUsuarioByCedula(String cedula) {
+        Resultado<BikUsuario> result = new Resultado<>();
+        try {
+            Query query = getEntityManager().createNamedQuery("BikUsuario.findByCedula");
+            query.setParameter("cedula", cedula);
+            usuario = (BikUsuario) query.getSingleResult();
 
+            result.setResultado(TipoResultado.SUCCESS);
+            result.set(usuario);
+            return result;
+        } catch (NoResultException nre) {
+            result.setResultado(TipoResultado.WARNING);
+            result.setMensaje("El usuario con la cédula [" + cedula + "], no se encuentra registrado.");
+            return result;
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            result.setResultado(TipoResultado.ERROR);
+            result.setMensaje("Error al traer información del usuario con la cédula [" + cedula + "].");
+            return result;
+        }
+    }
+    
     /**
      * *
      * Función para guardar la información de un usuario del centro.

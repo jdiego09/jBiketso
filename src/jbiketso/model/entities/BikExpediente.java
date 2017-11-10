@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Basic;
@@ -20,6 +19,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -32,299 +33,397 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.utils.GenValorCombo;
 
-/**
- *
- * @author Anayansy
- */
 @Entity
 @Access(AccessType.FIELD)
 @Table(name = "bik_expediente", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BikExpediente.findAll", query = "SELECT b FROM BikExpediente b")
-    , @NamedQuery(name = "BikExpediente.findByExpCodigo", query = "SELECT b FROM BikExpediente b WHERE b.expCodigo = :expCodigo")
-    , @NamedQuery(name = "BikExpediente.findByExpFechaingreso", query = "SELECT b FROM BikExpediente b WHERE b.expFechaingreso = :expFechaingreso")
-    , @NamedQuery(name = "BikExpediente.findByExpFechasalida", query = "SELECT b FROM BikExpediente b WHERE b.expFechasalida = :expFechasalida")
-    , @NamedQuery(name = "BikExpediente.findByExpEstado", query = "SELECT b FROM BikExpediente b WHERE b.expEstado = :expEstado")
-    , @NamedQuery(name = "BikExpediente.findByExpTipoatencion", query = "SELECT b FROM BikExpediente b WHERE b.expTipoatencion = :expTipoatencion")
-    , @NamedQuery(name = "BikExpediente.findByExpEstudiosocioeconomico", query = "SELECT b FROM BikExpediente b WHERE b.expEstudiosocioeconomico = :expEstudiosocioeconomico")
-    , @NamedQuery(name = "BikExpediente.findByExpPersonashogar", query = "SELECT b FROM BikExpediente b WHERE b.expPersonashogar = :expPersonashogar")
-    , @NamedQuery(name = "BikExpediente.findByExpDependientes", query = "SELECT b FROM BikExpediente b WHERE b.expDependientes = :expDependientes")
-    , @NamedQuery(name = "BikExpediente.findByExpIngresopromedio", query = "SELECT b FROM BikExpediente b WHERE b.expIngresopromedio = :expIngresopromedio")
-    , @NamedQuery(name = "BikExpediente.findByExpUsuarioingresa", query = "SELECT b FROM BikExpediente b WHERE b.expUsuarioingresa = :expUsuarioingresa")
-    , @NamedQuery(name = "BikExpediente.findByExpFechaingresa", query = "SELECT b FROM BikExpediente b WHERE b.expFechaingresa = :expFechaingresa")
-    , @NamedQuery(name = "BikExpediente.findByExpUsuariomodifica", query = "SELECT b FROM BikExpediente b WHERE b.expUsuariomodifica = :expUsuariomodifica")
-    , @NamedQuery(name = "BikExpediente.findByExpFechamodifica", query = "SELECT b FROM BikExpediente b WHERE b.expFechamodifica = :expFechamodifica")})
+   @NamedQuery(name = "BikExpediente.findAll", query = "SELECT b FROM BikExpediente b")
+   , @NamedQuery(name = "BikExpediente.findByExpCodigo", query = "SELECT b FROM BikExpediente b WHERE b.expCodigo = :expCodigo")
+})
 public class BikExpediente implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-    @Transient
-    private ObjectProperty<Integer> expCodigo;
+   @Transient
+   private ObjectProperty<Integer> expCodigo;
+   @Transient
+   private SimpleObjectProperty<LocalDate> expFechaingreso;
+   @Transient
+   private SimpleObjectProperty<LocalDate> expFechasalida;
+   @Transient
+   private SimpleObjectProperty<GenValorCombo> expEstado;
+   @Transient
+   private SimpleObjectProperty<GenValorCombo> expTipoatencion;
+   @Transient
+   private ObjectProperty<Integer> expEstudiosocioeconomico;
+   @Transient
+   private ObjectProperty<Integer> expPersonashogar;
+   @Transient
+   private ObjectProperty<Integer> expDependientes;
+   // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+   @Transient
+   private ObjectProperty<BigDecimal> expIngresopromedio;
+   @Transient
+   private String expUsuarioingresa;
+   @Transient
+   private Date expFechaingresa;
+   @Transient
+   private String expUsuariomodifica;
+   @Transient
+   private Date expFechamodifica;
 
-    @Transient
-    private SimpleObjectProperty<LocalDate> expFechaingreso;
+   private List<BikPadecimiento> bikPadecimientoList;
+   private BikPersona expCodencargado;
+   private BikSede expSedcodigo;
+   private BikUsuario expUsucodigo;
+   private List<BikMedicamento> bikMedicamentoList;
+   private List<BikRequisitosExpediente> bikRequisitosExpedienteList;
 
-    @Transient
-    private SimpleObjectProperty<LocalDate> expFechasalida;
-    
-    @Transient
-    private SimpleStringProperty expEstado;
-    @Basic(optional = false)
-    @Column(name = "exp_tipoatencion")
-    private String expTipoatencion;
-    @Column(name = "exp_estudiosocioeconomico")
-    private Integer expEstudiosocioeconomico;
-    @Column(name = "exp_personashogar")
-    private Integer expPersonashogar;
-    @Column(name = "exp_dependientes")
-    private Integer expDependientes;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "exp_ingresopromedio")
-    private BigDecimal expIngresopromedio;
-    @Column(name = "exp_usuarioingresa")
-    private String expUsuarioingresa;
-    @Column(name = "exp_fechaingresa")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date expFechaingresa;
-    @Column(name = "exp_usuariomodifica")
-    private String expUsuariomodifica;
-    @Column(name = "exp_fechamodifica")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date expFechamodifica;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "padExpcodigo", fetch = FetchType.LAZY)
-    private List<BikPadecimiento> bikPadecimientoList;
-    @JoinColumn(name = "exp_codencargado", referencedColumnName = "per_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikPersona expCodencargado;
-    @JoinColumn(name = "exp_sedcodigo", referencedColumnName = "sed_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikSede expSedcodigo;
-    @JoinColumn(name = "exp_usucodigo", referencedColumnName = "usu_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikUsuario expUsucodigo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "medExpcodigo", fetch = FetchType.LAZY)
-    private List<BikMedicamento> bikMedicamentoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bikExpediente", fetch = FetchType.LAZY)
-    private List<BikRequisitosExpediente> bikRequisitosExpedienteList;
+   public BikExpediente() {
+   }
 
-    public BikExpediente() {
-    }
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Basic(optional = false)
+   @Column(name = "exp_codigo")
+   @Access(AccessType.PROPERTY)
+   public Integer getExpCodigo() {
+      return expCodigo.get();
+   }
 
-    @Id
-    @Basic(optional = false)
-    @Column(name = "exp_codigo")
-    @Access(AccessType.PROPERTY)
-    public Integer getExpCodigo() {
-        return expCodigo.get();
-    }
+   public ObjectProperty<Integer> getCodigoProperty() {
+      if (this.expCodigo == null) {
+         this.expCodigo = new SimpleObjectProperty();
+      }
+      return this.expCodigo;
+   }
+   
+   public void setExpCodigo(Integer expCodigo) {
+      if (this.expCodigo == null) {
+         this.expCodigo = new SimpleObjectProperty();
+      }
+      this.expCodigo.set(expCodigo);
+   }
 
-    public ObjectProperty<Integer> getCodigoProperty() {
-        if (this.expCodigo == null) {
-            this.expCodigo = new SimpleObjectProperty();
+   @Transient
+   @Basic(optional = false)
+   @Column(name = "exp_fechaingreso")
+   @Temporal(TemporalType.DATE)
+   @Access(AccessType.PROPERTY)
+   public Date getExpFechaingreso() {
+      if (this.expFechaingreso == null) {
+         this.expFechaingreso = new SimpleObjectProperty();
+      }
+      return java.sql.Date.valueOf(expFechaingreso.get());
+   }
+
+   public SimpleObjectProperty<LocalDate> getExpFechaingresoProperty() {
+      if (this.expFechaingreso == null) {
+         this.expFechaingreso = new SimpleObjectProperty();
+      }
+      return this.expFechaingreso;
+   }
+
+   public void setExpFechaingreso(Date expFechaingreso) {
+      if (this.expFechaingreso == null) {
+         this.expFechaingreso = new SimpleObjectProperty();
+      }
+      this.expFechaingreso.set(new java.sql.Date(expFechaingreso.getTime()).toLocalDate());
+   }
+
+   @Transient
+   @Column(name = "exp_fechasalida")
+   @Temporal(TemporalType.DATE)
+   @Access(AccessType.PROPERTY)
+   public Date getExpFechasalida() {
+      if (this.expFechasalida == null) {
+         this.expFechasalida = new SimpleObjectProperty();
+      }
+      return java.sql.Date.valueOf(expFechasalida.get());
+   }
+
+   public SimpleObjectProperty<LocalDate> getExpFechasalidaProperty() {
+      if (this.expFechasalida == null) {
+         this.expFechasalida = new SimpleObjectProperty();
+      }
+      return this.expFechasalida;
+   }
+
+   public void setExpFechasalida(Date expFechasalida) {
+      if (this.expFechasalida == null) {
+         this.expFechasalida = new SimpleObjectProperty();
+      }
+      this.expFechasalida.set(new java.sql.Date(expFechasalida.getTime()).toLocalDate());
+   }
+
+   @Transient
+   @Basic(optional = false)
+   @Column(name = "exp_estado")
+   @Access(AccessType.PROPERTY)
+   public String getExpEstado() {
+      return expEstado.get().getCodigo();
+   }   
+   
+   public ObjectProperty getEstadoProperty() {
+        if (this.expEstado == null) {
+            this.expEstado = new SimpleObjectProperty();
         }
-        return this.expCodigo;
+        return this.expEstado;
     }
+   
+   public void setExpEstado(String expEstado) {
+      GenValorCombo valor = null;
+      if (expEstado.equalsIgnoreCase("a")) {
+         valor = new GenValorCombo(expEstado, "Activo");
+      } else {
+         valor = new GenValorCombo(expEstado, "Inactivo");
+      }
+      if (this.expEstado == null) {
+         this.expEstado = new SimpleObjectProperty();
+      }
+      this.expEstado.set(valor);
+   }
 
-    public void setExpCodigo(Integer expCodigo) {
-        this.expCodigo.set(expCodigo);
-    }
+   @Transient
+   @Basic(optional = false)
+   @Column(name = "exp_tipoatencion")
+   @Access(AccessType.PROPERTY)
+   public String getExpTipoatencion() {
+      if (this.expTipoatencion == null) {
+         this.expTipoatencion = new SimpleObjectProperty();
+      }
+      return expTipoatencion.get().getCodigo();
+   }
 
-    @Basic(optional = false)
-    @Column(name = "exp_fechaingreso")
-    @Temporal(TemporalType.DATE)
-    @Access(AccessType.PROPERTY)
-    public Date getExpFechaingreso() {
-        return java.sql.Date.valueOf(expFechaingreso.get());
-    }
+   public ObjectProperty getTipoAtencionProperty() {
+      if (this.expTipoatencion == null) {
+         this.expTipoatencion = new SimpleObjectProperty();
+      }
+      return this.expTipoatencion;
+   }
 
-    public SimpleObjectProperty<LocalDate> getExpFechaingresoProperty() {
-        if (this.expFechaingreso == null) {
-            this.expFechaingreso = new SimpleObjectProperty();
+   public void setExpTipoatencion(String expTipoatencion) {
+      GenValorCombo valor = null;
+      if (expTipoatencion.equalsIgnoreCase("d")) {
+         //por días
+         valor = new GenValorCombo(expTipoatencion, "Días");
+      }
+      if (expTipoatencion.equalsIgnoreCase("p")) {
+         //permanente
+         valor = new GenValorCombo(expTipoatencion, "Permanente 24h");
+      }
+      //ver que otras había
+      if (this.expTipoatencion == null) {
+         this.expTipoatencion = new SimpleObjectProperty();
+      }
+      this.expTipoatencion.set(valor);
+   }
+
+   @Column(name = "exp_estudiosocioeconomico")
+   @Access(AccessType.PROPERTY)
+   public Integer getExpEstudiosocioeconomico() {
+      if (this.expEstudiosocioeconomico == null) {
+         this.expEstudiosocioeconomico = new SimpleObjectProperty();
+      }
+      return expEstudiosocioeconomico.get();
+   }
+   
+   public ObjectProperty getEstudioSocioEconomicoProperty() {
+        if (this.expEstudiosocioeconomico == null) {
+            this.expEstudiosocioeconomico = new SimpleObjectProperty();
         }
-        return this.expFechaingreso;
+        return this.expEstudiosocioeconomico;
     }
 
-    public void setExpFechaingreso(Date expFechaingreso) {
-        this.expFechaingreso.set(new java.sql.Date(expFechaingreso.getTime()).toLocalDate());
-    }
+   public void setExpEstudiosocioeconomico(Integer expEstudiosocioeconomico) {
+      if (this.expEstudiosocioeconomico == null) {
+         this.expEstudiosocioeconomico = new SimpleObjectProperty();
+      }
+      this.expEstudiosocioeconomico.set(expEstudiosocioeconomico);
+   }
 
-    @Column(name = "exp_fechasalida")
-    @Temporal(TemporalType.DATE)
-    @Access(AccessType.PROPERTY)
-    public Date getExpFechasalida() {
-        return java.sql.Date.valueOf(expFechasalida.get());
-    }
-
-    public SimpleObjectProperty<LocalDate> getExpFechasalidaProperty() {
-        if (this.expFechasalida == null) {
-            this.expFechasalida = new SimpleObjectProperty();
+   @Transient
+   @Column(name = "exp_personashogar")
+   @Access(AccessType.PROPERTY)
+   public Integer getExpPersonashogar() {
+      if (this.expPersonashogar == null) {
+         this.expPersonashogar = new SimpleObjectProperty();
+      }
+      return this.expPersonashogar.get();
+   }
+   
+   public ObjectProperty getPersonasHogarProperty() {
+        if (this.expPersonashogar == null) {
+            this.expPersonashogar = new SimpleObjectProperty();
         }
-        return this.expFechasalida;
+        return this.expPersonashogar;
     }
 
-    public void setExpFechasalida(Date expFechasalida) {
-        this.expFechasalida.set(new java.sql.Date(expFechasalida.getTime()).toLocalDate());
-    }
+   public void setExpPersonashogar(Integer expPersonashogar) {
+      if (this.expPersonashogar == null) {
+         this.expPersonashogar = new SimpleObjectProperty();
+      }
+      this.expPersonashogar.set(expPersonashogar);
+   }
 
-    @Basic(optional = false)
-    @Column(name = "exp_estado")
-    @Access(AccessType.PROPERTY)
-    public String getExpEstado() {
-        return expEstado.get();
-    }
+   @Transient
+   @Column(name = "exp_dependientes")
+   @Access(AccessType.PROPERTY)
+   public Integer getExpDependientes() {
+      if (this.expDependientes == null) {
+         this.expDependientes = new SimpleObjectProperty();
+      }
+      return this.expDependientes.get();
+   }
 
-    public void setExpEstado(String expEstado) {
-        this.expEstado.set(expEstado);
-    }
+   public void setExpDependientes(Integer expDependientes) {
+      if (this.expDependientes == null) {
+         this.expDependientes = new SimpleObjectProperty();
+      }
+      this.expDependientes.set(expDependientes);
+   }
 
-    public String getExpTipoatencion() {
-        return expTipoatencion;
-    }
+   @Transient
+   @Column(name = "exp_ingresopromedio")
+   @Access(AccessType.PROPERTY)
+   public BigDecimal getExpIngresopromedio() {
+      if (this.expIngresopromedio == null) {
+         this.expIngresopromedio = new SimpleObjectProperty();
+      }
+      return this.expIngresopromedio.get();
+   }
 
-    public void setExpTipoatencion(String expTipoatencion) {
-        this.expTipoatencion = expTipoatencion;
-    }
+   public void setExpIngresopromedio(BigDecimal expIngresopromedio) {
+      if (this.expIngresopromedio == null) {
+         this.expIngresopromedio = new SimpleObjectProperty();
+      }
+      this.expIngresopromedio.set(expIngresopromedio);
+   }
 
-    public Integer getExpEstudiosocioeconomico() {
-        return expEstudiosocioeconomico;
-    }
+   @Column(name = "exp_usuarioingresa")
+   public String getExpUsuarioingresa() {
+      return expUsuarioingresa;
+   }
 
-    public void setExpEstudiosocioeconomico(Integer expEstudiosocioeconomico) {
-        this.expEstudiosocioeconomico = expEstudiosocioeconomico;
-    }
+   public void setExpUsuarioingresa(String expUsuarioingresa) {
+      this.expUsuarioingresa = expUsuarioingresa;
+   }
 
-    public Integer getExpPersonashogar() {
-        return expPersonashogar;
-    }
+   @Column(name = "exp_fechaingresa")
+   @Temporal(TemporalType.TIMESTAMP)
+   public Date getExpFechaingresa() {
+      return expFechaingresa;
+   }
 
-    public void setExpPersonashogar(Integer expPersonashogar) {
-        this.expPersonashogar = expPersonashogar;
-    }
+   public void setExpFechaingresa(Date expFechaingresa) {
+      this.expFechaingresa = expFechaingresa;
+   }
 
-    public Integer getExpDependientes() {
-        return expDependientes;
-    }
+   @Column(name = "exp_usuariomodifica")
+   public String getExpUsuariomodifica() {
+      return expUsuariomodifica;
+   }
 
-    public void setExpDependientes(Integer expDependientes) {
-        this.expDependientes = expDependientes;
-    }
+   public void setExpUsuariomodifica(String expUsuariomodifica) {
+      this.expUsuariomodifica = expUsuariomodifica;
+   }
 
-    public BigDecimal getExpIngresopromedio() {
-        return expIngresopromedio;
-    }
+   @Column(name = "exp_fechamodifica")
+   @Temporal(TemporalType.TIMESTAMP)
+   public Date getExpFechamodifica() {
+      return expFechamodifica;
+   }
 
-    public void setExpIngresopromedio(BigDecimal expIngresopromedio) {
-        this.expIngresopromedio = expIngresopromedio;
-    }
+   public void setExpFechamodifica(Date expFechamodifica) {
+      this.expFechamodifica = expFechamodifica;
+   }
 
-    public String getExpUsuarioingresa() {
-        return expUsuarioingresa;
-    }
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "padExpcodigo", fetch = FetchType.LAZY)
+   @XmlTransient
+   public List<BikPadecimiento> getBikPadecimientoList() {
+      return bikPadecimientoList;
+   }
 
-    public void setExpUsuarioingresa(String expUsuarioingresa) {
-        this.expUsuarioingresa = expUsuarioingresa;
-    }
+   public void setBikPadecimientoList(List<BikPadecimiento> bikPadecimientoList) {
+      this.bikPadecimientoList = bikPadecimientoList;
+   }
 
-    public Date getExpFechaingresa() {
-        return expFechaingresa;
-    }
+   @JoinColumn(name = "exp_codencargado", referencedColumnName = "per_codigo")
+   @ManyToOne(optional = false, fetch = FetchType.LAZY)
+   public BikPersona getExpCodencargado() {
+      return expCodencargado;
+   }
 
-    public void setExpFechaingresa(Date expFechaingresa) {
-        this.expFechaingresa = expFechaingresa;
-    }
+   public void setExpCodencargado(BikPersona expCodencargado) {
+      this.expCodencargado = expCodencargado;
+   }
 
-    public String getExpUsuariomodifica() {
-        return expUsuariomodifica;
-    }
+   @JoinColumn(name = "exp_sedcodigo", referencedColumnName = "sed_codigo")
+   @ManyToOne(optional = false, fetch = FetchType.LAZY)
+   public BikSede getExpSedcodigo() {
+      return expSedcodigo;
+   }
 
-    public void setExpUsuariomodifica(String expUsuariomodifica) {
-        this.expUsuariomodifica = expUsuariomodifica;
-    }
+   public void setExpSedcodigo(BikSede expSedcodigo) {
+      this.expSedcodigo = expSedcodigo;
+   }
 
-    public Date getExpFechamodifica() {
-        return expFechamodifica;
-    }
+   @JoinColumn(name = "exp_usucodigo", referencedColumnName = "usu_codigo")
+   @ManyToOne(optional = false, fetch = FetchType.LAZY)
+   public BikUsuario getExpUsucodigo() {
+      return expUsucodigo;
+   }
 
-    public void setExpFechamodifica(Date expFechamodifica) {
-        this.expFechamodifica = expFechamodifica;
-    }
+   public void setExpUsucodigo(BikUsuario expUsucodigo) {
+      this.expUsucodigo = expUsucodigo;
+   }
 
-    @XmlTransient
-    public List<BikPadecimiento> getBikPadecimientoList() {
-        return bikPadecimientoList;
-    }
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "medExpcodigo", fetch = FetchType.LAZY)
+   @XmlTransient
+   public List<BikMedicamento> getBikMedicamentoList() {
+      return bikMedicamentoList;
+   }
 
-    public void setBikPadecimientoList(List<BikPadecimiento> bikPadecimientoList) {
-        this.bikPadecimientoList = bikPadecimientoList;
-    }
+   public void setBikMedicamentoList(List<BikMedicamento> bikMedicamentoList) {
+      this.bikMedicamentoList = bikMedicamentoList;
+   }
 
-    public BikPersona getExpCodencargado() {
-        return expCodencargado;
-    }
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "bikExpediente", fetch = FetchType.LAZY)
+   @XmlTransient
+   public List<BikRequisitosExpediente> getBikRequisitosExpedienteList() {
+      return bikRequisitosExpedienteList;
+   }
 
-    public void setExpCodencargado(BikPersona expCodencargado) {
-        this.expCodencargado = expCodencargado;
-    }
+   public void setBikRequisitosExpedienteList(List<BikRequisitosExpediente> bikRequisitosExpedienteList) {
+      this.bikRequisitosExpedienteList = bikRequisitosExpedienteList;
+   }
 
-    public BikSede getExpSedcodigo() {
-        return expSedcodigo;
-    }
+   @Override
+   public int hashCode() {
+      int hash = 0;
+      hash += (expCodigo != null ? expCodigo.hashCode() : 0);
+      return hash;
+   }
 
-    public void setExpSedcodigo(BikSede expSedcodigo) {
-        this.expSedcodigo = expSedcodigo;
-    }
+   @Override
+   public boolean equals(Object object) {
+      // TODO: Warning - this method won't work in the case the id fields are not set
+      if (!(object instanceof BikExpediente)) {
+         return false;
+      }
+      BikExpediente other = (BikExpediente) object;
+      if ((this.expCodigo.get() == null && other.expCodigo.get() != null) || (this.expCodigo.get() != null && !this.expCodigo.get().equals(other.expCodigo.get()))) {
+         return false;
+      }
+      return true;
+   }
 
-    public BikUsuario getExpUsucodigo() {
-        return expUsucodigo;
-    }
-
-    public void setExpUsucodigo(BikUsuario expUsucodigo) {
-        this.expUsucodigo = expUsucodigo;
-    }
-
-    @XmlTransient
-    public List<BikMedicamento> getBikMedicamentoList() {
-        return bikMedicamentoList;
-    }
-
-    public void setBikMedicamentoList(List<BikMedicamento> bikMedicamentoList) {
-        this.bikMedicamentoList = bikMedicamentoList;
-    }
-
-    @XmlTransient
-    public List<BikRequisitosExpediente> getBikRequisitosExpedienteList() {
-        return bikRequisitosExpedienteList;
-    }
-
-    public void setBikRequisitosExpedienteList(List<BikRequisitosExpediente> bikRequisitosExpedienteList) {
-        this.bikRequisitosExpedienteList = bikRequisitosExpedienteList;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (expCodigo != null ? expCodigo.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BikExpediente)) {
-            return false;
-        }
-        BikExpediente other = (BikExpediente) object;
-        if ((this.expCodigo == null && other.expCodigo != null) || (this.expCodigo != null && !this.expCodigo.equals(other.expCodigo))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "jbiketso.model.BikExpediente[ expCodigo=" + expCodigo + " ]";
-    }
+   @Override
+   public String toString() {
+      return "jbiketso.model.BikExpediente[ expCodigo=" + expCodigo.get() + " ]";
+   }
 
 }
