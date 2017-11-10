@@ -7,8 +7,14 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,6 +29,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -31,7 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Anayansy
  */
 @Entity
-@Table(name = "bik_expediente",schema = "biketso")
+@Access(AccessType.FIELD)
+@Table(name = "bik_expediente", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikExpediente.findAll", query = "SELECT b FROM BikExpediente b")
@@ -51,20 +59,18 @@ import javax.xml.bind.annotation.XmlTransient;
 public class BikExpediente implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "exp_codigo")
-    private Integer expCodigo;
-    @Basic(optional = false)
-    @Column(name = "exp_fechaingreso")
-    @Temporal(TemporalType.DATE)
-    private Date expFechaingreso;
-    @Column(name = "exp_fechasalida")
-    @Temporal(TemporalType.DATE)
-    private Date expFechasalida;
-    @Basic(optional = false)
-    @Column(name = "exp_estado")
-    private String expEstado;
+
+    @Transient
+    private ObjectProperty<Integer> expCodigo;
+
+    @Transient
+    private SimpleObjectProperty<LocalDate> expFechaingreso;
+
+    @Transient
+    private SimpleObjectProperty<LocalDate> expFechasalida;
+    
+    @Transient
+    private SimpleStringProperty expEstado;
     @Basic(optional = false)
     @Column(name = "exp_tipoatencion")
     private String expTipoatencion;
@@ -106,47 +112,71 @@ public class BikExpediente implements Serializable {
     public BikExpediente() {
     }
 
-    public BikExpediente(Integer expCodigo) {
-        this.expCodigo = expCodigo;
-    }
-
-    public BikExpediente(Integer expCodigo, Date expFechaingreso, String expEstado, String expTipoatencion) {
-        this.expCodigo = expCodigo;
-        this.expFechaingreso = expFechaingreso;
-        this.expEstado = expEstado;
-        this.expTipoatencion = expTipoatencion;
-    }
-
+    @Id
+    @Basic(optional = false)
+    @Column(name = "exp_codigo")
+    @Access(AccessType.PROPERTY)
     public Integer getExpCodigo() {
-        return expCodigo;
+        return expCodigo.get();
+    }
+
+    public ObjectProperty<Integer> getCodigoProperty() {
+        if (this.expCodigo == null) {
+            this.expCodigo = new SimpleObjectProperty();
+        }
+        return this.expCodigo;
     }
 
     public void setExpCodigo(Integer expCodigo) {
-        this.expCodigo = expCodigo;
+        this.expCodigo.set(expCodigo);
     }
 
+    @Basic(optional = false)
+    @Column(name = "exp_fechaingreso")
+    @Temporal(TemporalType.DATE)
+    @Access(AccessType.PROPERTY)
     public Date getExpFechaingreso() {
-        return expFechaingreso;
+        return java.sql.Date.valueOf(expFechaingreso.get());
+    }
+
+    public SimpleObjectProperty<LocalDate> getExpFechaingresoProperty() {
+        if (this.expFechaingreso == null) {
+            this.expFechaingreso = new SimpleObjectProperty();
+        }
+        return this.expFechaingreso;
     }
 
     public void setExpFechaingreso(Date expFechaingreso) {
-        this.expFechaingreso = expFechaingreso;
+        this.expFechaingreso.set(new java.sql.Date(expFechaingreso.getTime()).toLocalDate());
     }
 
+    @Column(name = "exp_fechasalida")
+    @Temporal(TemporalType.DATE)
+    @Access(AccessType.PROPERTY)
     public Date getExpFechasalida() {
-        return expFechasalida;
+        return java.sql.Date.valueOf(expFechasalida.get());
+    }
+
+    public SimpleObjectProperty<LocalDate> getExpFechasalidaProperty() {
+        if (this.expFechasalida == null) {
+            this.expFechasalida = new SimpleObjectProperty();
+        }
+        return this.expFechasalida;
     }
 
     public void setExpFechasalida(Date expFechasalida) {
-        this.expFechasalida = expFechasalida;
+        this.expFechasalida.set(new java.sql.Date(expFechasalida.getTime()).toLocalDate());
     }
 
+    @Basic(optional = false)
+    @Column(name = "exp_estado")
+    @Access(AccessType.PROPERTY)
     public String getExpEstado() {
-        return expEstado;
+        return expEstado.get();
     }
 
     public void setExpEstado(String expEstado) {
-        this.expEstado = expEstado;
+        this.expEstado.set(expEstado);
     }
 
     public String getExpTipoatencion() {
@@ -296,5 +326,5 @@ public class BikExpediente implements Serializable {
     public String toString() {
         return "jbiketso.model.BikExpediente[ expCodigo=" + expCodigo + " ]";
     }
-    
+
 }
