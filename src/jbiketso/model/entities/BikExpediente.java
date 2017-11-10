@@ -32,7 +32,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.utils.GenValorCombo;
 
 @Entity
@@ -50,39 +49,60 @@ public class BikExpediente implements Serializable {
    @Transient
    private ObjectProperty<Integer> expCodigo;
    @Transient
-   private SimpleObjectProperty<LocalDate> expFechaingreso;
+   private SimpleObjectProperty<LocalDate> expFechaIngreso;
    @Transient
-   private SimpleObjectProperty<LocalDate> expFechasalida;
+   private SimpleObjectProperty<LocalDate> expFechaSalida;
    @Transient
-   private SimpleObjectProperty<GenValorCombo> expEstado;
+   private ObjectProperty<GenValorCombo> expEstado;
    @Transient
-   private SimpleObjectProperty<GenValorCombo> expTipoatencion;
+   private ObjectProperty<GenValorCombo> expTipoAtencion;
    @Transient
-   private ObjectProperty<Integer> expEstudiosocioeconomico;
+   private ObjectProperty<Integer> expEstudioSocioeconomico;
    @Transient
-   private ObjectProperty<Integer> expPersonashogar;
+   private ObjectProperty<Integer> expPersonasHogar;
    @Transient
    private ObjectProperty<Integer> expDependientes;
    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
    @Transient
-   private ObjectProperty<BigDecimal> expIngresopromedio;
-   @Transient
-   private String expUsuarioingresa;
-   @Transient
-   private Date expFechaingresa;
-   @Transient
-   private String expUsuariomodifica;
-   @Transient
-   private Date expFechamodifica;
+   private ObjectProperty<BigDecimal> expIngresoPromedio;
 
+   @Column(name = "exp_usuarioingresa")
+   private String expUsuarioingresa;
+   @Column(name = "exp_fechaingresa")
+   @Temporal(TemporalType.TIMESTAMP)
+   private Date expFechaingresa;
+   @Column(name = "exp_usuariomodifica")
+   private String expUsuariomodifica;
+   @Column(name = "exp_fechamodifica")
+   @Temporal(TemporalType.TIMESTAMP)
+   private Date expFechamodifica;
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "padExpcodigo", fetch = FetchType.LAZY)
    private List<BikPadecimiento> bikPadecimientoList;
+   @JoinColumn(name = "exp_codencargado", referencedColumnName = "per_codigo")
+   @ManyToOne(optional = false, fetch = FetchType.LAZY)
    private BikPersona expCodencargado;
+   @JoinColumn(name = "exp_sedcodigo", referencedColumnName = "sed_codigo")
+   @ManyToOne(optional = false, fetch = FetchType.LAZY)
    private BikSede expSedcodigo;
+   @JoinColumn(name = "exp_usucodigo", referencedColumnName = "usu_codigo")
+   @ManyToOne(optional = false, fetch = FetchType.LAZY)
    private BikUsuario expUsucodigo;
+   @JoinColumn(name = "exp_sedcodigo", referencedColumnName = "sed_codigo")
+   @ManyToOne(optional = false, fetch = FetchType.LAZY)
    private List<BikMedicamento> bikMedicamentoList;
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "bikExpediente", fetch = FetchType.LAZY)
    private List<BikRequisitosExpediente> bikRequisitosExpedienteList;
 
    public BikExpediente() {
+      this.expCodigo = new SimpleObjectProperty();
+      this.expFechaIngreso = new SimpleObjectProperty();
+      this.expFechaSalida = new SimpleObjectProperty();
+      this.expEstado = new SimpleObjectProperty();
+      this.expTipoAtencion = new SimpleObjectProperty();
+      this.expEstudioSocioeconomico = new SimpleObjectProperty();
+      this.expPersonasHogar = new SimpleObjectProperty();
+      this.expDependientes = new SimpleObjectProperty();
+      this.expIngresoPromedio = new SimpleObjectProperty();
    }
 
    @Id
@@ -94,13 +114,13 @@ public class BikExpediente implements Serializable {
       return expCodigo.get();
    }
 
-   public ObjectProperty<Integer> getCodigoProperty() {
+   public ObjectProperty getCodigoProperty() {
       if (this.expCodigo == null) {
          this.expCodigo = new SimpleObjectProperty();
       }
       return this.expCodigo;
    }
-   
+
    public void setExpCodigo(Integer expCodigo) {
       if (this.expCodigo == null) {
          this.expCodigo = new SimpleObjectProperty();
@@ -113,50 +133,50 @@ public class BikExpediente implements Serializable {
    @Column(name = "exp_fechaingreso")
    @Temporal(TemporalType.DATE)
    @Access(AccessType.PROPERTY)
-   public Date getExpFechaingreso() {
-      if (this.expFechaingreso == null) {
-         this.expFechaingreso = new SimpleObjectProperty();
+   public Date getExpFechaIngreso() {
+      if (this.expFechaIngreso == null) {
+         this.expFechaIngreso = new SimpleObjectProperty();
       }
-      return java.sql.Date.valueOf(expFechaingreso.get());
+      return java.sql.Date.valueOf(expFechaIngreso.get());
    }
 
-   public SimpleObjectProperty<LocalDate> getExpFechaingresoProperty() {
-      if (this.expFechaingreso == null) {
-         this.expFechaingreso = new SimpleObjectProperty();
+   public SimpleObjectProperty<LocalDate> getExpFechaIngresoProperty() {
+      if (this.expFechaIngreso == null) {
+         this.expFechaIngreso = new SimpleObjectProperty();
       }
-      return this.expFechaingreso;
+      return this.expFechaIngreso;
    }
 
-   public void setExpFechaingreso(Date expFechaingreso) {
-      if (this.expFechaingreso == null) {
-         this.expFechaingreso = new SimpleObjectProperty();
+   public void setExpFechaIngreso(Date expFechaingreso) {
+      if (this.expFechaIngreso == null) {
+         this.expFechaIngreso = new SimpleObjectProperty();
       }
-      this.expFechaingreso.set(new java.sql.Date(expFechaingreso.getTime()).toLocalDate());
+      this.expFechaIngreso.set(new java.sql.Date(expFechaingreso.getTime()).toLocalDate());
    }
 
    @Transient
    @Column(name = "exp_fechasalida")
    @Temporal(TemporalType.DATE)
    @Access(AccessType.PROPERTY)
-   public Date getExpFechasalida() {
-      if (this.expFechasalida == null) {
-         this.expFechasalida = new SimpleObjectProperty();
+   public Date getExpFechaSalida() {
+      if (this.expFechaSalida == null) {
+         this.expFechaSalida = new SimpleObjectProperty();
       }
-      return java.sql.Date.valueOf(expFechasalida.get());
+      return java.sql.Date.valueOf(expFechaSalida.get());
    }
 
-   public SimpleObjectProperty<LocalDate> getExpFechasalidaProperty() {
-      if (this.expFechasalida == null) {
-         this.expFechasalida = new SimpleObjectProperty();
+   public SimpleObjectProperty<LocalDate> getExpFechaSalidaProperty() {
+      if (this.expFechaSalida == null) {
+         this.expFechaSalida = new SimpleObjectProperty();
       }
-      return this.expFechasalida;
+      return this.expFechaSalida;
    }
 
-   public void setExpFechasalida(Date expFechasalida) {
-      if (this.expFechasalida == null) {
-         this.expFechasalida = new SimpleObjectProperty();
+   public void setExpFechaSalida(Date expFechasalida) {
+      if (this.expFechaSalida == null) {
+         this.expFechaSalida = new SimpleObjectProperty();
       }
-      this.expFechasalida.set(new java.sql.Date(expFechasalida.getTime()).toLocalDate());
+      this.expFechaSalida.set(new java.sql.Date(expFechasalida.getTime()).toLocalDate());
    }
 
    @Transient
@@ -165,15 +185,15 @@ public class BikExpediente implements Serializable {
    @Access(AccessType.PROPERTY)
    public String getExpEstado() {
       return expEstado.get().getCodigo();
-   }   
-   
+   }
+
    public ObjectProperty getEstadoProperty() {
-        if (this.expEstado == null) {
-            this.expEstado = new SimpleObjectProperty();
-        }
-        return this.expEstado;
-    }
-   
+      if (this.expEstado == null) {
+         this.expEstado = new SimpleObjectProperty();
+      }
+      return this.expEstado;
+   }
+
    public void setExpEstado(String expEstado) {
       GenValorCombo valor = null;
       if (expEstado.equalsIgnoreCase("a")) {
@@ -192,17 +212,17 @@ public class BikExpediente implements Serializable {
    @Column(name = "exp_tipoatencion")
    @Access(AccessType.PROPERTY)
    public String getExpTipoatencion() {
-      if (this.expTipoatencion == null) {
-         this.expTipoatencion = new SimpleObjectProperty();
+      if (this.expTipoAtencion == null) {
+         this.expTipoAtencion = new SimpleObjectProperty();
       }
-      return expTipoatencion.get().getCodigo();
+      return expTipoAtencion.get().getCodigo();
    }
 
    public ObjectProperty getTipoAtencionProperty() {
-      if (this.expTipoatencion == null) {
-         this.expTipoatencion = new SimpleObjectProperty();
+      if (this.expTipoAtencion == null) {
+         this.expTipoAtencion = new SimpleObjectProperty();
       }
-      return this.expTipoatencion;
+      return this.expTipoAtencion;
    }
 
    public void setExpTipoatencion(String expTipoatencion) {
@@ -216,57 +236,57 @@ public class BikExpediente implements Serializable {
          valor = new GenValorCombo(expTipoatencion, "Permanente 24h");
       }
       //ver que otras había
-      if (this.expTipoatencion == null) {
-         this.expTipoatencion = new SimpleObjectProperty();
+      if (this.expTipoAtencion == null) {
+         this.expTipoAtencion = new SimpleObjectProperty();
       }
-      this.expTipoatencion.set(valor);
+      this.expTipoAtencion.set(valor);
    }
 
    @Column(name = "exp_estudiosocioeconomico")
    @Access(AccessType.PROPERTY)
    public Integer getExpEstudiosocioeconomico() {
-      if (this.expEstudiosocioeconomico == null) {
-         this.expEstudiosocioeconomico = new SimpleObjectProperty();
+      if (this.expEstudioSocioeconomico == null) {
+         this.expEstudioSocioeconomico = new SimpleObjectProperty();
       }
-      return expEstudiosocioeconomico.get();
+      return expEstudioSocioeconomico.get();
    }
-   
+
    public ObjectProperty getEstudioSocioEconomicoProperty() {
-        if (this.expEstudiosocioeconomico == null) {
-            this.expEstudiosocioeconomico = new SimpleObjectProperty();
-        }
-        return this.expEstudiosocioeconomico;
-    }
+      if (this.expEstudioSocioeconomico == null) {
+         this.expEstudioSocioeconomico = new SimpleObjectProperty();
+      }
+      return this.expEstudioSocioeconomico;
+   }
 
    public void setExpEstudiosocioeconomico(Integer expEstudiosocioeconomico) {
-      if (this.expEstudiosocioeconomico == null) {
-         this.expEstudiosocioeconomico = new SimpleObjectProperty();
+      if (this.expEstudioSocioeconomico == null) {
+         this.expEstudioSocioeconomico = new SimpleObjectProperty();
       }
-      this.expEstudiosocioeconomico.set(expEstudiosocioeconomico);
+      this.expEstudioSocioeconomico.set(expEstudiosocioeconomico);
    }
 
    @Transient
    @Column(name = "exp_personashogar")
    @Access(AccessType.PROPERTY)
    public Integer getExpPersonashogar() {
-      if (this.expPersonashogar == null) {
-         this.expPersonashogar = new SimpleObjectProperty();
+      if (this.expPersonasHogar == null) {
+         this.expPersonasHogar = new SimpleObjectProperty();
       }
-      return this.expPersonashogar.get();
+      return this.expPersonasHogar.get();
    }
-   
+
    public ObjectProperty getPersonasHogarProperty() {
-        if (this.expPersonashogar == null) {
-            this.expPersonashogar = new SimpleObjectProperty();
-        }
-        return this.expPersonashogar;
-    }
+      if (this.expPersonasHogar == null) {
+         this.expPersonasHogar = new SimpleObjectProperty();
+      }
+      return this.expPersonasHogar;
+   }
 
    public void setExpPersonashogar(Integer expPersonashogar) {
-      if (this.expPersonashogar == null) {
-         this.expPersonashogar = new SimpleObjectProperty();
+      if (this.expPersonasHogar == null) {
+         this.expPersonasHogar = new SimpleObjectProperty();
       }
-      this.expPersonashogar.set(expPersonashogar);
+      this.expPersonasHogar.set(expPersonashogar);
    }
 
    @Transient
@@ -277,6 +297,13 @@ public class BikExpediente implements Serializable {
          this.expDependientes = new SimpleObjectProperty();
       }
       return this.expDependientes.get();
+   }
+
+   public ObjectProperty getPersonasDependientesProperty() {
+      if (this.expDependientes == null) {
+         this.expDependientes = new SimpleObjectProperty();
+      }
+      return this.expDependientes;
    }
 
    public void setExpDependientes(Integer expDependientes) {
@@ -290,20 +317,26 @@ public class BikExpediente implements Serializable {
    @Column(name = "exp_ingresopromedio")
    @Access(AccessType.PROPERTY)
    public BigDecimal getExpIngresopromedio() {
-      if (this.expIngresopromedio == null) {
-         this.expIngresopromedio = new SimpleObjectProperty();
+      if (this.expIngresoPromedio == null) {
+         this.expIngresoPromedio = new SimpleObjectProperty();
       }
-      return this.expIngresopromedio.get();
+      return this.expIngresoPromedio.get();
+   }
+
+   public ObjectProperty getIngresoPromedioProperty() {
+      if (this.expIngresoPromedio == null) {
+         this.expIngresoPromedio = new SimpleObjectProperty();
+      }
+      return this.expIngresoPromedio;
    }
 
    public void setExpIngresopromedio(BigDecimal expIngresopromedio) {
-      if (this.expIngresopromedio == null) {
-         this.expIngresopromedio = new SimpleObjectProperty();
+      if (this.expIngresoPromedio == null) {
+         this.expIngresoPromedio = new SimpleObjectProperty();
       }
-      this.expIngresopromedio.set(expIngresopromedio);
+      this.expIngresoPromedio.set(expIngresopromedio);
    }
 
-   @Column(name = "exp_usuarioingresa")
    public String getExpUsuarioingresa() {
       return expUsuarioingresa;
    }
@@ -312,8 +345,6 @@ public class BikExpediente implements Serializable {
       this.expUsuarioingresa = expUsuarioingresa;
    }
 
-   @Column(name = "exp_fechaingresa")
-   @Temporal(TemporalType.TIMESTAMP)
    public Date getExpFechaingresa() {
       return expFechaingresa;
    }
@@ -322,7 +353,6 @@ public class BikExpediente implements Serializable {
       this.expFechaingresa = expFechaingresa;
    }
 
-   @Column(name = "exp_usuariomodifica")
    public String getExpUsuariomodifica() {
       return expUsuariomodifica;
    }
@@ -331,8 +361,6 @@ public class BikExpediente implements Serializable {
       this.expUsuariomodifica = expUsuariomodifica;
    }
 
-   @Column(name = "exp_fechamodifica")
-   @Temporal(TemporalType.TIMESTAMP)
    public Date getExpFechamodifica() {
       return expFechamodifica;
    }
@@ -341,8 +369,6 @@ public class BikExpediente implements Serializable {
       this.expFechamodifica = expFechamodifica;
    }
 
-   @OneToMany(cascade = CascadeType.ALL, mappedBy = "padExpcodigo", fetch = FetchType.LAZY)
-   @XmlTransient
    public List<BikPadecimiento> getBikPadecimientoList() {
       return bikPadecimientoList;
    }
@@ -351,8 +377,6 @@ public class BikExpediente implements Serializable {
       this.bikPadecimientoList = bikPadecimientoList;
    }
 
-   @JoinColumn(name = "exp_codencargado", referencedColumnName = "per_codigo")
-   @ManyToOne(optional = false, fetch = FetchType.LAZY)
    public BikPersona getExpCodencargado() {
       return expCodencargado;
    }
@@ -361,8 +385,6 @@ public class BikExpediente implements Serializable {
       this.expCodencargado = expCodencargado;
    }
 
-   @JoinColumn(name = "exp_sedcodigo", referencedColumnName = "sed_codigo")
-   @ManyToOne(optional = false, fetch = FetchType.LAZY)
    public BikSede getExpSedcodigo() {
       return expSedcodigo;
    }
@@ -371,8 +393,6 @@ public class BikExpediente implements Serializable {
       this.expSedcodigo = expSedcodigo;
    }
 
-   @JoinColumn(name = "exp_usucodigo", referencedColumnName = "usu_codigo")
-   @ManyToOne(optional = false, fetch = FetchType.LAZY)
    public BikUsuario getExpUsucodigo() {
       return expUsucodigo;
    }
@@ -381,8 +401,6 @@ public class BikExpediente implements Serializable {
       this.expUsucodigo = expUsucodigo;
    }
 
-   @OneToMany(cascade = CascadeType.ALL, mappedBy = "medExpcodigo", fetch = FetchType.LAZY)
-   @XmlTransient
    public List<BikMedicamento> getBikMedicamentoList() {
       return bikMedicamentoList;
    }
@@ -391,8 +409,6 @@ public class BikExpediente implements Serializable {
       this.bikMedicamentoList = bikMedicamentoList;
    }
 
-   @OneToMany(cascade = CascadeType.ALL, mappedBy = "bikExpediente", fetch = FetchType.LAZY)
-   @XmlTransient
    public List<BikRequisitosExpediente> getBikRequisitosExpedienteList() {
       return bikRequisitosExpedienteList;
    }

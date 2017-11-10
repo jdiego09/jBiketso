@@ -39,6 +39,22 @@ public class UsuariosController implements Initializable {
    @FXML
    private JFXComboBox<?> jcmbTipoAtencion;
 
+   private void nuevoExpediente(){
+      this.expediente = new BikExpediente();
+   }
+   
+   private void bindUsuario(){
+      //usuario
+      this.jtxfCedula.textProperty().bindBidirectional(this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedulaProperty());
+      this.jtxfNombre.textProperty().bindBidirectional(this.expediente.getExpUsucodigo().getUsuPercodigo().getNombreCompletoProperty());
+      //encargado
+      this.jtxfCedulaEncargado.textProperty().bindBidirectional(this.expediente.getExpCodencargado().getPerCedulaProperty());
+      this.jtxfNombreEncargado.textProperty().bindBidirectional(this.expediente.getExpCodencargado().getNombreCompletoProperty());
+      //expediente
+      this.jtxfExpediente.textProperty().bindBidirectional(this.expediente.getCodigoProperty());      
+      
+   }
+   
    @Override
    public void initialize(URL location, ResourceBundle resources) {
       throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
