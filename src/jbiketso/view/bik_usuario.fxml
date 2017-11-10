@@ -15,6 +15,7 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="800.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.UsuariosController">
    <children>
@@ -34,6 +35,11 @@
                   <Tooltip text="Regresar" />
                </tooltip>
             </JFXButton>
+            <Label layoutX="292.0" layoutY="4.0" text="Registro de usuarios" textFill="#f8f8f8">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
       <JFXTextField fx:id="jtxfCedula" labelFloat="true" layoutX="27.0" layoutY="65.0" prefHeight="25.0" prefWidth="145.0" promptText="Cédula" styleClass="edittext" />
@@ -60,8 +66,8 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <JFXTextField fx:id="jtxfPadecimiento" labelFloat="true" layoutX="19.0" layoutY="14.0" prefHeight="25.0" prefWidth="145.0" promptText="Padecimiento" styleClass="edittext" />
-                        <JFXTextArea fx:id="jtxaObservacionesPadecimiento" labelFloat="true" layoutX="19.0" layoutY="56.0" prefHeight="43.0" prefWidth="721.0" promptText="Observaciones" styleClass="edittext" />
-                        <JFXButton fx:id="jbtnAgregaPadecimiento" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="749.0" layoutY="65.0" onAction="#agregarPadecimiento" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonagregar" textOverrun="WORD_ELLIPSIS">
+                        <JFXTextArea fx:id="jtxaObservacionesPadecimiento" labelFloat="true" layoutX="19.0" layoutY="56.0" prefHeight="43.0" prefWidth="678.0" promptText="Observaciones" styleClass="edittext" />
+                        <JFXButton fx:id="jbtnAgregarPadecimiento" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="697.0" layoutY="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#agregarPadecimiento" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" textOverrun="WORD_ELLIPSIS">
                            <tooltip>
                               <Tooltip text="Agregar padecimiento" />
                            </tooltip>
@@ -72,6 +78,11 @@
                             <TableColumn minWidth="1.0" prefWidth="565.0" text="Observaciones" />
                           </columns>
                         </TableView>
+                        <JFXButton fx:id="jbtnEliminarPadecimiento" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="738.0" layoutY="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#EliminarPadecimiento" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttoneliminar" textOverrun="WORD_ELLIPSIS">
+                           <tooltip>
+                              <Tooltip text="Agregar padecimiento" />
+                           </tooltip>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
             </content>
@@ -83,10 +94,15 @@
                         <JFXTextField fx:id="jtxfMedicamento" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="145.0" promptText="Medicamento" styleClass="edittext" />
                         <JFXTextField fx:id="jtxfDosisMedicamento" labelFloat="true" layoutX="199.0" layoutY="14.0" prefHeight="25.0" prefWidth="145.0" promptText="Dosis" styleClass="edittext" />
                         <JFXTextField fx:id="jtxfHorarioMedicamento" labelFloat="true" layoutX="375.0" layoutY="14.0" prefHeight="25.0" prefWidth="145.0" promptText="Horario" styleClass="edittext" />
-                        <JFXTextArea fx:id="jtxaObservacionesMedicameto" labelFloat="true" layoutX="15.0" layoutY="50.0" prefHeight="43.0" prefWidth="724.0" promptText="Observaciones" styleClass="edittext" />
-                        <JFXButton fx:id="jbtnAgregaMedicamento" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="746.0" layoutY="71.0" onAction="#agregarMedicamento" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonagregar" textOverrun="WORD_ELLIPSIS">
+                        <JFXTextArea fx:id="jtxaObservacionesMedicameto" labelFloat="true" layoutX="15.0" layoutY="50.0" prefHeight="43.0" prefWidth="684.0" promptText="Observaciones" styleClass="edittext" />
+                        <JFXButton fx:id="jbtnAgregarMedicamento" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="707.0" layoutY="59.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#agregarMedicamento" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" textOverrun="WORD_ELLIPSIS">
                            <tooltip>
                               <Tooltip text="Agregar medicamento" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton fx:id="jbtnAgregarMedicamento1" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="745.0" layoutY="59.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#agregarMedicamento" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttoneliminar" textOverrun="WORD_ELLIPSIS">
+                           <tooltip>
+                              <Tooltip text="Eliminar medicamento" />
                            </tooltip>
                         </JFXButton>
                         <TableView fx:id="tbvMedicamentos" layoutX="11.0" layoutY="111.0" prefHeight="120.0" prefWidth="764.0">

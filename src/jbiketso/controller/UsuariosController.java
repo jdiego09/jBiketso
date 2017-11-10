@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import jbiketso.model.entities.BikPersona;
+import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.AppWindowController;
 
 public class UsuariosController {
@@ -58,7 +60,15 @@ public class UsuariosController {
 
     @FXML
     private JFXTextField jtxfEstSocioEco;
+    
+    BikUsuario usuario;
+    BikPersona personaUsuario;
+    BikPersona encargadoUsuario;
 
+    private void nuevoUsuario(){
+        this.usuario = new BikUsuario();
+    }
+    
     @FXML
     void guardarUsuario(ActionEvent event) {
 
