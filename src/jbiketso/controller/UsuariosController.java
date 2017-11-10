@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import jbiketso.model.entities.BikExpediente;
 import jbiketso.model.entities.BikPersona;
 import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.AppWindowController;
@@ -61,12 +62,17 @@ public class UsuariosController {
     @FXML
     private JFXTextField jtxfEstSocioEco;
     
+    BikExpediente expediente;
     BikUsuario usuario;
     BikPersona personaUsuario;
     BikPersona encargadoUsuario;
 
-    private void nuevoUsuario(){
-        this.usuario = new BikUsuario();
+    private void nuevoExpediente(){
+        this.expediente = new BikExpediente();
+    }
+    
+    private void bindExpediente(){
+        //jtxfCedula.textProperty().bindBidirectional(this.expediente.getExpUsucodigo().getPersonaProperty().get())
     }
     
     @FXML
