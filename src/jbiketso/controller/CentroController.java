@@ -13,7 +13,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
-import java.text.Format;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -38,26 +37,29 @@ import jbiketso.utils.TipoResultado;
 public class CentroController implements Initializable {
 
     @FXML
+    private TableColumn<?, ?> tbcDescripcionSede, tbcTelefonos, tbcNombreRepre, tbcFax, tbcEmail;
+
+    @FXML
+    private JFXTextField jtxfCedJuridica, jtxjDescripcionSede, jtxfCedEncargadoSede, jtxfEmail, jtxfLogo, jtxfNombreRepreLegal, jtxfNomEncargadoSede;
+
+    @FXML
+    private JFXTextField jtxfTelefonos, jtxfNombreSede, jtxfCedRepre, jtxfNombreCentro;
+
+    @FXML
+    private JFXButton jbtnBuscarRepre, jbtnBuscarRepreSede, jbtnSalir, jbtnBuscarLogo, jbtnEliminarSede, jbtnAgregarSede;
+	
+    @FXML
+    private TableView<?> tbvSedes;
+	
+    @FXML
+    private Button btnLimpiar, btnGuardaCentro;
+
+    @FXML
     private AnchorPane acpRoot;
-    
-    @FXML
-    private JFXTextField jtxfRepreLegal, jtxfCedJuridica, jtxfLogo, jtxfNombre;
-
-    @FXML
-    private JFXButton jbtnSalir, jbtnBuscarRepre;
-
-    @FXML
-    private Button btnGuardaCentro, btnLimpiar;
-
-    @FXML
-    private TableView<BikCentro> tbvCentros;
-
-    @FXML
-    private TableColumn<BikCentro, String> tbcRepreLegal, tbcCedJuridica, tbcNombre, tbcEstado;
 
     @FXML
     private JFXComboBox<GenValorCombo> jcmbEstado;
-
+    
     @XmlTransient
     private ObservableList<BikCentro> centros = FXCollections
             .observableArrayList();
@@ -78,8 +80,8 @@ public class CentroController implements Initializable {
         nuevoCentro();
         bindCentro();
         cargarCentros();
-        bindListaModulos();
-        addListenerTable(tbvCentros);
+        //bindListaModulos();
+        //addListenerTable(tbvCentros);
 
     }
 
@@ -91,15 +93,15 @@ public class CentroController implements Initializable {
         //jtxfRepreLegal.textProperty().bindBidirectional(centro.getCenCodrepresentantelegalProperty(), Format());
         jtxfCedJuridica.textProperty().bindBidirectional(centro.getCenCedulajuridicaProperty());
         jtxfLogo.textProperty().bindBidirectional(centro.getCenLogoProperty());
-        jtxfNombre.textProperty().bindBidirectional(centro.getCenNombreProperty());
+        //jtxfNombre.textProperty().bindBidirectional(centro.getCenNombreProperty());
         jcmbEstado.valueProperty().bindBidirectional(centro.getCenEstadoProperty());
     }
     
     private void unbindCentro() {
-        jtxfRepreLegal.textProperty().unbindBidirectional(centro.getCenCodrepresentantelegalProperty());
+        //jtxfRepreLegal.textProperty().unbindBidirectional(centro.getCenCodrepresentantelegalProperty());
         //jtxfCedJuridica.textProperty().unbindBidirectional(centro.getCenCedulajuridicaProperty());
         jtxfLogo.textProperty().unbindBidirectional(centro.getCenLogoProperty());
-        jtxfNombre.textProperty().unbindBidirectional(centro.getCenNombreProperty());
+        //jtxfNombre.textProperty().unbindBidirectional(centro.getCenNombreProperty());
         jcmbEstado.valueProperty().unbindBidirectional(centro.getCenEstadoProperty());
     }
     
@@ -112,7 +114,7 @@ public class CentroController implements Initializable {
         }
     }
     
-    private void bindListaModulos() {
+    /*private void bindListaModulos() {
         if (centros != null) {
             tbvCentros.setItems(centros);
             tbvCentros.refresh();
@@ -164,6 +166,6 @@ public class CentroController implements Initializable {
     @FXML
     void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
-    }
+    }*/
 
 }
