@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikCentro;
-import jbiketso.model.entities.BikModulos;
 import jbiketso.model.entities.BikPersona;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;

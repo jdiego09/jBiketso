@@ -89,11 +89,11 @@ public class BikCentro implements Serializable {
         this.cenCodrepresentantelegal = new SimpleObjectProperty();
     }
 
-    /*public BikCentro(Integer cenCodigo) {
+   public BikCentro(Integer cenCodigo) {
         this.cenCodigo = cenCodigo;
     }
 
-    public BikCentro(Integer cenCodigo, String cenNombre, String cenEstado) {
+    /*public BikCentro(Integer cenCodigo, String cenNombre, String cenEstado) {
         
         this.cenNombre = new SimpleStringProperty();
         this.cenEstado = new SimpleObjectProperty();
@@ -102,6 +102,7 @@ public class BikCentro implements Serializable {
         this.cenNombre.set(cenEstado);
         this.cenEstado = cenEstado;
     }*/
+   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
