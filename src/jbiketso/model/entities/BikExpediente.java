@@ -87,8 +87,7 @@ public class BikExpediente implements Serializable {
    @JoinColumn(name = "exp_usucodigo", referencedColumnName = "usu_codigo")
    @ManyToOne(optional = false, fetch = FetchType.LAZY)
    private BikUsuario expUsucodigo;
-   @JoinColumn(name = "exp_sedcodigo", referencedColumnName = "sed_codigo")
-   @ManyToOne(optional = false, fetch = FetchType.LAZY)
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "codigoExpediente", fetch = FetchType.LAZY)
    private List<BikMedicamento> bikMedicamentoList;
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bikExpediente", fetch = FetchType.LAZY)
    private List<BikRequisitosExpediente> bikRequisitosExpedienteList;
@@ -128,7 +127,6 @@ public class BikExpediente implements Serializable {
       this.codigo.set(expCodigo);
    }
 
-   @Transient
    @Basic(optional = false)
    @Column(name = "exp_fechaingreso")
    @Temporal(TemporalType.DATE)
@@ -154,7 +152,6 @@ public class BikExpediente implements Serializable {
       this.expFechaIngreso.set(new java.sql.Date(expFechaingreso.getTime()).toLocalDate());
    }
 
-   @Transient
    @Column(name = "exp_fechasalida")
    @Temporal(TemporalType.DATE)
    @Access(AccessType.PROPERTY)
@@ -179,7 +176,6 @@ public class BikExpediente implements Serializable {
       this.expFechaSalida.set(new java.sql.Date(expFechasalida.getTime()).toLocalDate());
    }
 
-   @Transient
    @Basic(optional = false)
    @Column(name = "exp_estado")
    @Access(AccessType.PROPERTY)
@@ -207,7 +203,6 @@ public class BikExpediente implements Serializable {
       this.expEstado.set(valor);
    }
 
-   @Transient
    @Basic(optional = false)
    @Column(name = "exp_tipoatencion")
    @Access(AccessType.PROPERTY)
@@ -265,7 +260,6 @@ public class BikExpediente implements Serializable {
       this.expEstudioSocioeconomico.set(expEstudiosocioeconomico);
    }
 
-   @Transient
    @Column(name = "exp_personashogar")
    @Access(AccessType.PROPERTY)
    public Integer getExpPersonashogar() {
@@ -289,7 +283,6 @@ public class BikExpediente implements Serializable {
       this.expPersonasHogar.set(expPersonashogar);
    }
 
-   @Transient
    @Column(name = "exp_dependientes")
    @Access(AccessType.PROPERTY)
    public Integer getExpDependientes() {
@@ -313,7 +306,6 @@ public class BikExpediente implements Serializable {
       this.expDependientes.set(expDependientes);
    }
 
-   @Transient
    @Column(name = "exp_ingresopromedio")
    @Access(AccessType.PROPERTY)
    public BigDecimal getExpIngresopromedio() {

@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -77,11 +78,11 @@ public class UsuariosController implements Initializable {
     private JFXTextField jtxfHorarioMedicamento;
 
     @FXML
-    private JFXTextArea jtxaObservacionesMedicameto;
+    private JFXTextArea jtxaObservacionesMedicamento;
 
     @FXML
     private JFXButton jbtnAgregarMedicamento;
-    
+
     @FXML
     private JFXButton jbtnEliminarMedicamento;
     @FXML
@@ -103,10 +104,15 @@ public class UsuariosController implements Initializable {
     private ObservableList<BikPadecimiento> listaPadecimientos = FXCollections.observableArrayList();
     @XmlTransient
     private ObservableList<BikMedicamento> listaMedicamentos = FXCollections.observableArrayList();
+    
+    @XmlTransient
+    ObservableList<GenValorCombo> estados = FXCollections
+            .observableArrayList();
 
-    private void nuevoExpediente() {
-        this.expediente = new BikExpediente();
-    }
+    @XmlTransient
+    ObservableList<GenValorCombo> tiposAtencion = FXCollections
+            .observableArrayList();
+
 
     private void bindUsuario() {
         //usuario
@@ -130,6 +136,25 @@ public class UsuariosController implements Initializable {
     private void bindPadecimiento() {
         this.jtxfPadecimiento.textProperty().bindBidirectional(this.padecimiento.getPadecimientoProperty());
         this.jtxaObservacionesPadecimiento.textProperty().bindBidirectional(this.padecimiento.getObservacionesProperty());
+    }
+
+    private void unbindPadecimiento() {
+        this.jtxfPadecimiento.textProperty().unbindBidirectional(this.padecimiento.getPadecimientoProperty());
+        this.jtxaObservacionesPadecimiento.textProperty().unbindBidirectional(this.padecimiento.getObservacionesProperty());
+    }
+
+    private void bindMedicamento() {
+        this.jtxfMedicamento.textProperty().bindBidirectional(this.medicamento.getMedicamentoProperty());
+        this.jtxfDosisMedicamento.textProperty().bindBidirectional(this.medicamento.getDosisProperty());
+        this.jtxfHorarioMedicamento.textProperty().bindBidirectional(this.medicamento.getHorarioProperty());
+        this.jtxaObservacionesMedicamento.textProperty().bindBidirectional(this.medicamento.getObservacionesProperty());
+    }
+
+    private void unbindMedicamento() {
+        this.jtxfMedicamento.textProperty().unbindBidirectional(this.medicamento.getMedicamentoProperty());
+        this.jtxfDosisMedicamento.textProperty().unbindBidirectional(this.medicamento.getDosisProperty());
+        this.jtxfHorarioMedicamento.textProperty().unbindBidirectional(this.medicamento.getHorarioProperty());
+        this.jtxaObservacionesMedicamento.textProperty().unbindBidirectional(this.medicamento.getObservacionesProperty());
     }
 
     private void unbindUsuario() {
@@ -171,26 +196,57 @@ public class UsuariosController implements Initializable {
         tbcObservacionesMedicamento.setCellValueFactory(new PropertyValueFactory<>("medObservaciones"));
     }
 
+    private void nuevoExpediente() {
+        this.expediente = new BikExpediente();
+        this.expediente.setBikMedicamentoList(new ArrayList<>());
+        this.expediente.setBikPadecimientoList(new ArrayList<>());
+    }
+
+    private void nuevoPadecimiento() {
+        this.padecimiento = new BikPadecimiento();
+    }
+
+    private void nuevoMedicamento() {
+        this.medicamento = new BikMedicamento();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
 
+        this.estados.add(new GenValorCombo("A", "Activo"));
+        this.estados.add(new GenValorCombo("I", "Inactivo"));
+        this.jcmbEstado.setItems(this.estados);
+
+        this.tiposAtencion.add(new GenValorCombo("D", "Por día"));
+        this.tiposAtencion.add(new GenValorCombo("P", "Permanente 24 horas"));        
+        this.jcmbTipoAtencion.setItems(this.tiposAtencion);
+        
         nuevoExpediente();
         unbindUsuario();
         bindListaPadecimientos();
         bindListaMedicamentos();
 
         addListenerTablePadecimientos(tbvPadecimiento);
-        //addListenerTableMedicamentos(tbvMedicamentos);
+        addListenerTableMedicamentos(tbvMedicamentos);
 
     }
 
     private void addListenerTablePadecimientos(TableView table) {
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                //unbindDireccion();
-                //this.direccion = (BikDireccion) newSelection;
-                //bindDireccion();
+                unbindPadecimiento();
+                this.padecimiento = (BikPadecimiento) newSelection;
+                bindPadecimiento();
+            }
+        });
+    }
+
+    private void addListenerTableMedicamentos(TableView table) {
+        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                unbindMedicamento();
+                this.medicamento = (BikMedicamento) newSelection;
+                bindMedicamento();
             }
         });
     }
