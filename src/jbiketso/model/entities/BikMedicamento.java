@@ -7,6 +7,11 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,49 +26,34 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import jbiketso.utils.GenValorCombo;
 
-/**
- *
- * @author Anayansy
- */
 @Entity
-@Table(name = "bik_medicamento",schema = "biketso")
+@Access(AccessType.FIELD)
+@Table(name = "bik_medicamento", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikMedicamento.findAll", query = "SELECT b FROM BikMedicamento b")
-    , @NamedQuery(name = "BikMedicamento.findByMedCodigo", query = "SELECT b FROM BikMedicamento b WHERE b.medCodigo = :medCodigo")
-    , @NamedQuery(name = "BikMedicamento.findByMedEstado", query = "SELECT b FROM BikMedicamento b WHERE b.medEstado = :medEstado")
-    , @NamedQuery(name = "BikMedicamento.findByMedMedicamento", query = "SELECT b FROM BikMedicamento b WHERE b.medMedicamento = :medMedicamento")
-    , @NamedQuery(name = "BikMedicamento.findByMedDosis", query = "SELECT b FROM BikMedicamento b WHERE b.medDosis = :medDosis")
-    , @NamedQuery(name = "BikMedicamento.findByMedHorario", query = "SELECT b FROM BikMedicamento b WHERE b.medHorario = :medHorario")
-    , @NamedQuery(name = "BikMedicamento.findByMedObservaciones", query = "SELECT b FROM BikMedicamento b WHERE b.medObservaciones = :medObservaciones")
-    , @NamedQuery(name = "BikMedicamento.findByMedUsuarioingresa", query = "SELECT b FROM BikMedicamento b WHERE b.medUsuarioingresa = :medUsuarioingresa")
-    , @NamedQuery(name = "BikMedicamento.findByMedFechaingresa", query = "SELECT b FROM BikMedicamento b WHERE b.medFechaingresa = :medFechaingresa")
-    , @NamedQuery(name = "BikMedicamento.findByMedUsuariomodifica", query = "SELECT b FROM BikMedicamento b WHERE b.medUsuariomodifica = :medUsuariomodifica")
-    , @NamedQuery(name = "BikMedicamento.findByMedFechamodifica", query = "SELECT b FROM BikMedicamento b WHERE b.medFechamodifica = :medFechamodifica")})
+    , @NamedQuery(name = "BikMedicamento.findByMedCodigo", query = "SELECT b FROM BikMedicamento b WHERE b.medCodigo = :medCodigo")})
 public class BikMedicamento implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "med_codigo")
-    private Integer medCodigo;
-    @Basic(optional = false)
-    @Column(name = "med_estado")
-    private String medEstado;
-    @Basic(optional = false)
-    @Column(name = "med_medicamento")
-    private String medMedicamento;
-    @Basic(optional = false)
-    @Column(name = "med_dosis")
-    private String medDosis;
-    @Basic(optional = false)
-    @Column(name = "med_horario")
-    private String medHorario;
-    @Column(name = "med_observaciones")
-    private String medObservaciones;
+
+    @Transient
+    private ObjectProperty<Integer> medCodigo;
+    @Transient
+    private ObjectProperty<GenValorCombo> medEstado;
+    @Transient
+    private SimpleStringProperty medMedicamento;
+    @Transient
+    private SimpleStringProperty medDosis;
+    @Transient
+    private SimpleStringProperty medHorario;
+    @Transient
+    private SimpleStringProperty medObservaciones;
+
     @Column(name = "med_usuarioingresa")
     private String medUsuarioingresa;
     @Column(name = "med_fechaingresa")
@@ -76,69 +66,147 @@ public class BikMedicamento implements Serializable {
     private Date medFechamodifica;
     @JoinColumn(name = "med_expcodigo", referencedColumnName = "exp_codigo")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikExpediente medExpcodigo;
+    private BikExpediente codigoExpediente;
 
     public BikMedicamento() {
+        this.medCodigo = new SimpleObjectProperty();
+        this.medEstado = new SimpleObjectProperty();
+        this.medDosis = new SimpleStringProperty();
+        this.medHorario = new SimpleStringProperty();
+        this.medObservaciones = new SimpleStringProperty();
     }
 
-    public BikMedicamento(Integer medCodigo) {
-        this.medCodigo = medCodigo;
-    }
-
-    public BikMedicamento(Integer medCodigo, String medEstado, String medMedicamento, String medDosis, String medHorario) {
-        this.medCodigo = medCodigo;
-        this.medEstado = medEstado;
-        this.medMedicamento = medMedicamento;
-        this.medDosis = medDosis;
-        this.medHorario = medHorario;
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "med_codigo")
+    @Access(AccessType.PROPERTY)
     public Integer getMedCodigo() {
-        return medCodigo;
+        return medCodigo.get();
+    }
+
+    public ObjectProperty getCodigoProperty() {
+        if (this.medCodigo == null) {
+            this.medCodigo = new SimpleObjectProperty();
+        }
+        return this.medCodigo;
     }
 
     public void setMedCodigo(Integer medCodigo) {
-        this.medCodigo = medCodigo;
+        if (this.medCodigo == null) {
+            this.medCodigo = new SimpleObjectProperty();
+        }
+        this.medCodigo.set(medCodigo);
     }
 
+    @Basic(optional = false)
+    @Column(name = "med_estado")
+    @Access(AccessType.PROPERTY)
     public String getMedEstado() {
-        return medEstado;
+        return medEstado.get().getCodigo();
+    }
+
+    public ObjectProperty getEstadoProperty() {
+        if (this.medCodigo == null) {
+            this.medCodigo = new SimpleObjectProperty();
+        }
+        return this.medEstado;
     }
 
     public void setMedEstado(String medEstado) {
-        this.medEstado = medEstado;
+        GenValorCombo valor = null;
+        if (medEstado.equalsIgnoreCase("a")) {
+            valor = new GenValorCombo(medEstado, "Activo");
+        } else {
+            valor = new GenValorCombo(medEstado, "Inactivo");
+        }
+        if (this.medCodigo == null) {
+            this.medCodigo = new SimpleObjectProperty();
+        }
+        this.medEstado.set(valor);
     }
 
+    @Basic(optional = false)
+    @Column(name = "med_medicamento")
+    @Access(AccessType.PROPERTY)
     public String getMedMedicamento() {
-        return medMedicamento;
+        return medMedicamento.get();
+    }
+
+    public SimpleStringProperty getMedicamentoProperty() {
+        if (this.medMedicamento == null) {
+            this.medMedicamento = new SimpleStringProperty();
+        }
+        return this.medMedicamento;
     }
 
     public void setMedMedicamento(String medMedicamento) {
-        this.medMedicamento = medMedicamento;
+        if (this.medMedicamento == null) {
+            this.medMedicamento = new SimpleStringProperty();
+        }
+        this.medMedicamento.set(medMedicamento);
     }
 
+    @Basic(optional = false)
+    @Column(name = "med_dosis")
+    @Access(AccessType.PROPERTY)
     public String getMedDosis() {
-        return medDosis;
+        return medDosis.get();
+    }
+
+    public SimpleStringProperty getDosisProperty() {
+        if (this.medDosis == null) {
+            this.medDosis = new SimpleStringProperty();
+        }
+        return this.medDosis;
     }
 
     public void setMedDosis(String medDosis) {
-        this.medDosis = medDosis;
+        if (this.medDosis == null) {
+            this.medDosis = new SimpleStringProperty();
+        }
+        this.medDosis.set(medDosis);
     }
 
+    @Basic(optional = false)
+    @Column(name = "med_horario")
+    @Access(AccessType.PROPERTY)
     public String getMedHorario() {
-        return medHorario;
+        return medHorario.get();
+    }
+
+    public SimpleStringProperty getHorarioProperty() {
+        if (this.medHorario == null) {
+            this.medHorario = new SimpleStringProperty();
+        }
+        return this.medHorario;
     }
 
     public void setMedHorario(String medHorario) {
-        this.medHorario = medHorario;
+        if (this.medHorario == null) {
+            this.medHorario = new SimpleStringProperty();
+        }
+        this.medHorario.set(medHorario);
     }
 
+    @Column(name = "med_observaciones")
+    @Access(AccessType.PROPERTY)
     public String getMedObservaciones() {
-        return medObservaciones;
+        return medObservaciones.get();
+    }
+
+    public SimpleStringProperty getObservacionesProperty() {
+        if (this.medObservaciones == null) {
+            this.medObservaciones = new SimpleStringProperty();
+        }
+        return this.medObservaciones;
     }
 
     public void setMedObservaciones(String medObservaciones) {
-        this.medObservaciones = medObservaciones;
+        if (this.medObservaciones == null) {
+            this.medObservaciones = new SimpleStringProperty();
+        }
+        this.medObservaciones.set(medObservaciones);
     }
 
     public String getMedUsuarioingresa() {
@@ -173,18 +241,18 @@ public class BikMedicamento implements Serializable {
         this.medFechamodifica = medFechamodifica;
     }
 
-    public BikExpediente getMedExpcodigo() {
-        return medExpcodigo;
+    public BikExpediente getCodigoExpediente() {
+        return codigoExpediente;
     }
 
-    public void setMedExpcodigo(BikExpediente medExpcodigo) {
-        this.medExpcodigo = medExpcodigo;
+    public void setCodigoExpediente(BikExpediente codigoExpediente) {
+        this.codigoExpediente = codigoExpediente;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (medCodigo != null ? medCodigo.hashCode() : 0);
+        hash += (medCodigo.get() != null ? medCodigo.get().hashCode() : 0);
         return hash;
     }
 
@@ -195,7 +263,7 @@ public class BikMedicamento implements Serializable {
             return false;
         }
         BikMedicamento other = (BikMedicamento) object;
-        if ((this.medCodigo == null && other.medCodigo != null) || (this.medCodigo != null && !this.medCodigo.equals(other.medCodigo))) {
+        if ((this.medCodigo.get() == null && other.medCodigo.get() != null) || (this.medCodigo.get() != null && !this.medCodigo.get().equals(other.medCodigo.get()))) {
             return false;
         }
         return true;
@@ -203,7 +271,7 @@ public class BikMedicamento implements Serializable {
 
     @Override
     public String toString() {
-        return "jbiketso.model.BikMedicamento[ medCodigo=" + medCodigo + " ]";
+        return "jbiketso.model.BikMedicamento[ medCodigo=" + medCodigo.get() + " ]";
     }
-    
+
 }
