@@ -7,6 +7,11 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,42 +26,29 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import jbiketso.utils.GenValorCombo;
 
-/**
- *
- * @author Anayansy
- */
 @Entity
-@Table(name = "bik_padecimiento",schema = "biketso")
+@Access(AccessType.FIELD)
+@Table(name = "bik_padecimiento", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikPadecimiento.findAll", query = "SELECT b FROM BikPadecimiento b")
-    , @NamedQuery(name = "BikPadecimiento.findByPadCodigo", query = "SELECT b FROM BikPadecimiento b WHERE b.padCodigo = :padCodigo")
-    , @NamedQuery(name = "BikPadecimiento.findByPadEstado", query = "SELECT b FROM BikPadecimiento b WHERE b.padEstado = :padEstado")
-    , @NamedQuery(name = "BikPadecimiento.findByPadPadecimiento", query = "SELECT b FROM BikPadecimiento b WHERE b.padPadecimiento = :padPadecimiento")
-    , @NamedQuery(name = "BikPadecimiento.findByPadObservaciones", query = "SELECT b FROM BikPadecimiento b WHERE b.padObservaciones = :padObservaciones")
-    , @NamedQuery(name = "BikPadecimiento.findByPadUsuarioingresa", query = "SELECT b FROM BikPadecimiento b WHERE b.padUsuarioingresa = :padUsuarioingresa")
-    , @NamedQuery(name = "BikPadecimiento.findByPadFechaingresa", query = "SELECT b FROM BikPadecimiento b WHERE b.padFechaingresa = :padFechaingresa")
-    , @NamedQuery(name = "BikPadecimiento.findByPadUsuariomodifica", query = "SELECT b FROM BikPadecimiento b WHERE b.padUsuariomodifica = :padUsuariomodifica")
-    , @NamedQuery(name = "BikPadecimiento.findByPadFechamodifica", query = "SELECT b FROM BikPadecimiento b WHERE b.padFechamodifica = :padFechamodifica")})
+    , @NamedQuery(name = "BikPadecimiento.findByCodigoExpediente", query = "SELECT b FROM BikPadecimiento b WHERE b.padCodigo = :padCodigo")})
 public class BikPadecimiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "pad_codigo")
-    private Integer padCodigo;
-    @Basic(optional = false)
-    @Column(name = "pad_estado")
-    private String padEstado;
-    @Basic(optional = false)
-    @Column(name = "pad_padecimiento")
-    private String padPadecimiento;
-    @Basic(optional = false)
-    @Column(name = "pad_observaciones")
-    private String padObservaciones;
+    @Transient
+    private ObjectProperty<Integer> padCodigo;
+    @Transient
+    private ObjectProperty<GenValorCombo> padEstado;
+    @Transient
+    private SimpleStringProperty padPadecimiento;
+    @Transient
+    private SimpleStringProperty padObservaciones;
+
     @Column(name = "pad_usuarioingresa")
     private String padUsuarioingresa;
     @Column(name = "pad_fechaingresa")
@@ -72,49 +64,99 @@ public class BikPadecimiento implements Serializable {
     private BikExpediente padExpcodigo;
 
     public BikPadecimiento() {
+        this.padCodigo = new SimpleObjectProperty();
+        this.padEstado = new SimpleObjectProperty();
+        this.padPadecimiento = new SimpleStringProperty();
+        this.padObservaciones = new SimpleStringProperty();
     }
 
-    public BikPadecimiento(Integer padCodigo) {
-        this.padCodigo = padCodigo;
-    }
-
-    public BikPadecimiento(Integer padCodigo, String padEstado, String padPadecimiento, String padObservaciones) {
-        this.padCodigo = padCodigo;
-        this.padEstado = padEstado;
-        this.padPadecimiento = padPadecimiento;
-        this.padObservaciones = padObservaciones;
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "pad_codigo")
+    @Access(AccessType.PROPERTY)
     public Integer getPadCodigo() {
-        return padCodigo;
+        return padCodigo.get();
+    }
+
+    public ObjectProperty getCodigoProperty() {
+        if (this.padCodigo == null) {
+            this.padCodigo = new SimpleObjectProperty();
+        }
+        return this.padCodigo;
     }
 
     public void setPadCodigo(Integer padCodigo) {
-        this.padCodigo = padCodigo;
+        if (this.padCodigo == null) {
+            this.padCodigo = new SimpleObjectProperty();
+        }
+        this.padCodigo.set(padCodigo);
     }
 
+    @Basic(optional = false)
+    @Column(name = "pad_estado")
+    @Access(AccessType.PROPERTY)
     public String getPadEstado() {
-        return padEstado;
+        return padEstado.get().getCodigo();
+    }
+
+    public ObjectProperty getEstadoProperty() {
+        if (this.padEstado == null) {
+            this.padEstado = new SimpleObjectProperty();
+        }
+        return this.padEstado;
     }
 
     public void setPadEstado(String padEstado) {
-        this.padEstado = padEstado;
+        GenValorCombo valor = null;
+        if (padEstado.equalsIgnoreCase("a")) {
+            valor = new GenValorCombo(padEstado, "Activo");
+        } else {
+            valor = new GenValorCombo(padEstado, "Inactivo");
+        }
+        this.padEstado.set(valor);
     }
 
+    @Basic(optional = false)
+    @Column(name = "pad_padecimiento")
+    @Access(AccessType.PROPERTY)
     public String getPadPadecimiento() {
-        return padPadecimiento;
+        return padPadecimiento.get();
+    }
+
+    public SimpleStringProperty getPadecimientoProperty() {
+        if (this.padPadecimiento == null) {
+            this.padPadecimiento = new SimpleStringProperty();
+        }
+        return this.padPadecimiento;
     }
 
     public void setPadPadecimiento(String padPadecimiento) {
-        this.padPadecimiento = padPadecimiento;
+        if (this.padPadecimiento == null) {
+            this.padPadecimiento = new SimpleStringProperty();
+        }
+        this.padPadecimiento.set(padPadecimiento);
     }
 
+    @Basic(optional = false)
+    @Column(name = "pad_observaciones")
+    @Access(AccessType.PROPERTY)
     public String getPadObservaciones() {
-        return padObservaciones;
+        return padObservaciones.get();
+    }
+
+    public SimpleStringProperty getObservacionesProperty() {
+        if (this.padObservaciones == null) {
+            this.padObservaciones = new SimpleStringProperty();
+        }
+        return this.padObservaciones;
     }
 
     public void setPadObservaciones(String padObservaciones) {
-        this.padObservaciones = padObservaciones;
+        if (this.padObservaciones == null) {
+            this.padObservaciones = new SimpleStringProperty();
+        }
+        this.padObservaciones.set(padObservaciones);
     }
 
     public String getPadUsuarioingresa() {
@@ -160,7 +202,7 @@ public class BikPadecimiento implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (padCodigo != null ? padCodigo.hashCode() : 0);
+        hash += (padCodigo.get() != null ? padCodigo.get().hashCode() : 0);
         return hash;
     }
 
@@ -171,7 +213,7 @@ public class BikPadecimiento implements Serializable {
             return false;
         }
         BikPadecimiento other = (BikPadecimiento) object;
-        if ((this.padCodigo == null && other.padCodigo != null) || (this.padCodigo != null && !this.padCodigo.equals(other.padCodigo))) {
+        if ((this.padCodigo.get() == null && other.padCodigo.get() != null) || (this.padCodigo.get() != null && !this.padCodigo.get().equals(other.padCodigo.get()))) {
             return false;
         }
         return true;
@@ -179,7 +221,7 @@ public class BikPadecimiento implements Serializable {
 
     @Override
     public String toString() {
-        return "jbiketso.model.BikPadecimiento[ padCodigo=" + padCodigo + " ]";
+        return "jbiketso.model.BikPadecimiento[ padCodigo=" + padCodigo.get() + " ]";
     }
-    
+
 }

@@ -47,7 +47,7 @@ public class BikExpediente implements Serializable {
    private static final long serialVersionUID = 1L;
 
    @Transient
-   private ObjectProperty<Integer> expCodigo;
+   private ObjectProperty<Integer> codigo;
    @Transient
    private SimpleObjectProperty<LocalDate> expFechaIngreso;
    @Transient
@@ -94,7 +94,7 @@ public class BikExpediente implements Serializable {
    private List<BikRequisitosExpediente> bikRequisitosExpedienteList;
 
    public BikExpediente() {
-      this.expCodigo = new SimpleObjectProperty();
+      this.codigo = new SimpleObjectProperty();
       this.expFechaIngreso = new SimpleObjectProperty();
       this.expFechaSalida = new SimpleObjectProperty();
       this.expEstado = new SimpleObjectProperty();
@@ -111,21 +111,21 @@ public class BikExpediente implements Serializable {
    @Column(name = "exp_codigo")
    @Access(AccessType.PROPERTY)
    public Integer getExpCodigo() {
-      return expCodigo.get();
+      return codigo.get();
    }
 
    public ObjectProperty getCodigoProperty() {
-      if (this.expCodigo == null) {
-         this.expCodigo = new SimpleObjectProperty();
+      if (this.codigo == null) {
+         this.codigo = new SimpleObjectProperty();
       }
-      return this.expCodigo;
+      return this.codigo;
    }
 
    public void setExpCodigo(Integer expCodigo) {
-      if (this.expCodigo == null) {
-         this.expCodigo = new SimpleObjectProperty();
+      if (this.codigo == null) {
+         this.codigo = new SimpleObjectProperty();
       }
-      this.expCodigo.set(expCodigo);
+      this.codigo.set(expCodigo);
    }
 
    @Transient
@@ -420,7 +420,7 @@ public class BikExpediente implements Serializable {
    @Override
    public int hashCode() {
       int hash = 0;
-      hash += (expCodigo != null ? expCodigo.hashCode() : 0);
+      hash += (codigo.get() != null ? codigo.get().hashCode() : 0);
       return hash;
    }
 
@@ -431,7 +431,7 @@ public class BikExpediente implements Serializable {
          return false;
       }
       BikExpediente other = (BikExpediente) object;
-      if ((this.expCodigo.get() == null && other.expCodigo.get() != null) || (this.expCodigo.get() != null && !this.expCodigo.get().equals(other.expCodigo.get()))) {
+      if ((this.codigo.get() == null && other.codigo.get() != null) || (this.codigo.get() != null && !this.codigo.get().equals(other.codigo.get()))) {
          return false;
       }
       return true;
@@ -439,7 +439,7 @@ public class BikExpediente implements Serializable {
 
    @Override
    public String toString() {
-      return "jbiketso.model.BikExpediente[ expCodigo=" + expCodigo.get() + " ]";
+      return "jbiketso.model.BikExpediente[ expCodigo=" + codigo.get() + " ]";
    }
 
 }
