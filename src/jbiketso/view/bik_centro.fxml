@@ -77,7 +77,6 @@
       <TableView fx:id="tbvSedes" layoutX="4.0" layoutY="367.0" prefHeight="167.0" prefWidth="657.0">
         <columns>
           <TableColumn fx:id="tbcDescripcionSede" prefWidth="148.0" text="Descripción" />
-            <TableColumn fx:id="tbcNombreRepre" minWidth="0.0" prefWidth="148.0" text="Representante" />
             <TableColumn fx:id="tbcTelefonos" minWidth="0.0" prefWidth="95.0" text="Teléfonos" />
             <TableColumn fx:id="tbcFax" prefWidth="109.0" text="Fax" />
             <TableColumn fx:id="tbcEmail" prefWidth="156.0" text="Email" />

@@ -8,6 +8,9 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,6 +27,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Anayansy
  */
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "bik_sede",schema = "biketso")
 @XmlRootElement
 @NamedQueries({
@@ -49,24 +54,19 @@ import javax.xml.bind.annotation.XmlTransient;
 public class BikSede implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "sed_codigo")
+    @Transient
     private Integer sedCodigo;
-    @Basic(optional = false)
-    @Column(name = "sed_nombre")
-    private String sedNombre;
-    @Basic(optional = false)
-    @Column(name = "sed_descripcion")
-    private String sedDescripcion;
-    @Basic(optional = false)
-    @Column(name = "sed_telefonos")
-    private String sedTelefonos;
-    @Column(name = "sed_fax")
-    private String sedFax;
-    @Column(name = "sed_email")
-    private String sedEmail;
+    @Transient
+    private SimpleStringProperty sedNombre;
+    @Transient
+    private SimpleStringProperty sedDescripcion;
+    @Transient
+    private SimpleStringProperty sedTelefonos;
+    @Transient
+    private SimpleStringProperty sedFax;
+    @Transient
+    private SimpleStringProperty sedEmail;
+    
     @Column(name = "sed_usuarioingresa")
     private String sedUsuarioingresa;
     @Column(name = "sed_fechaingresa")
@@ -95,19 +95,29 @@ public class BikSede implements Serializable {
     private List<BikAgenda> bikAgendaList;
 
     public BikSede() {
+        this.sedNombre = new SimpleStringProperty();
+        this.sedDescripcion = new SimpleStringProperty();
+        this.sedTelefonos = new SimpleStringProperty();
+        this.sedFax = new SimpleStringProperty();
+        this.sedEmail = new SimpleStringProperty();
     }
 
     public BikSede(Integer sedCodigo) {
         this.sedCodigo = sedCodigo;
     }
 
-    public BikSede(Integer sedCodigo, String sedNombre, String sedDescripcion, String sedTelefonos) {
+    /*public BikSede(Integer sedCodigo, String sedNombre, String sedDescripcion, String sedTelefonos) {
         this.sedCodigo = sedCodigo;
         this.sedNombre = sedNombre;
         this.sedDescripcion = sedDescripcion;
         this.sedTelefonos = sedTelefonos;
-    }
+    }*/
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "sed_codigo")
+    @Access(AccessType.PROPERTY)
     public Integer getSedCodigo() {
         return sedCodigo;
     }
@@ -116,44 +126,77 @@ public class BikSede implements Serializable {
         this.sedCodigo = sedCodigo;
     }
 
+    @Basic(optional = false)
+    @Column(name = "sed_nombre")
+    @Access(AccessType.PROPERTY)
     public String getSedNombre() {
-        return sedNombre;
+        return sedNombre.get();
     }
 
     public void setSedNombre(String sedNombre) {
-        this.sedNombre = sedNombre;
+        this.sedNombre.set(sedNombre);
+    }
+    
+    public SimpleStringProperty getSedNombreProperty() {
+        return sedNombre;
     }
 
+    @Basic(optional = false)
+    @Column(name = "sed_descripcion")
+    @Access(AccessType.PROPERTY)
     public String getSedDescripcion() {
-        return sedDescripcion;
+        return sedDescripcion.get();
     }
 
     public void setSedDescripcion(String sedDescripcion) {
-        this.sedDescripcion = sedDescripcion;
+        this.sedDescripcion.set(sedDescripcion);
+    }
+    
+    public SimpleStringProperty getSedDescripcionProperty() {
+        return sedDescripcion;
     }
 
+    @Basic(optional = false)
+    @Column(name = "sed_telefonos")
+    @Access(AccessType.PROPERTY)
     public String getSedTelefonos() {
-        return sedTelefonos;
+        return sedTelefonos.get();
     }
 
     public void setSedTelefonos(String sedTelefonos) {
-        this.sedTelefonos = sedTelefonos;
+        this.sedTelefonos.set(sedTelefonos);
+    }
+    
+    public SimpleStringProperty getSedTelefonosProperty() {
+        return sedTelefonos;
     }
 
+    @Column(name = "sed_fax")
+    @Access(AccessType.PROPERTY)
     public String getSedFax() {
-        return sedFax;
+        return sedFax.get();
     }
 
     public void setSedFax(String sedFax) {
-        this.sedFax = sedFax;
+        this.sedFax.set(sedFax);
+    }
+    
+    public SimpleStringProperty getSedFaxProperty() {
+        return sedFax;
     }
 
+    @Column(name = "sed_email")
+    @Access(AccessType.PROPERTY)
     public String getSedEmail() {
-        return sedEmail;
+        return sedEmail.get();
     }
 
     public void setSedEmail(String sedEmail) {
-        this.sedEmail = sedEmail;
+        this.sedEmail.set(sedEmail);
+    }
+    
+    public SimpleStringProperty getSedEmailProperty() {
+        return sedEmail;
     }
 
     public String getSedUsuarioingresa() {
