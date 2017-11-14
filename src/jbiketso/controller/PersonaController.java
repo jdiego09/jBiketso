@@ -340,12 +340,12 @@ public class PersonaController implements Initializable {
 
     @FXML
     void eliminarContacto(ActionEvent event) {
-Resultado<String> resultado = PersonaDao.getInstance().deleteContacto(contacto);
-        if (resultado.getResultado().equals(TipoResultado.SUCCESS)){
+        Resultado<String> resultado = PersonaDao.getInstance().deleteContacto(contacto);
+        if (resultado.getResultado().equals(TipoResultado.SUCCESS)) {
             this.persona.getBikContactoList().remove(contacto);
             this.contactos.remove(contacto);
             nuevoContacto();
-        }else{
+        } else {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Eliminar contacto", resultado.getMensaje());
         }
     }

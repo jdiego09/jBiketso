@@ -13,19 +13,36 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.converter.BigDecimalStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.model.dao.ExpedienteDao;
+import jbiketso.model.dao.PersonaDao;
+import jbiketso.model.dao.UsuarioDao;
 import jbiketso.model.entities.BikExpediente;
 import jbiketso.model.entities.BikMedicamento;
 import jbiketso.model.entities.BikPadecimiento;
+import jbiketso.model.entities.BikPersona;
+import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.AppWindowController;
 import jbiketso.utils.GenValorCombo;
+import jbiketso.utils.Resultado;
+import jbiketso.utils.TipoResultado;
 
 public class UsuariosController implements Initializable {
+
+    BikUsuario usuario;
+    BikPersona personaUsuario;
+    BikPersona personaEncargado;
 
     BikExpediente expediente;
     BikPadecimiento padecimiento;
@@ -104,7 +121,7 @@ public class UsuariosController implements Initializable {
     private ObservableList<BikPadecimiento> listaPadecimientos = FXCollections.observableArrayList();
     @XmlTransient
     private ObservableList<BikMedicamento> listaMedicamentos = FXCollections.observableArrayList();
-    
+
     @XmlTransient
     ObservableList<GenValorCombo> estados = FXCollections
             .observableArrayList();
@@ -113,14 +130,33 @@ public class UsuariosController implements Initializable {
     ObservableList<GenValorCombo> tiposAtencion = FXCollections
             .observableArrayList();
 
-
-    private void bindUsuario() {
+    private void bindPersonaUsuario() {
         //usuario
-        this.jtxfCedula.textProperty().bindBidirectional(this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedulaProperty());
-        this.jtxfNombre.textProperty().bindBidirectional(this.expediente.getExpUsucodigo().getUsuPercodigo().getNombreCompletoProperty());
+        this.jtxfCedula.textProperty().bindBidirectional(this.personaUsuario.getPerCedulaProperty());
+        this.jtxfNombre.textProperty().bindBidirectional(this.personaUsuario.getNombreCompletoProperty());
+    }
+
+    private void unbindPersonaUsuario() {
+        //usuario
+        this.jtxfCedula.textProperty().unbindBidirectional(this.personaUsuario.getPerCedulaProperty());
+        this.jtxfNombre.textProperty().unbindBidirectional(this.personaUsuario.getNombreCompletoProperty());
+    }
+
+    private void bindPersonaEncargado() {
         //encargado
-        this.jtxfCedulaEncargado.textProperty().bindBidirectional(this.expediente.getExpCodencargado().getPerCedulaProperty());
-        this.jtxfNombreEncargado.textProperty().bindBidirectional(this.expediente.getExpCodencargado().getNombreCompletoProperty());
+        this.jtxfCedulaEncargado.textProperty().bindBidirectional(this.personaEncargado.getPerCedulaProperty());
+        this.jtxfNombreEncargado.textProperty().bindBidirectional(this.personaEncargado.getNombreCompletoProperty());
+    }
+
+    private void unbindPersonaEncargado() {
+        //encargado
+        this.jtxfCedulaEncargado.textProperty().unbindBidirectional(this.personaEncargado.getPerCedulaProperty());
+        this.jtxfNombreEncargado.textProperty().unbindBidirectional(this.personaEncargado.getNombreCompletoProperty());
+    }
+
+    private void bindExpediente() {
+        bindPersonaUsuario();
+        bindPersonaEncargado();
         //expediente
         this.jtxfExpediente.textProperty().bindBidirectional(this.expediente.getCodigoProperty());
         this.jdtpFechaIngreso.valueProperty().bindBidirectional(this.expediente.getExpFechaIngresoProperty());
@@ -157,13 +193,9 @@ public class UsuariosController implements Initializable {
         this.jtxaObservacionesMedicamento.textProperty().unbindBidirectional(this.medicamento.getObservacionesProperty());
     }
 
-    private void unbindUsuario() {
-        //usuario
-        this.jtxfCedula.textProperty().unbindBidirectional(this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedulaProperty());
-        this.jtxfNombre.textProperty().unbindBidirectional(this.expediente.getExpUsucodigo().getUsuPercodigo().getNombreCompletoProperty());
-        //encargado
-        this.jtxfCedulaEncargado.textProperty().unbindBidirectional(this.expediente.getExpCodencargado().getPerCedulaProperty());
-        this.jtxfNombreEncargado.textProperty().unbindBidirectional(this.expediente.getExpCodencargado().getNombreCompletoProperty());
+    private void unbindExpediente() {
+        unbindPersonaUsuario();
+        unbindPersonaEncargado();
         //expediente
         this.jtxfExpediente.textProperty().unbindBidirectional(this.expediente.getCodigoProperty());
         this.jdtpFechaIngreso.valueProperty().unbindBidirectional(this.expediente.getExpFechaIngresoProperty());
@@ -174,6 +206,10 @@ public class UsuariosController implements Initializable {
         this.jtxfCantidadDependientes.textProperty().unbindBidirectional(this.expediente.getPersonasDependientesProperty());
         this.jtxfIngresoPromedio.textProperty().unbindBidirectional(this.expediente.getIngresoPromedioProperty());
         this.jtxfEstSocioEco.textProperty().unbindBidirectional(this.expediente.getEstudioSocioEconomicoProperty());
+
+        this.jtxfCantidadPersonas.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        this.jtxfCantidadDependientes.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        this.jtxfIngresoPromedio.setTextFormatter(new TextFormatter<>(new BigDecimalStringConverter()));
     }
 
     public void bindListaPadecimientos() {
@@ -198,8 +234,19 @@ public class UsuariosController implements Initializable {
 
     private void nuevoExpediente() {
         this.expediente = new BikExpediente();
+        this.expediente.setExpUsucodigo(new BikUsuario());
+        this.expediente.getExpUsucodigo().setUsuPercodigo(new BikPersona());
+        this.expediente.setExpCodencargado(new BikPersona());
         this.expediente.setBikMedicamentoList(new ArrayList<>());
         this.expediente.setBikPadecimientoList(new ArrayList<>());
+    }
+
+    private void nuevaPersonaUsuario() {
+        this.personaUsuario = new BikPersona();
+    }
+
+    private void nuevaPersonaEncargado() {
+        this.personaEncargado = new BikPersona();
     }
 
     private void nuevoPadecimiento() {
@@ -218,11 +265,15 @@ public class UsuariosController implements Initializable {
         this.jcmbEstado.setItems(this.estados);
 
         this.tiposAtencion.add(new GenValorCombo("D", "Por día"));
-        this.tiposAtencion.add(new GenValorCombo("P", "Permanente 24 horas"));        
+        this.tiposAtencion.add(new GenValorCombo("P", "Permanente 24 horas"));
         this.jcmbTipoAtencion.setItems(this.tiposAtencion);
-        
+        this.usuario = new BikUsuario();
         nuevoExpediente();
-        unbindUsuario();
+        nuevaPersonaUsuario();
+        nuevaPersonaEncargado();
+        nuevoPadecimiento();
+        nuevoMedicamento();
+        bindExpediente();
         bindListaPadecimientos();
         bindListaMedicamentos();
 
@@ -252,21 +303,6 @@ public class UsuariosController implements Initializable {
     }
 
     @FXML
-    void guardarUsuario(ActionEvent event) {
-
-    }
-
-    @FXML
-    void limpiar(ActionEvent event) {
-
-    }
-
-    @FXML
-    void regresar(ActionEvent event) {
-        AppWindowController.getInstance().goHome();
-    }
-
-    @FXML
     void agregarMedicamento(ActionEvent event) {
 
     }
@@ -276,4 +312,113 @@ public class UsuariosController implements Initializable {
 
     }
 
+    @FXML
+    void eliminarMedicamento(ActionEvent event) {
+
+    }
+
+    @FXML
+    void eliminarPadecimiento(ActionEvent event) {
+
+    }
+
+    @FXML
+    void guardarUsuario(ActionEvent event) {
+        //guarda al usuario
+        if (this.usuario == null || this.usuario.getUsuCodigo() == null || this.usuario.getUsuCodigo() <= 0) {
+            this.usuario.setUsuPercodigo(this.personaUsuario);
+            this.usuario.setUsuCodencargadolegal(this.personaEncargado);
+            //this.usuario.setUsuSedcodigo(usuSedcodigo);
+            UsuarioDao.getInstance().setUsuario(this.usuario);
+            Resultado<BikUsuario> resultado = UsuarioDao.getInstance().save();
+
+            if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Registrar Usuario", resultado.getMensaje());
+                return;
+            }
+            this.usuario = resultado.get();
+            AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Registrar Usuario", resultado.getMensaje());
+        }
+        //guarda el expediente
+        if (this.expediente.getExpCodigo() == null || this.expediente.getExpCodigo() <= 0) {
+            this.expediente.setExpUsucodigo(this.usuario);
+            this.expediente.setExpCodencargado(this.usuario.getUsuCodencargadolegal());
+            //this.expediente.setExpSedcodigo(expSedcodigo);            
+            ExpedienteDao.getInstance().setUsuario(this.expediente);
+            Resultado<BikExpediente> resultado = ExpedienteDao.getInstance().save();
+
+            if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Registrar Expediente", resultado.getMensaje());
+                return;
+            }
+            this.expediente = resultado.get();
+            AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Registrar Expediente", resultado.getMensaje());
+        }
+
+    }
+
+    @FXML
+    void limpiar(ActionEvent event) {
+        unbindExpediente();
+        unbindPadecimiento();
+        unbindMedicamento();
+        this.listaPadecimientos.clear();
+        this.listaMedicamentos.clear();
+        nuevaPersonaUsuario();
+        nuevaPersonaEncargado();
+        nuevoExpediente();
+        nuevoPadecimiento();
+        nuevoMedicamento();
+        bindExpediente();
+        bindPadecimiento();
+        bindMedicamento();
+    }
+
+    @FXML
+    void regresar(ActionEvent event) {
+        AppWindowController.getInstance().goHome();
+    }
+
+    @FXML
+    void cedulaOnEnterKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            unbindPersonaUsuario();
+            unbindPersonaEncargado();
+            unbindPadecimiento();
+            unbindMedicamento();
+            nuevoPadecimiento();
+            nuevoMedicamento();
+            this.personaUsuario = getPersona(this.personaUsuario.getPerCedula()).get();
+            bindPersonaUsuario();
+            bindPersonaEncargado();
+            bindPadecimiento();
+            bindMedicamento();
+        }
+    }
+
+    @FXML
+    void encargadoOnEnterKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            unbindPersonaUsuario();
+            unbindPersonaEncargado();
+            unbindPadecimiento();
+            unbindMedicamento();
+            nuevoPadecimiento();
+            nuevoMedicamento();
+            this.personaEncargado = getPersona(this.personaEncargado.getPerCedula()).get();
+            bindPersonaUsuario();
+            bindPersonaEncargado();
+            bindPadecimiento();
+            bindMedicamento();
+        }
+    }
+
+    private Resultado<BikPersona> getPersona(String cedula) {
+        Resultado<BikPersona> resultado = PersonaDao.getInstance().getPersona(cedula);
+        if (!resultado.getResultado().equals(TipoResultado.SUCCESS)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Buscar persona", resultado.getMensaje());
+            return resultado;
+        }
+        return resultado;
+    }
 }
