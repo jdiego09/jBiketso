@@ -29,6 +29,7 @@ import javafx.scene.layout.AnchorPane;
 import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.model.dao.CentroDao;
 import jbiketso.model.entities.BikCentro;
+import jbiketso.model.entities.BikPersona;
 import jbiketso.model.entities.BikSede;
 import jbiketso.utils.AppWindowController;
 import jbiketso.utils.GenValorCombo;
@@ -38,7 +39,9 @@ import jbiketso.utils.TipoResultado;
 public class CentroController implements Initializable {
 
     private BikCentro centro;
-    private BikSede   sede;
+    private BikSede sede;
+    private BikPersona encargadoCentro;
+    private BikPersona encargadoSede;
 
     @FXML
     private TableView<BikSede> tbvSedes;
