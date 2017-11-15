@@ -5,11 +5,13 @@
  */
 package jbiketso.model.dao;
 
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikUsuario;
+import jbiketso.utils.Aplicacion;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -89,7 +91,10 @@ public class UsuarioDao extends BaseDao<Integer, BikUsuario> {
     public Resultado<BikUsuario> save() {
         Resultado<BikUsuario> result = new Resultado<>();
         try {
-            usuario = new BikUsuario();
+            if (usuario.getUsuCodigo() == null || usuario.getUsuCodigo() <= 0){
+                usuario.setUsuUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                usuario.setUsuFechaingresa(new Date());
+            }
             usuario = (BikUsuario) super.save(usuario);
             result.setResultado(TipoResultado.SUCCESS);
             result.set(usuario);

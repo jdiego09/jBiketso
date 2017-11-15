@@ -32,7 +32,9 @@ import jbiketso.model.entities.BikExpediente;
 import jbiketso.model.entities.BikMedicamento;
 import jbiketso.model.entities.BikPadecimiento;
 import jbiketso.model.entities.BikPersona;
+import jbiketso.model.entities.BikSede;
 import jbiketso.model.entities.BikUsuario;
+import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
 import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
@@ -40,6 +42,7 @@ import jbiketso.utils.TipoResultado;
 
 public class UsuariosController implements Initializable {
 
+    BikSede sede = Aplicacion.getInstance().getDefaultSede();
     BikUsuario usuario;
     BikPersona personaUsuario;
     BikPersona personaEncargado;
@@ -325,10 +328,11 @@ public class UsuariosController implements Initializable {
     @FXML
     void guardarUsuario(ActionEvent event) {
         //guarda al usuario
-        if (this.usuario == null || this.usuario.getUsuCodigo() == null || this.usuario.getUsuCodigo() <= 0) {
+        if (this.usuario.getUsuCodigo() == null || this.usuario.getUsuCodigo() <= 0) {
             this.usuario.setUsuPercodigo(this.personaUsuario);
             this.usuario.setUsuCodencargadolegal(this.personaEncargado);
-            //this.usuario.setUsuSedcodigo(usuSedcodigo);
+            this.usuario.setUsuSedcodigo(this.sede);
+            this.usuario.setUsuEstado(this.expediente.getExpEstado());
             UsuarioDao.getInstance().setUsuario(this.usuario);
             Resultado<BikUsuario> resultado = UsuarioDao.getInstance().save();
 
@@ -340,10 +344,10 @@ public class UsuariosController implements Initializable {
             AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Registrar Usuario", resultado.getMensaje());
         }
         //guarda el expediente
-        if (this.expediente.getExpCodigo() == null || this.expediente.getExpCodigo() <= 0) {
+        /*if (this.expediente.getExpCodigo() == null || this.expediente.getExpCodigo() <= 0) {
             this.expediente.setExpUsucodigo(this.usuario);
             this.expediente.setExpCodencargado(this.usuario.getUsuCodencargadolegal());
-            //this.expediente.setExpSedcodigo(expSedcodigo);            
+            this.expediente.setExpSedcodigo(this.sede);            
             ExpedienteDao.getInstance().setUsuario(this.expediente);
             Resultado<BikExpediente> resultado = ExpedienteDao.getInstance().save();
 
@@ -353,7 +357,7 @@ public class UsuariosController implements Initializable {
             }
             this.expediente = resultado.get();
             AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Registrar Expediente", resultado.getMensaje());
-        }
+        }*/
 
     }
 

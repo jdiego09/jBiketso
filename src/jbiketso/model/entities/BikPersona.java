@@ -262,7 +262,7 @@ public class BikPersona implements Serializable {
     @Column(name = "per_estadocivil")
     @Access(AccessType.PROPERTY)
     public String getPerEstadocivil() {
-        return perEstadocivil.getName();
+        return perEstadocivil.get().getCodigo();
     }
 
     public void setPerEstadocivil(String perEstadocivil) {

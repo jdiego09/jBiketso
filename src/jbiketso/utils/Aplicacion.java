@@ -10,6 +10,13 @@ import jbiketso.model.entities.BikModulos;
 import jbiketso.model.entities.BikPermisoRol;
 import jbiketso.model.entities.BikUsuariosSistema;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import javafx.scene.control.Alert;
+import jbiketso.model.dao.CentroDao;
+import jbiketso.model.entities.BikSede;
+
 /**
  *
  * @author jdiego
@@ -22,6 +29,10 @@ public class Aplicacion {
     private static String rolesUsuario;
     private static ArrayList<BikPermisoRol> accesosUsuario;
     private static ArrayList<BikModulos> modulosUsuario;
+    private static Integer defaultCentro;
+    private static Integer defaultSede;
+
+    private static BikSede sede;
 
     private Aplicacion() {
     }
@@ -45,6 +56,54 @@ public class Aplicacion {
             createInstance();
         }
         return INSTANCE;
+    }
+
+    public BikSede getDefaultSede() {
+        if (sede == null) {
+            Resultado<BikSede> defSede = CentroDao.getInstance().findSedeByCodigo(defaultSede);
+            if (!defSede.getResultado().equals(TipoResultado.SUCCESS)) {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Traer sede por defecto", defSede.getMensaje());
+                return null;
+            }
+            sede = defSede.get();
+        }
+        return sede;
+    }
+
+    public void cargaProperties() {
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+
+            String filename = "biketso.properties";
+            input = Aplicacion.class.getClassLoader().getResourceAsStream(filename);
+            if (input == null) {
+                System.out.println("Error al cargar archivo de configuración" + filename);
+                return;
+            }
+
+            //load a properties file from class path, inside static method
+            prop.load(input);
+            if (prop.containsKey("default.centro")) {
+                defaultCentro = Integer.valueOf(prop.getProperty("default.centro"));
+                System.out.println("def_Centro " + prop.getProperty("default.centro"));
+            }
+            if (prop.containsKey("default.sede")) {
+                defaultSede = Integer.valueOf(prop.getProperty("default.sede"));
+                System.out.println("def_Sede " + prop.getProperty("default.sede"));
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     //para que solamente exista una instancia del objeto

@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikCentro;
 import jbiketso.model.entities.BikPersona;
+import jbiketso.model.entities.BikSede;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -79,6 +81,31 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
             return resultado;
         }
     }
+
+    public Resultado<BikSede> findSedeByCodigo(Integer codigoSede) {
+        BikSede sede;
+        Resultado<BikSede> resultado = new Resultado<>();
+        try {
+            Query query = getEntityManager().createNamedQuery("BikSede.findBySedCodigo");
+            query.setParameter("sedCodigo", codigoSede);
+            sede = (BikSede) query.getSingleResult();
+
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(sede);
+            return resultado;
+        } catch (NoResultException nre) {
+            Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, nre);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("No existe la sede con el código [" + String.valueOf(codigoSede) + "].");
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error consultando la sede con el código [" + String.valueOf(codigoSede) + "].");
+            return resultado;
+        }
+    }
+
     // Procedimiento para guardar la información del centro.
     public Resultado<BikCentro> save() {
         Resultado<BikCentro> resultado = new Resultado<>();
@@ -87,7 +114,7 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
             BikPersona persona = new BikPersona();
             persona.setPerCodigo(3);
             centro.setCenCodrepresentantelegal(persona);
-            
+
             centro = (BikCentro) super.save(centro);
 
             if (centro.getCenCodigo() != null) {
@@ -100,7 +127,7 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
                 resultado.set(centro);
                 resultado.setMensaje("No se pudo guardar el centro.");
             }
-            
+
             return resultado;
 
         } catch (Exception ex) {
