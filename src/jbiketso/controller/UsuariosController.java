@@ -40,7 +40,7 @@ import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
-public class UsuariosController implements Initializable {
+public class UsuariosController extends Controller implements Initializable {
     
     BikExpediente expediente;
     BikPadecimiento padecimiento;
@@ -247,10 +247,8 @@ public class UsuariosController implements Initializable {
         this.medicamento = new BikMedicamento();
     }
     
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        
-        this.estados.add(new GenValorCombo("A", "Activo"));
+    private void init(){
+       this.estados.add(new GenValorCombo("A", "Activo"));
         this.estados.add(new GenValorCombo("I", "Inactivo"));
         this.jcmbEstado.setItems(this.estados);
         
@@ -266,7 +264,11 @@ public class UsuariosController implements Initializable {
         
         addListenerTablePadecimientos(tbvPadecimiento);
         addListenerTableMedicamentos(tbvMedicamentos);
-        
+    }
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {        
+        init();        
     }
     
     private void addListenerTablePadecimientos(TableView table) {
@@ -416,4 +418,9 @@ public class UsuariosController implements Initializable {
         }
         return resultado.get();
     }
+
+   @Override
+   public void initialize() {
+      init();
+   }
 }

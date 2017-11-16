@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnitUtil;
+import jbiketso.model.entities.BikSede;
 
 /*import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;*/
@@ -16,6 +17,8 @@ public class Parametros {
     private static final EntityManagerFactory ENTITYMANAGERFACTORY = Persistence.createEntityManagerFactory("jBiketsoPU" );
     public static final PersistenceUnitUtil PERSISTENCEUTIL = ENTITYMANAGERFACTORY.getPersistenceUnitUtil();
 
+    BikSede sede;
+    
     private Parametros() {
     }
 
