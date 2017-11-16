@@ -49,7 +49,7 @@
             </Label>
          </children>
       </Pane>
-      <JFXTextField fx:id="jtxfCedRepre" labelFloat="true" layoutX="14.0" layoutY="108.0" prefHeight="25.0" prefWidth="166.0" promptText="Cédula representante" />
+      <JFXTextField fx:id="jtxfCedRepre" labelFloat="true" layoutX="14.0" layoutY="108.0" onKeyPressed="#cedulaRepreCentroOnEnterKey" prefHeight="25.0" prefWidth="166.0" promptText="Cédula representante" />
       <JFXButton fx:id="jbtnBuscarLogo" layoutX="616.0" layoutY="153.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" />
       <Label layoutX="14.0" layoutY="191.0" prefHeight="17.0" prefWidth="37.0" text="Sedes">
          <font>

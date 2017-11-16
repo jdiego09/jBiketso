@@ -25,9 +25,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.model.dao.CentroDao;
+import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikCentro;
 import jbiketso.model.entities.BikPersona;
 import jbiketso.model.entities.BikSede;
@@ -75,44 +78,36 @@ public class CentroController implements Initializable {
     ObservableList<GenValorCombo> estados = FXCollections
             .observableArrayList();
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        estados.add(new GenValorCombo("A", "Activo"));
-        estados.add(new GenValorCombo("I", "Inactivo"));
-        jcmbEstado.setItems(estados);
-
-        nuevoCentro();
-        bindCentro();
-        //bindSede();
-        //cargarCentros();
-        //bindListaSedes();
-        //addListenerTable(tbvSedes);
-
-    }
-
     private void nuevoCentro() {
         this.centro = new BikCentro();
     }
-    
+
     private void nuevaSede() {
         this.sede = new BikSede();
+    }
+    
+    private void nuevaPersonaEncargadoCentro(){
+        this.encargadoCentro = new BikPersona();
+    }
+    
+    private void nuevaPersonaEncargadoSede(){
+        this.encargadoSede = new BikPersona();
     }
 
     private void bindCentro() {
         jtxfCedJuridica.textProperty().bindBidirectional(centro.getCenCedulajuridicaProperty());
         jtxfNombreCentro.textProperty().bindBidirectional(centro.getCenNombreProperty());
-        jtxfCedRepre.textProperty().bindBidirectional(centro.getCenCodrepresentantelegal().getPerCedulaProperty());
-        jtxfNombreRepreLegal.textProperty().bindBidirectional(centro.getCenCodrepresentantelegal().getNombreCompletoProperty());
+        jtxfCedRepre.textProperty().bindBidirectional(this.encargadoCentro.getPerCedulaProperty());
+        jtxfNombreRepreLegal.textProperty().bindBidirectional(this.encargadoCentro.getNombreCompletoProperty());
         jcmbEstado.valueProperty().bindBidirectional(centro.getCenEstadoProperty());
         jtxfLogo.textProperty().bindBidirectional(centro.getCenLogoProperty());
     }
-    
-    private void bindSede(){
+
+    private void bindSede() {
         jtxfNombreSede.textProperty().bindBidirectional(sede.getSedNombreProperty());
         jtxjDescripcionSede.textProperty().bindBidirectional(sede.getSedDescripcionProperty());
-        jtxfCedEncargadoSede.textProperty().bind(sede.getSedCodencargado().getPerCedulaProperty());
-        jtxfNomEncargadoSede.textProperty().bindBidirectional(sede.getSedCodencargado().getNombreCompletoProperty());
+        jtxfCedEncargadoSede.textProperty().bind(this.encargadoSede.getPerCedulaProperty());
+        jtxfNomEncargadoSede.textProperty().bindBidirectional(this.encargadoSede.getNombreCompletoProperty());
         jtxfTelefonos.textProperty().bindBidirectional(sede.getSedTelefonosProperty());
         jtxfEmail.textProperty().bindBidirectional(sede.getSedEmailProperty());
     }
@@ -126,7 +121,7 @@ public class CentroController implements Initializable {
         jtxfLogo.textProperty().unbindBidirectional(centro.getCenLogoProperty());
     }
 
-    private void unbindSede(){
+    private void unbindSede() {
         jtxfNombreSede.textProperty().unbindBidirectional(sede.getSedNombreProperty());
         jtxjDescripcionSede.textProperty().unbindBidirectional(sede.getSedDescripcionProperty());
         jtxfCedEncargadoSede.textProperty().bind(sede.getSedCodencargado().getPerCedulaProperty());
@@ -134,7 +129,7 @@ public class CentroController implements Initializable {
         jtxfTelefonos.textProperty().unbindBidirectional(sede.getSedTelefonosProperty());
         jtxfEmail.textProperty().unbindBidirectional(sede.getSedEmailProperty());
     }
-    
+
     private void bindListaSedes() {
         if (sedes != null) {
             tbvSedes.setItems(sedes);
@@ -155,7 +150,7 @@ public class CentroController implements Initializable {
             }
         });
     }
-    
+
     private void agregarSedeALista(BikSede sede) {
         BikSede nueva = new BikSede();
         nueva.setSedNombre(sede.getSedNombre());
@@ -172,7 +167,7 @@ public class CentroController implements Initializable {
         }
         tbvSedes.refresh();
     }
-    
+
     /*
     private void cargarSedes() {
         Resultado<ArrayList<BikCentro>> resultado = CentroDao.getInstance().findAll();
@@ -182,7 +177,16 @@ public class CentroController implements Initializable {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Consultar centros", resultado.getMensaje());
         }
     }*/
-     
+    
+    private Resultado<BikPersona> getPersona(String cedula) {
+        Resultado<BikPersona> resultado = PersonaDao.getInstance().getPersona(cedula);
+        if (!resultado.getResultado().equals(TipoResultado.SUCCESS)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Buscar persona", resultado.getMensaje());
+            return resultado;
+        }
+        return resultado;
+    }
+    
     @FXML
     void limpiarCentro(ActionEvent event) {
         unbindCentro();
@@ -191,7 +195,27 @@ public class CentroController implements Initializable {
         nuevaSede();
         bindCentro();
     }
-    
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        estados.add(new GenValorCombo("A", "Activo"));
+        estados.add(new GenValorCombo("I", "Inactivo"));
+        jcmbEstado.setItems(estados);
+
+        nuevoCentro();
+        nuevaSede();
+        nuevaPersonaEncargadoCentro();
+        nuevaPersonaEncargadoSede();
+        bindCentro();
+        bindSede();
+        bindListaSedes();
+        //cargarCentros();
+        
+        addListenerTable(tbvSedes);
+
+    }
+
     @FXML
     void guardarCentro(ActionEvent event) {
         CentroDao.getInstance().setCentro(this.centro);
@@ -203,6 +227,18 @@ public class CentroController implements Initializable {
         AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Guardar centro", nuevo.getMensaje());
     }
     
+    @FXML
+    void cedulaRepreCentroOnEnterKey(KeyEvent event){
+        if (event.getCode() == KeyCode.ENTER) {
+            unbindCentro();
+            unbindSede();
+            nuevaSede();
+            this.encargadoCentro = getPersona(this.encargadoCentro.getPerCedula()).get();
+            bindCentro();
+            bindSede();
+        }
+    }
+
     @FXML
     void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
