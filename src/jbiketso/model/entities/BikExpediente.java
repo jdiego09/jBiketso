@@ -8,6 +8,7 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
@@ -41,6 +42,7 @@ import jbiketso.utils.GenValorCombo;
 @NamedQueries({
     @NamedQuery(name = "BikExpediente.findAll", query = "SELECT b FROM BikExpediente b")
     , @NamedQuery(name = "BikExpediente.findByExpCodigo", query = "SELECT b FROM BikExpediente b WHERE b.expCodigo = :expCodigo")
+    , @NamedQuery(name = "BikExpediente.findByCedulaUsuario", query = "SELECT b FROM BikExpediente b join b.expUsucodigo u join u.usuPercodigo p WHERE p.perCedula = :cedula")
 })
 public class BikExpediente implements Serializable {
 
@@ -79,13 +81,13 @@ public class BikExpediente implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "padExpcodigo", fetch = FetchType.LAZY)
     private List<BikPadecimiento> bikPadecimientoList;
     @JoinColumn(name = "exp_codencargado", referencedColumnName = "per_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
     private BikPersona expCodencargado;
     @JoinColumn(name = "exp_sedcodigo", referencedColumnName = "sed_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
     private BikSede expSedcodigo;
     @JoinColumn(name = "exp_usucodigo", referencedColumnName = "usu_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
     private BikUsuario expUsucodigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codigoExpediente", fetch = FetchType.LAZY)
     private List<BikMedicamento> bikMedicamentoList;
@@ -104,12 +106,34 @@ public class BikExpediente implements Serializable {
         this.expIngresoPromedio = new SimpleObjectProperty();
     }
 
+    public BikExpediente(Boolean inicializar) {
+        this.codigo = new SimpleObjectProperty();
+        this.expFechaIngreso = new SimpleObjectProperty();
+        this.expFechaSalida = new SimpleObjectProperty();
+        this.expEstado = new SimpleObjectProperty();
+        this.expTipoAtencion = new SimpleObjectProperty();
+        this.expEstudioSocioeconomico = new SimpleObjectProperty();
+        this.expPersonasHogar = new SimpleObjectProperty();
+        this.expDependientes = new SimpleObjectProperty();
+        this.expIngresoPromedio = new SimpleObjectProperty();
+        if (inicializar) {
+            this.expUsucodigo = new BikUsuario();
+            this.expCodencargado = new BikPersona();
+            this.expSedcodigo = new BikSede();
+            this.bikMedicamentoList = new ArrayList<>();
+            this.bikPadecimientoList = new ArrayList<>();
+        }
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "exp_codigo")
     @Access(AccessType.PROPERTY)
     public Integer getExpCodigo() {
+        if (this.codigo == null) {
+            this.codigo = new SimpleObjectProperty();
+        }
         return codigo.get();
     }
 

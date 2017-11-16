@@ -79,6 +79,7 @@ public class BikUsuario implements Serializable {
    private BikSede usuSedcodigo;
 
    public BikUsuario() {
+       this.usuPercodigo = new BikPersona();
    }
 
    public BikUsuario(Integer usuCodigo) {

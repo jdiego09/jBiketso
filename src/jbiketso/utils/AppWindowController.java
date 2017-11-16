@@ -196,6 +196,7 @@ public class AppWindowController {
     }
 
     public void goHome() {
+        
         loadHomeImage();
     }
 

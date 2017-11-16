@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import jbiketso.model.entities.BikExpediente;
 import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.Resultado;
@@ -58,8 +59,7 @@ public class UsuarioDao extends BaseDao<Integer, BikUsuario> {
     public Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
     }
-    
-    
+
     public Resultado<BikUsuario> getUsuarioByCedula(String cedula) {
         Resultado<BikUsuario> result = new Resultado<>();
         try {
@@ -81,7 +81,7 @@ public class UsuarioDao extends BaseDao<Integer, BikUsuario> {
             return result;
         }
     }
-    
+
     /**
      * *
      * Función para guardar la información de un usuario del centro.
@@ -91,9 +91,12 @@ public class UsuarioDao extends BaseDao<Integer, BikUsuario> {
     public Resultado<BikUsuario> save() {
         Resultado<BikUsuario> result = new Resultado<>();
         try {
-            if (usuario.getUsuCodigo() == null || usuario.getUsuCodigo() <= 0){
+            if (usuario.getUsuCodigo() == null || usuario.getUsuCodigo() <= 0) {
                 usuario.setUsuUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
                 usuario.setUsuFechaingresa(new Date());
+            } else {
+                usuario.setUsuUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                usuario.setUsuFechamodifica(new Date());
             }
             usuario = (BikUsuario) super.save(usuario);
             result.setResultado(TipoResultado.SUCCESS);
@@ -107,5 +110,7 @@ public class UsuarioDao extends BaseDao<Integer, BikUsuario> {
             return result;
         }
     }
+    
+    
 
 }
