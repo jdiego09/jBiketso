@@ -85,12 +85,12 @@ public class CentroController implements Initializable {
     private void nuevaSede() {
         this.sede = new BikSede();
     }
-    
-    private void nuevaPersonaEncargadoCentro(){
+
+    private void nuevaPersonaEncargadoCentro() {
         this.encargadoCentro = new BikPersona();
     }
-    
-    private void nuevaPersonaEncargadoSede(){
+
+    private void nuevaPersonaEncargadoSede() {
         this.encargadoSede = new BikPersona();
     }
 
@@ -103,6 +103,15 @@ public class CentroController implements Initializable {
         jtxfLogo.textProperty().bindBidirectional(centro.getCenLogoProperty());
     }
 
+    private void unbindCentro() {
+        jtxfCedJuridica.textProperty().unbindBidirectional(centro.getCenCedulajuridicaProperty());
+        jtxfNombreCentro.textProperty().unbindBidirectional(centro.getCenNombreProperty());
+        jtxfCedRepre.textProperty().unbindBidirectional(this.encargadoCentro.getPerCedulaProperty());
+        jtxfNombreRepreLegal.textProperty().unbindBidirectional(this.encargadoCentro.getNombreCompletoProperty());
+        jcmbEstado.valueProperty().unbindBidirectional(centro.getCenEstadoProperty());
+        jtxfLogo.textProperty().unbindBidirectional(centro.getCenLogoProperty());
+    }
+
     private void bindSede() {
         jtxfNombreSede.textProperty().bindBidirectional(sede.getSedNombreProperty());
         jtxjDescripcionSede.textProperty().bindBidirectional(sede.getSedDescripcionProperty());
@@ -112,20 +121,11 @@ public class CentroController implements Initializable {
         jtxfEmail.textProperty().bindBidirectional(sede.getSedEmailProperty());
     }
 
-    private void unbindCentro() {
-        jtxfCedJuridica.textProperty().unbindBidirectional(centro.getCenCedulajuridicaProperty());
-        jtxfNombreCentro.textProperty().unbindBidirectional(centro.getCenNombreProperty());
-        jtxfCedRepre.textProperty().unbindBidirectional(centro.getCenCodrepresentantelegal().getPerCedulaProperty());
-        jtxfNombreRepreLegal.textProperty().unbindBidirectional(centro.getCenCodrepresentantelegal().getNombreCompletoProperty());
-        jcmbEstado.valueProperty().unbindBidirectional(centro.getCenEstadoProperty());
-        jtxfLogo.textProperty().unbindBidirectional(centro.getCenLogoProperty());
-    }
-
     private void unbindSede() {
         jtxfNombreSede.textProperty().unbindBidirectional(sede.getSedNombreProperty());
         jtxjDescripcionSede.textProperty().unbindBidirectional(sede.getSedDescripcionProperty());
-        jtxfCedEncargadoSede.textProperty().bind(sede.getSedCodencargado().getPerCedulaProperty());
-        jtxfNomEncargadoSede.textProperty().unbindBidirectional(sede.getSedCodencargado().getNombreCompletoProperty());
+        jtxfCedEncargadoSede.textProperty().bind(this.encargadoSede.getPerCedulaProperty());
+        jtxfNomEncargadoSede.textProperty().unbindBidirectional(this.encargadoSede.getNombreCompletoProperty());
         jtxfTelefonos.textProperty().unbindBidirectional(sede.getSedTelefonosProperty());
         jtxfEmail.textProperty().unbindBidirectional(sede.getSedEmailProperty());
     }
@@ -177,7 +177,6 @@ public class CentroController implements Initializable {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Consultar centros", resultado.getMensaje());
         }
     }*/
-    
     private Resultado<BikPersona> getPersona(String cedula) {
         Resultado<BikPersona> resultado = PersonaDao.getInstance().getPersona(cedula);
         if (!resultado.getResultado().equals(TipoResultado.SUCCESS)) {
@@ -186,7 +185,7 @@ public class CentroController implements Initializable {
         }
         return resultado;
     }
-    
+
     @FXML
     void limpiarCentro(ActionEvent event) {
         unbindCentro();
@@ -211,7 +210,7 @@ public class CentroController implements Initializable {
         bindSede();
         bindListaSedes();
         //cargarCentros();
-        
+
         addListenerTable(tbvSedes);
 
     }
@@ -226,9 +225,24 @@ public class CentroController implements Initializable {
         }
         AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Guardar centro", nuevo.getMensaje());
     }
-    
+
+    private void validaCedulaJuridica() {
+        String cedJuridica = jtxfCedJuridica.getText();
+        unbindCentro();
+        unbindSede();
+        nuevaSede();
+        //Resultado<BikCentro> resultado = CentroDao.getInstance().getPersona(cedJuridica);
+    }
+
     @FXML
-    void cedulaRepreCentroOnEnterKey(KeyEvent event){
+    void cedulaJuridicaOnEnterKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            validaCedulaJuridica();
+        }
+    }
+
+    @FXML
+    void cedulaRepreCentroOnEnterKey(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             unbindCentro();
             unbindSede();
