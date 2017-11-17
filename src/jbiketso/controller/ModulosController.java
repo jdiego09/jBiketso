@@ -25,7 +25,7 @@ import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
-public class ModulosController implements Initializable {
+public class ModulosController extends Controller implements Initializable {
 
     @FXML
     private AnchorPane acpRoot;
@@ -61,17 +61,25 @@ public class ModulosController implements Initializable {
     ObservableList<GenValorCombo> estados = FXCollections
             .observableArrayList();
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    private void init() {
+        estados.clear();
         estados.add(new GenValorCombo("A", "Activo"));
         estados.add(new GenValorCombo("I", "Inactivo"));
         jcmbEstadoModulo.setItems(estados);
+        jcmbEstadoModulo.getSelectionModel().selectFirst();
+        if (this.modulo != null) {
+            unbindModulo();
+        }
         nuevoModulo();
         bindModulo();
         cargarModulos();
         bindListaModulos();
         addListenerTable(tbvModulos);
+    }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        init();
     }
 
     private void bindModulo() {
@@ -150,6 +158,11 @@ public class ModulosController implements Initializable {
     @FXML
     void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
+    }
+
+    @Override
+    public void initialize() {
+        init();
     }
 
 }

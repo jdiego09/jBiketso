@@ -70,7 +70,7 @@ public class BikModulos implements Serializable {
     private List<BikMenu> bikMenuList;
 
     public BikModulos() {
-        this.modCodigo = new SimpleStringProperty();        
+        this.modCodigo = new SimpleStringProperty();
         this.modDescripcion = new SimpleStringProperty();
         this.estado = new SimpleObjectProperty();
     }
@@ -168,6 +168,9 @@ public class BikModulos implements Serializable {
     }
 
     public String getDescripcionEstado() {
+        if (this.estado == null) {
+            this.estado = new SimpleObjectProperty();
+        }
         return this.estado.get().getDescripcion();
     }
 

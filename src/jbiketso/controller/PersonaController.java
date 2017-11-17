@@ -39,7 +39,7 @@ import jbiketso.utils.TipoResultado;
  *
  * @author Luis Diego
  */
-public class PersonaController implements Initializable {
+public class PersonaController extends Controller implements Initializable {
 
     private BikPersona persona;
     private BikDireccion direccion;
@@ -95,25 +95,35 @@ public class PersonaController implements Initializable {
     ObservableList<GenValorCombo> tiposContacto = FXCollections
             .observableArrayList();
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
+    private void init() {
+        generos.clear();
         generos.add(new GenValorCombo("M", "Masculino"));
         generos.add(new GenValorCombo("F", "Femenino"));
         jcmbGenero.setItems(generos);
-
+        
+        estadosCivil.clear();        
         estadosCivil.add(new GenValorCombo("S", "Soltero"));
         estadosCivil.add(new GenValorCombo("C", "Casado"));
         estadosCivil.add(new GenValorCombo("D", "Divorciado"));
         estadosCivil.add(new GenValorCombo("U", "Unión libre"));
         estadosCivil.add(new GenValorCombo("O", "Otro"));
         jcmbEstadoCivil.setItems(estadosCivil);
-
+        
+        tiposContacto.clear();
         tiposContacto.add(new GenValorCombo("T", "Teléfono"));
         tiposContacto.add(new GenValorCombo("C", "Correo"));
         tiposContacto.add(new GenValorCombo("F", "Fax"));
         jcmbTipoContacto.setItems(tiposContacto);
 
+        if (this.persona != null) {
+            unbindPersona();
+        }
+        if (this.direccion != null) {
+            unbindDireccion();
+        }
+        if (this.contacto != null) {
+            unbindContacto();
+        }
         nuevaPersona();
         nuevaDireccion();
         nuevoContacto();
@@ -123,9 +133,22 @@ public class PersonaController implements Initializable {
         bindListaDirecciones();
         bindListaContactos();
 
+        jcmbGenero.getSelectionModel().selectFirst();
+        jcmbEstadoCivil.getSelectionModel().selectFirst();
+        jcmbTipoContacto.getSelectionModel().selectFirst();
+
         addListenerTableDireccion(tbvDirecciones);
         addListenerTableContacto(tbvContactos);
+    }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        init();
+    }
+
+    @Override
+    public void initialize() {
+        init();
     }
 
     private void addListenerTableDireccion(TableView table) {
