@@ -132,11 +132,7 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
     public Resultado<BikCentro> save() {
         Resultado<BikCentro> resultado = new Resultado<>();
         try {
-
-            BikPersona persona = new BikPersona();
-            persona.setPerCodigo(3);
-            centro.setCenCodrepresentantelegal(persona);
-
+            
             centro = (BikCentro) super.save(centro);
 
             if (centro.getCenCodigo() != null) {

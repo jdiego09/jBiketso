@@ -12,6 +12,7 @@ package jbiketso.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -28,6 +29,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.model.dao.CentroDao;
 import jbiketso.model.dao.PersonaDao;
@@ -158,7 +161,7 @@ public class CentroController extends Controller {
         nueva.setSedTelefonos(sede.getSedTelefonos());
         nueva.setSedFax(sede.getSedFax());
         nueva.setSedEmail(sede.getSedEmail());
-        //nueva.setSedCodencargado(this.);
+        nueva.setSedCodencargado(this.encargadoSede);
         if (!this.centro.getBikSedeList().contains(nueva)) {
             this.centro.getBikSedeList().add(nueva);
             this.sedes.add(nueva);
@@ -192,7 +195,11 @@ public class CentroController extends Controller {
         this.sedes.clear();
         nuevoCentro();
         nuevaSede();
+        nuevaPersonaEncargadoCentro();
+        nuevaPersonaEncargadoSede();
         bindCentro();
+        jtxfCedJuridica.setDisable(false);
+        jtxfNombreRepreLegal.setDisable(false);
     }
 
     public void iniciarForma() {
@@ -200,6 +207,10 @@ public class CentroController extends Controller {
         estados.add(new GenValorCombo("A", "Activo"));
         estados.add(new GenValorCombo("I", "Inactivo"));
         jcmbEstado.setItems(estados);
+
+        jtxfCedJuridica.setDisable(false);
+        jtxfNombreRepreLegal.setDisable(false);
+        jtxfNomEncargadoSede.setDisable(false);
 
         nuevoCentro();
         nuevaSede();
@@ -222,6 +233,7 @@ public class CentroController extends Controller {
     @FXML
     void guardarCentro(ActionEvent event) {
         CentroDao.getInstance().setCentro(this.centro);
+        this.centro.setCenCodrepresentantelegal(this.encargadoCentro);
         Resultado<BikCentro> nuevo = CentroDao.getInstance().save();
         if (nuevo.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar centro", nuevo.getMensaje());
@@ -236,8 +248,9 @@ public class CentroController extends Controller {
         unbindSede();
         nuevaSede();
         Resultado<BikCentro> resultado = CentroDao.getInstance().getCentro(cedJuridica);
-        if (resultado.get() != null && resultado.get().getCenCodigo()!= null && resultado.get().getCenCodigo() > 0) {
+        if (resultado.get() != null && resultado.get().getCenCodigo() != null && resultado.get().getCenCodigo() > 0) {
             this.centro = resultado.get();
+            obtenerRepreLegal(this.centro.getCenCodrepresentantelegal().getPerCedula(), "C");
             jtxfCedJuridica.setDisable(true);
         } else {
             nuevoCentro();
@@ -253,19 +266,45 @@ public class CentroController extends Controller {
             validaCedulaJuridica();
         }
     }
-    
+
+    private void obtenerRepreLegal(String cedula, String dato) {
+        if (dato.equals("C")) {
+            this.encargadoCentro = getPersona(cedula).get();
+            if (this.encargadoCentro.getNombreCompleto() != null) {
+                jtxfNombreRepreLegal.setDisable(true);
+            } else {
+                jtxfNombreRepreLegal.setDisable(false);
+            }
+        } else {
+            this.encargadoSede = getPersona(cedula).get();
+            if (this.encargadoSede.getNombreCompleto() != null) {
+                jtxfNomEncargadoSede.setDisable(true);
+            } else {
+                jtxfNomEncargadoSede.setDisable(false);
+            }
+        }
+
+    }
+
     @FXML
     void cedulaRepreCentroOnEnterKey(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             unbindCentro();
             unbindSede();
             nuevaSede();
-            this.encargadoCentro = getPersona(this.encargadoCentro.getPerCedula()).get();
-            if (this.encargadoCentro.getNombreCompleto() != null) {
-                jtxfNombreRepreLegal.setDisable(false);
-            } else {
-                jtxfNombreRepreLegal.setDisable(true);
-            }
+            obtenerRepreLegal(this.encargadoCentro.getPerCedula(), "C");
+            bindCentro();
+            bindSede();
+        }
+    }
+
+    @FXML
+    void cedEncargadoSedeOnEnterKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            unbindCentro();
+            unbindSede();
+            nuevaSede();
+            obtenerRepreLegal(this.encargadoSede.getPerCedula(), "S");
             bindCentro();
             bindSede();
         }
@@ -274,6 +313,28 @@ public class CentroController extends Controller {
     @FXML
     void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
+    }
+
+    @FXML
+    private void buscarArchivoLogo() {
+
+        FileChooser rutaLogo = new FileChooser();
+        rutaLogo.setTitle("Ruta logo centro");
+        rutaLogo.getExtensionFilters().addAll(
+                new ExtensionFilter("PNG", "*.png"),
+                new ExtensionFilter("JPG", "*.jpg"));
+
+        File archivoLogo = rutaLogo.showOpenDialog(null);
+
+        if (archivoLogo != null) {
+            this.centro.setCenLogo(archivoLogo.getAbsolutePath());
+        }
+
+    }
+    
+    @FXML
+    private void agregarSede(){
+        agregarSedeALista(this.sede);
     }
 
 }

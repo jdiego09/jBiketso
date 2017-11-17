@@ -25,10 +25,11 @@
    <children>
       <JFXTextField fx:id="jtxfCedJuridica" labelFloat="true" layoutX="14.0" layoutY="64.0" onKeyPressed="#cedulaJuridicaOnEnterKey" prefHeight="25.0" prefWidth="166.0" promptText="Cédula jurídica" />
       <JFXTextField fx:id="jtxfNombreCentro" labelFloat="true" layoutX="229.0" layoutY="64.0" prefHeight="25.0" prefWidth="425.0" promptText="Nombre" />
-      <JFXTextField fx:id="jtxfNombreRepreLegal" labelFloat="true" layoutX="229.0" layoutY="108.0" prefHeight="25.0" prefWidth="425.0" promptText="Representante legal" />
-      <JFXTextField fx:id="jtxfLogo" labelFloat="true" layoutX="229.0" layoutY="155.0" prefHeight="25.0" prefWidth="384.0" promptText="Logo" />
-      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="14.0" layoutY="155.0" prefHeight="25.0" prefWidth="166.0" promptText="Estado" />
+      <JFXTextField fx:id="jtxfCedRepre" labelFloat="true" layoutX="14.0" layoutY="108.0" onKeyPressed="#cedulaRepreCentroOnEnterKey" prefHeight="25.0" prefWidth="166.0" promptText="Cédula representante" />
       <JFXButton fx:id="jbtnBuscarRepre" layoutX="184.0" layoutY="106.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" />
+      <JFXTextField fx:id="jtxfNombreRepreLegal" labelFloat="true" layoutX="229.0" layoutY="108.0" prefHeight="25.0" prefWidth="425.0" promptText="Representante legal" />
+      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="14.0" layoutY="155.0" prefHeight="25.0" prefWidth="166.0" promptText="Estado" />
+      <JFXTextField fx:id="jtxfLogo" labelFloat="true" layoutX="229.0" layoutY="155.0" prefHeight="25.0" prefWidth="384.0" promptText="Logo" />
       <Pane prefHeight="45.0" prefWidth="664.0" styleClass="actionbar" stylesheets="@biketso.css">
          <children>
             <JFXButton fx:id="jbtnSalir" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="624.0" layoutY="10.0" onAction="#regresar" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonsalir" textOverrun="WORD_ELLIPSIS">
@@ -49,8 +50,7 @@
             </Label>
          </children>
       </Pane>
-      <JFXTextField fx:id="jtxfCedRepre" labelFloat="true" layoutX="14.0" layoutY="108.0" onKeyPressed="#cedulaRepreCentroOnEnterKey" prefHeight="25.0" prefWidth="166.0" promptText="Cédula representante" />
-      <JFXButton fx:id="jbtnBuscarLogo" layoutX="616.0" layoutY="153.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" />
+      <JFXButton fx:id="jbtnBuscarLogo" layoutX="616.0" layoutY="153.0" onAction="#buscarArchivoLogo" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" />
       <Label layoutX="14.0" layoutY="191.0" prefHeight="17.0" prefWidth="37.0" text="Sedes">
          <font>
             <Font name="System Bold" size="12.0" />
@@ -59,12 +59,11 @@
       <Separator layoutX="13.0" layoutY="215.0" prefHeight="2.0" prefWidth="641.0" />
       <JFXTextField fx:id="jtxfNombreSede" labelFloat="true" layoutX="14.0" layoutY="232.0" prefHeight="25.0" prefWidth="166.0" promptText="Nombre" />
       <JFXTextField fx:id="jtxjDescripcionSede" labelFloat="true" layoutX="229.0" layoutY="232.0" prefHeight="25.0" prefWidth="425.0" promptText="Descripción sede" />
-      <JFXTextField fx:id="jtxfCedEncargadoSede" labelFloat="true" layoutX="13.0" layoutY="275.0" prefHeight="25.0" prefWidth="166.0" promptText="Cédula representante" />
       <JFXButton fx:id="jbtnBuscarRepreSede" layoutX="184.0" layoutY="272.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" />
       <JFXTextField fx:id="jtxfNomEncargadoSede" labelFloat="true" layoutX="229.0" layoutY="275.0" prefHeight="25.0" prefWidth="425.0" promptText="Nombre representante" />
       <JFXTextField fx:id="jtxfTelefonos" labelFloat="true" layoutX="13.0" layoutY="318.0" prefHeight="25.0" prefWidth="166.0" promptText="Teléfonos" />
       <JFXTextField fx:id="jtxfEmail" labelFloat="true" layoutX="229.0" layoutY="318.0" prefHeight="25.0" prefWidth="302.0" promptText="Email" />
-      <JFXButton fx:id="jbtnAgregarSede" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="564.0" layoutY="328.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" textOverrun="WORD_ELLIPSIS">
+      <JFXButton fx:id="jbtnAgregarSede" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="564.0" layoutY="328.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#agregarSede" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" textOverrun="WORD_ELLIPSIS">
          <tooltip>
             <Tooltip text="Agregar padecimiento" />
          </tooltip>
@@ -82,6 +81,7 @@
             <TableColumn fx:id="tbcEmail" prefWidth="156.0" text="Email" />
         </columns>
       </TableView>
+      <JFXTextField fx:id="jtxfCedEncargadoSede" labelFloat="true" layoutX="14.0" layoutY="275.0" prefHeight="25.0" prefWidth="166.0" promptText="Cédula representante" />
    </children>
    <effect>
       <DropShadow />
