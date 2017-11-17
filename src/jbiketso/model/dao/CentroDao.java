@@ -59,6 +59,28 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
     public Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
     }
+    
+    public Resultado<BikCentro> getCentro(String cedulaJuridica) {
+        Resultado<BikCentro> resultado = new Resultado<>();
+        try {
+            Query query = getEntityManager().createNamedQuery("BikCentro.findByCenCedulajuridica");
+            query.setParameter("cenCedulajuridica", cedulaJuridica);
+            centro = (BikCentro) query.getSingleResult();
+
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(centro);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            resultado.setMensaje("El centro con la cédula jurídica [" + cedulaJuridica + "], no se encuentra registrado.");
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer información del centro con la cédula jurídica [" + cedulaJuridica + "].");
+            return resultado;
+        }
+    }
 
     public Resultado<ArrayList<BikCentro>> findAll() {
         Resultado<ArrayList<BikCentro>> resultado = new Resultado<>();

@@ -16,16 +16,21 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author jcalvo
  */
-public class InicioController implements Initializable {
+public class InicioController extends Controller {
     @FXML
     private AnchorPane acpRoot;
 
    /**
     * Initializes the controller class.
-    */
+    
    @Override
    public void initialize(URL url, ResourceBundle rb) {
       // TODO
-   }   
+   }  */ 
+
+    @Override
+    public void initialize() {
+        // TODO
+    }
    
 }

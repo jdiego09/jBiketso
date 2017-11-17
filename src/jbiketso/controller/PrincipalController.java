@@ -24,7 +24,7 @@ import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
 import jbiketso.utils.Parametros;
 
-public class PrincipalController implements Initializable {
+public class PrincipalController extends Controller {
 
     @FXML
     private BorderPane root;
@@ -44,8 +44,8 @@ public class PrincipalController implements Initializable {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    //@Override
+    public void iniciarForma(/*URL location, ResourceBundle resources*/) {
         AppWindowController.getInstance().setMainRoot(root);
 
         lblUsuario.setText("Usuario: " + Parametros.getInstance().getParametro("Usuario"));
@@ -93,6 +93,11 @@ public class PrincipalController implements Initializable {
         Aplicacion.getInstance().setModulosUsuario(seguridadDao.getModulosUsuario(Aplicacion.getInstance().getRolesUsuario()));
         Aplicacion.getInstance().setAccesosUsuario(seguridadDao.getAccesosUsuario(Aplicacion.getInstance().getRolesUsuario()));
 
+    }
+
+    @Override
+    public void initialize() {
+        iniciarForma();
     }
 
 }

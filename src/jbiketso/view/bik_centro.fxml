@@ -23,7 +23,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="545.0" prefWidth="664.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.CentroController">
    <children>
-      <JFXTextField fx:id="jtxfCedJuridica" labelFloat="true" layoutX="14.0" layoutY="64.0" prefHeight="25.0" prefWidth="166.0" promptText="Cédula jurídica" />
+      <JFXTextField fx:id="jtxfCedJuridica" labelFloat="true" layoutX="14.0" layoutY="64.0" onKeyPressed="#cedulaJuridicaOnEnterKey" prefHeight="25.0" prefWidth="166.0" promptText="Cédula jurídica" />
       <JFXTextField fx:id="jtxfNombreCentro" labelFloat="true" layoutX="229.0" layoutY="64.0" prefHeight="25.0" prefWidth="425.0" promptText="Nombre" />
       <JFXTextField fx:id="jtxfNombreRepreLegal" labelFloat="true" layoutX="229.0" layoutY="108.0" prefHeight="25.0" prefWidth="425.0" promptText="Representante legal" />
       <JFXTextField fx:id="jtxfLogo" labelFloat="true" layoutX="229.0" layoutY="155.0" prefHeight="25.0" prefWidth="384.0" promptText="Logo" />

@@ -39,7 +39,7 @@ import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
-public class CentroController implements Initializable {
+public class CentroController extends Controller {
 
     private BikCentro centro;
     private BikSede sede;
@@ -195,8 +195,7 @@ public class CentroController implements Initializable {
         bindCentro();
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void iniciarForma() {
 
         estados.add(new GenValorCombo("A", "Activo"));
         estados.add(new GenValorCombo("I", "Inactivo"));
@@ -215,6 +214,11 @@ public class CentroController implements Initializable {
 
     }
 
+    @Override
+    public void initialize() {
+        iniciarForma();
+    }
+
     @FXML
     void guardarCentro(ActionEvent event) {
         CentroDao.getInstance().setCentro(this.centro);
@@ -231,7 +235,16 @@ public class CentroController implements Initializable {
         unbindCentro();
         unbindSede();
         nuevaSede();
-        //Resultado<BikCentro> resultado = CentroDao.getInstance().getPersona(cedJuridica);
+        Resultado<BikCentro> resultado = CentroDao.getInstance().getCentro(cedJuridica);
+        if (resultado.get() != null && resultado.get().getCenCodigo()!= null && resultado.get().getCenCodigo() > 0) {
+            this.centro = resultado.get();
+            jtxfCedJuridica.setDisable(true);
+        } else {
+            nuevoCentro();
+            this.centro.setCenCedulajuridica(cedJuridica);
+        }
+        bindCentro();
+        bindSede();
     }
 
     @FXML
@@ -240,7 +253,7 @@ public class CentroController implements Initializable {
             validaCedulaJuridica();
         }
     }
-
+    
     @FXML
     void cedulaRepreCentroOnEnterKey(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -248,6 +261,11 @@ public class CentroController implements Initializable {
             unbindSede();
             nuevaSede();
             this.encargadoCentro = getPersona(this.encargadoCentro.getPerCedula()).get();
+            if (this.encargadoCentro.getNombreCompleto() != null) {
+                jtxfNombreRepreLegal.setDisable(false);
+            } else {
+                jtxfNombreRepreLegal.setDisable(true);
+            }
             bindCentro();
             bindSede();
         }
@@ -257,4 +275,5 @@ public class CentroController implements Initializable {
     void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
     }
+
 }
