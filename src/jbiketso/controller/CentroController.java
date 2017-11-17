@@ -118,7 +118,7 @@ public class CentroController extends Controller {
     private void bindSede() {
         jtxfNombreSede.textProperty().bindBidirectional(sede.getSedNombreProperty());
         jtxjDescripcionSede.textProperty().bindBidirectional(sede.getSedDescripcionProperty());
-        jtxfCedEncargadoSede.textProperty().bind(this.encargadoSede.getPerCedulaProperty());
+        jtxfCedEncargadoSede.textProperty().bindBidirectional(this.encargadoSede.getPerCedulaProperty());
         jtxfNomEncargadoSede.textProperty().bindBidirectional(this.encargadoSede.getNombreCompletoProperty());
         jtxfTelefonos.textProperty().bindBidirectional(sede.getSedTelefonosProperty());
         jtxfEmail.textProperty().bindBidirectional(sede.getSedEmailProperty());
@@ -127,7 +127,7 @@ public class CentroController extends Controller {
     private void unbindSede() {
         jtxfNombreSede.textProperty().unbindBidirectional(sede.getSedNombreProperty());
         jtxjDescripcionSede.textProperty().unbindBidirectional(sede.getSedDescripcionProperty());
-        jtxfCedEncargadoSede.textProperty().bind(this.encargadoSede.getPerCedulaProperty());
+        jtxfCedEncargadoSede.textProperty().unbindBidirectional(this.encargadoSede.getPerCedulaProperty());
         jtxfNomEncargadoSede.textProperty().unbindBidirectional(this.encargadoSede.getNombreCompletoProperty());
         jtxfTelefonos.textProperty().unbindBidirectional(sede.getSedTelefonosProperty());
         jtxfEmail.textProperty().unbindBidirectional(sede.getSedEmailProperty());
@@ -303,7 +303,6 @@ public class CentroController extends Controller {
         if (event.getCode() == KeyCode.ENTER) {
             unbindCentro();
             unbindSede();
-            nuevaSede();
             obtenerRepreLegal(this.encargadoSede.getPerCedula(), "S");
             bindCentro();
             bindSede();

@@ -81,7 +81,7 @@
             <TableColumn fx:id="tbcEmail" prefWidth="156.0" text="Email" />
         </columns>
       </TableView>
-      <JFXTextField fx:id="jtxfCedEncargadoSede" labelFloat="true" layoutX="14.0" layoutY="275.0" prefHeight="25.0" prefWidth="166.0" promptText="Cédula representante" />
+      <JFXTextField fx:id="jtxfCedEncargadoSede" labelFloat="true" layoutX="14.0" layoutY="275.0" onKeyPressed="#cedEncargadoSedeOnEnterKey" prefHeight="25.0" prefWidth="166.0" promptText="Cédula representante" />
    </children>
    <effect>
       <DropShadow />
