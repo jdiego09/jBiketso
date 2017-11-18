@@ -7,8 +7,14 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,55 +31,37 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.utils.GenValorCombo;
 
-/**
- *
- * @author Anayansy
- */
 @Entity
-@Table(name = "bik_funcionario",schema = "biketso")
+@Access(AccessType.FIELD)
+@Table(name = "bik_funcionario", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikFuncionario.findAll", query = "SELECT b FROM BikFuncionario b")
-    , @NamedQuery(name = "BikFuncionario.findByFunCodigo", query = "SELECT b FROM BikFuncionario b WHERE b.funCodigo = :funCodigo")
-    , @NamedQuery(name = "BikFuncionario.findByFunEstado", query = "SELECT b FROM BikFuncionario b WHERE b.funEstado = :funEstado")
-    , @NamedQuery(name = "BikFuncionario.findByFunTipo", query = "SELECT b FROM BikFuncionario b WHERE b.funTipo = :funTipo")
-    , @NamedQuery(name = "BikFuncionario.findByFunSalarioBase", query = "SELECT b FROM BikFuncionario b WHERE b.funSalarioBase = :funSalarioBase")
-    , @NamedQuery(name = "BikFuncionario.findByFunFechaingreso", query = "SELECT b FROM BikFuncionario b WHERE b.funFechaingreso = :funFechaingreso")
-    , @NamedQuery(name = "BikFuncionario.findByFunFechasalida", query = "SELECT b FROM BikFuncionario b WHERE b.funFechasalida = :funFechasalida")
-    , @NamedQuery(name = "BikFuncionario.findByFunObservaciones", query = "SELECT b FROM BikFuncionario b WHERE b.funObservaciones = :funObservaciones")
-    , @NamedQuery(name = "BikFuncionario.findByFunUsuarioingresa", query = "SELECT b FROM BikFuncionario b WHERE b.funUsuarioingresa = :funUsuarioingresa")
-    , @NamedQuery(name = "BikFuncionario.findByFunFechaingresa", query = "SELECT b FROM BikFuncionario b WHERE b.funFechaingresa = :funFechaingresa")
-    , @NamedQuery(name = "BikFuncionario.findByFunUsuariomodifica", query = "SELECT b FROM BikFuncionario b WHERE b.funUsuariomodifica = :funUsuariomodifica")
-    , @NamedQuery(name = "BikFuncionario.findByFunFechamodifica", query = "SELECT b FROM BikFuncionario b WHERE b.funFechamodifica = :funFechamodifica")})
+    , @NamedQuery(name = "BikFuncionario.findByFunCodigo", query = "SELECT b FROM BikFuncionario b WHERE b.funCodigo = :funCodigo")})
 public class BikFuncionario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "fun_codigo")
-    private Integer funCodigo;
-    @Basic(optional = false)
-    @Column(name = "fun_estado")
-    private String funEstado;
-    @Basic(optional = false)
-    @Column(name = "fun_tipo")
-    private String funTipo;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "fun_salario_base")
-    private BigDecimal funSalarioBase;
-    @Basic(optional = false)
-    @Column(name = "fun_fechaingreso")
-    @Temporal(TemporalType.DATE)
-    private Date funFechaingreso;
-    @Column(name = "fun_fechasalida")
-    @Temporal(TemporalType.DATE)
-    private Date funFechasalida;
-    @Column(name = "fun_observaciones")
-    private String funObservaciones;
+
+    @Transient
+    private ObjectProperty<Integer> funCodigo;
+    @Transient
+    private ObjectProperty<GenValorCombo> funEstado;
+    @Transient
+    private ObjectProperty<GenValorCombo> funTipo;
+    @Transient
+    private ObjectProperty<BigDecimal> funSalarioBase;
+    @Transient
+    private SimpleObjectProperty<LocalDate> funFechaingreso;
+    @Transient
+    private SimpleObjectProperty<LocalDate> funFechasalida;
+    @Transient
+    private SimpleStringProperty funObservaciones;
+
     @Column(name = "fun_usuarioingresa")
     private String funUsuarioingresa;
     @Column(name = "fun_fechaingresa")
@@ -93,7 +81,7 @@ public class BikFuncionario implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BikPuesto funPuecodigo;
     @JoinColumn(name = "fun_sedcodigo", referencedColumnName = "sed_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
     private BikSede funSedcodigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deaFuncodigo", fetch = FetchType.LAZY)
     private List<BikDetalleAgenda> bikDetalleAgendaList;
@@ -101,71 +89,183 @@ public class BikFuncionario implements Serializable {
     public BikFuncionario() {
     }
 
-    public BikFuncionario(Integer funCodigo) {
-        this.funCodigo = funCodigo;
-    }
-
-    public BikFuncionario(Integer funCodigo, String funEstado, String funTipo, Date funFechaingreso) {
-        this.funCodigo = funCodigo;
-        this.funEstado = funEstado;
-        this.funTipo = funTipo;
-        this.funFechaingreso = funFechaingreso;
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "fun_codigo")
+    @Access(AccessType.PROPERTY)
     public Integer getFunCodigo() {
-        return funCodigo;
+        if (this.funCodigo == null) {
+            this.funCodigo = new SimpleObjectProperty();
+        }
+        return funCodigo.get();
+    }
+
+    public ObjectProperty getCodigoProperty() {
+        if (this.funCodigo == null) {
+            this.funCodigo = new SimpleObjectProperty();
+        }
+        return this.funCodigo;
     }
 
     public void setFunCodigo(Integer funCodigo) {
-        this.funCodigo = funCodigo;
+        if (this.funCodigo == null) {
+            this.funCodigo = new SimpleObjectProperty();
+        }
+        this.funCodigo.set(funCodigo);
     }
 
+    @Basic(optional = false)
+    @Column(name = "fun_estado")
+    @Access(AccessType.PROPERTY)
     public String getFunEstado() {
+        if (this.funEstado == null) {
+            this.funEstado = new SimpleObjectProperty();
+        }
+        return funEstado.get().getCodigo();
+    }
+
+    public ObjectProperty getEstadoProperty() {
+        if (this.funEstado == null) {
+            this.funEstado = new SimpleObjectProperty();
+        }
         return funEstado;
     }
 
     public void setFunEstado(String funEstado) {
-        this.funEstado = funEstado;
+        if (this.funEstado == null) {
+            this.funEstado = new SimpleObjectProperty();
+        }
+        GenValorCombo valor = null;
+        if (funEstado.equalsIgnoreCase("a")) {
+            valor = new GenValorCombo(funEstado, "Activo");
+        } else {
+            valor = new GenValorCombo(funEstado, "Inactivo");
+        }
+        this.funEstado.set(valor);
     }
 
+    @Basic(optional = false)
+    @Column(name = "fun_tipo")
+    @Access(AccessType.PROPERTY)
     public String getFunTipo() {
+        return funTipo.get().getCodigo();
+    }
+
+    public ObjectProperty getTipoProperty() {
+        if (this.funTipo == null) {
+            this.funTipo = new SimpleObjectProperty();
+        }
         return funTipo;
     }
 
     public void setFunTipo(String funTipo) {
-        this.funTipo = funTipo;
+        if (this.funTipo == null) {
+            this.funTipo = new SimpleObjectProperty();
+        }
+        GenValorCombo valor = null;
+        if (funTipo.equalsIgnoreCase("p")) {
+            valor = new GenValorCombo(funTipo, "Propiedad");
+        }
+        if (funTipo.equalsIgnoreCase("v")) {
+            valor = new GenValorCombo(funTipo, "Voluntario");
+        }
+        if (funTipo.equalsIgnoreCase("i")) {
+            valor = new GenValorCombo(funTipo, "Interino");
+        }
+        this.funTipo.set(valor);
     }
 
+    @Column(name = "fun_salario_base")
+    @Access(AccessType.PROPERTY)
     public BigDecimal getFunSalarioBase() {
+        if (this.funSalarioBase == null) {
+            this.funSalarioBase = new SimpleObjectProperty();
+        }
+        return funSalarioBase.get();
+    }
+
+    public ObjectProperty getSalarioBaseProperty() {
+        if (this.funSalarioBase == null) {
+            this.funSalarioBase = new SimpleObjectProperty();
+        }
         return funSalarioBase;
     }
 
     public void setFunSalarioBase(BigDecimal funSalarioBase) {
-        this.funSalarioBase = funSalarioBase;
+        if (this.funSalarioBase == null) {
+            this.funSalarioBase = new SimpleObjectProperty();
+        }
+        this.funSalarioBase.set(funSalarioBase);
     }
 
+    @Basic(optional = false)
+    @Column(name = "fun_fechaingreso")
+    @Temporal(TemporalType.DATE)
+    @Access(AccessType.PROPERTY)
     public Date getFunFechaingreso() {
-        return funFechaingreso;
+        if (this.funFechaingreso == null) {
+            this.funFechaingreso = new SimpleObjectProperty();
+        }
+        return java.sql.Date.valueOf(this.funFechaingreso.get());
+    }
+    
+    public SimpleObjectProperty<LocalDate> getFechaIngresoProperty() {
+        if (this.funFechaingreso == null) {
+            this.funFechaingreso = new SimpleObjectProperty();
+        }
+        return this.funFechaingreso;
     }
 
     public void setFunFechaingreso(Date funFechaingreso) {
-        this.funFechaingreso = funFechaingreso;
+        if (this.funFechaingreso == null) {
+            this.funFechaingreso = new SimpleObjectProperty();
+        }
+        this.funFechaingreso.set(new java.sql.Date(funFechaingreso.getTime()).toLocalDate());
     }
 
+    @Column(name = "fun_fechasalida")
+    @Temporal(TemporalType.DATE)
+    @Access(AccessType.PROPERTY)
     public Date getFunFechasalida() {
-        return funFechasalida;
+        if (this.funFechasalida == null) {
+            this.funFechasalida = new SimpleObjectProperty();
+        }
+        return java.sql.Date.valueOf(this.funFechasalida.get());
     }
-
+ 
+    public SimpleObjectProperty<LocalDate> getFechaSalidaProperty() {
+        if (this.funFechasalida == null) {
+            this.funFechasalida = new SimpleObjectProperty();
+        }
+        return this.funFechasalida;
+    }
+    
     public void setFunFechasalida(Date funFechasalida) {
-        this.funFechasalida = funFechasalida;
+        if (this.funFechasalida == null) {
+            this.funFechasalida = new SimpleObjectProperty();
+        }
+        this.funFechasalida.set(new java.sql.Date(funFechasalida.getTime()).toLocalDate());
     }
 
+    @Column(name = "fun_observaciones")
+    @Access(AccessType.PROPERTY)
     public String getFunObservaciones() {
-        return funObservaciones;
+        return funObservaciones.get();
+    }
+    
+    public SimpleStringProperty getObservacionesProperty() {
+        if (this.funObservaciones == null) {
+            this.funObservaciones = new SimpleStringProperty();
+        }
+        return this.funObservaciones;
     }
 
     public void setFunObservaciones(String funObservaciones) {
-        this.funObservaciones = funObservaciones;
+        if (this.funObservaciones == null) {
+            this.funObservaciones = new SimpleStringProperty();
+        }
+        this.funObservaciones.set(funObservaciones);
     }
 
     public String getFunUsuarioingresa() {
@@ -266,5 +366,5 @@ public class BikFuncionario implements Serializable {
     public String toString() {
         return "jbiketso.model.BikFuncionario[ funCodigo=" + funCodigo + " ]";
     }
-    
+
 }
