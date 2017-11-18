@@ -68,17 +68,16 @@
             <Tooltip text="Agregar padecimiento" />
          </tooltip>
       </JFXButton>
-      <JFXButton fx:id="jbtnEliminarSede" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="605.0" layoutY="328.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttoneliminar" textOverrun="WORD_ELLIPSIS">
+      <JFXButton fx:id="jbtnEliminarSede" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="605.0" layoutY="328.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#eliminarSede" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttoneliminar" textOverrun="WORD_ELLIPSIS">
          <tooltip>
             <Tooltip text="Agregar padecimiento" />
          </tooltip>
       </JFXButton>
       <TableView fx:id="tbvSedes" layoutX="4.0" layoutY="367.0" prefHeight="167.0" prefWidth="657.0">
         <columns>
-          <TableColumn fx:id="tbcDescripcionSede" prefWidth="148.0" text="Descripción" />
-            <TableColumn fx:id="tbcTelefonos" minWidth="0.0" prefWidth="95.0" text="Teléfonos" />
-            <TableColumn fx:id="tbcFax" prefWidth="109.0" text="Fax" />
-            <TableColumn fx:id="tbcEmail" prefWidth="156.0" text="Email" />
+          <TableColumn fx:id="tbcDescripcionSede" prefWidth="267.0" text="Descripción" />
+            <TableColumn fx:id="tbcTelefonos" minWidth="0.0" prefWidth="156.0" text="Teléfonos" />
+            <TableColumn fx:id="tbcEmail" prefWidth="233.0" text="Email" />
         </columns>
       </TableView>
       <JFXTextField fx:id="jtxfCedEncargadoSede" labelFloat="true" layoutX="14.0" layoutY="275.0" onKeyPressed="#cedEncargadoSedeOnEnterKey" prefHeight="25.0" prefWidth="166.0" promptText="Cédula representante" />

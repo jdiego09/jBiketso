@@ -13,14 +13,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -53,7 +50,7 @@ public class CentroController extends Controller {
     private TableView<BikSede> tbvSedes;
 
     @FXML
-    private TableColumn<BikSede, String> tbcDescripcionSede, tbcTelefonos, tbcFax, tbcEmail;
+    private TableColumn<BikSede, String> tbcDescripcionSede, tbcTelefonos, tbcEmail;
 
     @FXML
     private JFXTextField jtxfCedJuridica, jtxjDescripcionSede, jtxfCedEncargadoSede, jtxfEmail, jtxfLogo, jtxfNombreRepreLegal, jtxfNomEncargadoSede;
@@ -140,7 +137,6 @@ public class CentroController extends Controller {
         }
         tbcDescripcionSede.setCellValueFactory(new PropertyValueFactory<>("sedDescripcion"));
         tbcTelefonos.setCellValueFactory(new PropertyValueFactory<>("sedTelefonos"));
-        tbcFax.setCellValueFactory(new PropertyValueFactory<>("sedFax"));
         tbcEmail.setCellValueFactory(new PropertyValueFactory<>("sedEmail"));
     }
 
@@ -156,12 +152,14 @@ public class CentroController extends Controller {
 
     private void agregarSedeALista(BikSede sede) {
         BikSede nueva = new BikSede();
+        nueva.setSedCodigo(sede.getSedCodigo());
         nueva.setSedNombre(sede.getSedNombre());
         nueva.setSedDescripcion(sede.getSedDescripcion());
         nueva.setSedTelefonos(sede.getSedTelefonos());
         nueva.setSedFax(sede.getSedFax());
         nueva.setSedEmail(sede.getSedEmail());
         nueva.setSedCodencargado(this.encargadoSede);
+        nueva.setSedCencodigo(this.centro);
         if (!this.centro.getBikSedeList().contains(nueva)) {
             this.centro.getBikSedeList().add(nueva);
             this.sedes.add(nueva);
@@ -171,15 +169,17 @@ public class CentroController extends Controller {
         tbvSedes.refresh();
     }
 
-    /*
-    private void cargarSedes() {
-        Resultado<ArrayList<BikCentro>> resultado = CentroDao.getInstance().findAll();
-        if (!resultado.getResultado().equals(TipoResultado.ERROR)) {
-            centros = FXCollections.observableArrayList(resultado.get());
+    private void cargarSedes(BikCentro centro) {
+        Resultado<ArrayList<BikSede>> listaSedes = CentroDao.getInstance().getSedes(centro);
+        this.sedes.clear();
+        listaSedes.get().stream().forEach(this.sedes::add);
+        if (!listaSedes.getResultado().equals(TipoResultado.ERROR)) {
+            this.sedes = FXCollections.observableArrayList(listaSedes.get());
         } else {
-            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Consultar centros", resultado.getMensaje());
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Consultar sedes", listaSedes.getMensaje());
         }
-    }*/
+    }
+
     private Resultado<BikPersona> getPersona(String cedula) {
         Resultado<BikPersona> resultado = PersonaDao.getInstance().getPersona(cedula);
         if (!resultado.getResultado().equals(TipoResultado.SUCCESS)) {
@@ -251,6 +251,7 @@ public class CentroController extends Controller {
         if (resultado.get() != null && resultado.get().getCenCodigo() != null && resultado.get().getCenCodigo() > 0) {
             this.centro = resultado.get();
             obtenerRepreLegal(this.centro.getCenCodrepresentantelegal().getPerCedula(), "C");
+            cargarSedes(this.centro);
             jtxfCedJuridica.setDisable(true);
         } else {
             nuevoCentro();
@@ -330,10 +331,22 @@ public class CentroController extends Controller {
         }
 
     }
-    
+
     @FXML
-    private void agregarSede(){
+    private void agregarSede() {
         agregarSedeALista(this.sede);
+    }
+
+    @FXML
+    private void eliminarSede() {
+        Resultado<String> resultado = CentroDao.getInstance().deleteSede(this.sede);
+        if (resultado.getResultado().equals(TipoResultado.SUCCESS)) {
+            this.centro.getBikSedeList().remove(this.sede);
+            this.sedes.remove(this.sede);
+            nuevaSede();
+        } else {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Eliminar sede", resultado.getMensaje());
+        }
     }
 
 }

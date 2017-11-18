@@ -43,14 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "BikSede.findAll", query = "SELECT b FROM BikSede b")
     , @NamedQuery(name = "BikSede.findBySedCodigo", query = "SELECT b FROM BikSede b WHERE b.sedCodigo = :sedCodigo")
     , @NamedQuery(name = "BikSede.findBySedNombre", query = "SELECT b FROM BikSede b WHERE b.sedNombre = :sedNombre")
-    , @NamedQuery(name = "BikSede.findBySedDescripcion", query = "SELECT b FROM BikSede b WHERE b.sedDescripcion = :sedDescripcion")
-    , @NamedQuery(name = "BikSede.findBySedTelefonos", query = "SELECT b FROM BikSede b WHERE b.sedTelefonos = :sedTelefonos")
-    , @NamedQuery(name = "BikSede.findBySedFax", query = "SELECT b FROM BikSede b WHERE b.sedFax = :sedFax")
-    , @NamedQuery(name = "BikSede.findBySedEmail", query = "SELECT b FROM BikSede b WHERE b.sedEmail = :sedEmail")
-    , @NamedQuery(name = "BikSede.findBySedUsuarioingresa", query = "SELECT b FROM BikSede b WHERE b.sedUsuarioingresa = :sedUsuarioingresa")
-    , @NamedQuery(name = "BikSede.findBySedFechaingresa", query = "SELECT b FROM BikSede b WHERE b.sedFechaingresa = :sedFechaingresa")
-    , @NamedQuery(name = "BikSede.findBySedUsuariomodifica", query = "SELECT b FROM BikSede b WHERE b.sedUsuariomodifica = :sedUsuariomodifica")
-    , @NamedQuery(name = "BikSede.findBySedFechamodifica", query = "SELECT b FROM BikSede b WHERE b.sedFechamodifica = :sedFechamodifica")})
+    , @NamedQuery(name = "BikSede.findByCodigoCentro", query = "SELECT s FROM BikSede s join s.sedCencodigo c WHERE c.cenCodigo = :codigoCentro")})
 public class BikSede implements Serializable {
 
     private static final long serialVersionUID = 1L;

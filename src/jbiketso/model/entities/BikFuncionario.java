@@ -63,7 +63,7 @@ public class BikFuncionario implements Serializable {
     @Column(name = "fun_tipo")
     private String funTipo;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "fun_salario base")
+    @Column(name = "fun_salario_base")
     private BigDecimal funSalarioBase;
     @Basic(optional = false)
     @Column(name = "fun_fechaingreso")

@@ -14,6 +14,7 @@ import javax.persistence.Query;
 import jbiketso.model.entities.BikCentro;
 import jbiketso.model.entities.BikPersona;
 import jbiketso.model.entities.BikSede;
+import jbiketso.utils.Parametros;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -82,6 +83,28 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
         }
     }
 
+    public Resultado<ArrayList<BikSede>> getSedes(BikCentro centro) {
+        Resultado<ArrayList<BikSede>> resultado = new Resultado<>();
+        ArrayList<BikSede> listaSedes = new ArrayList<>();
+        List<BikSede> sedes;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikSede.findByCodigoCentro");
+            query.setParameter("codigoCentro", centro.getCenCodigo());
+            sedes = query.getResultList();
+            sedes.stream().forEach(listaSedes::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaSedes);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer las sedes para el centro [" + centro.getCenCodigo() + "].");
+            return resultado;
+        }
+    }
     public Resultado<ArrayList<BikCentro>> findAll() {
         Resultado<ArrayList<BikCentro>> resultado = new Resultado<>();
         ArrayList<BikCentro> centros = new ArrayList<>();
@@ -151,9 +174,34 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
         } catch (Exception ex) {
             Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
             resultado.setResultado(TipoResultado.ERROR);
-            resultado.setMensaje("Error al guardar el módulo [" + this.centro.getCenCodigo() + "].");
+            resultado.setMensaje("Error al guardar el centro [" + this.centro.getCenCodigo() + "].");
             return resultado;
         }
     }
 
+    public Resultado<String> deleteSede(BikSede sede) {
+        Resultado<String> resultado = new Resultado<>();
+        try {
+
+            getEntityManager().getTransaction().begin();
+            Integer id = (Integer) Parametros.PERSISTENCEUTIL.getIdentifier(sede);
+            BikSede existe = (BikSede) getEntityManager().find(BikSede.class, id);
+
+            if (existe != null) {
+                if (!getEntityManager().contains(sede)) {
+                    sede = getEntityManager().merge(sede);
+                }
+                getEntityManager().remove(sede);
+            }
+            getEntityManager().getTransaction().commit();
+            resultado.setResultado(TipoResultado.SUCCESS);
+            return resultado;
+        } catch (Exception ex) {
+            getEntityManager().getTransaction().rollback();
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al eliminar la sede [" + sede.getSedNombre() + "].");
+            return resultado;
+        }
+    }
 }
