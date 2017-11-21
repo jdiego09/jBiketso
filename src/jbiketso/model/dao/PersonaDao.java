@@ -5,23 +5,15 @@
  */
 package jbiketso.model.dao;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikContacto;
 import jbiketso.model.entities.BikDireccion;
 import jbiketso.model.entities.BikPersona;
-import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Parametros;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
@@ -98,7 +90,48 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
             return result;
         }
     }
-    
+
+    public Resultado<String> cedulaValida(String cedula) {
+        Resultado<String> resultado = new Resultado<>();
+        if (cedula != null && !cedula.isEmpty()) {
+            if (cedula.length() < 9 || cedula.length() > 25) {
+                resultado.setResultado(TipoResultado.ERROR);
+                resultado.setMensaje("La cédula debe contener entre 9 y 25 caracteres.");
+            } else {
+                resultado.setResultado(TipoResultado.SUCCESS);
+            }
+        } else {
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Debe indicar el número de cédula.");
+        }
+        return resultado;
+    }
+
+    public Resultado<String> validaPersona(BikPersona persona) {
+        Resultado<String> resultado = new Resultado<>();
+        if (persona != null) {
+            Resultado<String> cedulaValida = cedulaValida(persona.getPerCedula());
+            if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
+                resultado.setResultado(TipoResultado.ERROR);
+                resultado.setMensaje(cedulaValida.getMensaje());
+            }
+            if (persona.getPerNombres() == null || persona.getPerNombres().isEmpty()) {
+                resultado.setResultado(TipoResultado.ERROR);
+                resultado.setMensaje("No se ha indicado el nombre de la persona.");
+            }
+            if (persona.getPerPrimerapellido() == null || persona.getPerPrimerapellido().isEmpty()) {
+                resultado.setResultado(TipoResultado.ERROR);
+                resultado.setMensaje("Debe indicar al menos el primer apellido de la persona.");
+            }
+            resultado.setResultado(TipoResultado.SUCCESS);
+        } else {
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("No hay ninguna persona seleccionada.");
+        }
+
+        return resultado;
+    }
+
     public Resultado<ArrayList<BikDireccion>> getDirecciones(BikPersona persona) {
         Resultado<ArrayList<BikDireccion>> resultado = new Resultado<>();
         ArrayList<BikDireccion> listaDirecciones = new ArrayList<>();
@@ -219,7 +252,7 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
             return resultado;
         }
     }
-    
+
     public Resultado<String> deleteContacto(BikContacto contacto) {
         Resultado<String> resultado = new Resultado<>();
         try {

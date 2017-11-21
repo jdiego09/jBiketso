@@ -24,6 +24,7 @@
     -fx-width: 100%;
     -fx-height: 100%;
     -fx-position-shape: center;
+    -fx-width: 100%;
 }
 .form{
     -fx-background-color: #ffffff;
@@ -33,6 +34,7 @@
     -fx-background-color: #c62828;
     -fx-fill-color: #ffffff;
     -jfx-rippler-fill-color: #eb3434;
+    -fx-font: 18 System;
 }
 
 .actionbuttonguardar{
@@ -113,6 +115,11 @@
     -jfx-focus-color: #00796b;
     -fx-width: 100%;
     -fx-margin: 10%;
+    -fx-font: 18 System;
+}
+
+.tableview .cell{
+    -fx-font: 18 System;
 }
 
 .buttonmenuext{    

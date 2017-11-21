@@ -100,15 +100,15 @@ public class PersonaController extends Controller implements Initializable {
         generos.add(new GenValorCombo("M", "Masculino"));
         generos.add(new GenValorCombo("F", "Femenino"));
         jcmbGenero.setItems(generos);
-        
-        estadosCivil.clear();        
+
+        estadosCivil.clear();
         estadosCivil.add(new GenValorCombo("S", "Soltero"));
         estadosCivil.add(new GenValorCombo("C", "Casado"));
         estadosCivil.add(new GenValorCombo("D", "Divorciado"));
         estadosCivil.add(new GenValorCombo("U", "Unión libre"));
         estadosCivil.add(new GenValorCombo("O", "Otro"));
         jcmbEstadoCivil.setItems(estadosCivil);
-        
+
         tiposContacto.clear();
         tiposContacto.add(new GenValorCombo("T", "Teléfono"));
         tiposContacto.add(new GenValorCombo("C", "Correo"));
@@ -262,6 +262,11 @@ public class PersonaController extends Controller implements Initializable {
 
     @FXML
     private void guardarPersona(ActionEvent event) {
+        Resultado<String> validaPersona = PersonaDao.getInstance().validaPersona(this.persona);
+        if (validaPersona.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Guardar Persona", validaPersona.getMensaje());
+            return;
+        }
         PersonaDao.getInstance().setPersona(this.persona);
         Resultado<BikPersona> resultado = PersonaDao.getInstance().save();
 
@@ -274,6 +279,11 @@ public class PersonaController extends Controller implements Initializable {
 
     private void validarPersona() {
         String cedula = jtxfCedula.getText();
+        Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(cedula);
+        if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula", cedulaValida.getMensaje());
+            return;
+        }
         unbindPersona();
         unbindDireccion();
         unbindContacto();
@@ -387,7 +397,7 @@ public class PersonaController extends Controller implements Initializable {
 
     @FXML
     void cedulaOnEnterKey(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
+        if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
             validarPersona();
         }
     }

@@ -45,8 +45,10 @@ public class BaseDao<K, E> implements DaoBase<K, E> {
         try {
             getEntityManager().getTransaction().begin();
             K id = (K) Parametros.PERSISTENCEUTIL.getIdentifier(entity);
-            E existe = (E) getEntityManager().find(entity.getClass(), id);
-
+            E existe = null;
+            if (id != null) {
+                existe = (E) getEntityManager().find(entity.getClass(), id);
+            }    
             if (existe != null) {
                 if (!getEntityManager().contains(entity)) {
                     entity = getEntityManager().merge(entity);

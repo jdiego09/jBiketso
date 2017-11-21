@@ -45,8 +45,7 @@ public class PrincipalController extends Controller implements Initializable {
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
     public void init() {
-        AppWindowController.getInstance().setMainRoot(root);
-
+        AppWindowController.getInstance().setMainRoot(root);        
         lblUsuario.setText("Usuario: " + Parametros.getInstance().getParametro("Usuario"));
 
         lblFecha.setText("Fecha: " + sdf.format(new Date()));

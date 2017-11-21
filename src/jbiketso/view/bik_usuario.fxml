@@ -18,59 +18,62 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="800.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.UsuariosController">
+<AnchorPane fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="961.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.UsuariosController">
    <children>
-      <Pane layoutX="10.0" layoutY="10.0" prefHeight="43.0" prefWidth="576.0" styleClass="actionbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane layoutX="10.0" layoutY="10.0" prefHeight="55.0" styleClass="actionbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="btnGuardar" layoutX="14.0" layoutY="7.0" mnemonicParsing="false" onAction="#guardarUsuario" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonguardar" text="Button">
+            <Button fx:id="btnGuardar" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#guardarUsuario" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonguardar" text="Button">
                <tooltip>
                   <Tooltip text="Guardar" />
                </tooltip></Button>
-            <Button fx:id="btnLimpiar" layoutX="52.0" layoutY="6.0" mnemonicParsing="false" onAction="#limpiar" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonlimpiar" text="Button">
+            <Button fx:id="btnLimpiar" layoutX="58.0" layoutY="10.0" mnemonicParsing="false" onAction="#limpiar" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonlimpiar" text="Button">
                <tooltip>
                   <Tooltip text="Limpiar" />
                </tooltip>
             </Button>
-            <JFXButton fx:id="jbtnSalir" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="760.0" layoutY="10.0" onAction="#regresar" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonsalir" textOverrun="WORD_ELLIPSIS">
+            <JFXButton fx:id="jbtnSalir" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="921.0" layoutY="10.0" onAction="#regresar" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonsalir" textOverrun="WORD_ELLIPSIS">
                <tooltip>
                   <Tooltip text="Regresar" />
                </tooltip>
             </JFXButton>
-            <Label layoutX="292.0" layoutY="4.0" text="Registro de usuarios" textFill="#f8f8f8">
+            <Label layoutX="292.0" layoutY="12.0" text="Registro de usuarios" textFill="#f8f8f8">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <JFXTextField fx:id="jtxfCedula" labelFloat="true" layoutX="27.0" layoutY="65.0" onKeyPressed="#cedulaOnEnterKey" prefHeight="25.0" prefWidth="145.0" promptText="Cédula" styleClass="edittext" />
-      <JFXButton layoutX="178.0" layoutY="65.0" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
-      <JFXTextField fx:id="jtxfNombre" editable="false" focusTraversable="false" labelFloat="true" layoutX="217.0" layoutY="65.0" prefHeight="25.0" prefWidth="487.0" promptText="Nombre" styleClass="edittext" unFocusColor="#00796b" />
-      <JFXTextField fx:id="jtxfCedulaEncargado" labelFloat="true" layoutX="27.0" layoutY="104.0" onKeyPressed="#encargadoOnEnterKey" prefHeight="25.0" prefWidth="145.0" promptText="Cédula encargado" styleClass="edittext" />
-      <JFXButton layoutX="178.0" layoutY="102.0" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
-      <JFXTextField fx:id="jtxfNombreEncargado" editable="false" focusTraversable="false" labelFloat="true" layoutX="217.0" layoutY="105.0" prefHeight="25.0" prefWidth="487.0" promptText="Nombre encargado" styleClass="edittext" unFocusColor="#00796b" />
-      <JFXTextField fx:id="jtxfExpediente" editable="false" focusTraversable="false" labelFloat="true" layoutX="27.0" layoutY="178.0" prefHeight="25.0" prefWidth="145.0" promptText="Expediente" styleClass="edittext" />
-      <Separator layoutX="26.0" layoutY="163.0" prefHeight="0.0" prefWidth="749.0" />
-      <JFXComboBox fx:id="jcmbTipoAtencion" labelFloat="true" layoutX="27.0" layoutY="220.0" prefHeight="25.0" prefWidth="145.0" promptText="Tipo de atención" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfCantidadPersonas" labelFloat="true" layoutX="207.0" layoutY="220.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="145.0" promptText="Personas en hogar" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfIngresoPromedio" labelFloat="true" layoutX="559.0" layoutY="220.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="145.0" promptText="Ingreso promedio" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfCantidadDependientes" labelFloat="true" layoutX="207.0" layoutY="260.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="145.0" promptText="Personas dependientes" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfEstSocioEco" labelFloat="true" layoutX="559.0" layoutY="260.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="145.0" promptText="Estudio socioeconómico" styleClass="edittext" />
-      <Label layoutX="27.0" layoutY="143.0" text="Expediente" />
-      <TabPane layoutX="7.0" layoutY="296.0" prefHeight="274.0" prefWidth="786.0" tabClosingPolicy="UNAVAILABLE">
+      <JFXTextField fx:id="jtxfCedula" labelFloat="true" layoutX="27.0" layoutY="76.0" onKeyPressed="#cedulaOnEnterKey" prefHeight="35.0" prefWidth="169.0" promptText="Cédula" styleClass="edittext" />
+      <JFXButton layoutX="196.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
+      <JFXTextField fx:id="jtxfNombre" editable="false" focusTraversable="false" labelFloat="true" layoutX="237.0" layoutY="78.0" prefHeight="35.0" prefWidth="538.0" promptText="Nombre" styleClass="edittext" unFocusColor="#00796b" />
+      <JFXTextField fx:id="jtxfCedulaEncargado" labelFloat="true" layoutX="27.0" layoutY="136.0" onKeyPressed="#encargadoOnEnterKey" prefHeight="35.0" prefWidth="169.0" promptText="Cédula encargado" styleClass="edittext" />
+      <JFXButton layoutX="196.0" layoutY="134.0" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
+      <JFXTextField fx:id="jtxfNombreEncargado" editable="false" focusTraversable="false" labelFloat="true" layoutX="237.0" layoutY="136.0" prefHeight="35.0" prefWidth="538.0" promptText="Nombre encargado" styleClass="edittext" unFocusColor="#00796b" />
+      <JFXTextField fx:id="jtxfExpediente" editable="false" focusTraversable="false" labelFloat="true" layoutX="31.0" layoutY="235.0" prefHeight="35.0" prefWidth="169.0" promptText="# Expediente" styleClass="edittext" />
+      <Separator layoutX="11.0" layoutY="203.0" prefHeight="0.0" prefWidth="927.0" />
+      <JFXComboBox fx:id="jcmbTipoAtencion" labelFloat="true" layoutX="27.0" layoutY="295.0" prefHeight="35.0" prefWidth="215.0" promptText="Tipo de atención" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfCantidadPersonas" labelFloat="true" layoutX="257.0" layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="162.0" promptText="Personas en hogar" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfIngresoPromedio" labelFloat="true" layoutX="434.0" layoutY="235.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="145.0" promptText="Ingreso promedio" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfCantidadDependientes" labelFloat="true" layoutX="437.0" layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="162.0" promptText="Personas dependientes" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfEstSocioEco" labelFloat="true" layoutX="599.0" layoutY="235.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="145.0" promptText="Est. socioeconómico" styleClass="edittext" />
+      <Label layoutX="27.0" layoutY="175.0" text="Expediente">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <TabPane layoutX="88.0" layoutY="338.0" prefHeight="236.0" prefWidth="786.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Padecimientos">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <JFXTextField fx:id="jtxfPadecimiento" labelFloat="true" layoutX="19.0" layoutY="14.0" prefHeight="25.0" prefWidth="145.0" promptText="Padecimiento" styleClass="edittext" />
-                        <JFXTextArea fx:id="jtxaObservacionesPadecimiento" labelFloat="true" layoutX="19.0" layoutY="64.0" prefHeight="35.0" prefWidth="678.0" promptText="Observaciones" styleClass="edittext" />
+                        <JFXTextArea fx:id="jtxaObservacionesPadecimiento" labelFloat="true" layoutX="19.0" layoutY="64.0" prefHeight="25.0" prefWidth="678.0" promptText="Observaciones" styleClass="edittext" />
                         <JFXButton fx:id="jbtnAgregarPadecimiento" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="697.0" layoutY="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#agregarPadecimiento" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" textOverrun="WORD_ELLIPSIS">
                            <tooltip>
                               <Tooltip text="Agregar padecimiento" />
                            </tooltip>
                         </JFXButton>
-                        <TableView fx:id="tbvPadecimiento" layoutX="19.0" layoutY="113.0" prefHeight="128.0" prefWidth="749.0">
+                        <TableView fx:id="tbvPadecimiento" layoutX="19.0" layoutY="138.0" prefHeight="103.0" prefWidth="749.0">
                           <columns>
                             <TableColumn fx:id="tbcPadecimiento" prefWidth="180.0" text="Padecimiento" />
                             <TableColumn fx:id="tbcObservacionesPadecimiento" minWidth="1.0" prefWidth="565.0" text="Observaciones" />
@@ -117,9 +120,9 @@
           </Tab>
         </tabs>
       </TabPane>
-      <JFXDatePicker fx:id="jdtpFechaIngreso" layoutX="204.0" layoutY="178.0" prefHeight="25.0" prefWidth="145.0" promptText="Fecha de ingreso" styleClass="edittext" />
-      <JFXDatePicker fx:id="jdtpFechaSalida" layoutX="375.0" layoutY="178.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="145.0" promptText="Fecha de salida" styleClass="edittext" />
-      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="559.0" layoutY="178.0" prefHeight="25.0" prefWidth="145.0" promptText="Estado" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaIngreso" layoutX="760.0" layoutY="235.0" prefHeight="35.0" prefWidth="162.0" promptText="Fecha de ingreso" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaSalida" layoutX="760.0" layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="162.0" promptText="Fecha de salida" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="214.0" layoutY="235.0" prefHeight="17.0" prefWidth="162.0" promptText="Estado" styleClass="edittext" />
    </children>
    <effect>
       <DropShadow />
