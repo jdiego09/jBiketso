@@ -15,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import jbiketso.model.dao.LoginDao;
 import jbiketso.model.entities.BikRolesUsuarios;
@@ -29,7 +31,7 @@ import jbiketso.utils.Parametros;
  *
  * @author Anayansy
  */
-public class LoginController implements Initializable {
+public class LoginController extends Controller {
 
     @FXML
     private JFXTextField txtUsuario;
@@ -37,11 +39,6 @@ public class LoginController implements Initializable {
     private JFXPasswordField txtClave;
     @FXML
     private JFXButton btnIniciarSesion;
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }
 
     @FXML
     private void iniciarSesion(ActionEvent event) {
@@ -72,7 +69,7 @@ public class LoginController implements Initializable {
                     Node boton = (Node) event.getSource();
                     AppWindowController.getInstance().setMainStage((Stage) boton.getScene().getWindow());
                     AppWindowController.getInstance().initApplication();
-                    
+
                     AppWindowController.getInstance().abrirVentanaEnPrincipal("bik_principal", "Center");
                 } else {
                     AppWindowController.getInstance().mensaje(AlertType.ERROR, "Acceso denegado", "Contraseña incorrecta.");
@@ -88,6 +85,18 @@ public class LoginController implements Initializable {
             AppWindowController.getInstance().mensaje(AlertType.WARNING, "Error", "Debe indicar el código de usuario.");
             txtUsuario.requestFocus();
             return;
+        }
+    }
+
+    @Override
+    public void initialize() {
+
+    }
+
+    @FXML
+    void iniciarSesionOnEnterKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
         }
     }
 

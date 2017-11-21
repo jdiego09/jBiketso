@@ -60,7 +60,7 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
     public Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
     }
-    
+
     public Resultado<BikCentro> getCentro(String cedulaJuridica) {
         Resultado<BikCentro> resultado = new Resultado<>();
         try {
@@ -105,6 +105,7 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
             return resultado;
         }
     }
+
     public Resultado<ArrayList<BikCentro>> findAll() {
         Resultado<ArrayList<BikCentro>> resultado = new Resultado<>();
         ArrayList<BikCentro> centros = new ArrayList<>();
@@ -155,7 +156,7 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
     public Resultado<BikCentro> save() {
         Resultado<BikCentro> resultado = new Resultado<>();
         try {
-            
+
             centro = (BikCentro) super.save(centro);
 
             if (centro.getCenCodigo() != null) {
@@ -181,12 +182,15 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
 
     public Resultado<String> deleteSede(BikSede sede) {
         Resultado<String> resultado = new Resultado<>();
+        BikSede existe = null;
         try {
 
             getEntityManager().getTransaction().begin();
             Integer id = (Integer) Parametros.PERSISTENCEUTIL.getIdentifier(sede);
-            BikSede existe = (BikSede) getEntityManager().find(BikSede.class, id);
-
+            if (id != null) {
+                existe = (BikSede) getEntityManager().find(BikSede.class, id);
+            }
+            
             if (existe != null) {
                 if (!getEntityManager().contains(sede)) {
                     sede = getEntityManager().merge(sede);
@@ -196,6 +200,7 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
             getEntityManager().getTransaction().commit();
             resultado.setResultado(TipoResultado.SUCCESS);
             return resultado;
+
         } catch (Exception ex) {
             getEntityManager().getTransaction().rollback();
             Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
