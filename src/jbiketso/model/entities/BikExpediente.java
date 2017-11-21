@@ -96,7 +96,7 @@ public class BikExpediente implements Serializable {
 
     public BikExpediente() {
         this.codigo = new SimpleIntegerProperty();
-        this.expFechaIngreso = new SimpleObjectProperty();
+        this.expFechaIngreso = new SimpleObjectProperty(LocalDate.now());
         this.expFechaSalida = new SimpleObjectProperty();
         this.expEstado = new SimpleObjectProperty();
         this.expTipoAtencion = new SimpleObjectProperty();
@@ -108,7 +108,7 @@ public class BikExpediente implements Serializable {
 
     public BikExpediente(Boolean inicializar) {
         this.codigo = new SimpleIntegerProperty();
-        this.expFechaIngreso = new SimpleObjectProperty();
+        this.expFechaIngreso = new SimpleObjectProperty(LocalDate.now());
         this.expFechaSalida = new SimpleObjectProperty();
         this.expEstado = new SimpleObjectProperty();
         this.expTipoAtencion = new SimpleObjectProperty();

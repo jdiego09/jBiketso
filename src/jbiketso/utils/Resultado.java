@@ -7,7 +7,7 @@ package jbiketso.utils;
 
 /**
  *
- * @author jcalvo
+ * @author esanchez
  */
 public class Resultado<E> {
 
