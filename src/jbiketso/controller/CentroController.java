@@ -145,6 +145,7 @@ public class CentroController extends Controller {
             if (newSelection != null) {
                 unbindSede();
                 this.sede = (BikSede) newSelection;
+                obtenerRepreLegal(this.sede.getSedCodencargado().getPerCedula(), "S");
                 bindSede();
             }
         });
@@ -204,6 +205,7 @@ public class CentroController extends Controller {
 
     public void iniciarForma() {
 
+        estados.clear();
         estados.add(new GenValorCombo("A", "Activo"));
         estados.add(new GenValorCombo("I", "Inactivo"));
         jcmbEstado.setItems(estados);
@@ -212,6 +214,13 @@ public class CentroController extends Controller {
         jtxfNombreRepreLegal.setDisable(false);
         jtxfNomEncargadoSede.setDisable(false);
 
+        if (this.centro != null) {
+            unbindCentro();
+        }
+        if (this.sede != null) {
+            unbindSede();
+        }
+
         nuevoCentro();
         nuevaSede();
         nuevaPersonaEncargadoCentro();
@@ -219,7 +228,8 @@ public class CentroController extends Controller {
         bindCentro();
         bindSede();
         bindListaSedes();
-        //cargarCentros();
+        
+        jcmbEstado.getSelectionModel().selectFirst();
 
         addListenerTable(tbvSedes);
 
