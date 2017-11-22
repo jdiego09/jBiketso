@@ -5,6 +5,7 @@
  */
 package jbiketso.model.dao;
 
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,14 +21,14 @@ import jbiketso.utils.TipoResultado;
  * @author jcalvo
  */
 public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
-
+    
     private BikExpediente expediente;
-
+    
     private static ExpedienteDao INSTANCE;
-
+    
     private ExpedienteDao() {
     }
-
+    
     private static void createInstance() {
         if (INSTANCE == null) {
             // Sólo se accede a la zona sincronizada
@@ -41,14 +42,14 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             }
         }
     }
-
+    
     public static ExpedienteDao getInstance() {
         if (INSTANCE == null) {
             createInstance();
         }
         return INSTANCE;
     }
-
+    
     public void setExpediente(BikExpediente expediente) {
         this.expediente = expediente;
     }
@@ -58,7 +59,7 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
     public Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
     }
-
+    
     public Resultado<BikExpediente> getExpedienteByCedula(String cedula) {
         Resultado<BikExpediente> result = new Resultado<>();
         BikExpediente expediente;
@@ -66,7 +67,7 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             Query query = getEntityManager().createNamedQuery("BikExpediente.findByCedulaUsuario");
             query.setParameter("cedula", cedula);
             expediente = (BikExpediente) query.getSingleResult();
-
+            
             result.setResultado(TipoResultado.SUCCESS);
             result.set(expediente);
             return result;
@@ -91,10 +92,10 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
     public Resultado<BikExpediente> save() {
         Resultado<BikExpediente> result = new Resultado<>();
         try {
-            if (expediente.getExpCodigo() == null || expediente.getExpCodigo() <= 0){
-                expediente.setExpFechaIngreso(new Date());
+            if (expediente.getExpCodigo() == null || expediente.getExpCodigo() <= 0) {
+                expediente.setExpFechaIngreso(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                 expediente.setExpUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
-            }else{
+            } else {
                 expediente.setExpFechamodifica(new Date());
                 expediente.setExpUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
             }
@@ -111,5 +112,5 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             return result;
         }
     }
-
+    
 }

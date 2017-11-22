@@ -6,9 +6,8 @@
 package jbiketso.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import javax.persistence.Converter;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +21,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -38,6 +38,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import jbiketso.utils.GenValorCombo;
+import jbiketso.utils.LocalDateConverter;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -153,12 +154,13 @@ public class BikExpediente implements Serializable {
     @Basic(optional = false)
     @Column(name = "exp_fechaingreso")
     @Temporal(TemporalType.DATE)
+    @Convert(converter = LocalDateConverter.class)
     @Access(AccessType.PROPERTY)
-    public Date getExpFechaIngreso() {
+    public LocalDate getExpFechaIngreso() {
         if (this.expFechaIngreso == null) {
             this.expFechaIngreso = new SimpleObjectProperty();
         }
-        return (expFechaIngreso.get() == null ? null : java.sql.Date.valueOf(expFechaIngreso.get())); 
+        return expFechaIngreso.get(); 
     }
 
     public SimpleObjectProperty<LocalDate> getExpFechaIngresoProperty() {
@@ -168,21 +170,22 @@ public class BikExpediente implements Serializable {
         return this.expFechaIngreso;
     }
 
-    public void setExpFechaIngreso(Date expFechaingreso) {
+    public void setExpFechaIngreso(LocalDate expFechaingreso) {
         if (this.expFechaIngreso == null) {
             this.expFechaIngreso = new SimpleObjectProperty();
         }
-        this.expFechaIngreso.set(expFechaingreso.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        this.expFechaIngreso.set(expFechaingreso);
     }
 
     @Column(name = "exp_fechasalida")
     @Temporal(TemporalType.DATE)
+    @Convert(converter = LocalDateConverter.class)
     @Access(AccessType.PROPERTY)
-    public Date getExpFechaSalida() {
+    public LocalDate getExpFechaSalida() {
         if (this.expFechaSalida == null) {
             this.expFechaSalida = new SimpleObjectProperty();
         }
-        return (expFechaSalida.get() == null ? null : java.sql.Date.valueOf(expFechaSalida.get()));        
+        return expFechaSalida.get();        
     }
 
     public SimpleObjectProperty<LocalDate> getExpFechaSalidaProperty() {
@@ -192,11 +195,11 @@ public class BikExpediente implements Serializable {
         return this.expFechaSalida;
     }
 
-    public void setExpFechaSalida(Date fechaSalida) {
+    public void setExpFechaSalida(LocalDate fechaSalida) {
         if (this.expFechaSalida == null) {
             this.expFechaSalida = new SimpleObjectProperty();
         }
-        this.expFechaSalida.set(fechaSalida.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        this.expFechaSalida.set(fechaSalida);
     }
 
     @Basic(optional = false)
