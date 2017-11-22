@@ -154,16 +154,16 @@ public class UsuariosController extends Controller implements Initializable {
         bindPersonaUsuario();
         bindPersonaEncargado();
         //expediente
-        this.jtxfExpediente.textProperty().bindBidirectional(this.expediente.getCodigoProperty(),new NumberStringConverter());
+        this.jtxfExpediente.textProperty().bindBidirectional(this.expediente.getCodigoProperty(), new NumberStringConverter());
         this.jdtpFechaIngreso.valueProperty().bindBidirectional(this.expediente.getExpFechaIngresoProperty());
         this.jdtpFechaSalida.valueProperty().bindBidirectional(this.expediente.getExpFechaSalidaProperty());
         this.jcmbEstado.valueProperty().bindBidirectional(this.expediente.getEstadoProperty());
         this.jcmbTipoAtencion.valueProperty().bindBidirectional(this.expediente.getTipoAtencionProperty());
-        this.jtxfCantidadPersonas.textProperty().bindBidirectional(this.expediente.getPersonasHogarProperty(),new NumberStringConverter());
-        this.jtxfCantidadDependientes.textProperty().bindBidirectional(this.expediente.getPersonasDependientesProperty(),new NumberStringConverter());
-        this.jtxfIngresoPromedio.textProperty().bindBidirectional(this.expediente.getIngresoPromedioProperty(),new NumberStringConverter());
-        this.jtxfEstSocioEco.textProperty().bindBidirectional(this.expediente.getEstudioSocioEconomicoProperty(),new NumberStringConverter());
-        
+        this.jtxfCantidadPersonas.textProperty().bindBidirectional(this.expediente.getPersonasHogarProperty(), new NumberStringConverter());
+        this.jtxfCantidadDependientes.textProperty().bindBidirectional(this.expediente.getPersonasDependientesProperty(), new NumberStringConverter());
+        this.jtxfIngresoPromedio.textProperty().bindBidirectional(this.expediente.getIngresoPromedioProperty(), new NumberStringConverter());
+        this.jtxfEstSocioEco.textProperty().bindBidirectional(this.expediente.getEstudioSocioEconomicoProperty(), new NumberStringConverter());
+
         this.jtxfCantidadPersonas.setTextFormatter(Formater.getInstance().integerFormat());
         this.jtxfCantidadDependientes.setTextFormatter(Formater.getInstance().integerFormat());
         this.jtxfIngresoPromedio.setTextFormatter(Formater.getInstance().twoDecimalFormat());
@@ -428,7 +428,7 @@ public class UsuariosController extends Controller implements Initializable {
         unbindMedicamento();
         nuevoPadecimiento();
         nuevoMedicamento();
-        if (this.expediente.getExpUsucodigo().getUsuCodencargadolegal() == null ||  this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCodigo() == null || this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCodigo() <= 0) {
+        if (this.expediente.getExpUsucodigo().getUsuCodencargadolegal() == null || this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCodigo() == null || this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCodigo() <= 0) {
             BikPersona encargado = getPersona(this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCedula()).get();
             if (encargado != null && encargado.getPerCodigo() != null && encargado.getPerCodigo() > 0) {
                 this.expediente.getExpUsucodigo().setUsuCodencargadolegal(encargado);
