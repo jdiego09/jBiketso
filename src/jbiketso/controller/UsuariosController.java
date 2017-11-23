@@ -33,6 +33,7 @@ import jbiketso.model.entities.BikPersona;
 import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
+import jbiketso.utils.DatePickerConverter;
 import jbiketso.utils.Formater;
 import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
@@ -168,6 +169,10 @@ public class UsuariosController extends Controller implements Initializable {
         this.jtxfCantidadDependientes.setTextFormatter(Formater.getInstance().integerFormat());
         this.jtxfIngresoPromedio.setTextFormatter(Formater.getInstance().twoDecimalFormat());
         this.jtxfEstSocioEco.setTextFormatter(Formater.getInstance().integerFormat());
+        /*
+        DatePickerConverter converter = new DatePickerConverter("dd/MM/yyyy");
+        this.jdtpFechaIngreso.setConverter(converter);
+        this.jdtpFechaSalida.setConverter(converter);*/
     }
 
     private void bindPadecimiento() {
@@ -341,20 +346,20 @@ public class UsuariosController extends Controller implements Initializable {
             this.expediente.setExpUsucodigo(resultado.get());
         }*/
         //guarda el expediente
-        if (this.expediente.getExpCodigo() == null || this.expediente.getExpCodigo() <= 0) {
-            //this.expediente.setExpSedcodigo(Aplicacion.getInstance().getDefaultSede());
-            //traerUsuario();
-            //traerEncargado();
-            ExpedienteDao.getInstance().setExpediente(this.expediente);
-            Resultado<BikExpediente> resultado = ExpedienteDao.getInstance().save();
+        //this.expediente.setExpSedcodigo(Aplicacion.getInstance().getDefaultSede());
+        //traerUsuario();
+        //traerEncargado();
+        ExpedienteDao.getInstance().setExpediente(this.expediente);
+        Resultado<BikExpediente> resultado = ExpedienteDao.getInstance().save();
 
-            if (resultado.getResultado().equals(TipoResultado.ERROR)) {
-                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Registrar Expediente", resultado.getMensaje());
-                return;
-            }
+        if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Registrar Expediente", resultado.getMensaje());
+            return;
+        } else {
             this.expediente = resultado.get();
-            AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Registrar Expediente", resultado.getMensaje());
         }
+        AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Registrar Expediente", resultado.getMensaje());
+
     }
 
     @FXML
@@ -385,8 +390,7 @@ public class UsuariosController extends Controller implements Initializable {
     }
 
     private void traerUsuario() {
-        unbindPersonaUsuario();
-        unbindPersonaEncargado();
+        unbindExpediente();
         unbindPadecimiento();
         unbindMedicamento();
         nuevoPadecimiento();
@@ -408,8 +412,7 @@ public class UsuariosController extends Controller implements Initializable {
                 }
             }
         }
-        bindPersonaUsuario();
-        bindPersonaEncargado();
+        bindExpediente();
         bindPadecimiento();
         bindMedicamento();
     }

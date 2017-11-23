@@ -45,6 +45,7 @@
       <JFXDrawer fx:id="jdrwMenu" BorderPane.alignment="CENTER">
          <effect>
             <DropShadow />
-         </effect></JFXDrawer>
+         </effect>
+      </JFXDrawer>
    </left>
 </BorderPane>
