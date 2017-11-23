@@ -80,6 +80,7 @@ public class CentroController extends Controller {
 
     private void nuevoCentro() {
         this.centro = new BikCentro();
+        this.centro.setBikSedeList(new ArrayList<>());
     }
 
     private void nuevaSede() {
@@ -191,14 +192,16 @@ public class CentroController extends Controller {
     }
 
     @FXML
-    void limpiarCentro(ActionEvent event) {
+    private void limpiarCentro(ActionEvent event) {
         unbindCentro();
+        unbindSede();
         this.sedes.clear();
         nuevoCentro();
         nuevaSede();
         nuevaPersonaEncargadoCentro();
         nuevaPersonaEncargadoSede();
         bindCentro();
+        bindSede();
         jtxfCedJuridica.setDisable(false);
         jtxfNombreRepreLegal.setDisable(false);
     }
@@ -220,6 +223,8 @@ public class CentroController extends Controller {
         if (this.sede != null) {
             unbindSede();
         }
+        
+        this.sedes.clear();
 
         nuevoCentro();
         nuevaSede();
@@ -299,7 +304,7 @@ public class CentroController extends Controller {
 
     @FXML
     void cedulaRepreCentroOnEnterKey(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
+        if (event.getCode() == KeyCode.ENTER  || event.getCode() == KeyCode.TAB) {
             unbindCentro();
             unbindSede();
             nuevaSede();
@@ -311,7 +316,7 @@ public class CentroController extends Controller {
 
     @FXML
     void cedEncargadoSedeOnEnterKey(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
+        if (event.getCode() == KeyCode.ENTER  || event.getCode() == KeyCode.TAB) {
             unbindCentro();
             unbindSede();
             obtenerRepreLegal(this.encargadoSede.getPerCedula(), "S");
