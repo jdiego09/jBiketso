@@ -154,10 +154,11 @@ public class BikExpediente implements Serializable {
     @Temporal(TemporalType.DATE)
     @Access(AccessType.PROPERTY)
     public Date getExpFechaIngreso() {
-        if (expFechaIngreso == null) {
-            expFechaIngreso = new SimpleObjectProperty();
+        if (expFechaIngreso != null && expFechaIngreso.get() != null) {
+            return Date.from(expFechaIngreso.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } else {
+            return null;
         }
-        return expFechaIngreso.get() != null ? Date.from(expFechaIngreso.get().atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
     }
 
     public SimpleObjectProperty<LocalDate> getExpFechaIngresoProperty() {
@@ -168,20 +169,20 @@ public class BikExpediente implements Serializable {
     }
 
     public void setExpFechaIngreso(Date expFechaingreso) {
-        if (this.expFechaIngreso == null) {
-            this.expFechaIngreso = new SimpleObjectProperty();
+        if (expFechaingreso != null) {
+            this.expFechaIngreso.set(expFechaingreso.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         }
-        this.expFechaIngreso.set(expFechaingreso != null ? expFechaingreso.toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null);
     }
 
     @Column(name = "exp_fechasalida")
     @Temporal(TemporalType.DATE)
     @Access(AccessType.PROPERTY)
     public Date getExpFechaSalida() {
-        if (this.expFechaSalida == null) {
-            this.expFechaSalida = new SimpleObjectProperty();
+        if (expFechaSalida != null && expFechaSalida.get() != null) {
+            return Date.from(expFechaSalida.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } else {
+            return null;
         }
-        return expFechaSalida.get() != null ? Date.from(expFechaSalida.get().atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
     }
 
     public SimpleObjectProperty<LocalDate> getExpFechaSalidaProperty() {
@@ -192,10 +193,9 @@ public class BikExpediente implements Serializable {
     }
 
     public void setExpFechaSalida(Date fechaSalida) {
-        if (this.expFechaSalida == null) {
-            this.expFechaSalida = new SimpleObjectProperty();
+        if (fechaSalida != null) {
+            this.expFechaIngreso.set(fechaSalida.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         }
-        this.expFechaIngreso.set(fechaSalida != null ? fechaSalida.toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null);
     }
 
     @Basic(optional = false)
