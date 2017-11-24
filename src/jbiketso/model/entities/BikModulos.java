@@ -72,7 +72,7 @@ public class BikModulos implements Serializable {
     public BikModulos() {
         this.modCodigo = new SimpleStringProperty();
         this.modDescripcion = new SimpleStringProperty();
-        this.estado = new SimpleObjectProperty();
+        this.estado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
     }
 
     public BikModulos(String modCodigo) {

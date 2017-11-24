@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -141,6 +142,7 @@ public class AppWindowController {
          mainStage.setResizable(true);
          mainStage.centerOnScreen();
          mainStage.setScene(scene);
+         mainStage.getIcons().add(new Image("file: ../view/images/biketso.png"));
          mainStage.setTitle("Bikétsö");
          mainStage.show();
       }
@@ -159,6 +161,7 @@ public class AppWindowController {
          mainStage.setScene(scene);
          mainStage.setTitle(titulo);
          mainStage.setResizable(resize);
+         mainStage.getIcons().add(new Image("file: ../view/images/biketso.png"));
          mainStage.show();
       }
    }

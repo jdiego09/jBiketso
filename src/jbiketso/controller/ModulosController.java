@@ -65,8 +65,7 @@ public class ModulosController extends Controller implements Initializable {
         estados.clear();
         estados.add(new GenValorCombo("A", "Activo"));
         estados.add(new GenValorCombo("I", "Inactivo"));
-        jcmbEstadoModulo.setItems(estados);
-        jcmbEstadoModulo.getSelectionModel().selectFirst();
+        jcmbEstadoModulo.setItems(estados);        
         if (this.modulo != null) {
             unbindModulo();
         }
