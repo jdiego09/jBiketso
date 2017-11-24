@@ -174,9 +174,11 @@ public class CentroController extends Controller {
     private void cargarSedes(BikCentro centro) {
         Resultado<ArrayList<BikSede>> listaSedes = CentroDao.getInstance().getSedes(centro);
         this.sedes.clear();
-        listaSedes.get().stream().forEach(this.sedes::add);
+        tbvSedes.getItems().clear();
+        //listaSedes.get().stream().forEach(this.sedes::add);
         if (!listaSedes.getResultado().equals(TipoResultado.ERROR)) {
-            this.sedes = FXCollections.observableArrayList(listaSedes.get());
+            //this.sedes = FXCollections.observableArrayList(listaSedes.get());
+            tbvSedes.getItems().addAll(listaSedes.get());
         } else {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Consultar sedes", listaSedes.getMensaje());
         }
@@ -204,6 +206,7 @@ public class CentroController extends Controller {
         bindSede();
         jtxfCedJuridica.setDisable(false);
         jtxfNombreRepreLegal.setDisable(false);
+        tbvSedes.getItems().clear();
     }
 
     public void iniciarForma() {
@@ -362,6 +365,7 @@ public class CentroController extends Controller {
         } else {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Eliminar sede", resultado.getMensaje());
         }
+        tbvSedes.refresh();
     }
 
 }
