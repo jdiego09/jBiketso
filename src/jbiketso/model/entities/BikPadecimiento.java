@@ -65,7 +65,7 @@ public class BikPadecimiento implements Serializable {
 
     public BikPadecimiento() {
         this.padCodigo = new SimpleObjectProperty();
-        this.padEstado = new SimpleObjectProperty();
+        this.padEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
         this.padPadecimiento = new SimpleStringProperty();
         this.padObservaciones = new SimpleStringProperty();
     }

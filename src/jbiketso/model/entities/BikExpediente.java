@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javax.persistence.Access;
@@ -68,7 +69,7 @@ public class BikExpediente implements Serializable {
    @Transient
    private SimpleIntegerProperty expDependientes;
    @Transient
-   private SimpleObjectProperty<BigDecimal> expIngresoPromedio;
+   private SimpleDoubleProperty expIngresoPromedio;
 
    @Column(name = "exp_usuarioingresa")
    private String expUsuarioingresa;
@@ -102,7 +103,7 @@ public class BikExpediente implements Serializable {
       this.expEstudioSocioeconomico = new SimpleIntegerProperty(0);
       this.expPersonasHogar = new SimpleIntegerProperty(0);
       this.expDependientes = new SimpleIntegerProperty(0);
-      this.expIngresoPromedio = new SimpleObjectProperty(BigDecimal.ZERO);
+      this.expIngresoPromedio = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
    }
 
    public BikExpediente(Boolean inicializar) {
@@ -114,7 +115,7 @@ public class BikExpediente implements Serializable {
       this.expEstudioSocioeconomico = new SimpleIntegerProperty(0);
       this.expPersonasHogar = new SimpleIntegerProperty(0);
       this.expDependientes = new SimpleIntegerProperty(0);
-      this.expIngresoPromedio = new SimpleObjectProperty(BigDecimal.ZERO);
+      this.expIngresoPromedio = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
       if (inicializar) {
          this.expUsucodigo = new BikUsuario();
          this.expSedcodigo = new BikSede();
@@ -333,24 +334,24 @@ public class BikExpediente implements Serializable {
 
    @Column(name = "exp_ingresopromedio")
    @Access(AccessType.PROPERTY)
-   public BigDecimal getExpIngresopromedio() {
+   public Double getExpIngresopromedio() {
       if (this.expIngresoPromedio == null) {
-         this.expIngresoPromedio = new SimpleObjectProperty();
+         this.expIngresoPromedio = new SimpleDoubleProperty();
       }
       return this.expIngresoPromedio.get();
 
    }
 
-   public SimpleObjectProperty getIngresoPromedioProperty() {
+   public SimpleDoubleProperty getIngresoPromedioProperty() {
       if (this.expIngresoPromedio == null) {
-         this.expIngresoPromedio = new SimpleObjectProperty();
+         this.expIngresoPromedio = new SimpleDoubleProperty();
       }
       return this.expIngresoPromedio;
    }
 
-   public void setExpIngresopromedio(BigDecimal expIngresopromedio) {
+   public void setExpIngresopromedio(Double expIngresopromedio) {
       if (this.expIngresoPromedio == null) {
-         this.expIngresoPromedio = new SimpleObjectProperty();
+         this.expIngresoPromedio = new SimpleDoubleProperty();
       }
       this.expIngresoPromedio.set(expIngresopromedio);
    }

@@ -12,7 +12,10 @@ import java.util.logging.Logger;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikExpediente;
+import jbiketso.model.entities.BikMedicamento;
+import jbiketso.model.entities.BikPadecimiento;
 import jbiketso.utils.Aplicacion;
+import jbiketso.utils.Parametros;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -22,95 +25,147 @@ import jbiketso.utils.TipoResultado;
  */
 public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
 
-   private BikExpediente expediente;
+    private BikExpediente expediente;
 
-   private static ExpedienteDao INSTANCE;
+    private static ExpedienteDao INSTANCE;
 
-   private ExpedienteDao() {
-   }
+    private ExpedienteDao() {
+    }
 
-   private static void createInstance() {
-      if (INSTANCE == null) {
-         // Sólo se accede a la zona sincronizada
-         // cuando la instancia no está creada
-         synchronized (ExpedienteDao.class) {
-            // En la zona sincronizada sería necesario volver
-            // a comprobar que no se ha creado la instancia
-            if (INSTANCE == null) {
-               INSTANCE = new ExpedienteDao();
+    private static void createInstance() {
+        if (INSTANCE == null) {
+            // Sólo se accede a la zona sincronizada
+            // cuando la instancia no está creada
+            synchronized (ExpedienteDao.class) {
+                // En la zona sincronizada sería necesario volver
+                // a comprobar que no se ha creado la instancia
+                if (INSTANCE == null) {
+                    INSTANCE = new ExpedienteDao();
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   public static ExpedienteDao getInstance() {
-      if (INSTANCE == null) {
-         createInstance();
-      }
-      return INSTANCE;
-   }
+    public static ExpedienteDao getInstance() {
+        if (INSTANCE == null) {
+            createInstance();
+        }
+        return INSTANCE;
+    }
 
-   public void setExpediente(BikExpediente expediente) {
-      this.expediente = expediente;
-   }
+    public void setExpediente(BikExpediente expediente) {
+        this.expediente = expediente;
+    }
 
-   //para que solamente exista una instancia del objeto
-   @Override
-   public Object clone() throws CloneNotSupportedException {
-      throw new CloneNotSupportedException();
-   }
+    //para que solamente exista una instancia del objeto
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
+    }
 
-   public Resultado<BikExpediente> getExpedienteByCedula(String cedula) {
-      Resultado<BikExpediente> result = new Resultado<>();
-      BikExpediente expediente;
-      try {
-         Query query = getEntityManager().createNamedQuery("BikExpediente.findByCedulaUsuario");
-         query.setParameter("cedula", cedula);
-         expediente = (BikExpediente) query.getSingleResult();
+    public Resultado<BikExpediente> getExpedienteByCedula(String cedula) {
+        Resultado<BikExpediente> result = new Resultado<>();
+        BikExpediente expediente;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikExpediente.findByCedulaUsuario");
+            query.setParameter("cedula", cedula);
+            expediente = (BikExpediente) query.getSingleResult();
 
-         result.setResultado(TipoResultado.SUCCESS);
-         result.set(expediente);
-         return result;
-      } catch (NoResultException nre) {
-         result.setResultado(TipoResultado.WARNING);
-         result.setMensaje("El expediente para el usuario con la cédula [" + cedula + "], no se encuentra registrado.");
-         return result;
-      } catch (Exception ex) {
-         Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-         result.setResultado(TipoResultado.ERROR);
-         result.setMensaje("Error al traer información del expediente para el usuario con la cédula [" + cedula + "].");
-         return result;
-      }
-   }
+            result.setResultado(TipoResultado.SUCCESS);
+            result.set(expediente);
+            return result;
+        } catch (NoResultException nre) {
+            result.setResultado(TipoResultado.WARNING);
+            result.setMensaje("El expediente para el usuario con la cédula [" + cedula + "], no se encuentra registrado.");
+            return result;
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            result.setResultado(TipoResultado.ERROR);
+            result.setMensaje("Error al traer información del expediente para el usuario con la cédula [" + cedula + "].");
+            return result;
+        }
+    }
 
-   /**
-    * *
-    * Función para guardar la información del expediente
-    *
-    * @return el expediente guardado
-    */
-   public Resultado<BikExpediente> save() {
-      Resultado<BikExpediente> result = new Resultado<>();
-      try {
-         if (expediente.getExpCodigo() == null || expediente.getExpCodigo() <= 0) {
-            expediente.setExpFechaIngreso(new Date());
-            expediente.setExpUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
-         } else {
-            expediente.setExpFechamodifica(new Date());
-            expediente.setExpUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
-         }
+    /**
+     * *
+     * Función para guardar la información del expediente
+     *
+     * @return el expediente guardado
+     */
+    public Resultado<BikExpediente> save() {
+        Resultado<BikExpediente> result = new Resultado<>();
+        try {
+            if (expediente.getExpCodigo() == null || expediente.getExpCodigo() <= 0) {
+                expediente.setExpFechaIngreso(new Date());
+                expediente.setExpUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+            } else {
+                expediente.setExpFechamodifica(new Date());
+                expediente.setExpUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
+            }
 
-         expediente = (BikExpediente) super.save(expediente);
-         result.setResultado(TipoResultado.SUCCESS);
-         result.set(expediente);
-         result.setMensaje("El expediente del usuario se guardó correctamente.");
-         return result;
-      } catch (Exception ex) {
-         Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
-         result.setResultado(TipoResultado.ERROR);
-         result.setMensaje("Error al guardar la información expediente del usuario [" + expediente.getExpUsucodigo().getUsuPercodigo().getNombreCompleto() + "].");
-         return result;
-      }
-   }
+            expediente = (BikExpediente) super.save(expediente);
+            result.setResultado(TipoResultado.SUCCESS);
+            result.set(expediente);
+            result.setMensaje("El expediente del usuario se guardó correctamente.");
+            return result;
+        } catch (Exception ex) {
+            Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
+            result.setResultado(TipoResultado.ERROR);
+            result.setMensaje("Error al guardar la información expediente del usuario [" + expediente.getExpUsucodigo().getUsuPercodigo().getNombreCompleto() + "].");
+            return result;
+        }
+    }
+
+    public Resultado<String> deleteMedicamento(BikMedicamento medicamento) {
+        Resultado<String> resultado = new Resultado<>();
+        try {
+
+            getEntityManager().getTransaction().begin();
+            Integer id = (Integer) Parametros.PERSISTENCEUTIL.getIdentifier(medicamento);
+            BikMedicamento existe = (BikMedicamento) getEntityManager().find(BikMedicamento.class, id);
+
+            if (existe != null) {
+                if (!getEntityManager().contains(medicamento)) {
+                    medicamento = getEntityManager().merge(medicamento);
+                }
+                getEntityManager().remove(medicamento);
+            }
+            getEntityManager().getTransaction().commit();
+            resultado.setResultado(TipoResultado.SUCCESS);
+            return resultado;
+        } catch (Exception ex) {
+            getEntityManager().getTransaction().rollback();
+            Logger.getLogger(ExpedienteDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al eliminarel medicamento.");
+            return resultado;
+        }
+    }
+
+    public Resultado<String> deletePadecimiento(BikPadecimiento padecimiento) {
+        Resultado<String> resultado = new Resultado<>();
+        try {
+
+            getEntityManager().getTransaction().begin();
+            Integer id = (Integer) Parametros.PERSISTENCEUTIL.getIdentifier(padecimiento);
+            BikPadecimiento existe = (BikPadecimiento) getEntityManager().find(BikPadecimiento.class, id);
+
+            if (existe != null) {
+                if (!getEntityManager().contains(padecimiento)) {
+                    padecimiento = getEntityManager().merge(padecimiento);
+                }
+                getEntityManager().remove(padecimiento);
+            }
+            getEntityManager().getTransaction().commit();
+            resultado.setResultado(TipoResultado.SUCCESS);
+            return resultado;
+        } catch (Exception ex) {
+            getEntityManager().getTransaction().rollback();
+            Logger.getLogger(ExpedienteDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al eliminarel padecimiento.");
+            return resultado;
+        }
+    }
 
 }
