@@ -101,9 +101,9 @@ public class BikPersona implements Serializable {
       this.perPrimerapellido = new SimpleStringProperty();
       this.perSegundoapellido = new SimpleStringProperty();
       this.perFechanacimiento = new SimpleObjectProperty();
-      this.perGenero = new SimpleObjectProperty();
-      this.perNacionalidad = new SimpleStringProperty();
-      this.perEstadocivil = new SimpleObjectProperty();
+      this.perGenero = new SimpleObjectProperty(new GenValorCombo("M", "Masculino"));
+      this.perNacionalidad = new SimpleStringProperty("Costa Rica");
+      this.perEstadocivil = new SimpleObjectProperty(new GenValorCombo("S", "Soltero"));
       this.perProfesion = new SimpleStringProperty();
       this.nombreCompleto = new SimpleStringProperty();
 

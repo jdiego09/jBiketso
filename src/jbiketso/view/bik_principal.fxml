@@ -2,8 +2,11 @@
 
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
@@ -11,7 +14,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="860.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.PrincipalController">
    <top>
-      <VBox prefHeight="66.0" prefWidth="860.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="77.0" prefWidth="860.0" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane prefHeight="30.0" prefWidth="200.0" styleClass="dark" VBox.vgrow="ALWAYS">
                <children>
@@ -32,14 +35,28 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <JFXHamburger fx:id="hmbMenu" alignment="CENTER_LEFT" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="5.0" />
+                  <JFXHamburger fx:id="hmbMenu" alignment="CENTER_LEFT" layoutX="14.0" layoutY="15.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="15.0" />
                </children>
             </AnchorPane>
          </children>
       </VBox>
    </top>
    <center>
-      <VBox fx:id="vbxContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="860.0" styleClass="form" BorderPane.alignment="CENTER" />
+      <VBox fx:id="vbxContainer" blendMode="DARKEN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="541.0" prefWidth="860.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane id="AnchorPane" fx:id="acpImg" prefHeight="570.0" prefWidth="800.0">
+               <stylesheets>
+                  <URL value="@biketso.css" />
+               </stylesheets>
+               <children>
+                  <ImageView fitHeight="570.0" fitWidth="800.0" layoutX="133.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <image>
+                        <Image url="@images/logo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </children></VBox>
    </center>
    <left>
       <JFXDrawer fx:id="jdrwMenu" BorderPane.alignment="CENTER">

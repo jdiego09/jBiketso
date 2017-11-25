@@ -5,8 +5,9 @@
  */
 package jbiketso.model.dao;
 
-import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.NoResultException;
@@ -115,6 +116,29 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             return result;
         }
     }
+    
+    public Resultado<ArrayList<BikMedicamento>> getMedicamentosActivos(BikExpediente expediente) {
+        Resultado<ArrayList<BikMedicamento>> resultado = new Resultado<>();
+        ArrayList<BikMedicamento> listaMedicamentos = new ArrayList<>();
+        List<BikMedicamento> medicamentos;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikMedicamento.findByExpedienteActivos");
+            query.setParameter("codigoExpediente", expediente.getExpCodigo());
+            medicamentos = query.getResultList();
+            medicamentos.stream().forEach(listaMedicamentos::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaMedicamentos);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer medicamentos del usuario [" + expediente.getExpUsucodigo().getUsuPercodigo().getNombreCompleto() + "].");
+            return resultado;
+        }
+    }
 
     public Resultado<String> deleteMedicamento(BikMedicamento medicamento) {
         Resultado<String> resultado = new Resultado<>();
@@ -137,11 +161,34 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             getEntityManager().getTransaction().rollback();
             Logger.getLogger(ExpedienteDao.class.getName()).log(Level.SEVERE, null, ex);
             resultado.setResultado(TipoResultado.ERROR);
-            resultado.setMensaje("Error al eliminarel medicamento.");
+            resultado.setMensaje("Error al eliminar el medicamento.");
             return resultado;
         }
     }
 
+    public Resultado<ArrayList<BikPadecimiento>> getPadecimientosActivos(BikExpediente expediente) {
+        Resultado<ArrayList<BikPadecimiento>> resultado = new Resultado<>();
+        ArrayList<BikPadecimiento> listaPadecimientos = new ArrayList<>();
+        List<BikPadecimiento> padecimientos;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikPadecimiento.findByExpedienteActivos");
+            query.setParameter("codigoExpediente", expediente.getExpCodigo());
+            padecimientos = query.getResultList();
+            padecimientos.stream().forEach(listaPadecimientos::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaPadecimientos);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer padecimientos del usuario [" + expediente.getExpUsucodigo().getUsuPercodigo().getNombreCompleto() + "].");
+            return resultado;
+        }
+    }
+    
     public Resultado<String> deletePadecimiento(BikPadecimiento padecimiento) {
         Resultado<String> resultado = new Resultado<>();
         try {
@@ -163,7 +210,7 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             getEntityManager().getTransaction().rollback();
             Logger.getLogger(ExpedienteDao.class.getName()).log(Level.SEVERE, null, ex);
             resultado.setResultado(TipoResultado.ERROR);
-            resultado.setMensaje("Error al eliminarel padecimiento.");
+            resultado.setMensaje("Error al eliminar el padecimiento.");
             return resultado;
         }
     }

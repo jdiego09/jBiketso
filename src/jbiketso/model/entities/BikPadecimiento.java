@@ -36,7 +36,8 @@ import jbiketso.utils.GenValorCombo;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikPadecimiento.findAll", query = "SELECT b FROM BikPadecimiento b")
-    , @NamedQuery(name = "BikPadecimiento.findByCodigoExpediente", query = "SELECT b FROM BikPadecimiento b WHERE b.padCodigo = :padCodigo")})
+    , @NamedQuery(name = "BikPadecimiento.findByCodigo", query = "SELECT b FROM BikPadecimiento b WHERE b.padCodigo = :codigo")
+    , @NamedQuery(name = "BikPadecimiento.findByExpedienteActivos", query = "select p from BikPadecimiento p join p.codigoExpediente e where e.expCodigo = :codigoExpediente and p.padEstado = 'A'")})
 public class BikPadecimiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,7 +62,7 @@ public class BikPadecimiento implements Serializable {
     private Date padFechamodifica;
     @JoinColumn(name = "pad_expcodigo", referencedColumnName = "exp_codigo")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikExpediente padExpcodigo;
+    private BikExpediente codigoExpediente;
 
     public BikPadecimiento() {
         this.padCodigo = new SimpleObjectProperty();
@@ -191,12 +192,12 @@ public class BikPadecimiento implements Serializable {
         this.padFechamodifica = padFechamodifica;
     }
 
-    public BikExpediente getPadExpcodigo() {
-        return padExpcodigo;
+    public BikExpediente getCodigoExpediente() {
+        return codigoExpediente;
     }
 
-    public void setPadExpcodigo(BikExpediente padExpcodigo) {
-        this.padExpcodigo = padExpcodigo;
+    public void setCodigoExpediente(BikExpediente codigoExpediente) {
+        this.codigoExpediente = codigoExpediente;
     }
 
     @Override

@@ -36,7 +36,8 @@ import jbiketso.utils.GenValorCombo;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikMedicamento.findAll", query = "SELECT b FROM BikMedicamento b")
-    , @NamedQuery(name = "BikMedicamento.findByMedCodigo", query = "SELECT b FROM BikMedicamento b WHERE b.medCodigo = :medCodigo")})
+    , @NamedQuery(name = "BikMedicamento.findByMedCodigo", query = "SELECT b FROM BikMedicamento b WHERE b.medCodigo = :medCodigo")
+    , @NamedQuery(name = "BikMedicamento.findByExpedienteActivos", query = "select m from BikMedicamento m join m.codigoExpediente e where e.expCodigo = :codigoExpediente and m.medEstado = 'A'")})
 public class BikMedicamento implements Serializable {
 
     private static final long serialVersionUID = 1L;

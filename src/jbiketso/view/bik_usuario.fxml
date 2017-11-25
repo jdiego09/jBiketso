@@ -106,10 +106,8 @@
                         </JFXButton>
                         <TableView fx:id="tbvMedicamentos" layoutX="11.0" layoutY="111.0" prefHeight="90.0" prefWidth="764.0">
                            <columns>
-                              <TableColumn fx:id="tbcMedicamento" prefWidth="163.0" text="Medicamento" />
-                              <TableColumn fx:id="tbcDosis" prefWidth="101.0" text="Dosis" />
-                              <TableColumn fx:id="tbcHorario" prefWidth="112.0" text="Horario" />
-                              <TableColumn fx:id="tbcObservacionesMedicamento" prefWidth="384.0" text="Observaciones" />
+                              <TableColumn fx:id="tbcMedicamento" prefWidth="236.0" text="Medicamento" />
+                              <TableColumn fx:id="tbcObservacionesMedicamento" prefWidth="520.0" text="Observaciones" />
                            </columns>
                         </TableView>
                      </children>
@@ -118,8 +116,8 @@
           </Tab>
         </tabs>
       </TabPane>
-      <JFXDatePicker fx:id="jdtpFechaIngreso" layoutX="760.0" layoutY="235.0" prefHeight="35.0" prefWidth="162.0" promptText="Fecha de ingreso" styleClass="edittext" />
-      <JFXDatePicker fx:id="jdtpFechaSalida" layoutX="760.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="162.0" promptText="Fecha de salida" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaIngreso" layoutX="760.0" layoutY="235.0" overLay="true" prefHeight="35.0" prefWidth="162.0" promptText="Fecha de ingreso" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaSalida" layoutX="760.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLay="true" prefHeight="35.0" prefWidth="162.0" promptText="Fecha de salida" styleClass="edittext" />
       <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="214.0" layoutY="231.0" prefHeight="35.0" prefWidth="162.0" promptText="Estado" styleClass="edittext" />
    </children>
    <effect>

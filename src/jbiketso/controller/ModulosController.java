@@ -74,6 +74,9 @@ public class ModulosController extends Controller implements Initializable {
         cargarModulos();
         bindListaModulos();
         addListenerTable(tbvModulos);
+        
+        this.jcmbEstadoModulo.getSelectionModel().selectFirst();        
+        this.jtxfCodigoModulo.requestFocus();
     }
 
     @Override

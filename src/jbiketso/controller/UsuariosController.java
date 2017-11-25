@@ -6,6 +6,8 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -155,17 +156,13 @@ public class UsuariosController extends Controller implements Initializable {
         this.jcmbTipoAtencion.valueProperty().bindBidirectional(this.expediente.getTipoAtencionProperty());
         this.jtxfCantidadPersonas.textProperty().bindBidirectional(this.expediente.getPersonasHogarProperty(), new NumberStringConverter());
         this.jtxfCantidadDependientes.textProperty().bindBidirectional(this.expediente.getPersonasDependientesProperty(), new NumberStringConverter());
-        this.jtxfIngresoPromedio.textProperty().bindBidirectional(this.expediente.getIngresoPromedioProperty(), new NumberStringConverter());
+        this.jtxfIngresoPromedio.textProperty().bindBidirectional(this.expediente.getIngresoPromedioProperty(), new DecimalFormat("###,###,##0.00"));
         this.jtxfEstSocioEco.textProperty().bindBidirectional(this.expediente.getEstudioSocioEconomicoProperty(), new NumberStringConverter());
 
         this.jtxfCantidadPersonas.setTextFormatter(Formater.getInstance().integerFormat());
         this.jtxfCantidadDependientes.setTextFormatter(Formater.getInstance().integerFormat());
-        this.jtxfIngresoPromedio.setTextFormatter(Formater.getInstance().twoDecimalFormat());
         this.jtxfEstSocioEco.setTextFormatter(Formater.getInstance().integerFormat());
-        /*
-        DatePickerConverter converter = new DatePickerConverter("dd/MM/yyyy");
-        this.jdtpFechaIngreso.setConverter(converter);
-        this.jdtpFechaSalida.setConverter(converter);*/
+        
     }
 
     private void bindPadecimiento() {
@@ -218,9 +215,7 @@ public class UsuariosController extends Controller implements Initializable {
             tbvMedicamentos.setItems(listaMedicamentos);
             tbvMedicamentos.refresh();
         }
-        tbcMedicamento.setCellValueFactory(new PropertyValueFactory<>("medMedicamento"));
-        tbcDosis.setCellValueFactory(new PropertyValueFactory<>("medDosis"));
-        tbcHorario.setCellValueFactory(new PropertyValueFactory<>("medHorario"));
+        tbcMedicamento.setCellValueFactory(new PropertyValueFactory<>("medMedicamento"));        
         tbcObservacionesMedicamento.setCellValueFactory(new PropertyValueFactory<>("medObservaciones"));
     }
 
@@ -272,6 +267,8 @@ public class UsuariosController extends Controller implements Initializable {
 
         addListenerTablePadecimientos(tbvPadecimiento);
         addListenerTableMedicamentos(tbvMedicamentos);
+
+        this.jtxfCedula.requestFocus();
     }
 
     @Override
@@ -321,7 +318,7 @@ public class UsuariosController extends Controller implements Initializable {
         BikPadecimiento nuevo = new BikPadecimiento();
         nuevo.setPadPadecimiento(padecimiento.getPadPadecimiento());
         nuevo.setPadObservaciones(padecimiento.getPadObservaciones());
-        nuevo.setPadExpcodigo(this.expediente);
+        nuevo.setCodigoExpediente(this.expediente);
 
         if (!this.expediente.getBikPadecimientoList().contains(nuevo)) {
             this.expediente.getBikPadecimientoList().add(nuevo);
@@ -401,11 +398,28 @@ public class UsuariosController extends Controller implements Initializable {
     @FXML
     void cedulaOnEnterKey(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            traerUsuario();
+            if (this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula() != null && !this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula().isEmpty()) {
+                if (this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCedula() != null && !this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCedula().isEmpty()) {
+                    if (this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCedula().equalsIgnoreCase(this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula())) {
+                        AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula usuario", "El usuario no puede ser el mismo encargado.");
+                        this.jtxfCedula.requestFocus();
+                        return;
+                    }
+                }
+                traerUsuario();
+            } else {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula usuario", "Debe indicar la cédula del usuario.");
+                this.jtxfCedula.requestFocus();
+            }
         }
     }
 
     private void traerUsuario() {
+        Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula());
+        if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula", cedulaValida.getMensaje());
+            return;
+        }
         unbindExpediente();
         unbindPadecimiento();
         unbindMedicamento();
@@ -415,6 +429,15 @@ public class UsuariosController extends Controller implements Initializable {
         BikExpediente buscado = getExpediente(this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula());
         if (buscado != null && buscado.getExpCodigo() != null && buscado.getExpCodigo() > 0) {
             this.expediente = buscado;
+            //carga los padecimientos
+            Resultado<ArrayList<BikPadecimiento>> padecimientosResult = ExpedienteDao.getInstance().getPadecimientosActivos(this.expediente);
+            listaPadecimientos.clear();
+            padecimientosResult.get().stream().forEach(listaPadecimientos::add);
+
+            //carga los medicamentos
+            Resultado<ArrayList<BikMedicamento>> contactosResult = ExpedienteDao.getInstance().getMedicamentosActivos(this.expediente);
+            listaMedicamentos.clear();
+            contactosResult.get().stream().forEach(listaMedicamentos::add);
         } else {
             BikUsuario usuBuscado = UsuarioDao.getInstance().getUsuarioByCedula(this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula()).get();
             if (usuBuscado != null && usuBuscado.getUsuCodigo() != null && usuBuscado.getUsuCodigo() > 0) {
@@ -435,12 +458,29 @@ public class UsuariosController extends Controller implements Initializable {
 
     @FXML
     void encargadoOnEnterKey(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            traerEncargado();
+        if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
+            if (this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCedula() != null && !this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCedula().isEmpty()) {
+                if (this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula() != null && !this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula().isEmpty()) {
+                    if (this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCedula().equalsIgnoreCase(this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula())) {
+                        AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula encargado", "El encargado no puede ser el mismo usuario.");
+                        this.jtxfCedulaEncargado.requestFocus();
+                        return;
+                    }
+                }
+                traerEncargado();
+            } else {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula encargado", "Debe indicar la cédula del encargado.");
+                this.jtxfCedulaEncargado.requestFocus();
+            }
         }
     }
 
     private void traerEncargado() {
+        Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(this.expediente.getExpUsucodigo().getUsuCodencargadolegal().getPerCedula());
+        if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula", cedulaValida.getMensaje());
+            return;
+        }
         unbindPersonaUsuario();
         unbindPersonaEncargado();
         unbindPadecimiento();

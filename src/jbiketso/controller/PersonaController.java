@@ -139,6 +139,8 @@ public class PersonaController extends Controller implements Initializable {
 
         addListenerTableDireccion(tbvDirecciones);
         addListenerTableContacto(tbvContactos);
+        
+        this.jtxfCedula.requestFocus();
     }
 
     @Override
@@ -282,6 +284,7 @@ public class PersonaController extends Controller implements Initializable {
         Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(cedula);
         if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula", cedulaValida.getMensaje());
+            this.jtxfCedula.requestFocus();
             return;
         }
         unbindPersona();
@@ -326,6 +329,7 @@ public class PersonaController extends Controller implements Initializable {
         unbindContacto();
         nuevoContacto();
         bindContacto();
+        this.jcmbTipoContacto.requestFocus();
     }
 
     @FXML
@@ -334,6 +338,7 @@ public class PersonaController extends Controller implements Initializable {
         unbindDireccion();
         nuevaDireccion();
         bindDireccion();
+        this.jtxfDetaDireccion.requestFocus();
     }
 
     @FXML
@@ -354,6 +359,7 @@ public class PersonaController extends Controller implements Initializable {
         bindPersona();
         bindDireccion();
         bindContacto();
+        this.jtxfCedula.requestFocus();
     }
 
     private void agregarContactoALista(BikContacto contacto) {
@@ -368,7 +374,7 @@ public class PersonaController extends Controller implements Initializable {
             this.persona.getBikContactoList().set(this.persona.getBikContactoList().indexOf(nuevo), nuevo);
             this.contactos.set(this.contactos.indexOf(nuevo), nuevo);
         }
-        tbvContactos.refresh();
+        tbvContactos.refresh();        
     }
 
     @FXML

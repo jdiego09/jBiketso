@@ -81,7 +81,7 @@ public class BikExpediente implements Serializable {
    @Column(name = "exp_fechamodifica")
    @Temporal(TemporalType.TIMESTAMP)
    private Date expFechamodifica;
-   @OneToMany(cascade = CascadeType.ALL, mappedBy = "padExpcodigo", fetch = FetchType.LAZY)
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "codigoExpediente", fetch = FetchType.LAZY)
    private List<BikPadecimiento> bikPadecimientoList;
    @JoinColumn(name = "exp_sedcodigo", referencedColumnName = "sed_codigo")
    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
