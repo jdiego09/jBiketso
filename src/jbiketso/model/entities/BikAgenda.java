@@ -35,168 +35,205 @@ import jbiketso.utils.GenValorCombo;
 @Table(name = "bik_agenda", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
-   @NamedQuery(name = "BikAgenda.findAll", query = "SELECT b FROM BikAgenda b")
-   , @NamedQuery(name = "BikAgenda.findByAgeCodigo", query = "SELECT b FROM BikAgenda b WHERE b.ageCodigo = :ageCodigo")})
+    @NamedQuery(name = "BikAgenda.findAll", query = "SELECT b FROM BikAgenda b")
+    , @NamedQuery(name = "BikAgenda.findByAgeCodigo", query = "SELECT b FROM BikAgenda b WHERE b.ageCodigo = :ageCodigo")})
 public class BikAgenda implements Serializable {
 
-   private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-   private SimpleIntegerProperty ageCodigo;
+    private SimpleIntegerProperty ageCodigo;
 
-   @Transient
-   private SimpleStringProperty ageDescripcion;
-   @Transient
-   private ObjectProperty<GenValorCombo> ageTipo;
-   @Transient
-   private ObjectProperty<GenValorCombo> ageEstado;
+    @Transient
+    private SimpleStringProperty ageDescripcion;
+    @Transient
+    private ObjectProperty<GenValorCombo> ageTipo;
+    @Transient
+    private ObjectProperty<GenValorCombo> ageEstado;
 
-   @Column(name = "age_usuarioingresa")
-   private String ageUsuarioingresa;
-   @Column(name = "age_fechaingresa")
-   @Temporal(TemporalType.TIMESTAMP)
-   private Date ageFechaingresa;
-   @Column(name = "age_usuariomodifica")
-   private String ageUsuariomodifica;
-   @Column(name = "age_fechamodifica")
-   @Temporal(TemporalType.TIMESTAMP)
-   private Date ageFechamodifica;
-   @OneToMany(cascade = CascadeType.ALL, mappedBy = "deaAgecodigo", fetch = FetchType.LAZY)
-   private List<BikDetalleAgenda> bikDetalleAgendaList;
-   @JoinColumn(name = "age_sedcodigo", referencedColumnName = "sed_codigo")
-   @ManyToOne(optional = false, fetch = FetchType.LAZY)
-   private BikSede ageSedcodigo;
+    @Column(name = "age_usuarioingresa")
+    private String ageUsuarioingresa;
+    @Column(name = "age_fechaingresa")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ageFechaingresa;
+    @Column(name = "age_usuariomodifica")
+    private String ageUsuariomodifica;
+    @Column(name = "age_fechamodifica")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ageFechamodifica;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deaAgecodigo", fetch = FetchType.LAZY)
+    private List<BikDetalleAgenda> bikDetalleAgendaList;
+    @JoinColumn(name = "age_sedcodigo", referencedColumnName = "sed_codigo")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private BikSede ageSedcodigo;
 
-   public BikAgenda() {
-      this.ageCodigo = new SimpleIntegerProperty();
-      this.ageDescripcion = new SimpleStringProperty();
-      this.ageTipo = new SimpleObjectProperty();
-      this.ageEstado = new SimpleObjectProperty();
-   }
+    public BikAgenda() {
+        this.ageCodigo = new SimpleIntegerProperty();
+        this.ageDescripcion = new SimpleStringProperty();
+        this.ageTipo = new SimpleObjectProperty(new GenValorCombo("C", "Citas"));
+        this.ageEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
+    }
 
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Basic(optional = false)
-   @Column(name = "age_codigo")
-   @Access(AccessType.PROPERTY)
-   public Integer getAgeCodigo() {
-      return ageCodigo.get();
-   }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "age_codigo")
+    @Access(AccessType.PROPERTY)
+    public Integer getAgeCodigo() {
+        return ageCodigo.get();
+    }
 
-   public void setAgeCodigo(Integer ageCodigo) {
-      if (this.ageCodigo == null){
-         this.ageCodigo = new SimpleIntegerProperty();
-      }
-      this.ageCodigo.set(ageCodigo);
-   }
+    public void setAgeCodigo(Integer ageCodigo) {
+        if (this.ageCodigo == null) {
+            this.ageCodigo = new SimpleIntegerProperty();
+        }
+        this.ageCodigo.set(ageCodigo);
+    }
 
-   @Basic(optional = false)
-   @Column(name = "age_descripcion")
-   @Access(AccessType.PROPERTY)
-   public String getAgeDescripcion() {
-      return ageDescripcion.get();
-   }
+    @Basic(optional = false)
+    @Column(name = "age_descripcion")
+    @Access(AccessType.PROPERTY)
+    public String getAgeDescripcion() {
+        return ageDescripcion.get();
+    }
 
-   public void setAgeDescripcion(String ageDescripcion) {
-      if (this.ageDescripcion == null){
-         this.ageDescripcion = new SimpleIntegerProperty();
-      }
-      this.ageDescripcion = ageDescripcion;
-   }
+    public SimpleStringProperty getDescripcionProperty() {
+        if (this.ageDescripcion == null) {
+            this.ageDescripcion = new SimpleStringProperty();
+        }
+        return this.ageDescripcion;
+    }
 
-   @Basic(optional = false)
-   @Column(name = "age_tipo")
-   @Access(AccessType.PROPERTY)
-   public String getAgeTipo() {
-      return ageTipo;
-   }
+    public void setAgeDescripcion(String ageDescripcion) {
+        if (this.ageDescripcion == null) {
+            this.ageDescripcion = new SimpleStringProperty();
+        }
+        this.ageDescripcion.set(ageDescripcion);
+    }
 
-   public void setAgeTipo(String ageTipo) {
-      this.ageTipo = ageTipo;
-   }
+    @Basic(optional = false)
+    @Column(name = "age_tipo")
+    @Access(AccessType.PROPERTY)
+    public String getAgeTipo() {
+        return ageTipo.get().getCodigo();
+    }
 
-   @Basic(optional = false)
-   @Column(name = "age_estado")
-   @Access(AccessType.PROPERTY)
-   public String getAgeEstado() {
-      return ageEstado;
-   }
+    public ObjectProperty getTipoProperty() {
+        if (this.ageTipo == null) {
+            this.ageTipo = new SimpleObjectProperty();
+        }
+        return this.ageTipo;
+    }
 
-   public void setAgeEstado(String ageEstado) {
-      this.ageEstado = ageEstado;
-   }
+    public void setAgeTipo(String ageTipo) {
+        if (this.ageTipo == null) {
+            this.ageTipo = new SimpleObjectProperty();
+        }
+        GenValorCombo valor = null;
+        if (ageTipo.equalsIgnoreCase("c")) {
+            valor = new GenValorCombo("C", "Citas");
+        }
+        this.ageTipo.set(valor);
+    }
 
-   public String getAgeUsuarioingresa() {
-      return ageUsuarioingresa;
-   }
+    @Basic(optional = false)
+    @Column(name = "age_estado")
+    @Access(AccessType.PROPERTY)
+    public String getAgeEstado() {
+        return ageEstado.get().getCodigo();
+    }
 
-   public void setAgeUsuarioingresa(String ageUsuarioingresa) {
-      this.ageUsuarioingresa = ageUsuarioingresa;
-   }
+    public ObjectProperty getEstadoProperty(){
+        if(this.ageEstado == null){
+            this.ageEstado = new SimpleObjectProperty();
+        }
+        return this.ageEstado;
+    }
+    
+    public void setAgeEstado(String ageEstado) {
+        if(this.ageEstado == null){
+            this.ageEstado = new SimpleObjectProperty();
+        }
+        GenValorCombo valor = null;
+        if (ageEstado.equalsIgnoreCase("a")){
+            valor = new GenValorCombo("A", "Activo");
+        }else{
+            valor = new GenValorCombo("I", "Inactivo");
+        }
+        this.ageEstado.set(valor);
+    }
 
-   public Date getAgeFechaingresa() {
-      return ageFechaingresa;
-   }
+    public String getAgeUsuarioingresa() {
+        return ageUsuarioingresa;
+    }
 
-   public void setAgeFechaingresa(Date ageFechaingresa) {
-      this.ageFechaingresa = ageFechaingresa;
-   }
+    public void setAgeUsuarioingresa(String ageUsuarioingresa) {
+        this.ageUsuarioingresa = ageUsuarioingresa;
+    }
 
-   public String getAgeUsuariomodifica() {
-      return ageUsuariomodifica;
-   }
+    public Date getAgeFechaingresa() {
+        return ageFechaingresa;
+    }
 
-   public void setAgeUsuariomodifica(String ageUsuariomodifica) {
-      this.ageUsuariomodifica = ageUsuariomodifica;
-   }
+    public void setAgeFechaingresa(Date ageFechaingresa) {
+        this.ageFechaingresa = ageFechaingresa;
+    }
 
-   public Date getAgeFechamodifica() {
-      return ageFechamodifica;
-   }
+    public String getAgeUsuariomodifica() {
+        return ageUsuariomodifica;
+    }
 
-   public void setAgeFechamodifica(Date ageFechamodifica) {
-      this.ageFechamodifica = ageFechamodifica;
-   }
+    public void setAgeUsuariomodifica(String ageUsuariomodifica) {
+        this.ageUsuariomodifica = ageUsuariomodifica;
+    }
 
-   @XmlTransient
-   public List<BikDetalleAgenda> getBikDetalleAgendaList() {
-      return bikDetalleAgendaList;
-   }
+    public Date getAgeFechamodifica() {
+        return ageFechamodifica;
+    }
 
-   public void setBikDetalleAgendaList(List<BikDetalleAgenda> bikDetalleAgendaList) {
-      this.bikDetalleAgendaList = bikDetalleAgendaList;
-   }
+    public void setAgeFechamodifica(Date ageFechamodifica) {
+        this.ageFechamodifica = ageFechamodifica;
+    }
 
-   public BikSede getAgeSedcodigo() {
-      return ageSedcodigo;
-   }
+    @XmlTransient
+    public List<BikDetalleAgenda> getBikDetalleAgendaList() {
+        return bikDetalleAgendaList;
+    }
 
-   public void setAgeSedcodigo(BikSede ageSedcodigo) {
-      this.ageSedcodigo = ageSedcodigo;
-   }
+    public void setBikDetalleAgendaList(List<BikDetalleAgenda> bikDetalleAgendaList) {
+        this.bikDetalleAgendaList = bikDetalleAgendaList;
+    }
 
-   @Override
-   public int hashCode() {
-      int hash = 0;
-      hash += (ageCodigo != null ? ageCodigo.hashCode() : 0);
-      return hash;
-   }
+    public BikSede getAgeSedcodigo() {
+        return ageSedcodigo;
+    }
 
-   @Override
-   public boolean equals(Object object) {
-      // TODO: Warning - this method won't work in the case the id fields are not set
-      if (!(object instanceof BikAgenda)) {
-         return false;
-      }
-      BikAgenda other = (BikAgenda) object;
-      if ((this.ageCodigo == null && other.ageCodigo != null) || (this.ageCodigo != null && !this.ageCodigo.equals(other.ageCodigo))) {
-         return false;
-      }
-      return true;
-   }
+    public void setAgeSedcodigo(BikSede ageSedcodigo) {
+        this.ageSedcodigo = ageSedcodigo;
+    }
 
-   @Override
-   public String toString() {
-      return "jbiketso.model.BikAgenda[ ageCodigo=" + ageCodigo + " ]";
-   }
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (ageCodigo != null ? ageCodigo.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof BikAgenda)) {
+            return false;
+        }
+        BikAgenda other = (BikAgenda) object;
+        if ((this.ageCodigo == null && other.ageCodigo != null) || (this.ageCodigo != null && !this.ageCodigo.equals(other.ageCodigo))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "jbiketso.model.BikAgenda[ ageCodigo=" + ageCodigo + " ]";
+    }
 
 }

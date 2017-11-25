@@ -7,6 +7,7 @@ package jbiketso.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -70,7 +70,7 @@ public class PersonaController extends Controller implements Initializable {
     private TableColumn<BikContacto, String> tbcDetContacto, tbcTipoContacto;
 
     @FXML
-    private DatePicker dtpFechaNacimiento;
+    private JFXDatePicker dtpFechaNacimiento;
 
     @FXML
     private TableView<BikDireccion> tbvDirecciones;
@@ -228,7 +228,7 @@ public class PersonaController extends Controller implements Initializable {
         this.contacto = new BikContacto();
     }
 
-    private void bindListaDirecciones() {
+    private void bindListaDirecciones() {        
         if (direcciones != null) {
             tbvDirecciones.setItems(direcciones);
             tbvDirecciones.refresh();

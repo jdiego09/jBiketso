@@ -48,10 +48,6 @@ public class BikMedicamento implements Serializable {
     @Transient
     private SimpleStringProperty medMedicamento;
     @Transient
-    private SimpleStringProperty medDosis;
-    @Transient
-    private SimpleStringProperty medHorario;
-    @Transient
     private SimpleStringProperty medObservaciones;
 
     @Column(name = "med_usuarioingresa")
@@ -70,9 +66,7 @@ public class BikMedicamento implements Serializable {
 
     public BikMedicamento() {
         this.medCodigo = new SimpleObjectProperty();
-        this.medEstado = new SimpleObjectProperty();
-        this.medDosis = new SimpleStringProperty();
-        this.medHorario = new SimpleStringProperty();
+        this.medEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
         this.medObservaciones = new SimpleStringProperty();
     }
 
@@ -145,48 +139,6 @@ public class BikMedicamento implements Serializable {
             this.medMedicamento = new SimpleStringProperty();
         }
         this.medMedicamento.set(medMedicamento);
-    }
-
-    @Basic(optional = false)
-    @Column(name = "med_dosis")
-    @Access(AccessType.PROPERTY)
-    public String getMedDosis() {
-        return medDosis.get();
-    }
-
-    public SimpleStringProperty getDosisProperty() {
-        if (this.medDosis == null) {
-            this.medDosis = new SimpleStringProperty();
-        }
-        return this.medDosis;
-    }
-
-    public void setMedDosis(String medDosis) {
-        if (this.medDosis == null) {
-            this.medDosis = new SimpleStringProperty();
-        }
-        this.medDosis.set(medDosis);
-    }
-
-    @Basic(optional = false)
-    @Column(name = "med_horario")
-    @Access(AccessType.PROPERTY)
-    public String getMedHorario() {
-        return medHorario.get();
-    }
-
-    public SimpleStringProperty getHorarioProperty() {
-        if (this.medHorario == null) {
-            this.medHorario = new SimpleStringProperty();
-        }
-        return this.medHorario;
-    }
-
-    public void setMedHorario(String medHorario) {
-        if (this.medHorario == null) {
-            this.medHorario = new SimpleStringProperty();
-        }
-        this.medHorario.set(medHorario);
     }
 
     @Column(name = "med_observaciones")

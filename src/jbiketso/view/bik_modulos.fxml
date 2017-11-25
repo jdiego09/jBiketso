@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -21,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="728.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.ModulosController">
+<AnchorPane fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="728.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.ModulosController">
    <children>
       <Pane prefHeight="55.0" prefWidth="576.0" styleClass="actionbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -47,14 +40,14 @@
             </Label>
          </children>
       </Pane>
-      <JFXTextField fx:id="jtxfCodigoModulo" labelFloat="true" layoutX="25.0" layoutY="64.0" promptText="Módulo" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfDescripcionModulo" labelFloat="true" layoutX="25.0" layoutY="128.0" prefHeight="35.0" prefWidth="682.0" promptText="Descripción" styleClass="edittext" />
-      <JFXComboBox fx:id="jcmbEstadoModulo" labelFloat="true" layoutX="25.0" layoutY="190.0" prefHeight="39.0" prefWidth="202.0" promptText="Estado" styleClass="edittext" visibleRowCount="2">
+      <JFXTextField fx:id="jtxfCodigoModulo" labelFloat="true" layoutX="25.0" layoutY="78.0" promptText="Módulo" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfDescripcionModulo" labelFloat="true" layoutX="25.0" layoutY="142.0" prefHeight="35.0" prefWidth="682.0" promptText="Descripción" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbEstadoModulo" labelFloat="true" layoutX="25.0" layoutY="204.0" prefHeight="39.0" prefWidth="202.0" promptText="Estado" styleClass="edittext" visibleRowCount="2">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </JFXComboBox>
-      <TableView fx:id="tbvModulos" layoutX="25.0" layoutY="247.0" prefHeight="246.0" prefWidth="682.0">
+      <TableView fx:id="tbvModulos" layoutX="25.0" layoutY="274.0" prefHeight="219.0" prefWidth="682.0">
         <columns>
           <TableColumn fx:id="tbcCodigoModulo" editable="false" maxWidth="95.0" minWidth="75.0" prefWidth="90.0" resizable="false" sortable="false" text="Módulo" />
           <TableColumn fx:id="tbcDescipcionModulo" editable="false" maxWidth="427.0" minWidth="262.0" prefWidth="427.0" resizable="false" sortable="false" text="Descripción" />
