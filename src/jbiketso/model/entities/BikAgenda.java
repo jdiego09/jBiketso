@@ -40,9 +40,9 @@ import jbiketso.utils.GenValorCombo;
 public class BikAgenda implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
+    @Transient
     private SimpleIntegerProperty ageCodigo;
-
     @Transient
     private SimpleStringProperty ageDescripcion;
     @Transient

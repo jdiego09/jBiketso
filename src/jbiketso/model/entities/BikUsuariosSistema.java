@@ -8,6 +8,8 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -26,22 +28,23 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.utils.GenValorCombo;
 
 @Entity
 @Access(AccessType.FIELD)
-@Table(name = "bik_usuarios_sistema", schema="biketso")
+@Table(name = "bik_usuarios_sistema", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikUsuariosSistema.findByUssCodigo", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussCodigo = :ussCodigo")
-    })
+})
 public class BikUsuariosSistema implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Transient
     private SimpleStringProperty ussCodigo;
-    @Basic(optional = false)
-    @Column(name = "uss_estado")
-    private String ussEstado;
+    @Transient
+    private ObjectProperty<GenValorCombo> ussEstado;
+
     @Column(name = "uss_usuarioingresa")
     private String ussUsuarioingresa;
     @Column(name = "uss_fechaingresa")
@@ -58,15 +61,8 @@ public class BikUsuariosSistema implements Serializable {
     private List<BikRolesUsuarios> bikRolesUsuariosList;
 
     public BikUsuariosSistema() {
-    }
-
-    public BikUsuariosSistema(String ussCodigo) {
-        //this.ussCodigo = ussCodigo;
-    }
-
-    public BikUsuariosSistema(String ussCodigo, String ussEstado) {
-        //this.ussCodigo = ussCodigo;
-        this.ussEstado = ussEstado;
+        this.ussCodigo = new SimpleStringProperty();
+        this.ussEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
     }
 
     @Id
@@ -74,19 +70,41 @@ public class BikUsuariosSistema implements Serializable {
     @Column(name = "uss_codigo")
     @Access(AccessType.PROPERTY)
     public String getUssCodigo() {
+        if (this.ussCodigo == null) {
+            this.ussCodigo = new SimpleStringProperty();
+        }
         return ussCodigo.get();
     }
 
     public void setUssCodigo(String ussCodigo) {
-        this.ussCodigo.set(ussEstado);
+        if (this.ussCodigo == null) {
+            this.ussCodigo = new SimpleStringProperty();
+        }
+        this.ussCodigo.set(ussCodigo);
     }
 
+    @Basic(optional = false)
+    @Column(name = "uss_estado")
+    @Access(AccessType.PROPERTY)
     public String getUssEstado() {
-        return ussEstado;
+        if (this.ussEstado == null) {
+            this.ussEstado = new SimpleObjectProperty();
+        }
+        return ussEstado.get().getCodigo();
     }
 
     public void setUssEstado(String ussEstado) {
-        this.ussEstado = ussEstado;
+        if (this.ussEstado == null) {
+            this.ussEstado = new SimpleObjectProperty();
+        }
+        GenValorCombo valor = null;
+        if (ussEstado.equalsIgnoreCase("a")) {
+            valor = new GenValorCombo("A", "Activo");
+        } else {
+
+            valor = new GenValorCombo("I", "Inactivo");
+        }
+        this.ussEstado.set(valor);
     }
 
     public String getUssUsuarioingresa() {
@@ -162,5 +180,5 @@ public class BikUsuariosSistema implements Serializable {
     public String toString() {
         return "jbiketso.model.entities.BikUsuariosSistema[ ussCodigo=" + ussCodigo + " ]";
     }
-    
+
 }
