@@ -118,7 +118,7 @@ public class BikEvaluacion implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "eva_calificacion")
-    @Access(AccessType.FIELD)
+    @Access(AccessType.PROPERTY)
     public int getEvaCalificacion() {
         return evaCalificacion.get();
     }
@@ -132,7 +132,7 @@ public class BikEvaluacion implements Serializable {
     }
 
     @Column(name = "eva_observaciones")
-    @Access(AccessType.FIELD)
+    @Access(AccessType.PROPERTY)
     public String getEvaObservaciones() {
         return evaObservaciones.get();
     }

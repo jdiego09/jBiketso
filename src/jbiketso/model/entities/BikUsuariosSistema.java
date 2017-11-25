@@ -8,6 +8,9 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,10 +23,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "bik_usuarios_sistema", schema="biketso")
 @XmlRootElement
 @NamedQueries({
@@ -32,10 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class BikUsuariosSistema implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "uss_codigo")
-    private String ussCodigo;
+    @Transient
+    private SimpleStringProperty ussCodigo;
     @Basic(optional = false)
     @Column(name = "uss_estado")
     private String ussEstado;
@@ -58,20 +61,24 @@ public class BikUsuariosSistema implements Serializable {
     }
 
     public BikUsuariosSistema(String ussCodigo) {
-        this.ussCodigo = ussCodigo;
+        //this.ussCodigo = ussCodigo;
     }
 
     public BikUsuariosSistema(String ussCodigo, String ussEstado) {
-        this.ussCodigo = ussCodigo;
+        //this.ussCodigo = ussCodigo;
         this.ussEstado = ussEstado;
     }
 
+    @Id
+    @Basic(optional = false)
+    @Column(name = "uss_codigo")
+    @Access(AccessType.PROPERTY)
     public String getUssCodigo() {
-        return ussCodigo;
+        return ussCodigo.get();
     }
 
     public void setUssCodigo(String ussCodigo) {
-        this.ussCodigo = ussCodigo;
+        this.ussCodigo.set(ussEstado);
     }
 
     public String getUssEstado() {
