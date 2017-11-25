@@ -8,6 +8,11 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,14 +29,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.utils.GenValorCombo;
 
 /**
  *
  * @author Anayansy
  */
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "bik_puesto",schema = "biketso")
 @XmlRootElement
 @NamedQueries({
@@ -46,17 +54,12 @@ import javax.xml.bind.annotation.XmlTransient;
 public class BikPuesto implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "pue_codigo")
+    @Transient
     private Integer pueCodigo;
-    @Basic(optional = false)
-    @Column(name = "pue_descripcion")
-    private String pueDescripcion;
-    @Basic(optional = false)
-    @Column(name = "pue_estado")
-    private String pueEstado;
+    @Transient
+    private SimpleStringProperty pueDescripcion;
+    @Transient
+    private ObjectProperty<GenValorCombo> pueEstado;
     @Column(name = "pue_usuarioingresa")
     private String pueUsuarioingresa;
     @Column(name = "pue_fechaingresa")
@@ -74,9 +77,11 @@ public class BikPuesto implements Serializable {
     private BikSede pueSedcodigo;
 
     public BikPuesto() {
+        this.pueDescripcion = new SimpleStringProperty();
+        this.pueEstado = new SimpleObjectProperty();
     }
 
-    public BikPuesto(Integer pueCodigo) {
+    /*public BikPuesto(Integer pueCodigo) {
         this.pueCodigo = pueCodigo;
     }
 
@@ -84,8 +89,13 @@ public class BikPuesto implements Serializable {
         this.pueCodigo = pueCodigo;
         this.pueDescripcion = pueDescripcion;
         this.pueEstado = pueEstado;
-    }
+    }*/
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "pue_codigo")
+    @Access(AccessType.PROPERTY)
     public Integer getPueCodigo() {
         return pueCodigo;
     }
@@ -94,20 +104,43 @@ public class BikPuesto implements Serializable {
         this.pueCodigo = pueCodigo;
     }
 
+    @Basic(optional = false)
+    @Column(name = "pue_descripcion")
+    @Access(AccessType.PROPERTY)
     public String getPueDescripcion() {
-        return pueDescripcion;
+        return pueDescripcion.get();
     }
 
     public void setPueDescripcion(String pueDescripcion) {
-        this.pueDescripcion = pueDescripcion;
+        this.pueDescripcion.set(pueDescripcion);
+    }
+    
+    public SimpleStringProperty getPueDescripcionProperty() {
+        return this.pueDescripcion;
     }
 
+    @Basic(optional = false)
+    @Column(name = "pue_estado")
+    @Access(AccessType.PROPERTY)
     public String getPueEstado() {
-        return pueEstado;
+        return pueEstado.get().getCodigo();
     }
 
     public void setPueEstado(String pueEstado) {
-        this.pueEstado = pueEstado;
+        GenValorCombo valorEstado = null;
+        if (this.pueEstado == null) {
+            this.pueEstado = new SimpleObjectProperty();
+        }
+        if (pueEstado.equalsIgnoreCase("a")) {
+            valorEstado = new GenValorCombo("A", "Activo");
+        } else {
+            valorEstado = new GenValorCombo("I", "Inactivo");
+        }
+        this.pueEstado.set(valorEstado);
+    }
+    
+    public ObjectProperty getCenEstadoProperty() {
+        return pueEstado;
     }
 
     public String getPueUsuarioingresa() {

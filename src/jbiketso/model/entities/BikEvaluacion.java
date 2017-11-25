@@ -7,6 +7,11 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +26,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Anayansy
  */
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "bik_evaluacion",schema = "biketso")
 @XmlRootElement
 @NamedQueries({
@@ -43,19 +50,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class BikEvaluacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "eva_codigo")
+    @Transient
     private Integer evaCodigo;
-    @Basic(optional = false)
-    @Column(name = "eva_tipo")
-    private String evaTipo;
-    @Basic(optional = false)
-    @Column(name = "eva_calificacion")
-    private int evaCalificacion;
-    @Column(name = "eva_observaciones")
-    private String evaObservaciones;
+    @Transient
+    private SimpleStringProperty evaTipo;
+    @Transient
+    private ObjectProperty<Integer> evaCalificacion;
+    @Transient
+    private SimpleStringProperty evaObservaciones;
     @Column(name = "eva_usuarioingresa")
     private String evaUsuarioingresa;
     @Column(name = "eva_fechaingresa")
@@ -71,9 +73,12 @@ public class BikEvaluacion implements Serializable {
     private BikAccionesPersonal evaAcccodigo;
 
     public BikEvaluacion() {
+        this.evaTipo = new SimpleStringProperty();
+        this.evaCalificacion = new SimpleObjectProperty();
+        this.evaObservaciones = new SimpleStringProperty();
     }
 
-    public BikEvaluacion(Integer evaCodigo) {
+    /*public BikEvaluacion(Integer evaCodigo) {
         this.evaCodigo = evaCodigo;
     }
 
@@ -81,8 +86,13 @@ public class BikEvaluacion implements Serializable {
         this.evaCodigo = evaCodigo;
         this.evaTipo = evaTipo;
         this.evaCalificacion = evaCalificacion;
-    }
+    }*/
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "eva_codigo")
+    @Access(AccessType.PROPERTY)
     public Integer getEvaCodigo() {
         return evaCodigo;
     }
@@ -91,28 +101,48 @@ public class BikEvaluacion implements Serializable {
         this.evaCodigo = evaCodigo;
     }
 
+    @Basic(optional = false)
+    @Column(name = "eva_tipo")
+    @Access(AccessType.PROPERTY)
     public String getEvaTipo() {
-        return evaTipo;
+        return evaTipo.get();
     }
 
     public void setEvaTipo(String evaTipo) {
-        this.evaTipo = evaTipo;
+        this.evaTipo.set(evaTipo);
+    }
+    
+    public SimpleStringProperty getCenEstadoProperty() {
+        return this.evaTipo;
     }
 
+    @Basic(optional = false)
+    @Column(name = "eva_calificacion")
+    @Access(AccessType.FIELD)
     public int getEvaCalificacion() {
-        return evaCalificacion;
+        return evaCalificacion.get();
     }
 
     public void setEvaCalificacion(int evaCalificacion) {
-        this.evaCalificacion = evaCalificacion;
+        this.evaCalificacion.set(evaCalificacion);
+    }
+    
+    public ObjectProperty getEvaCalificacionProperty() {
+        return this.evaCalificacion;
     }
 
+    @Column(name = "eva_observaciones")
+    @Access(AccessType.FIELD)
     public String getEvaObservaciones() {
-        return evaObservaciones;
+        return evaObservaciones.get();
     }
 
     public void setEvaObservaciones(String evaObservaciones) {
-        this.evaObservaciones = evaObservaciones;
+        this.evaObservaciones.set(evaObservaciones);
+    }
+    
+    public SimpleStringProperty getEvaObservacionesProperty() {
+        return evaObservaciones;
     }
 
     public String getEvaUsuarioingresa() {
