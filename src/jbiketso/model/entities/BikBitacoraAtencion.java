@@ -1,7 +1,14 @@
 package jbiketso.model.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -14,37 +21,29 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import jbiketso.utils.GenValorCombo;
 
 @Entity
-@Table(name = "bik_bitacora_atencion",schema = "biketso")
+@Access(javax.persistence.AccessType.FIELD)
+@Table(name = "bik_bitacora_atencion", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BikBitacoraAtencion.findAll", query = "SELECT b FROM BikBitacoraAtencion b")
-    , @NamedQuery(name = "BikBitacoraAtencion.findByBiaCodigo", query = "SELECT b FROM BikBitacoraAtencion b WHERE b.bikBitacoraAtencionPK.biaCodigo = :biaCodigo")
-    , @NamedQuery(name = "BikBitacoraAtencion.findByBiaCodusuario", query = "SELECT b FROM BikBitacoraAtencion b WHERE b.bikBitacoraAtencionPK.biaCodusuario = :biaCodusuario")
-    , @NamedQuery(name = "BikBitacoraAtencion.findByBiaFechainicio", query = "SELECT b FROM BikBitacoraAtencion b WHERE b.biaFechainicio = :biaFechainicio")
-    , @NamedQuery(name = "BikBitacoraAtencion.findByBiaFechafin", query = "SELECT b FROM BikBitacoraAtencion b WHERE b.biaFechafin = :biaFechafin")
-    , @NamedQuery(name = "BikBitacoraAtencion.findByBiaDetalle", query = "SELECT b FROM BikBitacoraAtencion b WHERE b.biaDetalle = :biaDetalle")
-    , @NamedQuery(name = "BikBitacoraAtencion.findByBiaUsuarioingresa", query = "SELECT b FROM BikBitacoraAtencion b WHERE b.biaUsuarioingresa = :biaUsuarioingresa")
-    , @NamedQuery(name = "BikBitacoraAtencion.findByBiaFechaingresa", query = "SELECT b FROM BikBitacoraAtencion b WHERE b.biaFechaingresa = :biaFechaingresa")
-    , @NamedQuery(name = "BikBitacoraAtencion.findByBiaUsuariomodifica", query = "SELECT b FROM BikBitacoraAtencion b WHERE b.biaUsuariomodifica = :biaUsuariomodifica")
-    , @NamedQuery(name = "BikBitacoraAtencion.findByBiaFechamodifica", query = "SELECT b FROM BikBitacoraAtencion b WHERE b.biaFechamodifica = :biaFechamodifica")})
+    @NamedQuery(name = "BikBitacoraAtencion.findAll", query = "SELECT b FROM BikBitacoraAtencion b")})
 public class BikBitacoraAtencion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected BikBitacoraAtencionPK bikBitacoraAtencionPK;
-    @Basic(optional = false)
-    @Column(name = "bia_fechainicio")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date biaFechainicio;
-    @Column(name = "bia_fechafin")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date biaFechafin;
-    @Basic(optional = false)
-    @Column(name = "bia_detalle")
-    private String biaDetalle;
+
+    @Transient
+    protected ObjectProperty<BikBitacoraAtencionPK> bikBitacoraAtencionPK;
+    @Transient
+    private SimpleObjectProperty<LocalDate> biaFechainicio;
+    @Transient
+    private ObjectProperty<GenValorCombo> biaTipo;
+    @Transient
+    private SimpleStringProperty biaDetalle;
+
     @Column(name = "bia_usuarioingresa")
     private String biaUsuarioingresa;
     @Column(name = "bia_fechaingresa")
@@ -60,52 +59,91 @@ public class BikBitacoraAtencion implements Serializable {
     private BikUsuario bikUsuario;
 
     public BikBitacoraAtencion() {
+        this.bikBitacoraAtencionPK = null;
+        this.biaFechainicio = new SimpleObjectProperty(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        this.biaTipo = new SimpleObjectProperty(new GenValorCombo("T", "Toma de signos"));
+        this.biaDetalle = new SimpleStringProperty();
     }
 
-    public BikBitacoraAtencion(BikBitacoraAtencionPK bikBitacoraAtencionPK) {
-        this.bikBitacoraAtencionPK = bikBitacoraAtencionPK;
-    }
-
-    public BikBitacoraAtencion(BikBitacoraAtencionPK bikBitacoraAtencionPK, Date biaFechainicio, String biaDetalle) {
-        this.bikBitacoraAtencionPK = bikBitacoraAtencionPK;
-        this.biaFechainicio = biaFechainicio;
-        this.biaDetalle = biaDetalle;
-    }
-
-    public BikBitacoraAtencion(int biaCodigo, int biaCodusuario) {
-        this.bikBitacoraAtencionPK = new BikBitacoraAtencionPK(biaCodigo, biaCodusuario);
-    }
-
+    @EmbeddedId
+    @Access(AccessType.PROPERTY)
     public BikBitacoraAtencionPK getBikBitacoraAtencionPK() {
-        return bikBitacoraAtencionPK;
+        if (this.bikBitacoraAtencionPK == null) {
+            this.bikBitacoraAtencionPK = new SimpleObjectProperty();
+        }
+        return bikBitacoraAtencionPK.get();
     }
 
     public void setBikBitacoraAtencionPK(BikBitacoraAtencionPK bikBitacoraAtencionPK) {
-        this.bikBitacoraAtencionPK = bikBitacoraAtencionPK;
+        if (this.bikBitacoraAtencionPK == null) {
+            this.bikBitacoraAtencionPK = new SimpleObjectProperty();
+        }
+        this.bikBitacoraAtencionPK.set(bikBitacoraAtencionPK);
     }
 
+    @Basic(optional = false)
+    @Column(name = "bia_fechainicio")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Access(AccessType.PROPERTY)
     public Date getBiaFechainicio() {
-        return biaFechainicio;
+        if (biaFechainicio != null && biaFechainicio.get() != null) {
+            return Date.from(biaFechainicio.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } else {
+            return null;
+        }
     }
 
     public void setBiaFechainicio(Date biaFechainicio) {
-        this.biaFechainicio = biaFechainicio;
+        if (biaFechainicio != null) {
+            this.biaFechainicio.set(biaFechainicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        }
     }
 
-    public Date getBiaFechafin() {
-        return biaFechafin;
+    @Basic(optional = false)
+    @Column(name = "bia_tipo")
+    @Access(AccessType.PROPERTY)
+    public String getBiaTipo() {
+        if (this.biaTipo == null) {
+            this.biaTipo = new SimpleObjectProperty();
+        }
+        return biaTipo.get().getCodigo();
     }
 
-    public void setBiaFechafin(Date biaFechafin) {
-        this.biaFechafin = biaFechafin;
+    public void setBiaTipo(String biaTipo) {
+        if (this.biaTipo == null) {
+            this.biaTipo = new SimpleObjectProperty();
+        }
+        GenValorCombo valor = null;
+        if (biaTipo.equalsIgnoreCase("C")) {
+            valor = new GenValorCombo("C", "Chequeo médico");
+        }
+        if (biaTipo.equalsIgnoreCase("T")) {
+            valor = new GenValorCombo("T", "Toma de signos");
+        }
+        if (biaTipo.equalsIgnoreCase("I")) {
+            valor = new GenValorCombo("I", "Ingreso al centro");
+        }
+        if (biaTipo.equalsIgnoreCase("S")) {
+            valor = new GenValorCombo("S", "Salida del centro");
+        }
+        this.biaTipo.set(valor);
     }
 
+    @Basic(optional = false)
+    @Column(name = "bia_detalle")
+    @Access(AccessType.PROPERTY)
     public String getBiaDetalle() {
-        return biaDetalle;
+        if (this.biaDetalle == null) {
+            this.biaDetalle = new SimpleStringProperty();
+        }
+        return biaDetalle.get();
     }
 
     public void setBiaDetalle(String biaDetalle) {
-        this.biaDetalle = biaDetalle;
+        if (this.biaDetalle == null) {
+            this.biaDetalle = new SimpleStringProperty();
+        }
+        this.biaDetalle.set(biaDetalle);
     }
 
     public String getBiaUsuarioingresa() {
@@ -172,5 +210,5 @@ public class BikBitacoraAtencion implements Serializable {
     public String toString() {
         return "jbiketso.model.BikBitacoraAtencion[ bikBitacoraAtencionPK=" + bikBitacoraAtencionPK + " ]";
     }
-    
+
 }
