@@ -8,6 +8,8 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -37,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Access(AccessType.FIELD)
-@Table(name = "bik_sede",schema = "biketso")
+@Table(name = "bik_sede", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikSede.findAll", query = "SELECT b FROM BikSede b")
@@ -48,7 +50,7 @@ public class BikSede implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Transient
-    private Integer sedCodigo;
+    private ObjectProperty<Integer> sedCodigo;
     @Transient
     private SimpleStringProperty sedNombre;
     @Transient
@@ -59,7 +61,7 @@ public class BikSede implements Serializable {
     private SimpleStringProperty sedFax;
     @Transient
     private SimpleStringProperty sedEmail;
-    
+
     @Column(name = "sed_usuarioingresa")
     private String sedUsuarioingresa;
     @Column(name = "sed_fechaingresa")
@@ -77,7 +79,7 @@ public class BikSede implements Serializable {
     private BikCentro sedCencodigo;
     @JoinColumn(name = "sed_codencargado", referencedColumnName = "per_codigo")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikPersona sedCodencargado;   
+    private BikPersona sedCodencargado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pueSedcodigo", fetch = FetchType.LAZY)
     private List<BikPuesto> bikPuestoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuSedcodigo", fetch = FetchType.LAZY)
@@ -93,28 +95,34 @@ public class BikSede implements Serializable {
         this.sedEmail = new SimpleStringProperty();
     }
 
-    public BikSede(Integer sedCodigo) {
+    /*public BikSede(Integer sedCodigo) {
         this.sedCodigo = sedCodigo;
     }
 
-    /*public BikSede(Integer sedCodigo, String sedNombre, String sedDescripcion, String sedTelefonos) {
+    public BikSede(Integer sedCodigo, String sedNombre, String sedDescripcion, String sedTelefonos) {
         this.sedCodigo = sedCodigo;
         this.sedNombre = sedNombre;
         this.sedDescripcion = sedDescripcion;
         this.sedTelefonos = sedTelefonos;
     }*/
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "sed_codigo")
     @Access(AccessType.PROPERTY)
     public Integer getSedCodigo() {
-        return sedCodigo;
+        if (this.sedCodigo == null) {
+            this.sedCodigo = new SimpleObjectProperty();
+        }
+        return sedCodigo.get();
     }
 
     public void setSedCodigo(Integer sedCodigo) {
-        this.sedCodigo = sedCodigo;
+        this.sedCodigo.set(sedCodigo);
+    }
+    
+    public ObjectProperty getSedCodigoProperty(){
+        return this.sedCodigo;
     }
 
     @Basic(optional = false)
@@ -127,7 +135,7 @@ public class BikSede implements Serializable {
     public void setSedNombre(String sedNombre) {
         this.sedNombre.set(sedNombre);
     }
-    
+
     public SimpleStringProperty getSedNombreProperty() {
         return sedNombre;
     }
@@ -142,7 +150,7 @@ public class BikSede implements Serializable {
     public void setSedDescripcion(String sedDescripcion) {
         this.sedDescripcion.set(sedDescripcion);
     }
-    
+
     public SimpleStringProperty getSedDescripcionProperty() {
         return sedDescripcion;
     }
@@ -157,7 +165,7 @@ public class BikSede implements Serializable {
     public void setSedTelefonos(String sedTelefonos) {
         this.sedTelefonos.set(sedTelefonos);
     }
-    
+
     public SimpleStringProperty getSedTelefonosProperty() {
         return sedTelefonos;
     }
@@ -171,7 +179,7 @@ public class BikSede implements Serializable {
     public void setSedFax(String sedFax) {
         this.sedFax.set(sedFax);
     }
-    
+
     public SimpleStringProperty getSedFaxProperty() {
         return sedFax;
     }
@@ -185,7 +193,7 @@ public class BikSede implements Serializable {
     public void setSedEmail(String sedEmail) {
         this.sedEmail.set(sedEmail);
     }
-    
+
     public SimpleStringProperty getSedEmailProperty() {
         return sedEmail;
     }
@@ -298,5 +306,5 @@ public class BikSede implements Serializable {
     public String toString() {
         return "jbiketso.model.BikSede[ sedCodigo=" + sedCodigo + " ]";
     }
-    
+
 }
