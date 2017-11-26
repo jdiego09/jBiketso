@@ -426,7 +426,7 @@ public class UsuariosController extends Controller implements Initializable {
         nuevoPadecimiento();
         nuevoMedicamento();
         //busca el expediente por cédula del usuario, si no lo encuetra entonces carga el nombre del usuario con la cédula ingresada.
-        BikExpediente buscado = getExpediente(this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula());
+        BikExpediente buscado = getExpediente(this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula(),this.expediente.getExpSedcodigo().getSedCodigo());
         if (buscado != null && buscado.getExpCodigo() != null && buscado.getExpCodigo() > 0) {
             this.expediente = buscado;
             //carga los padecimientos
@@ -511,8 +511,8 @@ public class UsuariosController extends Controller implements Initializable {
         return resultado;
     }
 
-    private BikExpediente getExpediente(String cedula) {
-        Resultado<BikExpediente> resultado = ExpedienteDao.getInstance().getExpedienteByCedula(cedula);
+    private BikExpediente getExpediente(String cedula, Integer sede) {
+        Resultado<BikExpediente> resultado = ExpedienteDao.getInstance().getExpedienteByCedula(cedula, sede);
         if (resultado.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Buscar persona", resultado.getMensaje());
             return resultado.get();

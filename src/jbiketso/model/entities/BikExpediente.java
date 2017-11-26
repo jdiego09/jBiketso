@@ -46,7 +46,8 @@ import jbiketso.utils.GenValorCombo;
 @NamedQueries({
    @NamedQuery(name = "BikExpediente.findAll", query = "SELECT b FROM BikExpediente b")
    , @NamedQuery(name = "BikExpediente.findByExpCodigo", query = "SELECT b FROM BikExpediente b WHERE b.expCodigo = :expCodigo")
-   , @NamedQuery(name = "BikExpediente.findByCedulaUsuario", query = "SELECT b FROM BikExpediente b join b.expUsucodigo u join u.usuPercodigo p WHERE p.perCedula = :cedula")
+   , @NamedQuery(name = "BikExpediente.findByCedulaUsuario", query = "SELECT b FROM BikExpediente b join b.expUsucodigo u join u.usuPercodigo p join u.usuSedcodigo s WHERE s.sedCodigo = :codigoSede\n" +
+"and p.perCedula = :cedula")
 })
 public class BikExpediente implements Serializable {
 

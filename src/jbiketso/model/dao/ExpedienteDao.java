@@ -64,12 +64,13 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
         throw new CloneNotSupportedException();
     }
 
-    public Resultado<BikExpediente> getExpedienteByCedula(String cedula) {
+    public Resultado<BikExpediente> getExpedienteByCedula(String cedula,Integer sede) {
         Resultado<BikExpediente> result = new Resultado<>();
         BikExpediente expediente;
         try {
             Query query = getEntityManager().createNamedQuery("BikExpediente.findByCedulaUsuario");
             query.setParameter("cedula", cedula);
+            query.setParameter("codigoSede", sede);
             expediente = (BikExpediente) query.getSingleResult();
 
             result.setResultado(TipoResultado.SUCCESS);

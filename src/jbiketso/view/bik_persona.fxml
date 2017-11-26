@@ -62,16 +62,16 @@
                       <RowConstraints maxHeight="-Infinity" minHeight="4.0" prefHeight="80.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXTextField fx:id="jtxfCedula" labelFloat="true" onKeyPressed="#cedulaOnEnterKey" prefHeight="25.0" prefWidth="200.0" promptText="Cédula" styleClass="edittext" />
-                        <JFXTextField fx:id="jtxfNombres" labelFloat="true" promptText="Nombre" styleClass="edittext" GridPane.columnIndex="2" />
-                        <JFXTextField fx:id="jtxfPrimerApellido" labelFloat="true" promptText="Primer apellido" styleClass="edittext" GridPane.columnIndex="4" />
-                        <JFXTextField fx:id="jtxfSegundoApellido" labelFloat="true" promptText="Segundo apellido" styleClass="edittext" GridPane.rowIndex="1" />
-                        <JFXComboBox fx:id="jcmbGenero" labelFloat="true" prefHeight="25.0" prefWidth="227.0" promptText="Genero" styleClass="edittext" visibleRowCount="2" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <JFXTextField fx:id="jtxfNacionalidad" labelFloat="true" promptText="Nacionalidad" styleClass="edittext" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                        <JFXComboBox fx:id="jcmbEstadoCivil" labelFloat="true" prefHeight="25.0" prefWidth="272.0" promptText="Estado civil" styleClass="edittext" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <JFXTextField fx:id="jtxfProfesion" labelFloat="true" prefHeight="25.0" prefWidth="177.0" promptText="Profesión" styleClass="edittext" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                        <JFXTextField fx:id="jtxfCedula" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#cedulaOnEnterKey" prefHeight="30.0" prefWidth="210.0" promptText="Cédula" styleClass="edittext" />
+                        <JFXTextField fx:id="jtxfNombres" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="225.0" promptText="Nombre" styleClass="edittext" GridPane.columnIndex="2" />
+                        <JFXTextField fx:id="jtxfPrimerApellido" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Primer apellido" styleClass="edittext" GridPane.columnIndex="4" />
+                        <JFXTextField fx:id="jtxfSegundoApellido" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="210.0" promptText="Segundo apellido" styleClass="edittext" GridPane.rowIndex="1" />
+                        <JFXComboBox fx:id="jcmbGenero" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="225.0" promptText="Genero" styleClass="edittext" visibleRowCount="2" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <JFXTextField fx:id="jtxfNacionalidad" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Nacionalidad" styleClass="edittext" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <JFXComboBox fx:id="jcmbEstadoCivil" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="225.0" promptText="Estado civil" styleClass="edittext" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <JFXTextField fx:id="jtxfProfesion" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Profesión" styleClass="edittext" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                         <JFXButton fx:id="jbtnBuscar" onAction="#buscarPersona" prefHeight="30.0" prefWidth="76.0" styleClass="buttonbuscar" GridPane.columnIndex="1" />
-                        <JFXDatePicker fx:id="dtpFechaNacimiento" prefHeight="25.0" prefWidth="228.0" promptText="Fecha de nacimiento" styleClass="edittext" GridPane.rowIndex="2" />
+                        <JFXDatePicker fx:id="dtpFechaNacimiento" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLay="true" prefHeight="30.0" prefWidth="210.0" promptText="Fecha de nacimiento" styleClass="edittext" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                   <Pane layoutX="16.0" layoutY="248.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="276.0" prefWidth="780.0">
@@ -92,7 +92,7 @@
                                               <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <JFXTextField fx:id="jtxfDetaDireccion" labelFloat="true" prefHeight="25.0" prefWidth="667.0" promptText="Detalle dirección" styleClass="edittext" />
+                                                <JFXTextField fx:id="jtxfDetaDireccion" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#direccionOnKeyPress" prefHeight="40.0" prefWidth="667.0" promptText="Detalle dirección" styleClass="edittext" />
                                                 <Button fx:id="btnAgregarDireccion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#agregarDireccion" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" text="Agregar dirección" GridPane.columnIndex="1">
                                                    <tooltip>
                                                       <Tooltip text="Agregar dirección" />
@@ -129,8 +129,8 @@
                                               <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <JFXComboBox fx:id="jcmbTipoContacto" labelFloat="true" prefHeight="39.0" prefWidth="227.0" promptText="Tipo contacto" styleClass="edittext" />
-                                                <JFXTextField fx:id="jtxfDetaContacto" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="446.0" promptText="Detalle contacto" styleClass="edittext" GridPane.columnIndex="1" />
+                                                <JFXComboBox fx:id="jcmbTipoContacto" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="227.0" promptText="Tipo contacto" styleClass="edittext" />
+                                                <JFXTextField fx:id="jtxfDetaContacto" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#contactoOnKeyPress" prefHeight="40.0" prefWidth="446.0" promptText="Detalle contacto" styleClass="edittext" GridPane.columnIndex="1" />
                                                 <Button fx:id="btnAgregarContacto" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#agregarContacto" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" text="Agregar contacto" GridPane.columnIndex="2">
                                                    <tooltip>
                                                       <Tooltip text="Agregar contacto" />

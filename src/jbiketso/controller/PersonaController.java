@@ -139,7 +139,7 @@ public class PersonaController extends Controller implements Initializable {
 
         addListenerTableDireccion(tbvDirecciones);
         addListenerTableContacto(tbvContactos);
-        
+
         this.jtxfCedula.requestFocus();
     }
 
@@ -230,7 +230,7 @@ public class PersonaController extends Controller implements Initializable {
         this.contacto = new BikContacto();
     }
 
-    private void bindListaDirecciones() {        
+    private void bindListaDirecciones() {
         if (direcciones != null) {
             tbvDirecciones.setItems(direcciones);
             tbvDirecciones.refresh();
@@ -248,18 +248,20 @@ public class PersonaController extends Controller implements Initializable {
     }
 
     private void agregarDireccionALista(BikDireccion direccion) {
-        BikDireccion nueva = new BikDireccion();
-        nueva.setDirDetalle(direccion.getDirDetalle());
-        nueva.setDirPercodigo(this.persona);
+        if (direccion != null && !direccion.getDirDetalle().isEmpty()) {
+            BikDireccion nueva = new BikDireccion();
+            nueva.setDirDetalle(direccion.getDirDetalle());
+            nueva.setDirPercodigo(this.persona);
 
-        if (!this.persona.getBikDireccionList().contains(nueva)) {
-            this.persona.getBikDireccionList().add(nueva);
-            this.direcciones.add(nueva);
-        } else {
-            this.persona.getBikDireccionList().set(this.persona.getBikDireccionList().indexOf(nueva), nueva);
-            this.direcciones.set(this.direcciones.indexOf(nueva), nueva);
+            if (!this.persona.getBikDireccionList().contains(nueva)) {
+                this.persona.getBikDireccionList().add(nueva);
+                this.direcciones.add(nueva);
+            } else {
+                this.persona.getBikDireccionList().set(this.persona.getBikDireccionList().indexOf(nueva), nueva);
+                this.direcciones.set(this.direcciones.indexOf(nueva), nueva);
+            }
+            tbvDirecciones.refresh();
         }
-        tbvDirecciones.refresh();
     }
 
     @FXML
@@ -342,6 +344,28 @@ public class PersonaController extends Controller implements Initializable {
     }
 
     @FXML
+    void contactoOnKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            agregarContactoALista(contacto);
+            unbindContacto();
+            nuevoContacto();
+            bindContacto();
+            this.jcmbTipoContacto.requestFocus();
+        }
+    }
+
+    @FXML
+    void direccionOnKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            agregarDireccionALista(direccion);
+            unbindDireccion();
+            nuevaDireccion();
+            bindDireccion();
+            this.jtxfDetaDireccion.requestFocus();
+        }
+    }
+
+    @FXML
     private void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
     }
@@ -363,18 +387,20 @@ public class PersonaController extends Controller implements Initializable {
     }
 
     private void agregarContactoALista(BikContacto contacto) {
-        BikContacto nuevo = new BikContacto();
-        nuevo.setConTipo(contacto.getConTipo());
-        nuevo.setConDetalle(contacto.getConDetalle());
-        nuevo.setConPercodigo(this.persona);
-        if (!this.persona.getBikContactoList().contains(nuevo)) {
-            this.persona.getBikContactoList().add(nuevo);
-            this.contactos.add(nuevo);
-        } else {
-            this.persona.getBikContactoList().set(this.persona.getBikContactoList().indexOf(nuevo), nuevo);
-            this.contactos.set(this.contactos.indexOf(nuevo), nuevo);
+        if (contacto != null && !contacto.getConDetalle().isEmpty()) {
+            BikContacto nuevo = new BikContacto();
+            nuevo.setConTipo(contacto.getConTipo());
+            nuevo.setConDetalle(contacto.getConDetalle());
+            nuevo.setConPercodigo(this.persona);
+            if (!this.persona.getBikContactoList().contains(nuevo)) {
+                this.persona.getBikContactoList().add(nuevo);
+                this.contactos.add(nuevo);
+            } else {
+                this.persona.getBikContactoList().set(this.persona.getBikContactoList().indexOf(nuevo), nuevo);
+                this.contactos.set(this.contactos.indexOf(nuevo), nuevo);
+            }
+            tbvContactos.refresh();
         }
-        tbvContactos.refresh();        
     }
 
     @FXML

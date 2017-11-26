@@ -7,6 +7,7 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -204,24 +205,35 @@ public class BikMedicamento implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (medCodigo.get() != null ? medCodigo.get().hashCode() : 0);
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.medCodigo.get());
+        hash = 23 * hash + Objects.hashCode(this.medMedicamento.get());
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BikMedicamento)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        BikMedicamento other = (BikMedicamento) object;
-        if ((this.medCodigo.get() == null && other.medCodigo.get() != null) || (this.medCodigo.get() != null && !this.medCodigo.get().equals(other.medCodigo.get()))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BikMedicamento other = (BikMedicamento) obj;
+        if (!Objects.equals(this.medCodigo.get(), other.medCodigo.get())) {
+            return false;
+        }
+        if (!Objects.equals(this.medMedicamento.get(), other.medMedicamento.get())) {
             return false;
         }
         return true;
     }
 
+    
+    
     @Override
     public String toString() {
         return "jbiketso.model.BikMedicamento[ medCodigo=" + medCodigo.get() + " ]";

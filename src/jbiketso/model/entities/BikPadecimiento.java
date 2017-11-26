@@ -7,6 +7,7 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -202,23 +203,34 @@ public class BikPadecimiento implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (padCodigo.get() != null ? padCodigo.get().hashCode() : 0);
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.padCodigo.get());
+        hash = 71 * hash + Objects.hashCode(this.padPadecimiento.get());
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BikPadecimiento)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        BikPadecimiento other = (BikPadecimiento) object;
-        if ((this.padCodigo.get() == null && other.padCodigo.get() != null) || (this.padCodigo.get() != null && !this.padCodigo.get().equals(other.padCodigo.get()))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BikPadecimiento other = (BikPadecimiento) obj;
+        if (!Objects.equals(this.padCodigo.get(), other.padCodigo.get())) {
+            return false;
+        }
+        if (!Objects.equals(this.padPadecimiento.get(), other.padPadecimiento.get())) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString() {
