@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="800.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.BusquedaController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="800.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.BusquedaController">
    <top>
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="800.0" styleClass="actionbar" BorderPane.alignment="CENTER" />
    </top>
@@ -32,10 +27,10 @@
                </font>
             </Label>
             <VBox fx:id="vbxCriterios" prefHeight="468.0" prefWidth="220.0" />
-            <Pane prefHeight="40.0" prefWidth="220.0">
+            <Pane prefHeight="61.0" prefWidth="220.0">
                <children>
-                  <JFXButton fx:id="jbtnLimpiar" layoutX="7.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="80.0" styleClass="actionbuttonaceptar" text="LIMPIAR" />
-                  <JFXButton fx:id="jbtnFiltrar" layoutX="140.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="80.0" styleClass="actionbuttonaceptar" text="FILTRAR" />
+                  <JFXButton fx:id="jbtnLimpiar" layoutX="7.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="100.0" styleClass="actionbuttonaceptar" text="LIMPIAR" />
+                  <JFXButton fx:id="jbtnFiltrar" layoutX="125.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="100.0" styleClass="actionbuttonaceptar" text="FILTRAR" />
                </children>
             </Pane>
          </children>
@@ -52,9 +47,9 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <TableView fx:id="tbvResultados" layoutX="24.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="446.0" prefWidth="549.0" />
-            <JFXButton fx:id="jbtnAceptar" layoutX="507.0" layoutY="485.0" styleClass="actionbuttonaceptar" text="ACEPTAR" />
-            <JFXButton fx:id="jbtnCancelar" layoutX="425.0" layoutY="485.0" onAction="#regresar" styleClass="actionbuttonaceptar" text="CANCELAR" />
+            <TableView fx:id="tbvResultados" layoutX="24.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="423.0" prefWidth="544.0" />
+            <JFXButton fx:id="jbtnAceptar" alignment="CENTER" contentDisplay="CENTER" layoutX="446.0" layoutY="481.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#aceptarBusqueda" prefHeight="33.0" prefWidth="120.0" styleClass="actionbuttonaceptar" text="ACEPTAR" textAlignment="CENTER" />
+            <JFXButton fx:id="jbtnCancelar" alignment="CENTER" contentDisplay="CENTER" layoutX="290.0" layoutY="481.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#regresar" prefHeight="33.0" prefWidth="120.0" styleClass="actionbuttonaceptar" text="CANCELAR" textAlignment="CENTER" />
             <Separator layoutX="9.0" layoutY="7.0" orientation="VERTICAL" prefHeight="507.0" prefWidth="8.0" />
          </children>
       </Pane>

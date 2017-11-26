@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="570.0" prefWidth="700.0" styleClass="form" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.102" fx:controller="jbiketso.controller.BitacoraAtencionController">
+<AnchorPane id="AnchorPane" prefHeight="570.0" prefWidth="700.0" styleClass="form" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.BitacoraAtencionController">
     <stylesheets>
         <URL value="@biketso.css" />
     </stylesheets>
@@ -50,7 +50,7 @@
             <Insets />
          </opaqueInsets>
       </JFXComboBox>
-      <JFXDatePicker fx:id="jdtpFecha" layoutX="517.0" layoutY="84.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="202.0" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFecha" editable="false" layoutX="517.0" layoutY="84.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLay="true" prefHeight="35.0" prefWidth="202.0" promptText="Fecha" styleClass="edittext" />
       <JFXTextField fx:id="jtxfDetalle" labelFloat="true" layoutX="24.0" layoutY="212.0" prefHeight="35.0" prefWidth="695.0" promptText="Detalle" styleClass="edittext" />
       <JFXTextField fx:id="jtxfCedula" labelFloat="true" layoutX="24.0" layoutY="152.0" onKeyPressed="#cedulaOnEnterKey" prefHeight="35.0" prefWidth="175.0" promptText="Cédula" styleClass="edittext" />
       <JFXButton fx:id="btnBusqueda" layoutX="199.0" layoutY="152.0" onAction="#busqueda" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />

@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikCentro;
-import jbiketso.model.entities.BikPersona;
 import jbiketso.model.entities.BikSede;
 import jbiketso.utils.Parametros;
 import jbiketso.utils.Resultado;
@@ -152,6 +151,30 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
         }
     }
 
+    public Resultado<BikCentro> findCentroByCodigo(Integer codigoCentro) {
+        BikCentro queryResult;
+        Resultado<BikCentro> resultado = new Resultado<>();
+        try {
+            Query query = getEntityManager().createNamedQuery("BikCentro.findByCenCodigo");
+            query.setParameter("cenCodigo", codigoCentro);
+            queryResult = (BikCentro) query.getSingleResult();
+
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(queryResult);
+            return resultado;
+        } catch (NoResultException nre) {
+            Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, nre);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("No existe el centro con el código [" + String.valueOf(codigoCentro) + "].");
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error consultando el centro con el código [" + String.valueOf(codigoCentro) + "].");
+            return resultado;
+        }
+    }
+
     // Procedimiento para guardar la información del centro.
     public Resultado<BikCentro> save() {
         Resultado<BikCentro> resultado = new Resultado<>();
@@ -190,7 +213,7 @@ public class CentroDao extends BaseDao<Integer, BikCentro> {
             if (id != null) {
                 existe = (BikSede) getEntityManager().find(BikSede.class, id);
             }
-            
+
             if (existe != null) {
                 if (!getEntityManager().contains(sede)) {
                     sede = getEntityManager().merge(sede);

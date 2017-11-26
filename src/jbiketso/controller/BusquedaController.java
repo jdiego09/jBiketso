@@ -9,21 +9,14 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -32,130 +25,169 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikPersona;
+import jbiketso.utils.Aplicacion;
+import jbiketso.utils.Resultado;
+import jbiketso.utils.TipoResultado;
 
 /**
  * FXML Controller class
  *
  * @author jdiego
  */
-public class BusquedaController implements Initializable {
+public class BusquedaController extends Controller implements Initializable {
 
-   ArrayList<BikPersona> personasList = new ArrayList<>();
+    BikPersona personaSeleccionada;
 
-   @FXML
-   private JFXButton jbtnCancelar;
+    @FXML
+    private JFXButton jbtnCancelar;
+    @FXML
+    private VBox vbxCriterios;
+    @FXML
+    private JFXButton jbtnLimpiar;
+    @FXML
+    private BorderPane root;
+    @FXML
+    private Pane pnlResultados;
+    @FXML
+    private JFXButton jbtnFiltrar;
+    @FXML
+    private TableView tbvResultados;
+    @FXML
+    private JFXButton jbtnAceptar;
 
-   @FXML
-   private VBox vbxCriterios;
+    private Object resultado;
+    private EventHandler<KeyEvent> keyEnter;
+    private Boolean pressEnter = false;
 
-   @FXML
-   private JFXButton jbtnLimpiar;
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+        keyEnter = (KeyEvent event) -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                pressEnter = true;
+                jbtnFiltrar.fire();
+                pressEnter = false;
 
-   @FXML
-   private BorderPane root;
-
-   @FXML
-   private Pane pnlResultados;
-
-   @FXML
-   private JFXButton jbtnFiltrar;
-
-   @FXML
-   private TableView<?> tbvResultados;
-
-   @FXML
-   private JFXButton jbtnAceptar;
-
-   private Object resultado;
-   private EventHandler<KeyEvent> keyEnter;
-   private Boolean pressEnter = false;
-
-   /**
-    * Initializes the controller class.
-    */
-   @Override
-   public void initialize(URL url, ResourceBundle rb) {
-      // TODO
-      keyEnter = (KeyEvent event) -> {
-         if (event.getCode() == KeyCode.ENTER) {
-            pressEnter = true;
-            jbtnFiltrar.fire();
-            pressEnter = false;
-
-            //sendTabEvent(event);
-         } else if (event.getCode() == KeyCode.ESCAPE) {
-            //cerrar();
-         }
-      };
-      resultado = null;
-   }
-/*
-   @Override
-   public void initialize() {
-      Platform.runLater(() -> {
-         for (Node object : vbxCriterios.getChildren()) {
-            if (object.isFocusTraversable()) {
-               object.requestFocus();
-               break;
+                //sendTabEvent(event);
+            } else if (event.getCode() == KeyCode.ESCAPE) {
+                //cerrar();
             }
-         }
-      });
-      resultado = null;
-   }*/
-   
-   public Object getResultado() {
+        };
+        resultado = null;
+    }
+
+    @Override
+    public void initialize() {
+        Platform.runLater(() -> {
+            for (Node object : vbxCriterios.getChildren()) {
+                if (object.isFocusTraversable()) {
+                    object.requestFocus();
+                    break;
+                }
+            }
+        });
+        resultado = null;
+    }
+
+    public Object getResultado() {
         return resultado;
     }
 
-   @FXML
-   private void regresar(ActionEvent event) {
-      resultado = tbvResultados.getSelectionModel().getSelectedItem();
-      jbtnFiltrar.getScene().setRoot(new Pane());
-   }
+    @FXML
+    private void regresar(ActionEvent event) {
+        closeWindow();
+    }
 
-   private void setBusquedaPersonas() {
-      ArrayList<JFXTextField> criterios = new ArrayList<>();
+    private void setBusquedaPersonas() {
+        ArrayList<JFXTextField> criterios = new ArrayList<>();
 
-      JFXTextField jtxf = new JFXTextField();
-      jtxf.getStyleClass().add("edittext");
-      jtxf.setId("jtxfCedula");
-      jtxf.setPromptText("Cédula");
-      jtxf.setLabelFloat(true);
-      jtxf.prefWidth(200);
-      criterios.add(jtxf);
-      jtxf = new JFXTextField();
-      jtxf.getStyleClass().add("edittext");
-      jtxf.setId("jtxfNombre");
-      jtxf.setPromptText("Nombre");
-      jtxf.setLabelFloat(true);
-      jtxf.prefWidth(200);
-      criterios.add(jtxf);
-      jtxf = new JFXTextField();
-      jtxf.getStyleClass().add("edittext");
-      jtxf.setId("jtxfApellido1");
-      jtxf.setPromptText("Primer apellido");
-      jtxf.setLabelFloat(true);
-      jtxf.prefWidth(200);
-      criterios.add(jtxf);
-      jtxf = new JFXTextField();
-      jtxf.getStyleClass().add("edittext");
-      jtxf.setId("jtxfApellido2");
-      jtxf.setPromptText("Segundo apellido");
-      jtxf.setLabelFloat(true);
-      jtxf.prefWidth(200);
-      criterios.add(jtxf);
-      vbxCriterios.getChildren().clear();
-      criterios.stream().forEach(vbxCriterios.getChildren()::add);
+        JFXTextField jtxfCedula = new JFXTextField();
+        JFXTextField jtxfNombre = new JFXTextField();
+        JFXTextField jtxfPrimerApellido = new JFXTextField();
+        JFXTextField jtxfSegundoApellido = new JFXTextField();
+        jtxfCedula.getStyleClass().add("edittext");
+        jtxfCedula.setId("jtxfCedula");
+        jtxfCedula.setText("%");
+        jtxfCedula.setPromptText("Cédula");
+        jtxfCedula.setLabelFloat(true);
+        jtxfCedula.prefWidth(200);
+        jtxfCedula.prefHeight(40);
+        criterios.add(jtxfCedula);
 
-      JFXButton jbtn = new JFXButton();
-      jbtn.setId("jbtnFiltrar");
-      jbtn.getStyleClass().add("actionbuttonaceptar");
-      jbtn.setText("FILTRAR");
-      vbxCriterios.getChildren().add(jbtn);
+        jtxfNombre.getStyleClass().add("edittext");
+        jtxfNombre.setId("jtxfNombre");
+        jtxfNombre.setPromptText("Nombre");
+        jtxfNombre.setText("%");
+        jtxfNombre.setLabelFloat(true);
+        jtxfNombre.prefWidth(200);
+        jtxfNombre.prefHeight(40);
+        criterios.add(jtxfNombre);
 
-   }
-   /*
+        jtxfPrimerApellido.getStyleClass().add("edittext");
+        jtxfPrimerApellido.setId("jtxfApellido1");
+        jtxfPrimerApellido.setPromptText("Primer apellido");
+        jtxfPrimerApellido.setText("%");
+        jtxfPrimerApellido.setLabelFloat(true);
+        jtxfPrimerApellido.prefWidth(200);
+        jtxfPrimerApellido.prefHeight(40);
+        criterios.add(jtxfPrimerApellido);
+
+        jtxfSegundoApellido.getStyleClass().add("edittext");
+        jtxfSegundoApellido.setId("jtxfApellido2");
+        jtxfSegundoApellido.setPromptText("Segundo apellido");
+        jtxfSegundoApellido.setText("%");
+        jtxfSegundoApellido.setLabelFloat(true);
+        jtxfSegundoApellido.prefWidth(200);
+        jtxfSegundoApellido.prefHeight(40);
+        criterios.add(jtxfSegundoApellido);
+        vbxCriterios.getChildren().clear();
+        criterios.stream().forEach(vbxCriterios.getChildren()::add);
+
+        TableColumn<BikPersona, String> tbcCedula = new TableColumn<>("Cédula");
+        tbcCedula.setPrefWidth(100);
+        tbcCedula.setCellValueFactory(cd -> cd.getValue().getPerCedulaProperty());
+        TableColumn<BikPersona, String> tbcNombre = new TableColumn<>("Nombre");
+        tbcNombre.setPrefWidth(400);
+        tbcNombre.setCellValueFactory(cd -> cd.getValue().getNombreCompletoProperty());
+        tbvResultados.getColumns().clear();
+        tbvResultados.getItems().clear();
+        tbvResultados.getColumns().add(tbcCedula);
+        tbvResultados.getColumns().add(tbcNombre);
+        tbvResultados.refresh();
+
+        
+        
+        jbtnFiltrar.setOnAction((ActionEvent event) -> {
+            Resultado<ArrayList<BikPersona>> personas = PersonaDao.getInstance().getPersonasFiltro(jtxfCedula.getText(), jtxfNombre.getText(), jtxfPrimerApellido.getText(), jtxfSegundoApellido.getText());
+            if (personas.getResultado().equals(TipoResultado.SUCCESS)) {
+                tbvResultados.setItems(FXCollections.observableArrayList(personas.get()));
+                tbvResultados.refresh();
+            }
+        });
+
+    }
+    private void setBuscaPersonasListener(TextField textfield){
+        
+    }
+
+    @FXML
+    void aceptarBusqueda(ActionEvent event) {
+        Resultado<Object> resultado = new Resultado<>();
+        resultado.set(tbvResultados.getSelectionModel().getSelectedItem());
+        Aplicacion.getInstance().setResultadoBusqueda(resultado);
+        closeWindow();
+    }
+
+    private void closeWindow() {
+        jbtnAceptar.getScene().getWindow().hide();
+    }
+
+    /*
    public void busquedaSorteo() {
         try {
 
@@ -222,5 +254,21 @@ public class BusquedaController implements Initializable {
             Mensaje.getInstance().showModal(Alert.AlertType.ERROR, "Consultar sorteos", getStage(), "Ocurrió un error consultado los sorteos.");
         }
     }*/
+    @Override
+    public void initialize(String funcion) {
+        this.busqueda = funcion;
+        Platform.runLater(() -> {
+            for (Node object : vbxCriterios.getChildren()) {
+                if (object.isFocusTraversable()) {
+                    object.requestFocus();
+                    break;
+                }
+            }
+        });
+        resultado = null;
+        if (this.busqueda.equalsIgnoreCase("persona")) {
+            setBusquedaPersonas();
+        }
+    }
 
 }

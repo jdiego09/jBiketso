@@ -114,8 +114,10 @@
 .edittext{
     -jfx-focus-color: #00796b;
     -fx-width: 100%;
+    -fx-height: 40;
     -fx-margin: 10%;
     -fx-font: 18 System;
+    
 }
 
 .tableview .cell{

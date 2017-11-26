@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.util.Properties;
 import javafx.scene.control.Alert;
 import jbiketso.model.dao.CentroDao;
+import jbiketso.model.entities.BikCentro;
 import jbiketso.model.entities.BikSede;
 
 /**
@@ -33,6 +34,9 @@ public class Aplicacion {
     private static Integer defaultSede;
 
     private static BikSede sede;
+    private static BikCentro centro;
+
+    private static Resultado<Object> resultadoBusqueda;
 
     private Aplicacion() {
     }
@@ -68,6 +72,18 @@ public class Aplicacion {
             sede = defSede.get();
         }
         return sede;
+    }
+
+    public BikCentro getDefaultCentro() {
+        if (centro == null) {
+            Resultado<BikCentro> defCentro = CentroDao.getInstance().findCentroByCodigo(defaultCentro);
+            if (!defCentro.getResultado().equals(TipoResultado.SUCCESS)) {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Traer centro por defecto", defCentro.getMensaje());
+                return null;
+            }
+            centro = defCentro.get();
+        }
+        return centro;
     }
 
     public void cargaProperties() {
@@ -142,6 +158,14 @@ public class Aplicacion {
 
     public void setModulosUsuario(ArrayList<BikModulos> modulosUsuario) {
         Aplicacion.modulosUsuario = modulosUsuario;
+    }
+
+    public Resultado<Object> getResultadoBusqueda() {
+        return resultadoBusqueda;
+    }
+
+    public void setResultadoBusqueda(Resultado<Object> resultadoBusqueda) {
+        Aplicacion.resultadoBusqueda = resultadoBusqueda;
     }
 
 }

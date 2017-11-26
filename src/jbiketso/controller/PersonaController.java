@@ -327,7 +327,7 @@ public class PersonaController extends Controller implements Initializable {
 
     @FXML
     void buscarPersona(ActionEvent event) {
-
+        AppWindowController.getInstance().abrirBusqueda("bik_busqueda", "Búsqueda de personas", "persona");
     }
 
     @FXML
@@ -442,5 +442,10 @@ public class PersonaController extends Controller implements Initializable {
         if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
             validarPersona();
         }
+    }
+
+    @Override
+    public void initialize(String funcion) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

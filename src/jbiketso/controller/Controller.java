@@ -11,5 +11,8 @@ package jbiketso.controller;
  */
 public abstract class Controller {
 
-   public abstract void initialize();
+    protected String busqueda;
+
+    public abstract void initialize();
+    public abstract void initialize(String funcion);
 }

@@ -101,10 +101,14 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             if (expediente.getExpCodigo() == null || expediente.getExpCodigo() <= 0) {
                 expediente.setExpFechaIngreso(new Date());
                 expediente.setExpUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                expediente.getExpUsucodigo().setUsuUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                expediente.getExpUsucodigo().setUsuFechaingresa(new Date());
                 expediente.getExpUsucodigo().setUsuSedcodigo(Aplicacion.getInstance().getDefaultSede());
             } else {
                 expediente.setExpFechamodifica(new Date());
                 expediente.setExpUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                expediente.getExpUsucodigo().setUsuUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                expediente.getExpUsucodigo().setUsuFechamodifica(new Date());
             }
 
             expediente = (BikExpediente) super.save(expediente);

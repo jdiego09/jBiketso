@@ -158,11 +158,37 @@ public class PersonaDao extends BaseDao<Integer, BikPersona> {
     public Resultado<ArrayList<BikPersona>> getTodasLasPersonas() {
         Resultado<ArrayList<BikPersona>> resultado = new Resultado<>();
         ArrayList<BikPersona> listaPersonas = new ArrayList<>();
-        List<BikPersona> direcciones;
+        List<BikPersona> personas;
         try {
             Query query = getEntityManager().createNamedQuery("BikPersona.findAll");
-            direcciones = query.getResultList();
-            direcciones.stream().forEach(listaPersonas::add);
+            personas = query.getResultList();
+            personas.stream().forEach(listaPersonas::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaPersonas);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer personas.");
+            return resultado;
+        }
+    }
+
+    public Resultado<ArrayList<BikPersona>> getPersonasFiltro(String cedula, String nombre, String primerApellido, String segundoApellido) {
+        Resultado<ArrayList<BikPersona>> resultado = new Resultado<>();
+        ArrayList<BikPersona> listaPersonas = new ArrayList<>();
+        List<BikPersona> personas;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikPersona.findPersonas");
+            query.setParameter("cedula", cedula + "%");
+            query.setParameter("nombre", nombre + "%");
+            query.setParameter("primerapellido", primerApellido + "%");
+            query.setParameter("segundoapellido", segundoApellido + "%");
+            personas = query.getResultList();
+            personas.stream().forEach(listaPersonas::add);
             resultado.setResultado(TipoResultado.SUCCESS);
             resultado.set(listaPersonas);
             return resultado;

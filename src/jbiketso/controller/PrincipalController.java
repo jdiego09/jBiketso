@@ -13,13 +13,14 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import jbiketso.model.dao.SeguridadDao;
+import jbiketso.model.entities.BikCentro;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
 import jbiketso.utils.Parametros;
@@ -28,7 +29,8 @@ public class PrincipalController extends Controller implements Initializable {
 
     @FXML
     private BorderPane root;
-
+    @FXML
+    private ImageView imgLogo;
     @FXML
     private Label lblUsuario;
 
@@ -45,7 +47,7 @@ public class PrincipalController extends Controller implements Initializable {
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
     public void init() {
-        AppWindowController.getInstance().setMainRoot(root);        
+        loadImage();
         lblUsuario.setText("Usuario: " + Parametros.getInstance().getParametro("Usuario"));
 
         lblFecha.setText("Fecha: " + sdf.format(new Date()));
@@ -60,7 +62,7 @@ public class PrincipalController extends Controller implements Initializable {
         panMenu = (Pane) AppWindowController.getInstance().getView("bik_principal_menu");
 
         jdrwMenu.setSidePane(panMenu);
-        jdrwMenu.setDefaultDrawerSize(200);
+        jdrwMenu.setPrefWidth(200);
         jdrwMenu.setOverLayVisible(false);
         jdrwMenu.setResizableOnDrag(true);
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hmbMenu);
@@ -79,10 +81,30 @@ public class PrincipalController extends Controller implements Initializable {
                     } else {
                         panMenu.setPrefWidth(200);
                         jdrwMenu.setPrefWidth(200);
+                        jdrwMenu.setDefaultDrawerSize(200);
                         jdrwMenu.open();
                     }
                 }
         );
+    }
+
+    private void loadImage() {
+        BikCentro centro = Aplicacion.getInstance().getDefaultCentro();
+        if (centro != null && centro.getCenLogo() != null && !centro.getCenLogo().isEmpty()) {
+            imgLogo.setImage(null);
+            try {
+                Image img = new Image("file:" + centro.getCenLogo());
+                if (!img.isError()) {
+                    imgLogo.setImage(img);
+                } else {
+                    imgLogo.setImage(new Image(getClass().getResourceAsStream("/logo.png")));
+                }
+            } catch (Exception ex) {
+                imgLogo.setImage(new Image(getClass().getResourceAsStream("/logo.png")));
+            }
+        } else {
+            imgLogo.setImage(new Image(getClass().getResourceAsStream("/logo.png")));
+        }
     }
 
     private void cargarSeguridad() {
@@ -95,12 +117,16 @@ public class PrincipalController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-        init();
+        
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         init();
+    }
+
+    @Override
+    public void initialize(String funcion) {
     }
 
 }
