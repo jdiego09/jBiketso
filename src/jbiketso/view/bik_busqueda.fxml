@@ -16,7 +16,7 @@
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="800.0" styleClass="actionbar" BorderPane.alignment="CENTER" />
    </top>
    <left>
-      <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="220.0" BorderPane.alignment="CENTER">
+      <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="229.0" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" prefHeight="20.0" prefWidth="228.0" text="Criterios de búsqueda" textAlignment="CENTER">
                <padding>
@@ -26,7 +26,7 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <VBox fx:id="vbxCriterios" prefHeight="468.0" prefWidth="220.0" />
+            <Pane fx:id="pnlCriterios" prefHeight="453.0" prefWidth="228.0" />
             <Pane prefHeight="61.0" prefWidth="220.0">
                <children>
                   <JFXButton fx:id="jbtnLimpiar" layoutX="7.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="100.0" styleClass="actionbuttonaceptar" text="LIMPIAR" />
