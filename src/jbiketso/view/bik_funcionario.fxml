@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="acpRoot" prefHeight="562.0" prefWidth="666.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.FuncionarioController">
+<AnchorPane id="AnchorPane" fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="666.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.FuncionarioController">
    <children>
       <JFXTextField fx:id="jtxfNombreFuncionario" labelFloat="true" layoutX="220.0" layoutY="74.0" prefHeight="35.0" prefWidth="431.0" promptText="Nombre funcionario" styleClass="edittext" />
       <JFXTextField fx:id="jtxfSalarioBase" labelFloat="true" layoutX="432.0" layoutY="246.0" prefHeight="25.0" prefWidth="219.0" promptText="Salario base" styleClass="edittext" />
@@ -50,4 +51,7 @@
         </columns>
       </TableView>
    </children>
+   <effect>
+      <DropShadow />
+   </effect>
 </AnchorPane>

@@ -42,7 +42,8 @@ import jbiketso.utils.GenValorCombo;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikFuncionario.findAll", query = "SELECT b FROM BikFuncionario b")
-    , @NamedQuery(name = "BikFuncionario.findByFunCodigo", query = "SELECT b FROM BikFuncionario b WHERE b.funCodigo = :funCodigo")})
+    , @NamedQuery(name = "BikFuncionario.findByFunCodigo", query = "SELECT b FROM BikFuncionario b WHERE b.funCodigo = :funCodigo")
+    , @NamedQuery(name = "BikFuncionario.findByCedulaFuncionario", query = "SELECT b FROM BikFuncionario b join b.funPercodigo f join  WHERE b.funCodigo = :funCodigo")})
 public class BikFuncionario implements Serializable {
 
     private static final long serialVersionUID = 1L;

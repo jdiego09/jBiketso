@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,11 +24,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.converter.NumberStringConverter;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikFuncionario;
 import jbiketso.model.entities.BikPersona;
 import jbiketso.model.entities.BikPuesto;
 import jbiketso.model.entities.BikSede;
+import jbiketso.utils.AppWindowController;
 import jbiketso.utils.GenValorCombo;
+import jbiketso.utils.Resultado;
+import jbiketso.utils.TipoResultado;
 
 public class FuncionarioController extends Controller {
 
@@ -109,29 +114,35 @@ public class FuncionarioController extends Controller {
         this.estados.add(new GenValorCombo("V", "Inactivo"));
         jcmbEstado.getItems().clear();
         jcmbEstado.setItems(this.estados);
+        jcmbEstado.getSelectionModel().selectFirst();
 
         if (this.funcionario != null) {
             unbindFuncionario();
         }
+        
+        this.funcionarios.clear();
 
         nuevoFuncionario();
         nuevaPersonaFuncionario();
         nuevoPuesto();
         nuevaSede();
+        bindFuncionario();
         bindListaFuncionarios();
+        
+        addListenerTable(tbvFuncionarios);
 
     }
 
     private void bindFuncionario() {
         // Persona
-        jtxfCedulaFuncionario.textProperty().bindBidirectional(this.personaFuncionario.getPerCedulaProperty());
-        jtxfNombreFuncionario.textProperty().bindBidirectional(this.personaFuncionario.getNombreCompletoProperty());
+        jtxfCedulaFuncionario.textProperty().bindBidirectional(this.funcionario.getFunPercodigo().getPerCedulaProperty());
+        jtxfNombreFuncionario.textProperty().bindBidirectional(this.funcionario.getFunPercodigo().getNombreCompletoProperty());
         // Puesto
-        jtxfCodPuesto.textProperty().bindBidirectional(this.puesto.getPueCodigoProperty());
-        jtxjDesPuesto.textProperty().bindBidirectional(this.puesto.getPueDescripcionProperty());
+        //jtxfCodPuesto.textProperty().bindBidirectional(this.funcionario.getFunPuecodigo().getPueCodigoProperty());
+        jtxjDesPuesto.textProperty().bindBidirectional(this.funcionario.getFunPuecodigo().getPueDescripcionProperty());
         // Sede
-        jtxfCodSede.textProperty().bindBidirectional(this.sede.getSedCodigoProperty(), new NumberStringConverter());
-        jtxfDesSede.textProperty().bindBidirectional(this.sede.getSedDescripcionProperty());
+        jtxfCodSede.textProperty().bindBidirectional(this.funcionario.getFunSedcodigo().getSedCodigoProperty(), new NumberStringConverter());
+        jtxfDesSede.textProperty().bindBidirectional(this.funcionario.getFunSedcodigo().getSedDescripcionProperty());
         // Funcionario
         jtxfSalarioBase.textProperty().bindBidirectional(this.funcionario.getSalarioBaseProperty());
         jtxfObservacion.textProperty().bindBidirectional(this.funcionario.getObservacionesProperty());
@@ -141,14 +152,14 @@ public class FuncionarioController extends Controller {
 
     private void unbindFuncionario() {
         // Persona
-        jtxfCedulaFuncionario.textProperty().unbindBidirectional(this.personaFuncionario.getPerCedulaProperty());
-        jtxfNombreFuncionario.textProperty().unbindBidirectional(this.personaFuncionario.getNombreCompletoProperty());
+        jtxfCedulaFuncionario.textProperty().unbindBidirectional(this.funcionario.getFunPercodigo().getPerCedulaProperty());
+        jtxfNombreFuncionario.textProperty().unbindBidirectional(this.funcionario.getFunPercodigo().getNombreCompletoProperty());
         // Puesto
-        jtxfCodPuesto.textProperty().unbindBidirectional(this.puesto.getPueCodigoProperty());
-        jtxjDesPuesto.textProperty().bindBidirectional(this.puesto.getPueDescripcionProperty());
+        jtxfCodPuesto.textProperty().unbindBidirectional(this.funcionario.getFunPuecodigo().getPueCodigoProperty());
+        jtxjDesPuesto.textProperty().unbindBidirectional(this.funcionario.getFunPuecodigo().getPueDescripcionProperty());
         // Sede
-        jtxfCodSede.textProperty().unbindBidirectional(this.sede.getSedCodigoProperty());
-        jtxfDesSede.textProperty().unbindBidirectional(this.sede.getSedDescripcionProperty());
+        jtxfCodSede.textProperty().unbindBidirectional(this.funcionario.getFunSedcodigo().getSedCodigoProperty());
+        jtxfDesSede.textProperty().unbindBidirectional(this.funcionario.getFunSedcodigo().getSedDescripcionProperty());
         // Funcionario
         jtxfSalarioBase.textProperty().unbindBidirectional(this.funcionario.getSalarioBaseProperty());
         jtxfObservacion.textProperty().unbindBidirectional(this.funcionario.getObservacionesProperty());
@@ -178,7 +189,18 @@ public class FuncionarioController extends Controller {
 
     @Override
     public void initialize(String funcion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        iniciarForma();
     }
+    
+    private void traerFuncionario(){
+        Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(this.funcionario.getFunPercodigo().getPerCedula());
+        if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula", cedulaValida.getMensaje());
+            return;
+        }
+        unbindFuncionario();
+    }
+    
+    
 
 }

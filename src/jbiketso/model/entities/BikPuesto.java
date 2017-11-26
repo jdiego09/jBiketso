@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
@@ -55,7 +56,7 @@ public class BikPuesto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Transient
-    private ObjectProperty<Integer> pueCodigo;
+    private SimpleIntegerProperty pueCodigo;
     @Transient
     private SimpleStringProperty pueDescripcion;
     @Transient
@@ -98,7 +99,7 @@ public class BikPuesto implements Serializable {
     @Access(AccessType.PROPERTY)
     public Integer getPueCodigo() {
         if (this.pueCodigo == null) {
-            this.pueCodigo = new SimpleObjectProperty();
+            this.pueCodigo = new SimpleIntegerProperty();
         }
         return pueCodigo.get();
     }
@@ -107,7 +108,10 @@ public class BikPuesto implements Serializable {
         this.pueCodigo.set(pueCodigo);
     }
     
-    public ObjectProperty getPueCodigoProperty(){
+    public SimpleIntegerProperty getPueCodigoProperty(){
+        if (this.pueCodigo == null) {
+            this.pueCodigo = new SimpleIntegerProperty();
+        }
         return this.pueCodigo;
     }
 
