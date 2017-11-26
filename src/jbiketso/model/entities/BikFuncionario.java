@@ -87,6 +87,12 @@ public class BikFuncionario implements Serializable {
     private List<BikDetalleAgenda> bikDetalleAgendaList;
 
     public BikFuncionario() {
+        this.funEstado = new SimpleObjectProperty();
+        this.funTipo = new SimpleObjectProperty();
+        this.funSalarioBase = new SimpleObjectProperty();
+        this.funFechaingreso = new SimpleObjectProperty();
+        this.funFechasalida = new SimpleObjectProperty();
+        this.funObservaciones = new SimpleStringProperty();
     }
 
     @Id
@@ -209,7 +215,7 @@ public class BikFuncionario implements Serializable {
         }
         return java.sql.Date.valueOf(this.funFechaingreso.get());
     }
-    
+
     public SimpleObjectProperty<LocalDate> getFechaIngresoProperty() {
         if (this.funFechaingreso == null) {
             this.funFechaingreso = new SimpleObjectProperty();
@@ -233,14 +239,14 @@ public class BikFuncionario implements Serializable {
         }
         return java.sql.Date.valueOf(this.funFechasalida.get());
     }
- 
+
     public SimpleObjectProperty<LocalDate> getFechaSalidaProperty() {
         if (this.funFechasalida == null) {
             this.funFechasalida = new SimpleObjectProperty();
         }
         return this.funFechasalida;
     }
-    
+
     public void setFunFechasalida(Date funFechasalida) {
         if (this.funFechasalida == null) {
             this.funFechasalida = new SimpleObjectProperty();
@@ -253,7 +259,7 @@ public class BikFuncionario implements Serializable {
     public String getFunObservaciones() {
         return funObservaciones.get();
     }
-    
+
     public SimpleStringProperty getObservacionesProperty() {
         if (this.funObservaciones == null) {
             this.funObservaciones = new SimpleStringProperty();
