@@ -55,7 +55,7 @@ public class BikPuesto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Transient
-    private Integer pueCodigo;
+    private ObjectProperty<Integer> pueCodigo;
     @Transient
     private SimpleStringProperty pueDescripcion;
     @Transient
@@ -97,11 +97,18 @@ public class BikPuesto implements Serializable {
     @Column(name = "pue_codigo")
     @Access(AccessType.PROPERTY)
     public Integer getPueCodigo() {
-        return pueCodigo;
+        if (this.pueCodigo == null) {
+            this.pueCodigo = new SimpleObjectProperty();
+        }
+        return pueCodigo.get();
     }
 
     public void setPueCodigo(Integer pueCodigo) {
-        this.pueCodigo = pueCodigo;
+        this.pueCodigo.set(pueCodigo);
+    }
+    
+    public ObjectProperty getPueCodigoProperty(){
+        return this.pueCodigo;
     }
 
     @Basic(optional = false)
