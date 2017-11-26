@@ -37,7 +37,7 @@
                         <Pane prefHeight="48.0" prefWidth="287.0" />
                         <JFXTextField fx:id="txtUsuario" labelFloat="true" prefHeight="25.0" prefWidth="227.0" promptText="Usuario" styleClass="edittext" stylesheets="@biketso.css" unFocusColor="#171717" />
                         <Pane prefHeight="40.0" prefWidth="266.0" />
-                        <JFXPasswordField fx:id="txtClave" labelFloat="true" prefHeight="25.0" prefWidth="227.0" promptText="Contraseña" styleClass="edittext" stylesheets="@biketso.css" />
+                        <JFXPasswordField fx:id="txtClave" labelFloat="true" onKeyPressed="#onKeyPressLogin" prefHeight="25.0" prefWidth="227.0" promptText="Contraseña" styleClass="edittext" stylesheets="@biketso.css" />
                         <Pane prefHeight="31.0" prefWidth="287.0" />
                         <Pane prefHeight="80.0" prefWidth="266.0">
                            <children>

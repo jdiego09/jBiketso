@@ -15,6 +15,7 @@ import javax.persistence.Query;
 import jbiketso.model.entities.BikExpediente;
 import jbiketso.model.entities.BikMedicamento;
 import jbiketso.model.entities.BikPadecimiento;
+import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.Parametros;
 import jbiketso.utils.Resultado;
@@ -64,13 +65,13 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
         throw new CloneNotSupportedException();
     }
 
-    public Resultado<BikExpediente> getExpedienteByCedula(String cedula,Integer sede) {
+    public Resultado<BikExpediente> getExpedienteByCedula(BikUsuario usuario) {
         Resultado<BikExpediente> result = new Resultado<>();
         BikExpediente expediente;
         try {
             Query query = getEntityManager().createNamedQuery("BikExpediente.findByCedulaUsuario");
-            query.setParameter("cedula", cedula);
-            query.setParameter("codigoSede", sede);
+            query.setParameter("cedula", usuario.getUsuPercodigo().getPerCedula());
+            query.setParameter("codigoSede", usuario.getUsuSedcodigo().getSedCodigo());
             expediente = (BikExpediente) query.getSingleResult();
 
             result.setResultado(TipoResultado.SUCCESS);
@@ -78,12 +79,12 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             return result;
         } catch (NoResultException nre) {
             result.setResultado(TipoResultado.WARNING);
-            result.setMensaje("El expediente para el usuario con la cédula [" + cedula + "], no se encuentra registrado.");
+            result.setMensaje("El expediente para el usuario con la cédula [" + usuario.getUsuPercodigo().getPerCedula() + "], no se encuentra registrado.");
             return result;
         } catch (Exception ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
             result.setResultado(TipoResultado.ERROR);
-            result.setMensaje("Error al traer información del expediente para el usuario con la cédula [" + cedula + "].");
+            result.setMensaje("Error al traer información del expediente para el usuario con la cédula [" + usuario.getUsuPercodigo().getPerCedula() + "].");
             return result;
         }
     }
@@ -100,6 +101,7 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             if (expediente.getExpCodigo() == null || expediente.getExpCodigo() <= 0) {
                 expediente.setExpFechaIngreso(new Date());
                 expediente.setExpUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                expediente.getExpUsucodigo().setUsuSedcodigo(Aplicacion.getInstance().getDefaultSede());
             } else {
                 expediente.setExpFechamodifica(new Date());
                 expediente.setExpUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
@@ -117,7 +119,7 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             return result;
         }
     }
-    
+
     public Resultado<ArrayList<BikMedicamento>> getMedicamentosActivos(BikExpediente expediente) {
         Resultado<ArrayList<BikMedicamento>> resultado = new Resultado<>();
         ArrayList<BikMedicamento> listaMedicamentos = new ArrayList<>();
@@ -189,7 +191,7 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             return resultado;
         }
     }
-    
+
     public Resultado<String> deletePadecimiento(BikPadecimiento padecimiento) {
         Resultado<String> resultado = new Resultado<>();
         try {

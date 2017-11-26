@@ -84,9 +84,6 @@ public class BikExpediente implements Serializable {
    private Date expFechamodifica;
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codigoExpediente", fetch = FetchType.LAZY)
    private List<BikPadecimiento> bikPadecimientoList;
-   @JoinColumn(name = "exp_sedcodigo", referencedColumnName = "sed_codigo")
-   @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
-   private BikSede expSedcodigo;
    @JoinColumn(name = "exp_usucodigo", referencedColumnName = "usu_codigo")
    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
    private BikUsuario expUsucodigo;
@@ -119,7 +116,6 @@ public class BikExpediente implements Serializable {
       this.expIngresoPromedio = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
       if (inicializar) {
          this.expUsucodigo = new BikUsuario();
-         this.expSedcodigo = new BikSede();
          this.bikMedicamentoList = new ArrayList<>();
          this.bikPadecimientoList = new ArrayList<>();
       }
@@ -395,14 +391,6 @@ public class BikExpediente implements Serializable {
 
    public void setBikPadecimientoList(List<BikPadecimiento> bikPadecimientoList) {
       this.bikPadecimientoList = bikPadecimientoList;
-   }
-
-   public BikSede getExpSedcodigo() {
-      return expSedcodigo;
-   }
-
-   public void setExpSedcodigo(BikSede expSedcodigo) {
-      this.expSedcodigo = expSedcodigo;
    }
 
    public BikUsuario getExpUsucodigo() {

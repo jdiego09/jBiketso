@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,6 +31,7 @@ import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikContacto;
 import jbiketso.model.entities.BikDireccion;
 import jbiketso.model.entities.BikPersona;
+import jbiketso.utils.Aplicacion;
 import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.AppWindowController;
@@ -248,20 +250,23 @@ public class PersonaController extends Controller implements Initializable {
     }
 
     private void agregarDireccionALista(BikDireccion direccion) {
-        if (direccion != null && !direccion.getDirDetalle().isEmpty()) {
+        if (direccion != null && (direccion.getDirCodigo() == null || direccion.getDirCodigo() <= 0) && !direccion.getDirDetalle().isEmpty()) {
             BikDireccion nueva = new BikDireccion();
             nueva.setDirDetalle(direccion.getDirDetalle());
+            nueva.setDirUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+            nueva.setDirFechaingresa(new Date());
             nueva.setDirPercodigo(this.persona);
-
             if (!this.persona.getBikDireccionList().contains(nueva)) {
                 this.persona.getBikDireccionList().add(nueva);
                 this.direcciones.add(nueva);
-            } else {
-                this.persona.getBikDireccionList().set(this.persona.getBikDireccionList().indexOf(nueva), nueva);
-                this.direcciones.set(this.direcciones.indexOf(nueva), nueva);
             }
-            tbvDirecciones.refresh();
+        } else {
+            direccion.setDirUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
+            direccion.setDirFechamodifica(new Date());
+            this.persona.getBikDireccionList().set(this.persona.getBikDireccionList().indexOf(direccion), direccion);
+            this.direcciones.set(this.direcciones.indexOf(direccion), direccion);
         }
+        tbvDirecciones.refresh();
     }
 
     @FXML
@@ -387,20 +392,25 @@ public class PersonaController extends Controller implements Initializable {
     }
 
     private void agregarContactoALista(BikContacto contacto) {
-        if (contacto != null && !contacto.getConDetalle().isEmpty()) {
+        if (contacto != null && (contacto.getConCodigo() == null || contacto.getConCodigo() <= 0) && !contacto.getConDetalle().isEmpty()) {
             BikContacto nuevo = new BikContacto();
             nuevo.setConTipo(contacto.getConTipo());
             nuevo.setConDetalle(contacto.getConDetalle());
             nuevo.setConPercodigo(this.persona);
+            nuevo.setConUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+            nuevo.setConFechaingresa(new Date());
             if (!this.persona.getBikContactoList().contains(nuevo)) {
                 this.persona.getBikContactoList().add(nuevo);
                 this.contactos.add(nuevo);
-            } else {
-                this.persona.getBikContactoList().set(this.persona.getBikContactoList().indexOf(nuevo), nuevo);
-                this.contactos.set(this.contactos.indexOf(nuevo), nuevo);
             }
-            tbvContactos.refresh();
+
+        } else {
+            contacto.setConUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
+            contacto.setConFechamodifica(new Date());
+            this.persona.getBikContactoList().set(this.persona.getBikContactoList().indexOf(contacto), contacto);
+            this.contactos.set(this.contactos.indexOf(contacto), contacto);
         }
+        tbvContactos.refresh();
     }
 
     @FXML

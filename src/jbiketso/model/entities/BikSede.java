@@ -77,9 +77,7 @@ public class BikSede implements Serializable {
     private BikCentro sedCencodigo;
     @JoinColumn(name = "sed_codencargado", referencedColumnName = "per_codigo")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikPersona sedCodencargado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "expSedcodigo", fetch = FetchType.LAZY)
-    private List<BikExpediente> bikExpedienteList;
+    private BikPersona sedCodencargado;   
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pueSedcodigo", fetch = FetchType.LAZY)
     private List<BikPuesto> bikPuestoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuSedcodigo", fetch = FetchType.LAZY)
@@ -247,15 +245,6 @@ public class BikSede implements Serializable {
 
     public void setSedCodencargado(BikPersona sedCodencargado) {
         this.sedCodencargado = sedCodencargado;
-    }
-
-    @XmlTransient
-    public List<BikExpediente> getBikExpedienteList() {
-        return bikExpedienteList;
-    }
-
-    public void setBikExpedienteList(List<BikExpediente> bikExpedienteList) {
-        this.bikExpedienteList = bikExpedienteList;
     }
 
     @XmlTransient

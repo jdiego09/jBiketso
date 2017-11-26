@@ -42,6 +42,10 @@ public class LoginController extends Controller {
 
     @FXML
     private void iniciarSesion(ActionEvent event) {
+        login();
+    }
+
+    private void login() {
         if (txtUsuario.getText() != null && !txtUsuario.getText().isEmpty()) {
             if (txtClave.getText() == null || txtClave.getText().isEmpty()) {
                 AppWindowController.getInstance().mensaje(AlertType.WARNING, "Error", "Debe indicar la contraseña de acceso.");
@@ -66,8 +70,7 @@ public class LoginController extends Controller {
                         roles = roles + sep + r.getBikRolesUsuariosPK().getRouRolcodigo();
                     }
                     Aplicacion.getInstance().setRolesUsuario(roles);
-                    Node boton = (Node) event.getSource();
-                    AppWindowController.getInstance().setMainStage((Stage) boton.getScene().getWindow());
+                    AppWindowController.getInstance().setMainStage((Stage) btnIniciarSesion.getScene().getWindow());
                     AppWindowController.getInstance().initApplication();
 
                     AppWindowController.getInstance().abrirVentanaEnPrincipal("bik_principal", "Center");
@@ -96,7 +99,14 @@ public class LoginController extends Controller {
     @FXML
     void iniciarSesionOnEnterKey(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
+            login();
+        }
+    }
 
+    @FXML
+    void onKeyPressLogin(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            login();
         }
     }
 

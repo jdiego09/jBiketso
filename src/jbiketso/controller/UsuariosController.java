@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -162,7 +163,7 @@ public class UsuariosController extends Controller implements Initializable {
         this.jtxfCantidadPersonas.setTextFormatter(Formater.getInstance().integerFormat());
         this.jtxfCantidadDependientes.setTextFormatter(Formater.getInstance().integerFormat());
         this.jtxfEstSocioEco.setTextFormatter(Formater.getInstance().integerFormat());
-        
+
     }
 
     private void bindPadecimiento() {
@@ -215,14 +216,14 @@ public class UsuariosController extends Controller implements Initializable {
             tbvMedicamentos.setItems(listaMedicamentos);
             tbvMedicamentos.refresh();
         }
-        tbcMedicamento.setCellValueFactory(new PropertyValueFactory<>("medMedicamento"));        
+        tbcMedicamento.setCellValueFactory(new PropertyValueFactory<>("medMedicamento"));
         tbcObservacionesMedicamento.setCellValueFactory(new PropertyValueFactory<>("medObservaciones"));
     }
 
     private void nuevoExpediente() {
         this.expediente = new BikExpediente(true);
-        this.expediente.setExpSedcodigo(Aplicacion.getInstance().getDefaultSede());
         this.expediente.setExpUsucodigo(new BikUsuario());
+        this.expediente.getExpUsucodigo().setUsuSedcodigo(Aplicacion.getInstance().getDefaultSede());
         this.expediente.getExpUsucodigo().setUsuPercodigo(new BikPersona());
         this.expediente.getExpUsucodigo().setUsuCodencargadolegal(new BikPersona());
     }
@@ -298,36 +299,56 @@ public class UsuariosController extends Controller implements Initializable {
 
     @FXML
     void agregarMedicamento(ActionEvent event) {
-        BikMedicamento nuevo = new BikMedicamento();
-        nuevo.setMedMedicamento(medicamento.getMedMedicamento());
-        nuevo.setMedObservaciones(medicamento.getMedObservaciones());
-        nuevo.setCodigoExpediente(this.expediente);
+        if (!medicamento.getMedMedicamento().isEmpty() && !medicamento.getMedObservaciones().isEmpty()) {
+            if (medicamento != null && (medicamento.getMedCodigo() == null || medicamento.getMedCodigo() <= 0)) {
+                BikMedicamento nuevo = new BikMedicamento();
+                nuevo.setMedMedicamento(medicamento.getMedMedicamento());
+                nuevo.setMedObservaciones(medicamento.getMedObservaciones());
+                nuevo.setMedUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                nuevo.setMedFechaingresa(new Date());
+                nuevo.setCodigoExpediente(this.expediente);
 
-        if (!this.expediente.getBikMedicamentoList().contains(nuevo)) {
-            this.expediente.getBikMedicamentoList().add(nuevo);
-            this.listaMedicamentos.add(nuevo);
+                if (!this.expediente.getBikMedicamentoList().contains(nuevo)) {
+                    this.expediente.getBikMedicamentoList().add(nuevo);
+                    this.listaMedicamentos.add(nuevo);
+                }
+            } else {
+                medicamento.setMedUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                medicamento.setMedFechamodifica(new Date());
+                this.expediente.getBikMedicamentoList().set(this.expediente.getBikMedicamentoList().indexOf(medicamento), medicamento);
+                this.listaMedicamentos.set(this.listaMedicamentos.indexOf(medicamento), medicamento);
+            }
+            tbvMedicamentos.refresh();
         } else {
-            this.expediente.getBikMedicamentoList().set(this.expediente.getBikMedicamentoList().indexOf(nuevo), nuevo);
-            this.listaMedicamentos.set(this.listaMedicamentos.indexOf(nuevo), nuevo);
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Medicamento", "Información del medicamento incompleta, revise por favor.");
         }
-        tbvMedicamentos.refresh();
     }
 
     @FXML
     void agregarPadecimiento(ActionEvent event) {
-        BikPadecimiento nuevo = new BikPadecimiento();
-        nuevo.setPadPadecimiento(padecimiento.getPadPadecimiento());
-        nuevo.setPadObservaciones(padecimiento.getPadObservaciones());
-        nuevo.setCodigoExpediente(this.expediente);
+        if (!padecimiento.getPadPadecimiento().isEmpty() && !padecimiento.getPadObservaciones().isEmpty()) {
+            if (padecimiento != null && (padecimiento.getPadCodigo() == null || padecimiento.getPadCodigo() <= 0)) {
+                BikPadecimiento nuevo = new BikPadecimiento();
+                nuevo.setPadPadecimiento(padecimiento.getPadPadecimiento());
+                nuevo.setPadObservaciones(padecimiento.getPadObservaciones());
+                nuevo.setPadUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                nuevo.setPadFechaingresa(new Date());
+                nuevo.setCodigoExpediente(this.expediente);
 
-        if (!this.expediente.getBikPadecimientoList().contains(nuevo)) {
-            this.expediente.getBikPadecimientoList().add(nuevo);
-            this.listaPadecimientos.add(nuevo);
+                if (!this.expediente.getBikPadecimientoList().contains(nuevo)) {
+                    this.expediente.getBikPadecimientoList().add(nuevo);
+                    this.listaPadecimientos.add(nuevo);
+                }
+            } else {
+                padecimiento.setPadUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                padecimiento.setPadFechamodifica(new Date());
+                this.expediente.getBikPadecimientoList().set(this.expediente.getBikPadecimientoList().indexOf(padecimiento), padecimiento);
+                this.listaPadecimientos.set(this.listaPadecimientos.indexOf(padecimiento), padecimiento);
+            }
+            tbvPadecimiento.refresh();
         } else {
-            this.expediente.getBikPadecimientoList().set(this.expediente.getBikPadecimientoList().indexOf(nuevo), nuevo);
-            this.listaPadecimientos.set(this.listaPadecimientos.indexOf(nuevo), nuevo);
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Padecimiento", "Información del padecimiento incompleta, revise por favor.");
         }
-        tbvPadecimiento.refresh();
     }
 
     @FXML
@@ -357,11 +378,12 @@ public class UsuariosController extends Controller implements Initializable {
     @FXML
     void guardarUsuario(ActionEvent event) {
         //guarda el expediente
-        this.expediente.setExpSedcodigo(Aplicacion.getInstance().getDefaultSede());
+        if (this.expediente.getExpUsucodigo().getUsuSedcodigo() == null || this.expediente.getExpUsucodigo().getUsuSedcodigo().getSedCodigo() == null || this.expediente.getExpUsucodigo().getUsuSedcodigo().getSedCodigo() <= 0) {
+            this.expediente.getExpUsucodigo().setUsuSedcodigo(Aplicacion.getInstance().getDefaultSede());
+        }
         traerUsuario();
         traerEncargado();
         this.expediente.getExpUsucodigo().setUsuEstado(this.expediente.getExpEstado());
-        this.expediente.getExpUsucodigo().setUsuSedcodigo(this.expediente.getExpSedcodigo());
         ExpedienteDao.getInstance().setExpediente(this.expediente);
         Resultado<BikExpediente> resultado = ExpedienteDao.getInstance().save();
 
@@ -370,6 +392,7 @@ public class UsuariosController extends Controller implements Initializable {
             return;
         } else {
             this.expediente = resultado.get();
+            traerUsuario();
         }
         AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Registrar Expediente", resultado.getMensaje());
 
@@ -426,7 +449,7 @@ public class UsuariosController extends Controller implements Initializable {
         nuevoPadecimiento();
         nuevoMedicamento();
         //busca el expediente por cédula del usuario, si no lo encuetra entonces carga el nombre del usuario con la cédula ingresada.
-        BikExpediente buscado = getExpediente(this.expediente.getExpUsucodigo().getUsuPercodigo().getPerCedula(),this.expediente.getExpSedcodigo().getSedCodigo());
+        BikExpediente buscado = getExpediente(this.expediente.getExpUsucodigo());
         if (buscado != null && buscado.getExpCodigo() != null && buscado.getExpCodigo() > 0) {
             this.expediente = buscado;
             //carga los padecimientos
@@ -511,8 +534,8 @@ public class UsuariosController extends Controller implements Initializable {
         return resultado;
     }
 
-    private BikExpediente getExpediente(String cedula, Integer sede) {
-        Resultado<BikExpediente> resultado = ExpedienteDao.getInstance().getExpedienteByCedula(cedula, sede);
+    private BikExpediente getExpediente(BikUsuario usuario) {
+        Resultado<BikExpediente> resultado = ExpedienteDao.getInstance().getExpedienteByCedula(usuario);
         if (resultado.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Buscar persona", resultado.getMensaje());
             return resultado.get();
