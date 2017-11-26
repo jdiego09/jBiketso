@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
@@ -50,7 +51,7 @@ public class BikSede implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Transient
-    private ObjectProperty<Integer> sedCodigo;
+    private SimpleIntegerProperty sedCodigo;
     @Transient
     private SimpleStringProperty sedNombre;
     @Transient
@@ -95,16 +96,6 @@ public class BikSede implements Serializable {
         this.sedEmail = new SimpleStringProperty();
     }
 
-    /*public BikSede(Integer sedCodigo) {
-        this.sedCodigo = sedCodigo;
-    }
-
-    public BikSede(Integer sedCodigo, String sedNombre, String sedDescripcion, String sedTelefonos) {
-        this.sedCodigo = sedCodigo;
-        this.sedNombre = sedNombre;
-        this.sedDescripcion = sedDescripcion;
-        this.sedTelefonos = sedTelefonos;
-    }*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -112,16 +103,22 @@ public class BikSede implements Serializable {
     @Access(AccessType.PROPERTY)
     public Integer getSedCodigo() {
         if (this.sedCodigo == null) {
-            this.sedCodigo = new SimpleObjectProperty();
+            this.sedCodigo = new SimpleIntegerProperty();
         }
         return sedCodigo.get();
     }
 
     public void setSedCodigo(Integer sedCodigo) {
+        if (this.sedCodigo == null) {
+            this.sedCodigo = new SimpleIntegerProperty();
+        }
         this.sedCodigo.set(sedCodigo);
     }
-    
-    public ObjectProperty getSedCodigoProperty(){
+
+    public SimpleIntegerProperty getSedCodigoProperty() {
+        if (this.sedCodigo == null) {
+            this.sedCodigo = new SimpleIntegerProperty();
+        }
         return this.sedCodigo;
     }
 
@@ -129,14 +126,23 @@ public class BikSede implements Serializable {
     @Column(name = "sed_nombre")
     @Access(AccessType.PROPERTY)
     public String getSedNombre() {
+        if (this.sedNombre == null) {
+            this.sedNombre = new SimpleStringProperty();
+        }
         return sedNombre.get();
     }
 
     public void setSedNombre(String sedNombre) {
+        if (this.sedNombre == null) {
+            this.sedNombre = new SimpleStringProperty();
+        }
         this.sedNombre.set(sedNombre);
     }
 
     public SimpleStringProperty getSedNombreProperty() {
+        if (this.sedNombre == null) {
+            this.sedNombre = new SimpleStringProperty();
+        }
         return sedNombre;
     }
 
@@ -144,14 +150,23 @@ public class BikSede implements Serializable {
     @Column(name = "sed_descripcion")
     @Access(AccessType.PROPERTY)
     public String getSedDescripcion() {
+        if (this.sedDescripcion == null) {
+            this.sedDescripcion = new SimpleStringProperty();
+        }
         return sedDescripcion.get();
     }
 
     public void setSedDescripcion(String sedDescripcion) {
+        if (this.sedDescripcion == null) {
+            this.sedDescripcion = new SimpleStringProperty();
+        }
         this.sedDescripcion.set(sedDescripcion);
     }
 
     public SimpleStringProperty getSedDescripcionProperty() {
+        if (this.sedDescripcion == null) {
+            this.sedDescripcion = new SimpleStringProperty();
+        }
         return sedDescripcion;
     }
 
@@ -159,42 +174,69 @@ public class BikSede implements Serializable {
     @Column(name = "sed_telefonos")
     @Access(AccessType.PROPERTY)
     public String getSedTelefonos() {
+        if (this.sedTelefonos == null) {
+            this.sedTelefonos = new SimpleStringProperty();
+        }
         return sedTelefonos.get();
     }
 
     public void setSedTelefonos(String sedTelefonos) {
+        if (this.sedTelefonos == null) {
+            this.sedTelefonos = new SimpleStringProperty();
+        }
         this.sedTelefonos.set(sedTelefonos);
     }
 
     public SimpleStringProperty getSedTelefonosProperty() {
+        if (this.sedTelefonos == null) {
+            this.sedTelefonos = new SimpleStringProperty();
+        }
         return sedTelefonos;
     }
 
     @Column(name = "sed_fax")
     @Access(AccessType.PROPERTY)
     public String getSedFax() {
+        if (this.sedFax == null) {
+            this.sedFax = new SimpleStringProperty();
+        }
         return sedFax.get();
     }
 
     public void setSedFax(String sedFax) {
+        if (this.sedFax == null) {
+            this.sedFax = new SimpleStringProperty();
+        }
         this.sedFax.set(sedFax);
     }
 
     public SimpleStringProperty getSedFaxProperty() {
+        if (this.sedFax == null) {
+            this.sedFax = new SimpleStringProperty();
+        }
         return sedFax;
     }
 
     @Column(name = "sed_email")
     @Access(AccessType.PROPERTY)
     public String getSedEmail() {
+        if (this.sedEmail == null) {
+            this.sedEmail = new SimpleStringProperty();
+        }
         return sedEmail.get();
     }
 
     public void setSedEmail(String sedEmail) {
+        if (this.sedEmail == null) {
+            this.sedEmail = new SimpleStringProperty();
+        }
         this.sedEmail.set(sedEmail);
     }
 
     public SimpleStringProperty getSedEmailProperty() {
+        if (this.sedEmail == null) {
+            this.sedEmail = new SimpleStringProperty();
+        }
         return sedEmail;
     }
 

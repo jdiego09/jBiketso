@@ -21,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.converter.NumberStringConverter;
 import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.model.entities.BikFuncionario;
 import jbiketso.model.entities.BikPersona;
@@ -81,15 +82,15 @@ public class FuncionarioController extends Controller {
     private void nuevoFuncionario() {
         this.funcionario = new BikFuncionario();
     }
-    
+
     private void nuevaPersonaFuncionario() {
         this.personaFuncionario = new BikPersona();
     }
-    
+
     private void nuevoPuesto() {
         this.puesto = new BikPuesto();
     }
-    
+
     private void nuevaSede() {
         this.sede = new BikSede();
     }
@@ -102,18 +103,17 @@ public class FuncionarioController extends Controller {
         jcmbTipo.getItems().clear();
         jcmbTipo.setItems(this.tipos);
         jcmbTipo.getSelectionModel().selectFirst();
-        
 
         this.estados.clear();
         this.estados.add(new GenValorCombo("A", "Activo"));
         this.estados.add(new GenValorCombo("V", "Inactivo"));
         jcmbEstado.getItems().clear();
         jcmbEstado.setItems(this.estados);
-        
+
         if (this.funcionario != null) {
             unbindFuncionario();
         }
-        
+
         nuevoFuncionario();
         nuevaPersonaFuncionario();
         nuevoPuesto();
@@ -130,7 +130,7 @@ public class FuncionarioController extends Controller {
         jtxfCodPuesto.textProperty().bindBidirectional(this.puesto.getPueCodigoProperty());
         jtxjDesPuesto.textProperty().bindBidirectional(this.puesto.getPueDescripcionProperty());
         // Sede
-        jtxfCodSede.textProperty().bindBidirectional(this.sede.getSedCodigoProperty());
+        jtxfCodSede.textProperty().bindBidirectional(this.sede.getSedCodigoProperty(), new NumberStringConverter());
         jtxfDesSede.textProperty().bindBidirectional(this.sede.getSedDescripcionProperty());
         // Funcionario
         jtxfSalarioBase.textProperty().bindBidirectional(this.funcionario.getSalarioBaseProperty());

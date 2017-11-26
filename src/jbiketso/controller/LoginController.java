@@ -70,7 +70,6 @@ public class LoginController extends Controller {
                         roles = roles + sep + r.getBikRolesUsuariosPK().getRouRolcodigo();
                     }
                     Aplicacion.getInstance().setRolesUsuario(roles);
-                    AppWindowController.getInstance().setMainStage((Stage) btnIniciarSesion.getScene().getWindow());
                     AppWindowController.getInstance().initApplication();
 
                     AppWindowController.getInstance().abrirVentanaEnPrincipal("bik_principal", "Center");
