@@ -41,7 +41,7 @@ import jbiketso.utils.GenValorCombo;
  */
 @Entity
 @Access(AccessType.FIELD)
-@Table(name = "bik_puesto",schema = "biketso")
+@Table(name = "bik_puesto", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikPuesto.findAll", query = "SELECT b FROM BikPuesto b")
@@ -91,7 +91,6 @@ public class BikPuesto implements Serializable {
         this.pueDescripcion = pueDescripcion;
         this.pueEstado = pueEstado;
     }*/
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -105,10 +104,13 @@ public class BikPuesto implements Serializable {
     }
 
     public void setPueCodigo(Integer pueCodigo) {
+        if (this.pueCodigo == null) {
+            this.pueCodigo = new SimpleIntegerProperty();
+        }
         this.pueCodigo.set(pueCodigo);
     }
-    
-    public SimpleIntegerProperty getPueCodigoProperty(){
+
+    public SimpleIntegerProperty getPueCodigoProperty() {
         if (this.pueCodigo == null) {
             this.pueCodigo = new SimpleIntegerProperty();
         }
@@ -119,14 +121,23 @@ public class BikPuesto implements Serializable {
     @Column(name = "pue_descripcion")
     @Access(AccessType.PROPERTY)
     public String getPueDescripcion() {
+        if (this.pueDescripcion == null) {
+            this.pueDescripcion = new SimpleStringProperty();
+        }
         return pueDescripcion.get();
     }
 
     public void setPueDescripcion(String pueDescripcion) {
+        if (this.pueDescripcion == null) {
+            this.pueDescripcion = new SimpleStringProperty();
+        }
         this.pueDescripcion.set(pueDescripcion);
     }
-    
+
     public SimpleStringProperty getPueDescripcionProperty() {
+        if (this.pueDescripcion == null) {
+            this.pueDescripcion = new SimpleStringProperty();
+        }
         return this.pueDescripcion;
     }
 
@@ -134,6 +145,9 @@ public class BikPuesto implements Serializable {
     @Column(name = "pue_estado")
     @Access(AccessType.PROPERTY)
     public String getPueEstado() {
+        if (this.pueEstado == null) {
+            this.pueEstado = new SimpleObjectProperty();
+        }
         return pueEstado.get().getCodigo();
     }
 
@@ -149,8 +163,11 @@ public class BikPuesto implements Serializable {
         }
         this.pueEstado.set(valorEstado);
     }
-    
+
     public ObjectProperty getCenEstadoProperty() {
+        if (this.pueEstado == null) {
+            this.pueEstado = new SimpleObjectProperty();
+        }
         return pueEstado;
     }
 
@@ -227,5 +244,5 @@ public class BikPuesto implements Serializable {
     public String toString() {
         return "jbiketso.model.BikPuesto[ pueCodigo=" + pueCodigo + " ]";
     }
-    
+
 }

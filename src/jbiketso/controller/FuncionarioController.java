@@ -12,6 +12,7 @@ package jbiketso.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import java.text.DecimalFormat;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -119,7 +120,7 @@ public class FuncionarioController extends Controller {
         if (this.funcionario != null) {
             unbindFuncionario();
         }
-        
+
         this.funcionarios.clear();
 
         nuevoFuncionario();
@@ -128,7 +129,7 @@ public class FuncionarioController extends Controller {
         nuevaSede();
         bindFuncionario();
         bindListaFuncionarios();
-        
+
         addListenerTable(tbvFuncionarios);
 
     }
@@ -144,7 +145,7 @@ public class FuncionarioController extends Controller {
         jtxfCodSede.textProperty().bindBidirectional(this.funcionario.getFunSedcodigo().getSedCodigoProperty(), new NumberStringConverter());
         jtxfDesSede.textProperty().bindBidirectional(this.funcionario.getFunSedcodigo().getSedDescripcionProperty());
         // Funcionario
-        jtxfSalarioBase.textProperty().bindBidirectional(this.funcionario.getSalarioBaseProperty());
+        jtxfSalarioBase.textProperty().bindBidirectional(this.funcionario.getSalarioBaseProperty(), new DecimalFormat("###,###,##0.00"));
         jtxfObservacion.textProperty().bindBidirectional(this.funcionario.getObservacionesProperty());
         jcmbTipo.valueProperty().bindBidirectional(this.funcionario.getTipoProperty());
         jcmbEstado.valueProperty().bindBidirectional(this.funcionario.getEstadoProperty());
@@ -191,8 +192,8 @@ public class FuncionarioController extends Controller {
     public void initialize(String funcion) {
         iniciarForma();
     }
-    
-    private void traerFuncionario(){
+
+    private void traerFuncionario() {
         Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(this.funcionario.getFunPercodigo().getPerCedula());
         if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula", cedulaValida.getMensaje());
@@ -200,7 +201,5 @@ public class FuncionarioController extends Controller {
         }
         unbindFuncionario();
     }
-    
-    
 
 }

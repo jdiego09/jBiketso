@@ -8,9 +8,11 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
@@ -43,7 +45,7 @@ import jbiketso.utils.GenValorCombo;
 @NamedQueries({
     @NamedQuery(name = "BikFuncionario.findAll", query = "SELECT b FROM BikFuncionario b")
     , @NamedQuery(name = "BikFuncionario.findByFunCodigo", query = "SELECT b FROM BikFuncionario b WHERE b.funCodigo = :funCodigo")
-    , @NamedQuery(name = "BikFuncionario.findByCedulaFuncionario", query = "SELECT b FROM BikFuncionario b join b.funPercodigo f join  WHERE b.funCodigo = :funCodigo")})
+    , @NamedQuery(name = "BikFuncionari.findByCedula", query = "SELECT f FROM BikFuncionario f join f.funPercodigo p where p.perCedula = :cedula")})
 public class BikFuncionario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,7 +57,7 @@ public class BikFuncionario implements Serializable {
     @Transient
     private ObjectProperty<GenValorCombo> funTipo;
     @Transient
-    private ObjectProperty<BigDecimal> funSalarioBase;
+    private SimpleDoubleProperty funSalarioBase;
     @Transient
     private SimpleObjectProperty<LocalDate> funFechaingreso;
     @Transient
@@ -88,10 +90,10 @@ public class BikFuncionario implements Serializable {
     private List<BikDetalleAgenda> bikDetalleAgendaList;
 
     public BikFuncionario() {
-        this.funEstado = new SimpleObjectProperty();
-        this.funTipo = new SimpleObjectProperty();
-        this.funSalarioBase = new SimpleObjectProperty();
-        this.funFechaingreso = new SimpleObjectProperty();
+        this.funEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
+        this.funTipo = new SimpleObjectProperty(new GenValorCombo("P", "Propiedad"));
+        this.funSalarioBase = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
+        this.funFechaingreso = new SimpleObjectProperty(LocalDate.now());
         this.funFechasalida = new SimpleObjectProperty();
         this.funObservaciones = new SimpleStringProperty();
     }
@@ -156,6 +158,9 @@ public class BikFuncionario implements Serializable {
     @Column(name = "fun_tipo")
     @Access(AccessType.PROPERTY)
     public String getFunTipo() {
+        if (this.funTipo == null) {
+            this.funTipo = new SimpleObjectProperty();
+        }
         return funTipo.get().getCodigo();
     }
 
@@ -185,23 +190,23 @@ public class BikFuncionario implements Serializable {
 
     @Column(name = "fun_salario_base")
     @Access(AccessType.PROPERTY)
-    public BigDecimal getFunSalarioBase() {
+    public Double getFunSalarioBase() {
         if (this.funSalarioBase == null) {
-            this.funSalarioBase = new SimpleObjectProperty();
+            this.funSalarioBase = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
         }
         return funSalarioBase.get();
     }
 
-    public ObjectProperty getSalarioBaseProperty() {
+    public SimpleDoubleProperty getSalarioBaseProperty() {
         if (this.funSalarioBase == null) {
-            this.funSalarioBase = new SimpleObjectProperty();
+            this.funSalarioBase = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
         }
         return funSalarioBase;
     }
 
-    public void setFunSalarioBase(BigDecimal funSalarioBase) {
+    public void setFunSalarioBase(Double funSalarioBase) {
         if (this.funSalarioBase == null) {
-            this.funSalarioBase = new SimpleObjectProperty();
+            this.funSalarioBase = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
         }
         this.funSalarioBase.set(funSalarioBase);
     }
@@ -214,7 +219,11 @@ public class BikFuncionario implements Serializable {
         if (this.funFechaingreso == null) {
             this.funFechaingreso = new SimpleObjectProperty();
         }
-        return java.sql.Date.valueOf(this.funFechaingreso.get());
+        if (funFechaingreso != null && funFechaingreso.get() != null) {
+            return Date.from(funFechaingreso.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } else {
+            return null;
+        }
     }
 
     public SimpleObjectProperty<LocalDate> getFechaIngresoProperty() {
@@ -228,7 +237,9 @@ public class BikFuncionario implements Serializable {
         if (this.funFechaingreso == null) {
             this.funFechaingreso = new SimpleObjectProperty();
         }
-        this.funFechaingreso.set(new java.sql.Date(funFechaingreso.getTime()).toLocalDate());
+        if (funFechaingreso != null) {
+            this.funFechaingreso.set(funFechaingreso.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        }
     }
 
     @Column(name = "fun_fechasalida")
@@ -238,7 +249,11 @@ public class BikFuncionario implements Serializable {
         if (this.funFechasalida == null) {
             this.funFechasalida = new SimpleObjectProperty();
         }
-        return java.sql.Date.valueOf(this.funFechasalida.get());
+        if (funFechasalida != null && funFechasalida.get() != null) {
+            return Date.from(funFechasalida.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } else {
+            return null;
+        }
     }
 
     public SimpleObjectProperty<LocalDate> getFechaSalidaProperty() {
@@ -252,12 +267,17 @@ public class BikFuncionario implements Serializable {
         if (this.funFechasalida == null) {
             this.funFechasalida = new SimpleObjectProperty();
         }
-        this.funFechasalida.set(new java.sql.Date(funFechasalida.getTime()).toLocalDate());
+        if (funFechasalida != null) {
+            this.funFechasalida.set(funFechasalida.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        }
     }
 
     @Column(name = "fun_observaciones")
     @Access(AccessType.PROPERTY)
     public String getFunObservaciones() {
+        if (this.funObservaciones == null) {
+            this.funObservaciones = new SimpleStringProperty();
+        }
         return funObservaciones.get();
     }
 

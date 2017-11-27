@@ -35,8 +35,9 @@ public class BikBitacoraAtencion implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Transient
-    protected ObjectProperty<BikBitacoraAtencionPK> bikBitacoraAtencionPK;
+    @EmbeddedId
+    @Access(AccessType.FIELD)
+    protected BikBitacoraAtencionPK bikBitacoraAtencionPK;
     @Transient
     private SimpleObjectProperty<LocalDate> biaFechainicio;
     @Transient
@@ -68,17 +69,11 @@ public class BikBitacoraAtencion implements Serializable {
     @EmbeddedId
     @Access(AccessType.PROPERTY)
     public BikBitacoraAtencionPK getBikBitacoraAtencionPK() {
-        if (this.bikBitacoraAtencionPK == null) {
-            this.bikBitacoraAtencionPK = new SimpleObjectProperty();
-        }
-        return bikBitacoraAtencionPK.get();
+        return bikBitacoraAtencionPK;
     }
 
     public void setBikBitacoraAtencionPK(BikBitacoraAtencionPK bikBitacoraAtencionPK) {
-        if (this.bikBitacoraAtencionPK == null) {
-            this.bikBitacoraAtencionPK = new SimpleObjectProperty();
-        }
-        this.bikBitacoraAtencionPK.set(bikBitacoraAtencionPK);
+        this.bikBitacoraAtencionPK = bikBitacoraAtencionPK;
     }
 
     @Basic(optional = false)
@@ -86,6 +81,9 @@ public class BikBitacoraAtencion implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Access(AccessType.PROPERTY)
     public Date getBiaFechainicio() {
+        if (biaFechainicio == null) {
+            biaFechainicio = new SimpleObjectProperty();
+        }
         if (biaFechainicio != null && biaFechainicio.get() != null) {
             return Date.from(biaFechainicio.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
         } else {
@@ -93,7 +91,17 @@ public class BikBitacoraAtencion implements Serializable {
         }
     }
 
+    public SimpleObjectProperty getFechaInicioProperty() {
+        if (biaFechainicio == null) {
+            biaFechainicio = new SimpleObjectProperty();
+        }
+        return this.biaFechainicio;
+    }
+
     public void setBiaFechainicio(Date biaFechainicio) {
+        if (this.biaFechainicio == null) {
+            this.biaFechainicio = new SimpleObjectProperty();
+        }
         if (biaFechainicio != null) {
             this.biaFechainicio.set(biaFechainicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         }
@@ -107,6 +115,13 @@ public class BikBitacoraAtencion implements Serializable {
             this.biaTipo = new SimpleObjectProperty();
         }
         return biaTipo.get().getCodigo();
+    }
+
+    public ObjectProperty getTipoAtencionProperty() {
+        if (this.biaTipo == null) {
+            this.biaTipo = new SimpleObjectProperty();
+        }
+        return biaTipo;
     }
 
     public void setBiaTipo(String biaTipo) {
@@ -137,6 +152,13 @@ public class BikBitacoraAtencion implements Serializable {
             this.biaDetalle = new SimpleStringProperty();
         }
         return biaDetalle.get();
+    }
+
+    public SimpleStringProperty getDetalleProperty() {
+        if (this.biaDetalle == null) {
+            this.biaDetalle = new SimpleStringProperty();
+        }
+        return biaDetalle;
     }
 
     public void setBiaDetalle(String biaDetalle) {
