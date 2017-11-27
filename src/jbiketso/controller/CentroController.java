@@ -366,11 +366,5 @@ public class CentroController extends Controller {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Eliminar sede", resultado.getMensaje());
         }
         tbvSedes.refresh();
-    }
-
-    @Override
-    public void initialize(String funcion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    }    
 }
