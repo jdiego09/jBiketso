@@ -310,4 +310,56 @@ public class AppWindowController {
         return getLoader(viewName).getController();
     }
 
+   /**
+     * Carga la vista indicada en una ventana nueva
+     *
+     * @param viewName Nombre de la vista
+     */
+    public void goViewInWindow(String viewName) {
+        FXMLLoader loader = getLoader(viewName);
+        Controller controller = loader.getController();
+        controller.initialize();
+        Stage stage = new Stage();
+        stage.getIcons().add(new Image("unaplanilla/resources/Icono-96.png"));        
+        stage.setOnHidden((WindowEvent event) -> {
+            controller.getStage().getScene().setRoot(new Pane());
+            controller.setStage(null);
+        });
+        controller.setStage(stage);
+        Parent root = loader.getRoot();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+
+    }
+
+    /**
+     * Carga la vista indicada en una ventana nueva de forma modal
+     *
+     * @param viewName Nombre de la vista
+     * @param parentStage Stage padre al que le pertenece la ventana modal
+     */
+    public void goViewInWindowModal(String viewName, Stage parentStage, Boolean resizable) {
+        FXMLLoader loader = getLoader(viewName);
+        Controller controller = loader.getController();
+        controller.initialize();
+        Stage stage = new Stage();
+        stage.getIcons().add(new Image("unaplanilla/resources/Icono-96.png"));
+        stage.setResizable(resizable);
+        stage.setOnHidden((WindowEvent event) -> {
+            controller.getStage().getScene().setRoot(new Pane());
+            controller.setStage(null);
+        });
+        controller.setStage(stage);
+        Parent root = loader.getRoot();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(parentStage);
+        stage.centerOnScreen();
+        stage.showAndWait();
+
+    }
+   
 }
