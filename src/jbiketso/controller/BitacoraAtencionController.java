@@ -190,10 +190,6 @@ public class BitacoraAtencionController extends Controller implements Initializa
         jcmbTipoAtencion.getSelectionModel().selectFirst();
     }
 
-    @Override
-    public void initialize(String funcion) {
-    }
-
     private void agregarAtencionALista(BikBitacoraAtencion bitacora) {
         //                                                                   (bitacora.getBikBitacoraAtencionPK().getBiaCodigo() == null || bitacora.getBikBitacoraAtencionPK().getBiaCodigo() <= 0) &&
         if (bitacora != null && bitacora.getBikBitacoraAtencionPK() != null && !bitacora.getBiaDetalle().isEmpty()) {

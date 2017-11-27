@@ -188,11 +188,6 @@ public class FuncionarioController extends Controller {
         });
     }
 
-    @Override
-    public void initialize(String funcion) {
-        iniciarForma();
-    }
-
     private void traerFuncionario() {
         Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(this.funcionario.getFunPercodigo().getPerCedula());
         if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {

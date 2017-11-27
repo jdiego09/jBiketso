@@ -8,16 +8,11 @@ package jbiketso.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import jbiketso.model.dao.LoginDao;
 import jbiketso.model.entities.BikRolesUsuarios;
 import jbiketso.model.entities.BikUsuariosSistema;
@@ -108,10 +103,4 @@ public class LoginController extends Controller {
             login();
         }
     }
-
-    @Override
-    public void initialize(String funcion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

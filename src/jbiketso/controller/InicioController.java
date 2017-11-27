@@ -39,12 +39,7 @@ public class InicioController extends Controller implements Initializable {
     public void initialize() {
         init();
     }
-
-    @Override
-    public void initialize(String funcion) {
-        init();
-    }
-
+   
     private void init() {
         BikCentro centro = Aplicacion.getInstance().getDefaultCentro();
         if (centro != null && centro.getCenLogo() != null && !centro.getCenLogo().isEmpty()) {

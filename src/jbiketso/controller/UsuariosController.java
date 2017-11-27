@@ -547,9 +547,4 @@ public class UsuariosController extends Controller implements Initializable {
     public void initialize() {
         init();
     }
-
-    @Override
-    public void initialize(String funcion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

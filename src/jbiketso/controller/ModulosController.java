@@ -1,6 +1,5 @@
 package jbiketso.controller;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
@@ -166,10 +165,4 @@ public class ModulosController extends Controller implements Initializable {
     public void initialize() {
         init();
     }
-
-    @Override
-    public void initialize(String funcion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

@@ -124,9 +124,4 @@ public class PrincipalController extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         init();
     }
-
-    @Override
-    public void initialize(String funcion) {
-    }
-
 }
