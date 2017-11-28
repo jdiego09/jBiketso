@@ -36,7 +36,7 @@
             </Label>
          </children>
       </Pane>
-      <JFXTextField fx:id="jtxfCedulaFuncionario" labelFloat="true" layoutX="14.0" layoutY="74.0" prefHeight="35.0" prefWidth="155.0" promptText="Cédula funcionario" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfCedulaFuncionario" labelFloat="true" layoutX="14.0" layoutY="74.0" onKeyPressed="#cedulaFuncionarioOnEnterKey" prefHeight="35.0" prefWidth="155.0" promptText="Cédula funcionario" styleClass="edittext" />
       <JFXButton fx:id="jbtnBuscarFuncionario" layoutX="173.0" layoutY="71.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
       <JFXTextField fx:id="jtxfCodPuesto" labelFloat="true" layoutX="14.0" layoutY="129.0" prefHeight="25.0" prefWidth="155.0" promptText="Puesto" styleClass="edittext" />
       <JFXTextField fx:id="jtxjDesPuesto" labelFloat="true" layoutX="220.0" layoutY="129.0" prefHeight="35.0" prefWidth="431.0" promptText="Descripción puesto" styleClass="edittext" />

@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
@@ -51,7 +52,7 @@ public class BikFuncionario implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Transient
-    private ObjectProperty<Integer> funCodigo;
+    private SimpleIntegerProperty funCodigo;
     @Transient
     private ObjectProperty<GenValorCombo> funEstado;
     @Transient
@@ -90,6 +91,7 @@ public class BikFuncionario implements Serializable {
     private List<BikDetalleAgenda> bikDetalleAgendaList;
 
     public BikFuncionario() {
+        this.funCodigo = new SimpleIntegerProperty();
         this.funEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
         this.funTipo = new SimpleObjectProperty(new GenValorCombo("P", "Propiedad"));
         this.funSalarioBase = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
@@ -105,21 +107,21 @@ public class BikFuncionario implements Serializable {
     @Access(AccessType.PROPERTY)
     public Integer getFunCodigo() {
         if (this.funCodigo == null) {
-            this.funCodigo = new SimpleObjectProperty();
+            this.funCodigo = new SimpleIntegerProperty();
         }
         return funCodigo.get();
     }
 
-    public ObjectProperty getCodigoProperty() {
+    public SimpleIntegerProperty getCodigoProperty() {
         if (this.funCodigo == null) {
-            this.funCodigo = new SimpleObjectProperty();
+            this.funCodigo = new SimpleIntegerProperty();
         }
         return this.funCodigo;
     }
 
     public void setFunCodigo(Integer funCodigo) {
         if (this.funCodigo == null) {
-            this.funCodigo = new SimpleObjectProperty();
+            this.funCodigo = new SimpleIntegerProperty();
         }
         this.funCodigo.set(funCodigo);
     }

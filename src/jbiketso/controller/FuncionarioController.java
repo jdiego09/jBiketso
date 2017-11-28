@@ -13,6 +13,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,7 +50,10 @@ public class FuncionarioController extends Controller {
     private JFXButton jbtnBuscarPuesto, jbtnBuscarSede, jbtnSalir, jbtnBuscarFuncionario;
 
     @FXML
-    private TableColumn<BikFuncionario, String> tbcPuesto, tbcNombreFuncionario;
+    private TableColumn<BikPersona, String> tbcNombreFuncionario;
+    
+    @FXML
+    private TableColumn<BikPuesto, String> tbcPuesto;
 
     @FXML
     private Button btnLimpiar, btnGuardaFuncionario;
@@ -78,18 +82,16 @@ public class FuncionarioController extends Controller {
     private ObservableList<GenValorCombo> estados = FXCollections
             .observableArrayList();
 
-    @FXML
-    void regresar(ActionEvent event) {
-
-    }
-
     @Override
     public void initialize() {
-
+        iniciarForma();
     }
 
     private void nuevoFuncionario() {
         this.funcionario = new BikFuncionario();
+        this.funcionario.setFunPercodigo(new BikPersona());
+        this.funcionario.setFunPuecodigo(new BikPuesto());
+        this.funcionario.setFunSedcodigo(new BikSede());
     }
 
     private void nuevaPersonaFuncionario() {
@@ -109,14 +111,14 @@ public class FuncionarioController extends Controller {
         this.tipos.clear();
         this.tipos.add(new GenValorCombo("P", "Permanente"));
         this.tipos.add(new GenValorCombo("V", "Voluntario"));
-        jcmbTipo.getItems().clear();
+        //jcmbTipo.getItems().clear();
         jcmbTipo.setItems(this.tipos);
         jcmbTipo.getSelectionModel().selectFirst();
 
         this.estados.clear();
         this.estados.add(new GenValorCombo("A", "Activo"));
-        this.estados.add(new GenValorCombo("V", "Inactivo"));
-        jcmbEstado.getItems().clear();
+        this.estados.add(new GenValorCombo("I", "Inactivo"));
+        //jcmbEstado.getItems().clear();
         jcmbEstado.setItems(this.estados);
         jcmbEstado.getSelectionModel().selectFirst();
 
@@ -127,13 +129,17 @@ public class FuncionarioController extends Controller {
         this.funcionarios.clear();
 
         nuevoFuncionario();
-        nuevaPersonaFuncionario();
-        nuevoPuesto();
-        nuevaSede();
+        //nuevaPersonaFuncionario();
+        //nuevoPuesto();
+        //nuevaSede();
         bindFuncionario();
         bindListaFuncionarios();
 
         addListenerTable(tbvFuncionarios);
+
+        Resultado<ArrayList<BikFuncionario>> funcionariosResult = FuncionarioDao.getInstance().getFuncionarios();
+        funcionarios.clear();
+        funcionariosResult.get().stream().forEach(funcionarios::add);
 
     }
 
@@ -176,15 +182,15 @@ public class FuncionarioController extends Controller {
             tbvFuncionarios.setItems(this.funcionarios);
             tbvFuncionarios.refresh();
         }
-        tbcNombreFuncionario.setCellValueFactory(new PropertyValueFactory<>(""));
-        tbcPuesto.setCellValueFactory(new PropertyValueFactory<>(""));
+        tbcNombreFuncionario.setCellValueFactory(new PropertyValueFactory<>("nombreCompleto"));
+        tbcPuesto.setCellValueFactory(new PropertyValueFactory<>("pueDescripcion"));
     }
 
     private void addListenerTable(TableView table) {
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 unbindFuncionario();
-                this.sede = (BikSede) newSelection;
+                //this.sede = (BikSede) newSelection;
                 //obtenerRepreLegal(this.sede.getSedCodencargado().getPerCedula(), "S");
                 bindFuncionario();
             }
@@ -212,18 +218,21 @@ public class FuncionarioController extends Controller {
         if (buscado != null && buscado.getFunCodigo() != null) {
             this.funcionario = buscado;
         }
+        bindFuncionario();
     }
 
     @FXML
     void cedulaFuncionarioOnEnterKey(KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER)) {
-            if (this.funcionario.getFunPercodigo().getPerCedula() != null && !this.funcionario.getFunPercodigo().getPerCedula().isEmpty()) {
+            if (this.jtxfCedulaFuncionario.getText() != null) {
                 traerFuncionario();
             }
-        } else {
-            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula usuario", "Debe indicar la cédula del usuario.");
-            this.jtxfCedulaFuncionario.requestFocus();
         }
+    }
+
+    @FXML
+    void regresar(ActionEvent event) {
+        AppWindowController.getInstance().goHome();
     }
 
 }

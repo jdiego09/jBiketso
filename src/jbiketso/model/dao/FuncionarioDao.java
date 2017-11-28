@@ -5,6 +5,8 @@
  */
 package jbiketso.model.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.NoResultException;
@@ -68,7 +70,7 @@ public class FuncionarioDao extends BaseDao<Integer, BikFuncionario> {
             result.setResultado(TipoResultado.SUCCESS);
             result.set(funcionario);
             return result;
-            
+
         } catch (NoResultException nre) {
             result.setResultado(TipoResultado.WARNING);
             result.setMensaje("El funcionario con la cédula [" + cedulaFuncionario + "], no se encuentra registrado.");
@@ -78,6 +80,28 @@ public class FuncionarioDao extends BaseDao<Integer, BikFuncionario> {
             result.setResultado(TipoResultado.ERROR);
             result.setMensaje("Error al traer información del funcionario con la cédula [" + cedulaFuncionario + "].");
             return result;
+        }
+    }
+
+    public Resultado<ArrayList<BikFuncionario>> getFuncionarios() {
+        Resultado<ArrayList<BikFuncionario>> resultado = new Resultado<>();
+        ArrayList<BikFuncionario> listaFuncionarios = new ArrayList<>();
+        List<BikFuncionario> funcionarios;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikFuncionario.findAll");
+            funcionarios = query.getResultList();
+            funcionarios.stream().forEach(listaFuncionarios::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaFuncionarios);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer la lista completa de funcionarios.");
+            return resultado;
         }
     }
 
