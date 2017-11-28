@@ -13,10 +13,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikBitacoraAtencion;
 import jbiketso.model.entities.BikBitacoraAtencionPK;
-import jbiketso.model.entities.BikContacto;
-import jbiketso.model.entities.BikDireccion;
-import jbiketso.model.entities.BikPersona;
-import jbiketso.utils.Parametros;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -26,64 +22,91 @@ import jbiketso.utils.TipoResultado;
  */
 public class BitacoraAtencionDao extends BaseDao<BikBitacoraAtencionPK, BikBitacoraAtencion> {
 
-    private static BitacoraAtencionDao INSTANCE;
-    private BikBitacoraAtencion bitacora;
+   private static BitacoraAtencionDao INSTANCE;
+   private BikBitacoraAtencion bitacora;
 
-    private BitacoraAtencionDao() {
-    }
+   private BitacoraAtencionDao() {
+   }
 
-    private static void createInstance() {
-        if (INSTANCE == null) {
-            // Sólo se accede a la zona sincronizada
-            // cuando la instancia no está creada
-            synchronized (BitacoraAtencionDao.class) {
-                // En la zona sincronizada sería necesario volver
-                // a comprobar que no se ha creado la instancia
-                if (INSTANCE == null) {
-                    INSTANCE = new BitacoraAtencionDao();
-                }
+   private static void createInstance() {
+      if (INSTANCE == null) {
+         // Sólo se accede a la zona sincronizada
+         // cuando la instancia no está creada
+         synchronized (BitacoraAtencionDao.class) {
+            // En la zona sincronizada sería necesario volver
+            // a comprobar que no se ha creado la instancia
+            if (INSTANCE == null) {
+               INSTANCE = new BitacoraAtencionDao();
             }
-        }
-    }
+         }
+      }
+   }
 
-    public static BitacoraAtencionDao getInstance() {
-        if (INSTANCE == null) {
-            createInstance();
-        }
-        return INSTANCE;
-    }
+   public static BitacoraAtencionDao getInstance() {
+      if (INSTANCE == null) {
+         createInstance();
+      }
+      return INSTANCE;
+   }
 
-    public void setPersona(BikBitacoraAtencion bitacora) {
-        this.bitacora = bitacora;
-    }
+   public void setPersona(BikBitacoraAtencion bitacora) {
+      this.bitacora = bitacora;
+   }
 
-    //para que solamente exista una instancia del objeto
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        throw new CloneNotSupportedException();
-    }
+   //para que solamente exista una instancia del objeto
+   @Override
+   public Object clone() throws CloneNotSupportedException {
+      throw new CloneNotSupportedException();
+   }
 
-    public Resultado<ArrayList<BikBitacoraAtencion>> getDetalleBitacora(BikBitacoraAtencion atencion) {
-        Resultado<ArrayList<BikBitacoraAtencion>> resultado = new Resultado<>();
-        ArrayList<BikBitacoraAtencion> listaAtencion = new ArrayList<>();
-        List<BikBitacoraAtencion> atenciones;
-        try {
-            Query query = getEntityManager().createNamedQuery("BikBitacoraAtencion.findByCedulaDesc");
-            query.setParameter("tipo", atencion.getBiaTipo());
-            query.setParameter("cedula", atencion.getBikUsuario().getUsuPercodigo().getPerCedula());
-            atenciones = query.getResultList();
-            atenciones.stream().forEach(listaAtencion::add);
+   public Resultado<ArrayList<BikBitacoraAtencion>> getDetalleBitacora(BikBitacoraAtencion atencion) {
+      Resultado<ArrayList<BikBitacoraAtencion>> resultado = new Resultado<>();
+      ArrayList<BikBitacoraAtencion> listaAtencion = new ArrayList<>();
+      List<BikBitacoraAtencion> atenciones;
+      try {
+         Query query = getEntityManager().createNamedQuery("BikBitacoraAtencion.findByCedulaDesc");
+         query.setParameter("tipo", atencion.getBiaTipo());
+         query.setParameter("cedula", atencion.getBikUsuario().getUsuPercodigo().getPerCedula());
+         atenciones = query.getResultList();
+         atenciones.stream().forEach(listaAtencion::add);
+         resultado.setResultado(TipoResultado.SUCCESS);
+         resultado.set(listaAtencion);
+         return resultado;
+      } catch (NoResultException nre) {
+         resultado.setResultado(TipoResultado.WARNING);
+         return resultado;
+      } catch (Exception ex) {
+         Logger.getLogger(BitacoraAtencionDao.class.getName()).log(Level.SEVERE, null, ex);
+         resultado.setResultado(TipoResultado.ERROR);
+         resultado.setMensaje("Error al traer el de talle de la atención recibida por el usuario [" + atencion.getBikUsuario().getUsuPercodigo().getNombreCompleto() + "].");
+         return resultado;
+      }
+   }
+
+   // Procedimiento para guardar la información de la persona.
+   public Resultado<BikBitacoraAtencion> save() {
+      Resultado<BikBitacoraAtencion> resultado = new Resultado<>();
+      try {
+         bitacora = (BikBitacoraAtencion) super.save(bitacora);
+
+         if (bitacora.getBikBitacoraAtencionPK() != null && bitacora.getBikBitacoraAtencionPK().getBiaCodigo() > 0) {
             resultado.setResultado(TipoResultado.SUCCESS);
-            resultado.set(listaAtencion);
-            return resultado;
-        } catch (NoResultException nre) {
-            resultado.setResultado(TipoResultado.WARNING);
-            return resultado;
-        } catch (Exception ex) {
-            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.set(bitacora);
+            resultado.setMensaje("Atención guardada correctamente.");
+
+         } else {
             resultado.setResultado(TipoResultado.ERROR);
-            resultado.setMensaje("Error al traer el de talle de la atención recibida por el usuario [" + atencion.getBikUsuario().getUsuPercodigo().getNombreCompleto() + "].");
-            return resultado;
-        }
-    }
+            resultado.set(bitacora);
+            resultado.setMensaje("No se pudo guardar la atención brindada.");
+         }
+
+         return resultado;
+
+      } catch (Exception ex) {
+         Logger.getLogger(BitacoraAtencionDao.class.getName()).log(Level.SEVERE, null, ex);
+         resultado.setResultado(TipoResultado.ERROR);
+         resultado.setMensaje("Error al guardar la persona.");
+         return resultado;
+      }
+   }
 }
