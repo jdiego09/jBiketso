@@ -6,10 +6,18 @@
 package jbiketso.model.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,198 +29,274 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import jbiketso.utils.GenValorCombo;
 
-/**
- *
- * @author Anayansy
- */
 @Entity
-@Table(name = "bik_detalle_agenda",schema = "biketso")
+@Access(AccessType.FIELD)
+@Table(name = "bik_detalle_agenda", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BikDetalleAgenda.findAll", query = "SELECT b FROM BikDetalleAgenda b")
-    , @NamedQuery(name = "BikDetalleAgenda.findByDeaCodigo", query = "SELECT b FROM BikDetalleAgenda b WHERE b.deaCodigo = :deaCodigo")
-    , @NamedQuery(name = "BikDetalleAgenda.findByDeaFechainicio", query = "SELECT b FROM BikDetalleAgenda b WHERE b.deaFechainicio = :deaFechainicio")
-    , @NamedQuery(name = "BikDetalleAgenda.findByDeaFechafin", query = "SELECT b FROM BikDetalleAgenda b WHERE b.deaFechafin = :deaFechafin")
-    , @NamedQuery(name = "BikDetalleAgenda.findByDeaDetalle", query = "SELECT b FROM BikDetalleAgenda b WHERE b.deaDetalle = :deaDetalle")
-    , @NamedQuery(name = "BikDetalleAgenda.findByDeaEstado", query = "SELECT b FROM BikDetalleAgenda b WHERE b.deaEstado = :deaEstado")
-    , @NamedQuery(name = "BikDetalleAgenda.findByDeaUsuarioingresa", query = "SELECT b FROM BikDetalleAgenda b WHERE b.deaUsuarioingresa = :deaUsuarioingresa")
-    , @NamedQuery(name = "BikDetalleAgenda.findByDeaFechaingresa", query = "SELECT b FROM BikDetalleAgenda b WHERE b.deaFechaingresa = :deaFechaingresa")
-    , @NamedQuery(name = "BikDetalleAgenda.findByDeaUsuariomodifica", query = "SELECT b FROM BikDetalleAgenda b WHERE b.deaUsuariomodifica = :deaUsuariomodifica")
-    , @NamedQuery(name = "BikDetalleAgenda.findByDeaFechamodifica", query = "SELECT b FROM BikDetalleAgenda b WHERE b.deaFechamodifica = :deaFechamodifica")})
+   @NamedQuery(name = "BikDetalleAgenda.findAll", query = "SELECT b FROM BikDetalleAgenda b")})
 public class BikDetalleAgenda implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "dea_codigo")
-    private Integer deaCodigo;
-    @Column(name = "dea_fechainicio")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deaFechainicio;
-    @Column(name = "dea_fechafin")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deaFechafin;
-    @Basic(optional = false)
-    @Column(name = "dea_detalle")
-    private String deaDetalle;
-    @Basic(optional = false)
-    @Column(name = "dea_estado")
-    private String deaEstado;
-    @Column(name = "dea_usuarioingresa")
-    private String deaUsuarioingresa;
-    @Column(name = "dea_fechaingresa")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deaFechaingresa;
-    @Column(name = "dea_usuariomodifica")
-    private String deaUsuariomodifica;
-    @Column(name = "dea_fechamodifica")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deaFechamodifica;
-    @JoinColumn(name = "dea_agecodigo", referencedColumnName = "age_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikAgenda deaAgecodigo;
-    @JoinColumn(name = "dea_funcodigo", referencedColumnName = "fun_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikFuncionario deaFuncodigo;
-    @JoinColumn(name = "dea_codusuario", referencedColumnName = "usu_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikUsuario deaCodusuario;
+   private static final long serialVersionUID = 1L;
 
-    public BikDetalleAgenda() {
-    }
+   @Transient
+   private SimpleIntegerProperty deaCodigo;
 
-    public BikDetalleAgenda(Integer deaCodigo) {
-        this.deaCodigo = deaCodigo;
-    }
+   @Transient
+   private SimpleObjectProperty<LocalDate> deaFechainicio;
+   @Transient
+   private SimpleObjectProperty<LocalDate> deaFechafin;
+   @Transient
+   private SimpleStringProperty deaDetalle;
+   @Transient
+   private ObjectProperty<GenValorCombo> deaEstado;
+   @Column(name = "dea_usuarioingresa")
+   private String deaUsuarioingresa;
+   @Column(name = "dea_fechaingresa")
+   @Temporal(TemporalType.TIMESTAMP)
+   private Date deaFechaingresa;
+   @Column(name = "dea_usuariomodifica")
+   private String deaUsuariomodifica;
+   @Column(name = "dea_fechamodifica")
+   @Temporal(TemporalType.TIMESTAMP)
+   private Date deaFechamodifica;
+   @JoinColumn(name = "dea_agecodigo", referencedColumnName = "age_codigo")
+   @ManyToOne(optional = false, fetch = FetchType.LAZY)
+   private BikAgenda deaAgecodigo;
+   @JoinColumn(name = "dea_funcodigo", referencedColumnName = "fun_codigo")
+   @ManyToOne(optional = false, fetch = FetchType.LAZY)
+   private BikFuncionario deaFuncodigo;
+   @JoinColumn(name = "dea_codusuario", referencedColumnName = "usu_codigo")
+   @ManyToOne(optional = false, fetch = FetchType.LAZY)
+   private BikUsuario deaCodusuario;
 
-    public BikDetalleAgenda(Integer deaCodigo, String deaDetalle, String deaEstado) {
-        this.deaCodigo = deaCodigo;
-        this.deaDetalle = deaDetalle;
-        this.deaEstado = deaEstado;
-    }
+   public BikDetalleAgenda() {
+      this.deaEstado = new SimpleObjectProperty(new GenValorCombo("P", "Pendiente"));
+      this.deaDetalle = new SimpleStringProperty();
+      this.deaFechainicio = new SimpleObjectProperty(LocalDate.now());
+      this.deaFechafin = new SimpleObjectProperty();
+   }
 
-    public Integer getDeaCodigo() {
-        return deaCodigo;
-    }
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Basic(optional = false)
+   @Column(name = "dea_codigo")
+   @Access(AccessType.PROPERTY)
+   public Integer getDeaCodigo() {
+      if (this.deaCodigo == null) {
+         this.deaCodigo = new SimpleIntegerProperty();
+      }
+      return deaCodigo.get();
+   }
 
-    public void setDeaCodigo(Integer deaCodigo) {
-        this.deaCodigo = deaCodigo;
-    }
+   public SimpleIntegerProperty getCodigoProperty() {
+      if (this.deaCodigo == null) {
+         this.deaCodigo = new SimpleIntegerProperty();
+      }
+      return deaCodigo;
+   }
 
-    public Date getDeaFechainicio() {
-        return deaFechainicio;
-    }
+   public void setDeaCodigo(Integer deaCodigo) {
+      if (this.deaCodigo == null) {
+         this.deaCodigo = new SimpleIntegerProperty();
+      }
+      this.deaCodigo.set(deaCodigo);
+   }
 
-    public void setDeaFechainicio(Date deaFechainicio) {
-        this.deaFechainicio = deaFechainicio;
-    }
+   @Column(name = "dea_fechainicio")
+   @Temporal(TemporalType.TIMESTAMP)
+   @Access(AccessType.PROPERTY)
+   public Date getDeaFechainicio() {
+      if (deaFechainicio != null && deaFechainicio.get() != null) {
+         return Date.from(deaFechainicio.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+      } else {
+         return null;
+      }
+   }
 
-    public Date getDeaFechafin() {
-        return deaFechafin;
-    }
+   public SimpleObjectProperty getFechaInicioProperty() {
+      if (this.deaFechainicio == null) {
+         this.deaFechainicio = new SimpleObjectProperty(LocalDate.now());
+      }
+      return this.deaFechainicio;
+   }
 
-    public void setDeaFechafin(Date deaFechafin) {
-        this.deaFechafin = deaFechafin;
-    }
+   public void setDeaFechainicio(Date deaFechainicio) {
+      if (deaFechainicio != null) {
+         this.deaFechainicio.set(deaFechainicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+      }
+   }
 
-    public String getDeaDetalle() {
-        return deaDetalle;
-    }
+   @Column(name = "dea_fechafin")
+   @Temporal(TemporalType.TIMESTAMP)
+   @Access(AccessType.PROPERTY)
+   public Date getDeaFechafin() {
+      if (deaFechafin != null && deaFechafin.get() != null) {
+         return Date.from(deaFechafin.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+      } else {
+         return null;
+      }
+   }
 
-    public void setDeaDetalle(String deaDetalle) {
-        this.deaDetalle = deaDetalle;
-    }
+   public SimpleObjectProperty getFechaFinProperty() {
+      if (this.deaFechafin == null) {
+         this.deaFechafin = new SimpleObjectProperty(LocalDate.now());
+      }
+      return this.deaFechafin;
+   }
 
-    public String getDeaEstado() {
-        return deaEstado;
-    }
+   public void setDeaFechafin(Date deaFechafin) {
+      if (deaFechafin != null) {
+         this.deaFechafin.set(deaFechafin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+      }
+   }
 
-    public void setDeaEstado(String deaEstado) {
-        this.deaEstado = deaEstado;
-    }
+   @Basic(optional = false)
+   @Column(name = "dea_detalle")
+   @Access(AccessType.PROPERTY)
+   public String getDeaDetalle() {
+      if (this.deaDetalle == null) {
+         this.deaDetalle = new SimpleStringProperty();
+      }
+      return this.deaDetalle.get();
+   }
 
-    public String getDeaUsuarioingresa() {
-        return deaUsuarioingresa;
-    }
+   public SimpleStringProperty getDetalleProperty() {
+      if (this.deaDetalle == null) {
+         this.deaDetalle = new SimpleStringProperty();
+      }
+      return this.deaDetalle;
+   }
 
-    public void setDeaUsuarioingresa(String deaUsuarioingresa) {
-        this.deaUsuarioingresa = deaUsuarioingresa;
-    }
+   public void setDeaDetalle(String deaDetalle) {
+      if (this.deaDetalle == null) {
+         this.deaDetalle = new SimpleStringProperty();
+      }
+      this.deaDetalle.set(deaDetalle);
+   }
 
-    public Date getDeaFechaingresa() {
-        return deaFechaingresa;
-    }
+   @Basic(optional = false)
+   @Column(name = "dea_estado")
+   @Access(AccessType.PROPERTY)
+   public String getDeaEstado() {
+      if (this.deaEstado == null) {
+         this.deaEstado = new SimpleObjectProperty();
+      }
+      return deaEstado.get().getCodigo();
+   }
 
-    public void setDeaFechaingresa(Date deaFechaingresa) {
-        this.deaFechaingresa = deaFechaingresa;
-    }
+   public ObjectProperty getEstadoProperty() {
+      if (this.deaEstado == null) {
+         this.deaEstado = new SimpleObjectProperty(new GenValorCombo("P", "Pendiente"));
+      }
+      return deaEstado;
+   }
 
-    public String getDeaUsuariomodifica() {
-        return deaUsuariomodifica;
-    }
+   public void setDeaEstado(String deaEstado) {
+      if (this.deaEstado == null) {
+         this.deaEstado = new SimpleObjectProperty();
+      }
+      GenValorCombo valor = null;
+      switch (deaEstado) {
+         case "p":
+            valor = new GenValorCombo("P", "Pendiente");
+            break;
+         case "c":
+            valor = new GenValorCombo("C", "Cancelado");
+            break;
+         case "a":
+            valor = new GenValorCombo("A", "Atendido");
+            break;
+         default:
+            valor = new GenValorCombo("P", "Pendiente");
+            break;
+      }
+      this.deaEstado.set(valor);
+   }
 
-    public void setDeaUsuariomodifica(String deaUsuariomodifica) {
-        this.deaUsuariomodifica = deaUsuariomodifica;
-    }
+   public String getDeaUsuarioingresa() {
+      return deaUsuarioingresa;
+   }
 
-    public Date getDeaFechamodifica() {
-        return deaFechamodifica;
-    }
+   public void setDeaUsuarioingresa(String deaUsuarioingresa) {
+      this.deaUsuarioingresa = deaUsuarioingresa;
+   }
 
-    public void setDeaFechamodifica(Date deaFechamodifica) {
-        this.deaFechamodifica = deaFechamodifica;
-    }
+   public Date getDeaFechaingresa() {
+      return deaFechaingresa;
+   }
 
-    public BikAgenda getDeaAgecodigo() {
-        return deaAgecodigo;
-    }
+   public void setDeaFechaingresa(Date deaFechaingresa) {
+      this.deaFechaingresa = deaFechaingresa;
+   }
 
-    public void setDeaAgecodigo(BikAgenda deaAgecodigo) {
-        this.deaAgecodigo = deaAgecodigo;
-    }
+   public String getDeaUsuariomodifica() {
+      return deaUsuariomodifica;
+   }
 
-    public BikFuncionario getDeaFuncodigo() {
-        return deaFuncodigo;
-    }
+   public void setDeaUsuariomodifica(String deaUsuariomodifica) {
+      this.deaUsuariomodifica = deaUsuariomodifica;
+   }
 
-    public void setDeaFuncodigo(BikFuncionario deaFuncodigo) {
-        this.deaFuncodigo = deaFuncodigo;
-    }
+   public Date getDeaFechamodifica() {
+      return deaFechamodifica;
+   }
 
-    public BikUsuario getDeaCodusuario() {
-        return deaCodusuario;
-    }
+   public void setDeaFechamodifica(Date deaFechamodifica) {
+      this.deaFechamodifica = deaFechamodifica;
+   }
 
-    public void setDeaCodusuario(BikUsuario deaCodusuario) {
-        this.deaCodusuario = deaCodusuario;
-    }
+   public BikAgenda getDeaAgecodigo() {
+      return deaAgecodigo;
+   }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (deaCodigo != null ? deaCodigo.hashCode() : 0);
-        return hash;
-    }
+   public void setDeaAgecodigo(BikAgenda deaAgecodigo) {
+      this.deaAgecodigo = deaAgecodigo;
+   }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BikDetalleAgenda)) {
-            return false;
-        }
-        BikDetalleAgenda other = (BikDetalleAgenda) object;
-        if ((this.deaCodigo == null && other.deaCodigo != null) || (this.deaCodigo != null && !this.deaCodigo.equals(other.deaCodigo))) {
-            return false;
-        }
-        return true;
-    }
+   public BikFuncionario getDeaFuncodigo() {
+      return deaFuncodigo;
+   }
 
-    @Override
-    public String toString() {
-        return "jbiketso.model.BikDetalleAgenda[ deaCodigo=" + deaCodigo + " ]";
-    }
-    
+   public void setDeaFuncodigo(BikFuncionario deaFuncodigo) {
+      this.deaFuncodigo = deaFuncodigo;
+   }
+
+   public BikUsuario getDeaCodusuario() {
+      return deaCodusuario;
+   }
+
+   public void setDeaCodusuario(BikUsuario deaCodusuario) {
+      this.deaCodusuario = deaCodusuario;
+   }
+
+   @Override
+   public int hashCode() {
+      int hash = 0;
+      hash += (deaCodigo != null ? deaCodigo.hashCode() : 0);
+      return hash;
+   }
+
+   @Override
+   public boolean equals(Object object) {
+      // TODO: Warning - this method won't work in the case the id fields are not set
+      if (!(object instanceof BikDetalleAgenda)) {
+         return false;
+      }
+      BikDetalleAgenda other = (BikDetalleAgenda) object;
+      if ((this.deaCodigo == null && other.deaCodigo != null) || (this.deaCodigo != null && !this.deaCodigo.equals(other.deaCodigo))) {
+         return false;
+      }
+      return true;
+   }
+
+   @Override
+   public String toString() {
+      return "jbiketso.model.BikDetalleAgenda[ deaCodigo=" + deaCodigo + " ]";
+   }
+
 }
