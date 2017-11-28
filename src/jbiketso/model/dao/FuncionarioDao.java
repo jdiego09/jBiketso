@@ -57,17 +57,16 @@ public class FuncionarioDao extends BaseDao<Integer, BikFuncionario> {
         throw new CloneNotSupportedException();
     }
 
-    /*public Resultado<BikFuncionario> getFuncionarioByCedula(String cedulaFuncionario) {
+    public Resultado<BikFuncionario> getFuncionarioByCedula(String cedulaFuncionario) {
         Resultado<BikFuncionario> result = new Resultado<>();
         BikFuncionario funcionario;
         try {
-            Query query = getEntityManager().createNamedQuery("BikExpediente.findByCedulaUsuario");
-            query.setParameter("cedula", usuario.getUsuPercodigo().getPerCedula());
-            query.setParameter("codigoSede", usuario.getUsuSedcodigo().getSedCodigo());
-            expediente = (BikExpediente) query.getSingleResult();
+            Query query = getEntityManager().createNamedQuery("BikFuncionari.findByCedula");
+            query.setParameter("cedula", cedulaFuncionario);
+            funcionario = (BikFuncionario) query.getSingleResult();
 
             result.setResultado(TipoResultado.SUCCESS);
-            result.set(expediente);
+            result.set(funcionario);
             return result;
             
         } catch (NoResultException nre) {
@@ -80,6 +79,6 @@ public class FuncionarioDao extends BaseDao<Integer, BikFuncionario> {
             result.setMensaje("Error al traer información del funcionario con la cédula [" + cedulaFuncionario + "].");
             return result;
         }
-    }*/
+    }
 
 }

@@ -22,9 +22,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.converter.NumberStringConverter;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.model.dao.FuncionarioDao;
 import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikFuncionario;
 import jbiketso.model.entities.BikPersona;
@@ -188,6 +191,15 @@ public class FuncionarioController extends Controller {
         });
     }
 
+    private BikFuncionario getFuncionario(String cedula) {
+        Resultado<BikFuncionario> resultado = FuncionarioDao.getInstance().getFuncionarioByCedula(cedula);
+        if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Buscar funcionario", resultado.getMensaje());
+            return resultado.get();
+        }
+        return resultado.get();
+    }
+
     private void traerFuncionario() {
         Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(this.funcionario.getFunPercodigo().getPerCedula());
         if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
@@ -195,6 +207,23 @@ public class FuncionarioController extends Controller {
             return;
         }
         unbindFuncionario();
+        // Se busca el funcionario
+        BikFuncionario buscado = getFuncionario(this.funcionario.getFunPercodigo().getPerCedula());
+        if (buscado != null && buscado.getFunCodigo() != null) {
+            this.funcionario = buscado;
+        }
+    }
+
+    @FXML
+    void cedulaFuncionarioOnEnterKey(KeyEvent event) {
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            if (this.funcionario.getFunPercodigo().getPerCedula() != null && !this.funcionario.getFunPercodigo().getPerCedula().isEmpty()) {
+                traerFuncionario();
+            }
+        } else {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula usuario", "Debe indicar la cédula del usuario.");
+            this.jtxfCedulaFuncionario.requestFocus();
+        }
     }
 
 }

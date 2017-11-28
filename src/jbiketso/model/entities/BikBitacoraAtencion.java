@@ -35,8 +35,6 @@ public class BikBitacoraAtencion implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    @Access(AccessType.FIELD)
     protected BikBitacoraAtencionPK bikBitacoraAtencionPK;
     @Transient
     private SimpleObjectProperty<LocalDate> biaFechainicio;
