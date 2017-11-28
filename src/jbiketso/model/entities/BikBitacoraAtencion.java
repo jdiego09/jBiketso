@@ -30,13 +30,15 @@ import jbiketso.utils.GenValorCombo;
 @Table(name = "bik_bitacora_atencion", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BikBitacoraAtencion.findAll", query = "SELECT b FROM BikBitacoraAtencion b")})
+    @NamedQuery(name = "BikBitacoraAtencion.findAll", query = "SELECT b FROM BikBitacoraAtencion b")
+    , @NamedQuery(name = "BikBitacoraAtencion.findByCedulaDesc", query = "select b from BikBitacoraAtencion b join b.bikUsuario u join u.usuPercodigo p\n"
+            + "  where b.biaTipo like :tipo"
+            + "    and p.perCedula = :cedula\n"
+            + "  order by b.biaFechainicio desc")})
 public class BikBitacoraAtencion implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    @Access(AccessType.FIELD)
     protected BikBitacoraAtencionPK bikBitacoraAtencionPK;
     @Transient
     private SimpleObjectProperty<LocalDate> biaFechainicio;

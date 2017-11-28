@@ -71,7 +71,7 @@
                         <JFXComboBox fx:id="jcmbEstadoCivil" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="225.0" promptText="Estado civil" styleClass="edittext" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <JFXTextField fx:id="jtxfProfesion" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Profesión" styleClass="edittext" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                         <JFXButton fx:id="jbtnBuscar" onAction="#buscarPersona" prefHeight="30.0" prefWidth="76.0" styleClass="buttonbuscar" GridPane.columnIndex="1" />
-                        <JFXDatePicker fx:id="dtpFechaNacimiento" maxHeight="-Infinity" maxWidth="-Infinity" overLay="true" prefHeight="30.0" prefWidth="210.0" promptText="Fecha de nacimiento" styleClass="edittext" GridPane.rowIndex="2" />
+                        <JFXDatePicker fx:id="dtpFechaNacimiento" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="30.0" prefWidth="210.0" promptText="Fecha de nacimiento" styleClass="edittext" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                   <Pane layoutX="16.0" layoutY="248.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="276.0" prefWidth="780.0">

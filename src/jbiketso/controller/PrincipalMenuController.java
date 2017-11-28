@@ -117,9 +117,11 @@ public class PrincipalMenuController implements Initializable {
     final EventHandler<ActionEvent> menuPantallasHandler = (final ActionEvent event) -> {
         Object source = event.getSource();
         String pantalla = null;
+        String funcion = null;
         if (source instanceof JFXButton) {
 
-            pantalla = ((JFXButton) source).getId();
+            pantalla = ((JFXButton) source).getId().substring(0, ((JFXButton) source).getId().indexOf("-"));
+            funcion = ((JFXButton) source).getId().substring(((JFXButton) source).getId().indexOf("-") + 1);
         } else {
             pantalla = "BCK";
         }
@@ -127,12 +129,12 @@ public class PrincipalMenuController implements Initializable {
             AppWindowController.getInstance().goHome();
             setMenuModulos();
         } else {
-            accesaPantalla(pantalla);
+            accesaPantalla(pantalla, funcion);
         }
         event.consume();
     };
 
-    private void accesaPantalla(String pantalla) {
-        AppWindowController.getInstance().abrirVentanaEnPrincipal(pantalla, "Center");
+    private void accesaPantalla(String pantalla, String funcion) {
+        AppWindowController.getInstance().abrirVentanaEnPrincipal(pantalla, "Center", funcion);
     }
 }

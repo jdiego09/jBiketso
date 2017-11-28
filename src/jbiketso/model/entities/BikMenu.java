@@ -61,6 +61,8 @@ public class BikMenu implements Serializable {
     @Basic(optional = false)
     @Column(name = "men_etiqueta")
     private String menEtiqueta;
+    @Column(name = "men_funcion")
+    private String menFuncion;   
     @Basic(optional = false)
     @Column(name = "men_estado")
     private String menEstado;
@@ -197,5 +199,14 @@ public class BikMenu implements Serializable {
     public void setBikPermisoRolList(List<BikPermisoRol> bikPermisoRolList) {
         this.bikPermisoRolList = bikPermisoRolList;
     }
+
+    public String getMenFuncion() {
+        return menFuncion;
+    }
+
+    public void setMenFuncion(String menFuncion) {
+        this.menFuncion = menFuncion;
+    }
+    
     
 }

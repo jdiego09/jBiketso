@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -19,19 +20,26 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.model.dao.BitacoraAtencionDao;
+import jbiketso.model.dao.PersonaDao;
+import jbiketso.model.dao.UsuarioDao;
 import jbiketso.model.entities.BikBitacoraAtencion;
 import jbiketso.model.entities.BikSede;
 import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
 import jbiketso.utils.GenValorCombo;
+import jbiketso.utils.Resultado;
+import jbiketso.utils.TipoResultado;
 
 /**
  * FXML Controller class
@@ -39,81 +47,101 @@ import jbiketso.utils.GenValorCombo;
  * @author jdiego
  */
 public class BitacoraAtencionController extends Controller implements Initializable {
-
+    
     BikBitacoraAtencion bitacora;
     BikSede sede;
     @XmlTransient
     public ObservableList<BikBitacoraAtencion> detalleBitacora = FXCollections
             .observableArrayList();
-
+    
     @FXML
     private JFXButton jbtnSalir;
-
+    
     @FXML
     private Button btnGuardar;
-
+    
     @FXML
     private Button btnLimpiar;
-
+    
     @FXML
     private JFXComboBox<GenValorCombo> jcmbTipoAtencion;
-
+    
     @FXML
     private JFXDatePicker jdtpFecha;
-
+    
     @FXML
     private JFXTextArea jtxfDetalle;
-
+    
     @FXML
     private JFXTextField jtxfCedula;
-
+    
     @FXML
     private JFXButton btnBusqueda;
-
+    
     @FXML
     private JFXTextField jtxfNombre;
-
+    
     @FXML
     private TableView<BikBitacoraAtencion> tbvBitacora;
-
+    
     @FXML
     private TableColumn<BikBitacoraAtencion, LocalDate> tbcFecha;
-
+    
     @FXML
     private TableColumn<BikBitacoraAtencion, String> tbcDetalle;
-
+    
     @XmlTransient
     ObservableList<GenValorCombo> tipoAtencion = FXCollections
             .observableArrayList();
-
+    
     private void setTiposAtencion() {
         tipoAtencion.clear();
-        tipoAtencion.add(new GenValorCombo("A", "Asistencia"));
-        tipoAtencion.add(new GenValorCombo("C", "Chequeo médico"));
-        tipoAtencion.add(new GenValorCombo("I", "Ingreso al centro"));
-        tipoAtencion.add(new GenValorCombo("S", "Salida del centro"));
-        tipoAtencion.add(new GenValorCombo("T", "Toma de signos"));
-        tipoAtencion.add(new GenValorCombo("%", "Todos"));
-
+        if (this.getAccion().equalsIgnoreCase("q")) {
+            tipoAtencion.add(new GenValorCombo("A", "Asistencia"));
+            tipoAtencion.add(new GenValorCombo("C", "Chequeo médico"));
+            tipoAtencion.add(new GenValorCombo("I", "Ingreso al centro"));
+            tipoAtencion.add(new GenValorCombo("S", "Salida del centro"));
+            tipoAtencion.add(new GenValorCombo("T", "Toma de signos"));
+            tipoAtencion.add(new GenValorCombo("%", "Todos"));
+        }
+        if (this.getAccion().equalsIgnoreCase("a")) {
+            tipoAtencion.add(new GenValorCombo("I", "Ingreso al centro"));
+            tipoAtencion.add(new GenValorCombo("S", "Salida del centro"));
+        }
+        if (this.getAccion().equalsIgnoreCase("c")) {
+            tipoAtencion.add(new GenValorCombo("C", "Chequeo médico"));
+        }
+        if (this.getAccion().equalsIgnoreCase("t")) {
+            tipoAtencion.add(new GenValorCombo("T", "Toma de signos"));
+        }
         jcmbTipoAtencion.setItems(tipoAtencion);
+        if (!this.getAccion().equalsIgnoreCase("q")) {
+            jcmbTipoAtencion.setEditable(false);
+        }
     }
-
+    
     private void bindBitacora() {
         jcmbTipoAtencion.valueProperty().bindBidirectional(this.bitacora.getTipoAtencionProperty());
         jdtpFecha.valueProperty().bindBidirectional(this.bitacora.getFechaInicioProperty());
-        jtxfCedula.textProperty().bindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getPerCedulaProperty());
-        jtxfNombre.textProperty().bindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getNombreCompletoProperty());
         jtxfDetalle.textProperty().bindBidirectional(this.bitacora.getDetalleProperty());
     }
-
+    
+    private void bindPersona() {
+        jtxfCedula.textProperty().bindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getPerCedulaProperty());
+        jtxfNombre.textProperty().bindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getNombreCompletoProperty());
+    }
+    
     private void unbindBitacora() {
         jcmbTipoAtencion.valueProperty().unbindBidirectional(this.bitacora.getTipoAtencionProperty());
         jdtpFecha.valueProperty().unbindBidirectional(this.bitacora.getFechaInicioProperty());
-        jtxfCedula.textProperty().unbindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getPerCedulaProperty());
-        jtxfNombre.textProperty().unbindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getNombreCompletoProperty());
         jtxfDetalle.textProperty().unbindBidirectional(this.bitacora.getDetalleProperty());
     }
-
+    
+    private void unbindPersona() {
+        jtxfCedula.textProperty().unbindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getPerCedulaProperty());
+        jtxfNombre.textProperty().unbindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getNombreCompletoProperty());
+    }
+    
     private void bindDetalleBitacora() {
         if (detalleBitacora != null) {
             tbvBitacora.setItems(detalleBitacora);
@@ -122,7 +150,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
         tbcFecha.setCellValueFactory(new PropertyValueFactory<>("biaFechainicio"));
         tbcDetalle.setCellValueFactory(new PropertyValueFactory<>("biaDetalle"));
     }
-
+    
     private void nuevaAtencion() {
         this.bitacora = new BikBitacoraAtencion();
         this.bitacora.setBikUsuario(new BikUsuario());
@@ -135,10 +163,10 @@ public class BitacoraAtencionController extends Controller implements Initializa
     public void initialize(URL url, ResourceBundle rb) {
         init();
     }
-
+    
     @FXML
     private Button btnAgregar;
-
+    
     @FXML
     void agregar(MouseEvent event) {
         agregarAtencionALista(bitacora);
@@ -147,22 +175,54 @@ public class BitacoraAtencionController extends Controller implements Initializa
         bindBitacora();
         this.jcmbTipoAtencion.requestFocus();
     }
-
+    
     @FXML
     void busqueda(ActionEvent event) {
-
+        
     }
-
+    
     @FXML
     void cedulaOnEnterKey(KeyEvent event) {
-
+        if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.TAB)) {
+            traerUsuario();
+        }
     }
-
+    
+    private void traerUsuario() {
+        String cedula = jtxfCedula.getText();
+        Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(cedula);
+        if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula", cedulaValida.getMensaje());
+            this.jtxfCedula.requestFocus();
+            return;
+        }
+        unbindPersona();
+        unbindBitacora();
+        Resultado<BikUsuario> resultado = UsuarioDao.getInstance().getUsuarioByCedula(cedula);
+        if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Buscar usuario", resultado.getMensaje());
+            return;
+        }
+        if (resultado.get() != null && resultado.get().getUsuCodigo() != null && resultado.get().getUsuCodigo() > 0) {
+            this.bitacora.setBikUsuario(resultado.get());
+            //carga el detalle de la atencion recibida
+            Resultado<ArrayList<BikBitacoraAtencion>> atencionRecibida = BitacoraAtencionDao.getInstance().getDetalleBitacora(this.bitacora);
+            detalleBitacora.clear();
+            atencionRecibida.get().stream().forEach(detalleBitacora::add);
+            
+        } else {
+            nuevaAtencion();
+            this.bitacora.getBikUsuario().getUsuPercodigo().setPerCedula(cedula);
+        }
+        bindPersona();
+        bindBitacora();
+    }
+    
     @FXML
     void guardar(ActionEvent event) {
-
+        
     }
-
+    
     @FXML
     void limpiar(ActionEvent event) {
         unbindBitacora();
@@ -171,17 +231,17 @@ public class BitacoraAtencionController extends Controller implements Initializa
         bindBitacora();
         this.jcmbTipoAtencion.requestFocus();
     }
-
+    
     @FXML
     void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
     }
-
+    
     @Override
     public void initialize() {
         init();
     }
-
+    
     private void init() {
         setTiposAtencion();
         nuevaAtencion();
@@ -189,7 +249,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
         bindDetalleBitacora();
         jcmbTipoAtencion.getSelectionModel().selectFirst();
     }
-
+    
     private void agregarAtencionALista(BikBitacoraAtencion bitacora) {
         //                                                                   (bitacora.getBikBitacoraAtencionPK().getBiaCodigo() == null || bitacora.getBikBitacoraAtencionPK().getBiaCodigo() <= 0) &&
         if (bitacora != null && bitacora.getBikBitacoraAtencionPK() != null && !bitacora.getBiaDetalle().isEmpty()) {
