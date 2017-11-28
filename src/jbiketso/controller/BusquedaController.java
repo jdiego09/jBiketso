@@ -38,204 +38,211 @@ import jbiketso.utils.TipoResultado;
  */
 public class BusquedaController extends Controller implements Initializable {
 
-   BikPersona personaSeleccionada;
-   private static HashMap<String, Object> filtros = new HashMap<>();
+    BikPersona personaSeleccionada;
+    private static HashMap<String, Object> filtros = new HashMap<>();
 
-   @FXML
-   private JFXButton jbtnCancelar;
-   @FXML
-   private Pane pnlCriterios;
-   @FXML
-   private JFXButton jbtnLimpiar;
-   @FXML
-   private BorderPane root;
-   @FXML
-   private Pane pnlResultados;
-   @FXML
-   private JFXButton jbtnFiltrar;
-   @FXML
-   private TableView tbvResultados;
-   @FXML
-   private JFXButton jbtnAceptar;
+    @FXML
+    private JFXButton jbtnCancelar;
+    @FXML
+    private Pane pnlCriterios;
+    @FXML
+    private JFXButton jbtnLimpiar;
+    @FXML
+    private BorderPane root;
+    @FXML
+    private Pane pnlResultados;
+    @FXML
+    private JFXButton jbtnFiltrar;
+    @FXML
+    private TableView tbvResultados;
+    @FXML
+    private JFXButton jbtnAceptar;
 
-   private Object resultado;
-   private EventHandler<KeyEvent> keyEnter;
-   private Boolean pressEnter = false;
+    private Object resultado;
+    private EventHandler<KeyEvent> keyEnter;
+    private Boolean pressEnter = false;
 
-   /**
-    * Initializes the controller class.
-    */
-   @Override
-   public void initialize(URL url, ResourceBundle rb) {
-      // TODO
-      keyEnter = (KeyEvent event) -> {
-         if (event.getCode() == KeyCode.ENTER) {
-            pressEnter = true;
-            jbtnFiltrar.fire();
-            pressEnter = false;
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+        keyEnter = (KeyEvent event) -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                pressEnter = true;
+                jbtnFiltrar.fire();
+                pressEnter = false;
 
-            //sendTabEvent(event);
-         } else if (event.getCode() == KeyCode.ESCAPE) {
-            //cerrar();
-         }
-      };
-      resultado = null;
-   }
-
-   @Override
-   public void initialize() {
-      Platform.runLater(() -> {
-         for (Node object : pnlCriterios.getChildren()) {
-            if (object.isFocusTraversable()) {
-               object.requestFocus();
-               break;
+                //sendTabEvent(event);
+            } else if (event.getCode() == KeyCode.ESCAPE) {
+                //cerrar();
             }
-         }
-      });
-      resultado = null;
-   }
+        };
 
-   public Object getResultado() {
-      return resultado;
-   }
+        resultado = null;
+    }
 
-   @FXML
-   private void regresar(ActionEvent event) {
-      closeWindow();
-   }
+    @Override
+    public void initialize() {
+        Platform.runLater(() -> {
+            for (Node object : pnlCriterios.getChildren()) {
+                if (object.isFocusTraversable()) {
+                    object.requestFocus();
+                    break;
+                }
+            }
+        });
+        resultado = null;
+    }
 
-   public void busquedaPersonas() {
-      ArrayList<JFXTextField> criterios = new ArrayList<>();
+    public Object getResultado() {
+        return resultado;
+    }
 
-      JFXTextField jtxfCedula = new JFXTextField();
-      JFXTextField jtxfNombre = new JFXTextField();
-      JFXTextField jtxfPrimerApellido = new JFXTextField();
-      JFXTextField jtxfSegundoApellido = new JFXTextField();
-      jtxfCedula.getStyleClass().add("edittext");
-      jtxfCedula.setId("cedula");
-      jtxfCedula.setText("%");
-      jtxfCedula.setPromptText("Cédula");
-      jtxfCedula.setLabelFloat(true);
-      jtxfCedula.prefWidth(210);
-      jtxfCedula.prefHeight(35);
-      jtxfCedula.setLayoutX(8);
-      jtxfCedula.setLayoutY(20);
-      criterios.add(jtxfCedula);
+    @FXML
+    private void regresar(ActionEvent event) {
+        closeWindow();
+    }
 
-      jtxfNombre.getStyleClass().add("edittext");
-      jtxfNombre.setId("nombre");
-      jtxfNombre.setPromptText("Nombre");
-      jtxfNombre.setText("%");
-      jtxfNombre.setLabelFloat(true);
-      jtxfNombre.prefWidth(210);
-      jtxfNombre.prefHeight(35);
-      jtxfNombre.setLayoutX(8);
-      jtxfNombre.setLayoutY(80);
-      criterios.add(jtxfNombre);
+    public void busquedaPersonas() {
+        ArrayList<JFXTextField> criterios = new ArrayList<>();
 
-      jtxfPrimerApellido.getStyleClass().add("edittext");
-      jtxfPrimerApellido.setId("apellido1");
-      jtxfPrimerApellido.setPromptText("Primer apellido");
-      jtxfPrimerApellido.setText("%");
-      jtxfPrimerApellido.setLabelFloat(true);
-      jtxfPrimerApellido.prefWidth(210);
-      jtxfPrimerApellido.prefHeight(35);
-      jtxfPrimerApellido.setLayoutX(8);
-      jtxfPrimerApellido.setLayoutY(140);
-      criterios.add(jtxfPrimerApellido);
+        JFXTextField jtxfCedula = new JFXTextField();
+        JFXTextField jtxfNombre = new JFXTextField();
+        JFXTextField jtxfPrimerApellido = new JFXTextField();
+        JFXTextField jtxfSegundoApellido = new JFXTextField();
+        jtxfCedula.getStyleClass().add("edittext");
+        jtxfCedula.setId("cedula");
+        jtxfCedula.setText("%");
+        jtxfCedula.setPromptText("Cédula");
+        jtxfCedula.setLabelFloat(true);
+        jtxfCedula.prefWidth(210);
+        jtxfCedula.prefHeight(35);
+        jtxfCedula.setLayoutX(8);
+        jtxfCedula.setLayoutY(20);
+        criterios.add(jtxfCedula);
 
-      jtxfSegundoApellido.getStyleClass().add("edittext");
-      jtxfSegundoApellido.setId("apellido2");
-      jtxfSegundoApellido.setPromptText("Segundo apellido");
-      jtxfSegundoApellido.setText("%");
-      jtxfSegundoApellido.setLabelFloat(true);
-      jtxfSegundoApellido.prefWidth(210);
-      jtxfSegundoApellido.prefHeight(35);
-      jtxfSegundoApellido.setLayoutX(8);
-      jtxfSegundoApellido.setLayoutY(200);
-      criterios.add(jtxfSegundoApellido);
-      pnlCriterios.getChildren().clear();
-      criterios.stream().forEach(pnlCriterios.getChildren()::add);
+        jtxfNombre.getStyleClass().add("edittext");
+        jtxfNombre.setId("nombre");
+        jtxfNombre.setPromptText("Nombre");
+        jtxfNombre.setText("%");
+        jtxfNombre.setLabelFloat(true);
+        jtxfNombre.prefWidth(210);
+        jtxfNombre.prefHeight(35);
+        jtxfNombre.setLayoutX(8);
+        jtxfNombre.setLayoutY(80);
+        criterios.add(jtxfNombre);
 
-      TableColumn<BikPersona, String> tbcCedula = new TableColumn<>("Cédula");
-      tbcCedula.setPrefWidth(100);
-      tbcCedula.setCellValueFactory(cd -> cd.getValue().getPerCedulaProperty());
-      TableColumn<BikPersona, String> tbcNombre = new TableColumn<>("Nombre");
-      tbcNombre.setPrefWidth(400);
-      tbcNombre.setCellValueFactory(cd -> cd.getValue().getNombreCompletoProperty());
-      tbvResultados.getColumns().clear();
-      tbvResultados.getItems().clear();
-      tbvResultados.getColumns().add(tbcCedula);
-      tbvResultados.getColumns().add(tbcNombre);
-      tbvResultados.refresh();
+        jtxfPrimerApellido.getStyleClass().add("edittext");
+        jtxfPrimerApellido.setId("apellido1");
+        jtxfPrimerApellido.setPromptText("Primer apellido");
+        jtxfPrimerApellido.setText("%");
+        jtxfPrimerApellido.setLabelFloat(true);
+        jtxfPrimerApellido.prefWidth(210);
+        jtxfPrimerApellido.prefHeight(35);
+        jtxfPrimerApellido.setLayoutX(8);
+        jtxfPrimerApellido.setLayoutY(140);
+        criterios.add(jtxfPrimerApellido);
 
-      setBuscaPersonasListener(jtxfCedula);
-      setBuscaPersonasListener(jtxfNombre);
-      setBuscaPersonasListener(jtxfPrimerApellido);
-      setBuscaPersonasListener(jtxfSegundoApellido);
+        jtxfSegundoApellido.getStyleClass().add("edittext");
+        jtxfSegundoApellido.setId("apellido2");
+        jtxfSegundoApellido.setPromptText("Segundo apellido");
+        jtxfSegundoApellido.setText("%");
+        jtxfSegundoApellido.setLabelFloat(true);
+        jtxfSegundoApellido.prefWidth(210);
+        jtxfSegundoApellido.prefHeight(35);
+        jtxfSegundoApellido.setLayoutX(8);
+        jtxfSegundoApellido.setLayoutY(200);
+        criterios.add(jtxfSegundoApellido);
+        pnlCriterios.getChildren().clear();
+        criterios.stream().forEach(pnlCriterios.getChildren()::add);
 
-      jbtnFiltrar.setOnAction((ActionEvent event) -> {
-         filtros.clear();
-         filtros.put(jtxfCedula.getId(), jtxfCedula.getText());
-         filtros.put(jtxfNombre.getId(), jtxfNombre.getText());
-         filtros.put(jtxfPrimerApellido.getId(), jtxfPrimerApellido.getText());
-         filtros.put(jtxfSegundoApellido.getId(), jtxfSegundoApellido.getText());
-         buscarPersonas();
-      });
-      jbtnLimpiar.setOnAction((ActionEvent event) -> {
-         filtros.clear();
-         jtxfCedula.setText("%");
-         jtxfNombre.setText("%");
-         jtxfPrimerApellido.setText("%");
-         jtxfSegundoApellido.setText("%");
-         buscarPersonas();
-      });
+        TableColumn<BikPersona, String> tbcCedula = new TableColumn<>("Cédula");
+        tbcCedula.setPrefWidth(100);
+        tbcCedula.setCellValueFactory(cd -> cd.getValue().getPerCedulaProperty());
+        TableColumn<BikPersona, String> tbcNombre = new TableColumn<>("Nombre");
+        tbcNombre.setPrefWidth(400);
+        tbcNombre.setCellValueFactory(cd -> cd.getValue().getNombreCompletoProperty());
+        tbvResultados.getColumns().clear();
+        tbvResultados.getItems().clear();
+        tbvResultados.getColumns().add(tbcCedula);
+        tbvResultados.getColumns().add(tbcNombre);
+        tbvResultados.refresh();
 
-   }
+        tbvResultados.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                this.resultado = newSelection;
+            }
+        });
 
-   private void buscarPersonas() {
-      if (filtros.get("cedula") == null) {
-         filtros.put("cedula", "");
-      }
-      if (filtros.get("nombre") == null) {
-         filtros.put("nombre", "");
-      }
-      if (filtros.get("apellido1") == null) {
-         filtros.put("apellido1", "");
-      }
-      if (filtros.get("apellido2") == null) {
-         filtros.put("apellido2", "");
-      }
-      Resultado<ArrayList<BikPersona>> personas = PersonaDao.getInstance().getPersonasFiltro(filtros.get("cedula").toString(), filtros.get("nombre").toString(), filtros.get("apellido1").toString(), filtros.get("apellido2").toString());
-      if (personas.getResultado().equals(TipoResultado.SUCCESS)) {
-         tbvResultados.setItems(FXCollections.observableArrayList(personas.get()));
-         tbvResultados.refresh();
-      }
-   }
+        setBuscaPersonasListener(jtxfCedula);
+        setBuscaPersonasListener(jtxfNombre);
+        setBuscaPersonasListener(jtxfPrimerApellido);
+        setBuscaPersonasListener(jtxfSegundoApellido);
 
-   private void setBuscaPersonasListener(TextField textfield) {
-      textfield.setOnKeyPressed((KeyEvent ke) -> {
-         if (ke.getCode().equals(KeyCode.ENTER)) {
-            filtros.put(textfield.getId(), textfield.getText());
+        jbtnFiltrar.setOnAction((ActionEvent event) -> {
+            filtros.clear();
+            filtros.put(jtxfCedula.getId(), jtxfCedula.getText());
+            filtros.put(jtxfNombre.getId(), jtxfNombre.getText());
+            filtros.put(jtxfPrimerApellido.getId(), jtxfPrimerApellido.getText());
+            filtros.put(jtxfSegundoApellido.getId(), jtxfSegundoApellido.getText());
             buscarPersonas();
-         }
-      });
-   }
+        });
+        jbtnLimpiar.setOnAction((ActionEvent event) -> {
+            filtros.clear();
+            jtxfCedula.setText("%");
+            jtxfNombre.setText("%");
+            jtxfPrimerApellido.setText("%");
+            jtxfSegundoApellido.setText("%");
+            buscarPersonas();
+        });
 
-   @FXML
-   void aceptarBusqueda(ActionEvent event) {
-      Resultado<Object> resultado = new Resultado<>();
-      resultado.set(tbvResultados.getSelectionModel().getSelectedItem());
-      Aplicacion.getInstance().setResultadoBusqueda(resultado);
-      closeWindow();
-   }
+    }
 
-   private void closeWindow() {
+    private void buscarPersonas() {
+        if (filtros.get("cedula") == null) {
+            filtros.put("cedula", "");
+        }
+        if (filtros.get("nombre") == null) {
+            filtros.put("nombre", "");
+        }
+        if (filtros.get("apellido1") == null) {
+            filtros.put("apellido1", "");
+        }
+        if (filtros.get("apellido2") == null) {
+            filtros.put("apellido2", "");
+        }
+        Resultado<ArrayList<BikPersona>> personas = PersonaDao.getInstance().getPersonasFiltro(filtros.get("cedula").toString(), filtros.get("nombre").toString(), filtros.get("apellido1").toString(), filtros.get("apellido2").toString());
+        if (personas.getResultado().equals(TipoResultado.SUCCESS)) {
+            tbvResultados.setItems(FXCollections.observableArrayList(personas.get()));
+            tbvResultados.refresh();
+        }
+    }
 
-      jbtnAceptar.getScene().getWindow().hide();
-   }
+    private void setBuscaPersonasListener(TextField textfield) {
+        textfield.setOnKeyPressed((KeyEvent ke) -> {
+            if (ke.getCode().equals(KeyCode.ENTER)) {
+                filtros.put(textfield.getId(), textfield.getText());
+                buscarPersonas();
+            }
+        });
+    }
 
-   /*
+    @FXML
+    void aceptarBusqueda(ActionEvent event) {
+        Resultado<Object> resultado = new Resultado<>();
+        resultado.set(tbvResultados.getSelectionModel().getSelectedItem());
+        Aplicacion.getInstance().setResultadoBusqueda(resultado);
+        closeWindow();
+    }
+
+    private void closeWindow() {
+
+        jbtnAceptar.getScene().getWindow().hide();
+    }
+
+    /*
    public void busquedaSorteo() {
         try {
 

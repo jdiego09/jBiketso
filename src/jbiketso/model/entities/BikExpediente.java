@@ -218,7 +218,7 @@ public class BikExpediente implements Serializable {
       if (expEstado.equalsIgnoreCase("a")) {
          valor = new GenValorCombo(expEstado, "Activo");
       } else {
-         valor = new GenValorCombo(expEstado, "Inactivo");
+         valor = new GenValorCombo(expEstado, "Egresado");
       }
       if (this.expEstado == null) {
          this.expEstado = new SimpleObjectProperty();

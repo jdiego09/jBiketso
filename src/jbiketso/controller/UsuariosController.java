@@ -7,9 +7,12 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -239,7 +242,7 @@ public class UsuariosController extends Controller implements Initializable {
     private void init() {
         this.estados.clear();
         this.estados.add(new GenValorCombo("A", "Activo"));
-        this.estados.add(new GenValorCombo("I", "Inactivo"));
+        this.estados.add(new GenValorCombo("E", "Egresado"));
         this.jcmbEstado.setItems(this.estados);
 
         this.tiposAtencion.clear();
@@ -275,6 +278,16 @@ public class UsuariosController extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         init();
+        this.jcmbEstado.valueProperty().addListener(new ChangeListener<GenValorCombo>() {
+            @Override
+            public void changed(ObservableValue<? extends GenValorCombo> observable, GenValorCombo oldValue, GenValorCombo newValue) {
+                if (expediente.getExpCodigo() != null && expediente.getExpCodigo() > 0 && newValue != null && newValue.getCodigo().equalsIgnoreCase("e")) {
+                    jdtpFechaSalida.setValue(LocalDate.now());
+                } else {
+                    jdtpFechaSalida.setValue(null);
+                }
+            }
+        });
     }
 
     private void addListenerTablePadecimientos(TableView table) {

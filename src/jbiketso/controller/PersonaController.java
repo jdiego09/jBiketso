@@ -334,6 +334,7 @@ public class PersonaController extends Controller implements Initializable {
       BikPersona buscado = (BikPersona) busquedaController.getResultado();
 
       if (buscado != null) {
+          this.jtxfCedula.setText(buscado.getPerCedula());
          validarPersona();
       }
    }
@@ -358,7 +359,7 @@ public class PersonaController extends Controller implements Initializable {
 
    @FXML
    void contactoOnKeyPress(KeyEvent event) {
-      if (event.getCode() == KeyCode.ENTER) {
+      if (event.getCode().equals(KeyCode.ENTER)) {
          agregarContactoALista(contacto);
          unbindContacto();
          nuevoContacto();
@@ -369,7 +370,7 @@ public class PersonaController extends Controller implements Initializable {
 
    @FXML
    void direccionOnKeyPress(KeyEvent event) {
-      if (event.getCode() == KeyCode.ENTER) {
+      if (event.getCode().equals(KeyCode.ENTER)) {
          agregarDireccionALista(direccion);
          unbindDireccion();
          nuevaDireccion();

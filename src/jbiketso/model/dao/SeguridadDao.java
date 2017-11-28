@@ -7,13 +7,11 @@ package jbiketso.model.dao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import javax.persistence.Query;
-import jbiketso.model.entities.BikMenu;
 import jbiketso.model.entities.BikModulos;
 import jbiketso.model.entities.BikPermisoRol;
 import jbiketso.utils.Aplicacion;
