@@ -42,18 +42,18 @@ import jbiketso.utils.TipoResultado;
 public class FuncionarioController extends Controller {
 
     private BikFuncionario funcionario;
-    private BikPersona personaFuncionario;
-    private BikPuesto puesto;
-    private BikSede sede;
+    //private BikPersona personaFuncionario;
+    //private BikPuesto puesto;
+    //private BikSede sede;
 
     @FXML
     private JFXButton jbtnBuscarPuesto, jbtnBuscarSede, jbtnSalir, jbtnBuscarFuncionario;
 
-    @FXML
+    /*@FXML
     private TableColumn<BikPersona, String> tbcNombreFuncionario;
     
     @FXML
-    private TableColumn<BikPuesto, String> tbcPuesto;
+    private TableColumn<BikPuesto, String> tbcPuesto;*/
 
     @FXML
     private Button btnLimpiar, btnGuardaFuncionario;
@@ -61,8 +61,8 @@ public class FuncionarioController extends Controller {
     @FXML
     private JFXTextField jtxfCedulaFuncionario, jtxfCodSede, jtxfSalarioBase, jtxfNombreFuncionario, jtxfDesSede, jtxjDesPuesto, jtxfCodPuesto, jtxfObservacion;
 
-    @FXML
-    private TableView<BikFuncionario> tbvFuncionarios;
+    //@FXML
+    //private TableView<BikFuncionario> tbvFuncionarios;
 
     @FXML
     private AnchorPane acpRoot;
@@ -70,9 +70,9 @@ public class FuncionarioController extends Controller {
     @FXML
     private JFXComboBox<GenValorCombo> jcmbTipo, jcmbEstado;
 
-    @XmlTransient
+    /*@XmlTransient
     private ObservableList<BikFuncionario> funcionarios = FXCollections
-            .observableArrayList();
+            .observableArrayList();*/
 
     @XmlTransient
     private ObservableList<GenValorCombo> tipos = FXCollections
@@ -94,7 +94,7 @@ public class FuncionarioController extends Controller {
         this.funcionario.setFunSedcodigo(new BikSede());
     }
 
-    private void nuevaPersonaFuncionario() {
+    /*private void nuevaPersonaFuncionario() {
         this.personaFuncionario = new BikPersona();
     }
 
@@ -104,7 +104,7 @@ public class FuncionarioController extends Controller {
 
     private void nuevaSede() {
         this.sede = new BikSede();
-    }
+    }*/
 
     private void iniciarForma() {
 
@@ -126,20 +126,20 @@ public class FuncionarioController extends Controller {
             unbindFuncionario();
         }
 
-        this.funcionarios.clear();
+        //this.funcionarios.clear();
 
         nuevoFuncionario();
         //nuevaPersonaFuncionario();
         //nuevoPuesto();
         //nuevaSede();
         bindFuncionario();
-        bindListaFuncionarios();
+        //bindListaFuncionarios();
 
-        addListenerTable(tbvFuncionarios);
+        //addListenerTable(tbvFuncionarios);
 
-        Resultado<ArrayList<BikFuncionario>> funcionariosResult = FuncionarioDao.getInstance().getFuncionarios();
-        funcionarios.clear();
-        funcionariosResult.get().stream().forEach(funcionarios::add);
+        //Resultado<ArrayList<BikFuncionario>> funcionariosResult = FuncionarioDao.getInstance().getFuncionarios();
+        //funcionarios.clear();
+        //funcionariosResult.get().stream().forEach(funcionarios::add);
 
     }
 
@@ -177,14 +177,14 @@ public class FuncionarioController extends Controller {
         jcmbEstado.valueProperty().unbindBidirectional(this.funcionario.getEstadoProperty());
     }
 
-    private void bindListaFuncionarios() {
+    /*private void bindListaFuncionarios() {
         if (this.funcionarios != null) {
             tbvFuncionarios.setItems(this.funcionarios);
             tbvFuncionarios.refresh();
         }
         tbcNombreFuncionario.setCellValueFactory(new PropertyValueFactory<>("nombreCompleto"));
         tbcPuesto.setCellValueFactory(new PropertyValueFactory<>("pueDescripcion"));
-    }
+    }*/
 
     private void addListenerTable(TableView table) {
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
