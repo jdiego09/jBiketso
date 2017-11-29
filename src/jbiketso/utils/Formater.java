@@ -30,7 +30,7 @@ public class Formater {
 
     private static Formater INSTANCE = null;
 
-    public DateTimeFormatter formatDateShort = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+    public DateTimeFormatter formatDateShort = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT); 
     public DateTimeFormatter formatDateMedium = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
     public DecimalFormat decimalFormat = new DecimalFormat("#,###,###,##0.00");
     public DecimalFormat integerFormat = new DecimalFormat("#,###,###,##0");
