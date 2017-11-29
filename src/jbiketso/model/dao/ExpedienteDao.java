@@ -14,6 +14,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikExpediente;
 import jbiketso.model.entities.BikMedicamento;
+import jbiketso.model.entities.BikNivelSocioeconomico;
 import jbiketso.model.entities.BikPadecimiento;
 import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.Aplicacion;
@@ -82,7 +83,7 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             result.setMensaje("El expediente para el usuario con la cédula [" + usuario.getUsuPercodigo().getPerCedula() + "], no se encuentra registrado.");
             return result;
         } catch (Exception ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExpedienteDao.class.getName()).log(Level.SEVERE, null, ex);
             result.setResultado(TipoResultado.ERROR);
             result.setMensaje("Error al traer información del expediente para el usuario con la cédula [" + usuario.getUsuPercodigo().getPerCedula() + "].");
             return result;
@@ -140,7 +141,7 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             resultado.setResultado(TipoResultado.WARNING);
             return resultado;
         } catch (Exception ex) {
-            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExpedienteDao.class.getName()).log(Level.SEVERE, null, ex);
             resultado.setResultado(TipoResultado.ERROR);
             resultado.setMensaje("Error al traer medicamentos del usuario [" + expediente.getExpUsucodigo().getUsuPercodigo().getNombreCompleto() + "].");
             return resultado;
@@ -189,9 +190,31 @@ public class ExpedienteDao extends BaseDao<Integer, BikExpediente> {
             resultado.setResultado(TipoResultado.WARNING);
             return resultado;
         } catch (Exception ex) {
-            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExpedienteDao.class.getName()).log(Level.SEVERE, null, ex);
             resultado.setResultado(TipoResultado.ERROR);
             resultado.setMensaje("Error al traer padecimientos del usuario [" + expediente.getExpUsucodigo().getUsuPercodigo().getNombreCompleto() + "].");
+            return resultado;
+        }
+    }
+
+    public Resultado<ArrayList<BikNivelSocioeconomico>> getNivelesSocioeconomicos() {
+        Resultado<ArrayList<BikNivelSocioeconomico>> resultado = new Resultado<>();
+        ArrayList<BikNivelSocioeconomico> listaNiveles = new ArrayList<>();
+        List<BikNivelSocioeconomico> niveles;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikNivelSocioeconomico.findAll");
+            niveles = query.getResultList();
+            niveles.stream().forEach(listaNiveles::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaNiveles);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(ExpedienteDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer niveles socioeconómicos.");
             return resultado;
         }
     }

@@ -255,7 +255,7 @@ public class AppWindowController {
     }
 
     public void loadHomeImage() {
-        AppWindowController.getInstance().abrirVentanaEnPrincipal("bik_inicio", "Center", null);
+        AppWindowController.getInstance().abrirVentanaEnPrincipal("bik_inicio", "Center");
     }
 
     public void goHome() {

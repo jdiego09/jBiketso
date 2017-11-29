@@ -65,6 +65,27 @@
     -fx-background-position:  center;
 }
 
+.actionbuttonlimpiar{
+    -fx-background-color: white;
+    -fx-text-fill: transparent;
+    -fx-fill: transparent;
+    -fx-background-image: url("../view/images/clear.png");
+    -fx-background-size: 32px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:  center;
+}
+
+.actionbuttonimprimir{
+    -fx-background-color: white;
+    -fx-text-fill: transparent;
+    -fx-fill: transparent;
+    -fx-background-image: url("../view/images/print.png");
+    -fx-background-size: 32px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:  center;
+}
+
+
 .actionbuttonsalir{
     -fx-background-color: transparent;
     -fx-text-fill: transparent;
@@ -113,14 +134,13 @@
 
 .edittext{
     -jfx-focus-color: #00796b;
+    -jfx-unfocus-color: #000000;
     -fx-width: 100%;
     -fx-height: 40;
-    -fx-margin: 10%;
-    -fx-font: 18 System;
-    
+    -fx-font: 18 System;   
 }
 
-.tableview .cell{
+.tableview .row .cell{
     -fx-font: 18 System;
 }
 

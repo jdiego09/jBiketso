@@ -44,407 +44,457 @@ import jbiketso.utils.GenValorCombo;
 @Table(name = "bik_expediente", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
-   @NamedQuery(name = "BikExpediente.findAll", query = "SELECT b FROM BikExpediente b")
-   , @NamedQuery(name = "BikExpediente.findByExpCodigo", query = "SELECT b FROM BikExpediente b WHERE b.expCodigo = :expCodigo")
-   , @NamedQuery(name = "BikExpediente.findByCedulaUsuario", query = "SELECT b FROM BikExpediente b join b.expUsucodigo u join u.usuPercodigo p join u.usuSedcodigo s WHERE s.sedCodigo = :codigoSede\n" +
-"and p.perCedula = :cedula")
+    @NamedQuery(name = "BikExpediente.findAll", query = "SELECT b FROM BikExpediente b")
+    , @NamedQuery(name = "BikExpediente.findByExpCodigo", query = "SELECT b FROM BikExpediente b WHERE b.expCodigo = :expCodigo")
+    , @NamedQuery(name = "BikExpediente.findByCedulaUsuario", query = "SELECT b FROM BikExpediente b join b.expUsucodigo u join u.usuPercodigo p join u.usuSedcodigo s WHERE s.sedCodigo = :codigoSede\n"
+            + "and p.perCedula = :cedula")
 })
 public class BikExpediente implements Serializable {
 
-   private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-   @Transient
-   private SimpleIntegerProperty codigo;
-   @Transient
-   private SimpleObjectProperty<LocalDate> expFechaIngreso;
-   @Transient
-   private SimpleObjectProperty<LocalDate> expFechaSalida;
-   @Transient
-   private ObjectProperty<GenValorCombo> expEstado;
-   @Transient
-   private ObjectProperty<GenValorCombo> expTipoAtencion;
-   @Transient
-   private SimpleIntegerProperty expEstudioSocioeconomico;
-   @Transient
-   private SimpleIntegerProperty expPersonasHogar;
-   @Transient
-   private SimpleIntegerProperty expDependientes;
-   @Transient
-   private SimpleDoubleProperty expIngresoPromedio;
+    @Transient
+    private SimpleIntegerProperty codigo;
+    @Transient
+    private SimpleObjectProperty<LocalDate> expFechaIngreso;
+    @Transient
+    private SimpleObjectProperty<LocalDate> expFechaSalida;
+    @Transient
+    private ObjectProperty<GenValorCombo> expEstado;
+    @Transient
+    private ObjectProperty<GenValorCombo> expTipoAtencion;
 
-   @Column(name = "exp_usuarioingresa")
-   private String expUsuarioingresa;
-   @Column(name = "exp_fechaingresa")
-   @Temporal(TemporalType.TIMESTAMP)
-   private Date expFechaingresa;
-   @Column(name = "exp_usuariomodifica")
-   private String expUsuariomodifica;
-   @Column(name = "exp_fechamodifica")
-   @Temporal(TemporalType.TIMESTAMP)
-   private Date expFechamodifica;
-   @OneToMany(cascade = CascadeType.ALL, mappedBy = "codigoExpediente", fetch = FetchType.LAZY)
-   private List<BikPadecimiento> bikPadecimientoList;
-   @JoinColumn(name = "exp_usucodigo", referencedColumnName = "usu_codigo")
-   @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
-   private BikUsuario expUsucodigo;
-   @OneToMany(cascade = CascadeType.ALL, mappedBy = "codigoExpediente", fetch = FetchType.LAZY)
-   private List<BikMedicamento> bikMedicamentoList;
-   @OneToMany(cascade = CascadeType.ALL, mappedBy = "bikExpediente", fetch = FetchType.LAZY)
-   private List<BikRequisitosExpediente> bikRequisitosExpedienteList;
+    @Transient
+    private SimpleIntegerProperty expPersonasHogar;
+    @Transient
+    private SimpleIntegerProperty expDependientes;
+    @Transient
+    private SimpleDoubleProperty expIngresoPromedio;
+    @Transient
+    private SimpleDoubleProperty expMontoCuota;
+    @Transient
+    private ObjectProperty<GenValorCombo> expPeriodicidadPago;
 
-   public BikExpediente() {
-      this.codigo = new SimpleIntegerProperty();
-      this.expFechaIngreso = new SimpleObjectProperty(LocalDate.now());
-      this.expFechaSalida = new SimpleObjectProperty();
-      this.expEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
-      this.expTipoAtencion = new SimpleObjectProperty(new GenValorCombo("D", "Por día"));
-      this.expEstudioSocioeconomico = new SimpleIntegerProperty(0);
-      this.expPersonasHogar = new SimpleIntegerProperty(0);
-      this.expDependientes = new SimpleIntegerProperty(0);
-      this.expIngresoPromedio = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
-   }
+    @Column(name = "exp_nivelsocioeconomico")
+    private Integer expNivelsocioeconomico;
+    @Column(name = "exp_usuarioingresa")
+    private String expUsuarioingresa;
+    @Column(name = "exp_fechaingresa")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date expFechaingresa;
+    @Column(name = "exp_usuariomodifica")
+    private String expUsuariomodifica;
+    @Column(name = "exp_fechamodifica")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date expFechamodifica;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codigoExpediente", fetch = FetchType.LAZY)
+    private List<BikPadecimiento> bikPadecimientoList;
+    @JoinColumn(name = "exp_usucodigo", referencedColumnName = "usu_codigo")
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    private BikUsuario expUsucodigo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codigoExpediente", fetch = FetchType.LAZY)
+    private List<BikMedicamento> bikMedicamentoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bikExpediente", fetch = FetchType.LAZY)
+    private List<BikRequisitosExpediente> bikRequisitosExpedienteList;
 
-   public BikExpediente(Boolean inicializar) {
-      this.codigo = new SimpleIntegerProperty();
-      this.expFechaIngreso = new SimpleObjectProperty(LocalDate.now());
-      this.expFechaSalida = new SimpleObjectProperty();
-      this.expEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
-      this.expTipoAtencion = new SimpleObjectProperty(new GenValorCombo("D", "Por día"));
-      this.expEstudioSocioeconomico = new SimpleIntegerProperty(0);
-      this.expPersonasHogar = new SimpleIntegerProperty(0);
-      this.expDependientes = new SimpleIntegerProperty(0);
-      this.expIngresoPromedio = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
-      if (inicializar) {
-         this.expUsucodigo = new BikUsuario();
-         this.bikMedicamentoList = new ArrayList<>();
-         this.bikPadecimientoList = new ArrayList<>();
-      }
-   }
+    public BikExpediente() {
+        this.codigo = new SimpleIntegerProperty();
+        this.expFechaIngreso = new SimpleObjectProperty(LocalDate.now());
+        this.expFechaSalida = new SimpleObjectProperty();
+        this.expEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
+        this.expTipoAtencion = new SimpleObjectProperty(new GenValorCombo("D", "Por día"));
+        this.expNivelsocioeconomico = 0;
+        this.expPersonasHogar = new SimpleIntegerProperty(0);
+        this.expDependientes = new SimpleIntegerProperty(0);
+        this.expIngresoPromedio = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
+        this.expMontoCuota = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
+        this.expPeriodicidadPago = new SimpleObjectProperty(new GenValorCombo("Q", "Quincenal"));
+    }
 
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Basic(optional = false)
-   @Column(name = "exp_codigo")
-   @Access(AccessType.PROPERTY)
-   public Integer getExpCodigo() {
-      if (this.codigo == null) {
-         this.codigo = new SimpleIntegerProperty();
-      }
-      return codigo.get();
-   }
+    public BikExpediente(Boolean inicializar) {
+        this.codigo = new SimpleIntegerProperty();
+        this.expFechaIngreso = new SimpleObjectProperty(LocalDate.now());
+        this.expFechaSalida = new SimpleObjectProperty();
+        this.expEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
+        this.expTipoAtencion = new SimpleObjectProperty(new GenValorCombo("D", "Por día"));
+        this.expNivelsocioeconomico = 0;
+        this.expPersonasHogar = new SimpleIntegerProperty(0);
+        this.expDependientes = new SimpleIntegerProperty(0);
+        this.expIngresoPromedio = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
+        this.expMontoCuota = new SimpleDoubleProperty(BigDecimal.ZERO.doubleValue());
+        this.expPeriodicidadPago = new SimpleObjectProperty(new GenValorCombo("Q", "Quincenal"));
 
-   public SimpleIntegerProperty getCodigoProperty() {
-      if (this.codigo == null) {
-         this.codigo = new SimpleIntegerProperty();
-      }
-      return this.codigo;
-   }
+        if (inicializar) {
+            this.expUsucodigo = new BikUsuario();
+            this.bikMedicamentoList = new ArrayList<>();
+            this.bikPadecimientoList = new ArrayList<>();
+        }
+    }
 
-   public void setExpCodigo(Integer expCodigo) {
-      if (this.codigo == null) {
-         this.codigo = new SimpleIntegerProperty();
-      }
-      this.codigo.set(expCodigo);
-   }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "exp_codigo")
+    @Access(AccessType.PROPERTY)
+    public Integer getExpCodigo() {
+        if (this.codigo == null) {
+            this.codigo = new SimpleIntegerProperty();
+        }
+        return codigo.get();
+    }
 
-   @Basic(optional = false)
-   @Column(name = "exp_fechaingreso")
-   @Temporal(TemporalType.DATE)
-   @Access(AccessType.PROPERTY)
-   public Date getExpFechaIngreso() {
-      if (expFechaIngreso != null && expFechaIngreso.get() != null) {
-         return Date.from(expFechaIngreso.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
-      } else {
-         return null;
-      }
-   }
+    public SimpleIntegerProperty getCodigoProperty() {
+        if (this.codigo == null) {
+            this.codigo = new SimpleIntegerProperty();
+        }
+        return this.codigo;
+    }
 
-   public SimpleObjectProperty<LocalDate> getExpFechaIngresoProperty() {
-      if (this.expFechaIngreso == null) {
-         this.expFechaIngreso = new SimpleObjectProperty();
-      }
-      return this.expFechaIngreso;
-   }
+    public void setExpCodigo(Integer expCodigo) {
+        if (this.codigo == null) {
+            this.codigo = new SimpleIntegerProperty();
+        }
+        this.codigo.set(expCodigo);
+    }
 
-   public void setExpFechaIngreso(Date expFechaingreso) {
-      if (expFechaingreso != null) {
-         this.expFechaIngreso.set(expFechaingreso.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-      }
-   }
+    @Basic(optional = false)
+    @Column(name = "exp_fechaingreso")
+    @Temporal(TemporalType.DATE)
+    @Access(AccessType.PROPERTY)
+    public Date getExpFechaIngreso() {
+        if (expFechaIngreso != null && expFechaIngreso.get() != null) {
+            return Date.from(expFechaIngreso.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } else {
+            return null;
+        }
+    }
 
-   @Column(name = "exp_fechasalida")
-   @Temporal(TemporalType.DATE)
-   @Access(AccessType.PROPERTY)
-   public Date getExpFechaSalida() {
-      if (expFechaSalida != null && expFechaSalida.get() != null) {
-         return Date.from(expFechaSalida.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
-      } else {
-         return null;
-      }
-   }
+    public SimpleObjectProperty<LocalDate> getExpFechaIngresoProperty() {
+        if (this.expFechaIngreso == null) {
+            this.expFechaIngreso = new SimpleObjectProperty();
+        }
+        return this.expFechaIngreso;
+    }
 
-   public SimpleObjectProperty<LocalDate> getExpFechaSalidaProperty() {
-      if (this.expFechaSalida == null) {
-         this.expFechaSalida = new SimpleObjectProperty();
-      }
-      return this.expFechaSalida;
-   }
+    public void setExpFechaIngreso(Date expFechaingreso) {
+        if (expFechaingreso != null) {
+            this.expFechaIngreso.set(expFechaingreso.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        }
+    }
 
-   public void setExpFechaSalida(Date fechaSalida) {
-      if (fechaSalida != null) {
-         this.expFechaIngreso.set(fechaSalida.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-      }
-   }
+    @Column(name = "exp_fechasalida")
+    @Temporal(TemporalType.DATE)
+    @Access(AccessType.PROPERTY)
+    public Date getExpFechaSalida() {
+        if (expFechaSalida != null && expFechaSalida.get() != null) {
+            return Date.from(expFechaSalida.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } else {
+            return null;
+        }
+    }
 
-   @Basic(optional = false)
-   @Column(name = "exp_estado")
-   @Access(AccessType.PROPERTY)
-   public String getExpEstado() {
-      if (this.expEstado == null) {
-         this.expEstado = new SimpleObjectProperty();
-      }
-      return expEstado.get().getCodigo();
-   }
+    public SimpleObjectProperty<LocalDate> getExpFechaSalidaProperty() {
+        if (this.expFechaSalida == null) {
+            this.expFechaSalida = new SimpleObjectProperty();
+        }
+        return this.expFechaSalida;
+    }
 
-   public ObjectProperty getEstadoProperty() {
-      if (this.expEstado == null) {
-         this.expEstado = new SimpleObjectProperty();
-      }
-      return this.expEstado;
-   }
+    public void setExpFechaSalida(Date fechaSalida) {
+        if (fechaSalida != null) {
+            this.expFechaIngreso.set(fechaSalida.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        }
+    }
 
-   public void setExpEstado(String expEstado) {
-      GenValorCombo valor = null;
-      if (expEstado.equalsIgnoreCase("a")) {
-         valor = new GenValorCombo(expEstado, "Activo");
-      } else {
-         valor = new GenValorCombo(expEstado, "Egresado");
-      }
-      if (this.expEstado == null) {
-         this.expEstado = new SimpleObjectProperty();
-      }
-      this.expEstado.set(valor);
-   }
+    @Basic(optional = false)
+    @Column(name = "exp_estado")
+    @Access(AccessType.PROPERTY)
+    public String getExpEstado() {
+        if (this.expEstado == null) {
+            this.expEstado = new SimpleObjectProperty();
+        }
+        return expEstado.get().getCodigo();
+    }
 
-   @Basic(optional = false)
-   @Column(name = "exp_tipoatencion")
-   @Access(AccessType.PROPERTY)
-   public String getExpTipoatencion() {
-      if (this.expTipoAtencion == null) {
-         this.expTipoAtencion = new SimpleObjectProperty();
-      }
-      return expTipoAtencion.get().getCodigo();
-   }
+    public ObjectProperty getEstadoProperty() {
+        if (this.expEstado == null) {
+            this.expEstado = new SimpleObjectProperty();
+        }
+        return this.expEstado;
+    }
 
-   public ObjectProperty getTipoAtencionProperty() {
-      if (this.expTipoAtencion == null) {
-         this.expTipoAtencion = new SimpleObjectProperty();
-      }
-      return this.expTipoAtencion;
-   }
+    public void setExpEstado(String expEstado) {
+        GenValorCombo valor = null;
+        if (expEstado.equalsIgnoreCase("a")) {
+            valor = new GenValorCombo(expEstado, "Activo");
+        } else {
+            valor = new GenValorCombo(expEstado, "Egresado");
+        }
+        if (this.expEstado == null) {
+            this.expEstado = new SimpleObjectProperty();
+        }
+        this.expEstado.set(valor);
+    }
 
-   public void setExpTipoatencion(String expTipoatencion) {
-      GenValorCombo valor = null;
-      if (expTipoatencion.equalsIgnoreCase("d")) {
-         //por días
-         valor = new GenValorCombo(expTipoatencion, "Días");
-      }
-      if (expTipoatencion.equalsIgnoreCase("p")) {
-         //permanente
-         valor = new GenValorCombo(expTipoatencion, "Permanente 24h");
-      }
-      //ver que otras había
-      if (this.expTipoAtencion == null) {
-         this.expTipoAtencion = new SimpleObjectProperty();
-      }
-      this.expTipoAtencion.set(valor);
-   }
+    @Basic(optional = false)
+    @Column(name = "exp_tipoatencion")
+    @Access(AccessType.PROPERTY)
+    public String getExpTipoatencion() {
+        if (this.expTipoAtencion == null) {
+            this.expTipoAtencion = new SimpleObjectProperty();
+        }
+        return expTipoAtencion.get().getCodigo();
+    }
 
-   @Column(name = "exp_estudiosocioeconomico")
-   @Access(AccessType.PROPERTY)
-   public Integer getExpEstudiosocioeconomico() {
-      if (this.expEstudioSocioeconomico == null) {
-         this.expEstudioSocioeconomico = new SimpleIntegerProperty();
-      }
-      return this.expEstudioSocioeconomico.get();
-   }
+    public ObjectProperty getTipoAtencionProperty() {
+        if (this.expTipoAtencion == null) {
+            this.expTipoAtencion = new SimpleObjectProperty();
+        }
+        return this.expTipoAtencion;
+    }
 
-   public SimpleIntegerProperty getEstudioSocioEconomicoProperty() {
-      if (this.expEstudioSocioeconomico == null) {
-         this.expEstudioSocioeconomico = new SimpleIntegerProperty();
-      }
-      return this.expEstudioSocioeconomico;
-   }
+    public void setExpTipoatencion(String expTipoatencion) {
+        GenValorCombo valor = null;
+        switch (expTipoatencion.toLowerCase()) {
+            case "d":
+                valor = new GenValorCombo("D", "Días");
+                break;
+            case "p":
+                valor = new GenValorCombo("P", "Permanente 24 horas");
+                break;
+            default:
+                valor = new GenValorCombo("D", "Días");
+                break;
+        }
+        this.expTipoAtencion.set(valor);
+    }
 
-   public void setExpEstudiosocioeconomico(Integer expEstudiosocioeconomico) {
-      if (this.expEstudioSocioeconomico == null) {
-         this.expEstudioSocioeconomico = new SimpleIntegerProperty();
-      }
-      this.expEstudioSocioeconomico.set(expEstudiosocioeconomico);
-   }
+    public Integer getExpNivelsocioeconomico() {
+        return this.expNivelsocioeconomico;
+    }
 
-   @Column(name = "exp_personashogar")
-   @Access(AccessType.PROPERTY)
-   public Integer getExpPersonashogar() {
-      if (this.expPersonasHogar == null) {
-         this.expPersonasHogar = new SimpleIntegerProperty();
-      }
-      return Integer.parseInt(String.valueOf(this.expPersonasHogar.get()));
-   }
+    public void setExpNivelsocioeconomico(Integer expEstudiosocioeconomico) {
+        this.expNivelsocioeconomico = expEstudiosocioeconomico;
+    }
 
-   public SimpleIntegerProperty getPersonasHogarProperty() {
-      if (this.expPersonasHogar == null) {
-         this.expPersonasHogar = new SimpleIntegerProperty();
-      }
-      return this.expPersonasHogar;
-   }
+    @Column(name = "exp_personashogar")
+    @Access(AccessType.PROPERTY)
+    public Integer getExpPersonashogar() {
+        if (this.expPersonasHogar == null) {
+            this.expPersonasHogar = new SimpleIntegerProperty();
+        }
+        return Integer.parseInt(String.valueOf(this.expPersonasHogar.get()));
+    }
 
-   public void setExpPersonashogar(Integer expPersonashogar) {
-      if (this.expPersonasHogar == null) {
-         this.expPersonasHogar = new SimpleIntegerProperty();
-      }
-      this.expPersonasHogar.set(expPersonashogar);
-   }
+    public SimpleIntegerProperty getPersonasHogarProperty() {
+        if (this.expPersonasHogar == null) {
+            this.expPersonasHogar = new SimpleIntegerProperty();
+        }
+        return this.expPersonasHogar;
+    }
 
-   @Column(name = "exp_dependientes")
-   @Access(AccessType.PROPERTY)
-   public Integer getExpDependientes() {
-      if (this.expDependientes == null) {
-         this.expDependientes = new SimpleIntegerProperty();
-      }
-      return Integer.parseInt(String.valueOf(this.expDependientes.get()));
-   }
+    public void setExpPersonashogar(Integer expPersonashogar) {
+        if (this.expPersonasHogar == null) {
+            this.expPersonasHogar = new SimpleIntegerProperty();
+        }
+        this.expPersonasHogar.set(expPersonashogar);
+    }
 
-   public SimpleIntegerProperty getPersonasDependientesProperty() {
-      if (this.expDependientes == null) {
-         this.expDependientes = new SimpleIntegerProperty();
-      }
-      return this.expDependientes;
-   }
+    @Column(name = "exp_dependientes")
+    @Access(AccessType.PROPERTY)
+    public Integer getExpDependientes() {
+        if (this.expDependientes == null) {
+            this.expDependientes = new SimpleIntegerProperty();
+        }
+        return Integer.parseInt(String.valueOf(this.expDependientes.get()));
+    }
 
-   public void setExpDependientes(Integer expDependientes) {
-      if (this.expDependientes == null) {
-         this.expDependientes = new SimpleIntegerProperty();
-      }
-      this.expDependientes.set(expDependientes);
-   }
+    public SimpleIntegerProperty getPersonasDependientesProperty() {
+        if (this.expDependientes == null) {
+            this.expDependientes = new SimpleIntegerProperty();
+        }
+        return this.expDependientes;
+    }
 
-   @Column(name = "exp_ingresopromedio")
-   @Access(AccessType.PROPERTY)
-   public Double getExpIngresopromedio() {
-      if (this.expIngresoPromedio == null) {
-         this.expIngresoPromedio = new SimpleDoubleProperty();
-      }
-      return this.expIngresoPromedio.get();
+    public void setExpDependientes(Integer expDependientes) {
+        if (this.expDependientes == null) {
+            this.expDependientes = new SimpleIntegerProperty();
+        }
+        this.expDependientes.set(expDependientes);
+    }
 
-   }
+    @Column(name = "exp_ingresopromedio")
+    @Access(AccessType.PROPERTY)
+    public Double getExpIngresopromedio() {
+        if (this.expIngresoPromedio == null) {
+            this.expIngresoPromedio = new SimpleDoubleProperty();
+        }
+        return this.expIngresoPromedio.get();
 
-   public SimpleDoubleProperty getIngresoPromedioProperty() {
-      if (this.expIngresoPromedio == null) {
-         this.expIngresoPromedio = new SimpleDoubleProperty();
-      }
-      return this.expIngresoPromedio;
-   }
+    }
 
-   public void setExpIngresopromedio(Double expIngresopromedio) {
-      if (this.expIngresoPromedio == null) {
-         this.expIngresoPromedio = new SimpleDoubleProperty();
-      }
-      this.expIngresoPromedio.set(expIngresopromedio);
-   }
+    public SimpleDoubleProperty getIngresoPromedioProperty() {
+        if (this.expIngresoPromedio == null) {
+            this.expIngresoPromedio = new SimpleDoubleProperty();
+        }
+        return this.expIngresoPromedio;
+    }
 
-   public String getExpUsuarioingresa() {
-      return expUsuarioingresa;
-   }
+    public void setExpIngresopromedio(Double expIngresopromedio) {
+        if (this.expIngresoPromedio == null) {
+            this.expIngresoPromedio = new SimpleDoubleProperty();
+        }
+        this.expIngresoPromedio.set(expIngresopromedio);
+    }
 
-   public void setExpUsuarioingresa(String expUsuarioingresa) {
-      this.expUsuarioingresa = expUsuarioingresa;
-   }
+    @Column(name = "exp_montocuota")
+    @Access(AccessType.PROPERTY)
+    public Double getExpMontoCuota() {
+        if (this.expMontoCuota == null) {
+            this.expMontoCuota = new SimpleDoubleProperty();
+        }
+        return this.expMontoCuota.get();
 
-   public Date getExpFechaingresa() {
-      return expFechaingresa;
-   }
+    }
 
-   public void setExpFechaingresa(Date expFechaingresa) {
-      this.expFechaingresa = expFechaingresa;
-   }
+    public SimpleDoubleProperty getMontoCuotaProperty() {
+        if (this.expMontoCuota == null) {
+            this.expMontoCuota = new SimpleDoubleProperty();
+        }
+        return this.expMontoCuota;
+    }
 
-   public String getExpUsuariomodifica() {
-      return expUsuariomodifica;
-   }
+    public void setExpMontoCuota(Double expMontoCuota) {
+        if (this.expMontoCuota == null) {
+            this.expMontoCuota = new SimpleDoubleProperty();
+        }
+        this.expMontoCuota.set(expMontoCuota);
+    }
 
-   public void setExpUsuariomodifica(String expUsuariomodifica) {
-      this.expUsuariomodifica = expUsuariomodifica;
-   }
+    @Column(name = "exp_periodicidadpago")
+    @Access(AccessType.PROPERTY)
+    public String getExpPeriodicidadPago() {
+        if (this.expPeriodicidadPago == null) {
+            this.expPeriodicidadPago = new SimpleObjectProperty();
+        }
+        return expPeriodicidadPago.get().getCodigo();
+    }
 
-   public Date getExpFechamodifica() {
-      return expFechamodifica;
-   }
+    public ObjectProperty getPeriodicidadPagoProperty() {
+        if (this.expPeriodicidadPago == null) {
+            this.expPeriodicidadPago = new SimpleObjectProperty();
+        }
+        return this.expPeriodicidadPago;
+    }
 
-   public void setExpFechamodifica(Date expFechamodifica) {
-      this.expFechamodifica = expFechamodifica;
-   }
+    public void setExpPeriodicidadPago(String expPeriodicidadPago) {
+        GenValorCombo valor = null;
+        switch (expPeriodicidadPago.toLowerCase()) {
+            case "q":
+                valor = new GenValorCombo("Q", "Quincenal");
+                break;
+            case "m":
+                valor = new GenValorCombo("M", "Mensual");
+                break;
+            default:
+                valor = new GenValorCombo("Q", "Quincenal");
+                break;
+        }
+        this.expPeriodicidadPago.set(valor);
+    }
 
-   public List<BikPadecimiento> getBikPadecimientoList() {
-      return bikPadecimientoList;
-   }
+    public String getExpUsuarioingresa() {
+        return expUsuarioingresa;
+    }
 
-   public void setBikPadecimientoList(List<BikPadecimiento> bikPadecimientoList) {
-      this.bikPadecimientoList = bikPadecimientoList;
-   }
+    public void setExpUsuarioingresa(String expUsuarioingresa) {
+        this.expUsuarioingresa = expUsuarioingresa;
+    }
 
-   public BikUsuario getExpUsucodigo() {
-      return expUsucodigo;
-   }
+    public Date getExpFechaingresa() {
+        return expFechaingresa;
+    }
 
-   public void setExpUsucodigo(BikUsuario expUsucodigo) {
-      this.expUsucodigo = expUsucodigo;
-   }
+    public void setExpFechaingresa(Date expFechaingresa) {
+        this.expFechaingresa = expFechaingresa;
+    }
 
-   public List<BikMedicamento> getBikMedicamentoList() {
-      return bikMedicamentoList;
-   }
+    public String getExpUsuariomodifica() {
+        return expUsuariomodifica;
+    }
 
-   public void setBikMedicamentoList(List<BikMedicamento> bikMedicamentoList) {
-      this.bikMedicamentoList = bikMedicamentoList;
-   }
+    public void setExpUsuariomodifica(String expUsuariomodifica) {
+        this.expUsuariomodifica = expUsuariomodifica;
+    }
 
-   public List<BikRequisitosExpediente> getBikRequisitosExpedienteList() {
-      return bikRequisitosExpedienteList;
-   }
+    public Date getExpFechamodifica() {
+        return expFechamodifica;
+    }
 
-   public void setBikRequisitosExpedienteList(List<BikRequisitosExpediente> bikRequisitosExpedienteList) {
-      this.bikRequisitosExpedienteList = bikRequisitosExpedienteList;
-   }
+    public void setExpFechamodifica(Date expFechamodifica) {
+        this.expFechamodifica = expFechamodifica;
+    }
 
-   @Override
-   public int hashCode() {
-      int hash = 5;
-      hash = 37 * hash + Objects.hashCode(this.codigo);
-      return hash;
-   }
+    public List<BikPadecimiento> getBikPadecimientoList() {
+        return bikPadecimientoList;
+    }
 
-   @Override
-   public boolean equals(Object obj) {
-      if (this == obj) {
-         return true;
-      }
-      if (obj == null) {
-         return false;
-      }
-      if (getClass() != obj.getClass()) {
-         return false;
-      }
-      final BikExpediente other = (BikExpediente) obj;
-      if (!Objects.equals(this.codigo, other.codigo)) {
-         return false;
-      }
-      return true;
-   }
+    public void setBikPadecimientoList(List<BikPadecimiento> bikPadecimientoList) {
+        this.bikPadecimientoList = bikPadecimientoList;
+    }
 
-   @Override
-   public String toString() {
-      return "jbiketso.model.BikExpediente[ expCodigo=" + codigo.get() + " ]";
-   }
+    public BikUsuario getExpUsucodigo() {
+        return expUsucodigo;
+    }
+
+    public void setExpUsucodigo(BikUsuario expUsucodigo) {
+        this.expUsucodigo = expUsucodigo;
+    }
+
+    public List<BikMedicamento> getBikMedicamentoList() {
+        return bikMedicamentoList;
+    }
+
+    public void setBikMedicamentoList(List<BikMedicamento> bikMedicamentoList) {
+        this.bikMedicamentoList = bikMedicamentoList;
+    }
+
+    public List<BikRequisitosExpediente> getBikRequisitosExpedienteList() {
+        return bikRequisitosExpedienteList;
+    }
+
+    public void setBikRequisitosExpedienteList(List<BikRequisitosExpediente> bikRequisitosExpedienteList) {
+        this.bikRequisitosExpedienteList = bikRequisitosExpedienteList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.codigo);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BikExpediente other = (BikExpediente) obj;
+        if (!Objects.equals(this.codigo, other.codigo)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "jbiketso.model.BikExpediente[ expCodigo=" + codigo.get() + " ]";
+    }
 
 }

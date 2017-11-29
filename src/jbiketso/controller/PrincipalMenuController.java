@@ -93,7 +93,11 @@ public class PrincipalMenuController implements Initializable {
         menuPantallas.stream().forEach(m -> {
             JFXButton btn = new JFXButton();
             btn.setText(m.getProCodigomenu().getMenEtiqueta());
-            btn.setId(String.valueOf(m.getProCodigomenu().getMenPantalla()));
+            if (m.getProCodigomenu().getMenFuncion() != null && !m.getProCodigomenu().getMenFuncion().isEmpty()) {
+                btn.setId(m.getProCodigomenu().getMenPantalla() + "-" + m.getProCodigomenu().getMenFuncion());
+            } else {
+                btn.setId(m.getProCodigomenu().getMenPantalla());
+            }
             btn.getStyleClass().add("buttonmenu");
             btn.setMaxWidth(Integer.MAX_VALUE);
             btn.setMinHeight(ALTOBOTON);
@@ -119,9 +123,12 @@ public class PrincipalMenuController implements Initializable {
         String pantalla = null;
         String funcion = null;
         if (source instanceof JFXButton) {
-
-            pantalla = ((JFXButton) source).getId().substring(0, ((JFXButton) source).getId().indexOf("-"));
-            funcion = ((JFXButton) source).getId().substring(((JFXButton) source).getId().indexOf("-") + 1);
+            if (((JFXButton) source).getId().indexOf("-") >= 0) {
+                pantalla = ((JFXButton) source).getId().substring(0, ((JFXButton) source).getId().indexOf("-"));
+                funcion = ((JFXButton) source).getId().substring(((JFXButton) source).getId().indexOf("-") + 1);
+            } else {
+                pantalla = ((JFXButton) source).getId();
+            }
         } else {
             pantalla = "BCK";
         }
