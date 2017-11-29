@@ -11,6 +11,7 @@ package jbiketso.controller;
  */
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -69,6 +70,9 @@ public class FuncionarioController extends Controller {
 
     @FXML
     private JFXComboBox<GenValorCombo> jcmbTipo, jcmbEstado;
+
+    @FXML
+    private JFXDatePicker jdtpFechaIngreso, jdtpFechaSalida;
 
     /*@XmlTransient
     private ObservableList<BikFuncionario> funcionarios = FXCollections
@@ -184,7 +188,7 @@ public class FuncionarioController extends Controller {
         }
         tbcNombreFuncionario.setCellValueFactory(new PropertyValueFactory<>("nombreCompleto"));
         tbcPuesto.setCellValueFactory(new PropertyValueFactory<>("pueDescripcion"));
-    }*/
+    }
 
     private void addListenerTable(TableView table) {
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -195,7 +199,7 @@ public class FuncionarioController extends Controller {
                 bindFuncionario();
             }
         });
-    }
+    }*/
 
     private BikFuncionario getFuncionario(String cedula) {
         Resultado<BikFuncionario> resultado = FuncionarioDao.getInstance().getFuncionarioByCedula(cedula);
