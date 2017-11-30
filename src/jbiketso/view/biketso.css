@@ -135,6 +135,7 @@
 .edittext{
     -jfx-focus-color: #00796b;
     -jfx-unfocus-color: #000000;
+    -jfx-label-float: true;
     -fx-width: 100%;
     -fx-height: 40;
     -fx-font: 18 System;   
