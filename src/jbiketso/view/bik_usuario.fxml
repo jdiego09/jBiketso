@@ -54,21 +54,17 @@
       <JFXTextField fx:id="jtxfCedulaEncargado" labelFloat="true" layoutX="27.0" layoutY="136.0" onKeyPressed="#encargadoOnEnterKey" prefHeight="35.0" prefWidth="169.0" promptText="Cédula encargado" styleClass="edittext" />
       <JFXButton layoutX="196.0" layoutY="134.0" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
       <JFXTextField fx:id="jtxfNombreEncargado" editable="false" focusTraversable="false" labelFloat="true" layoutX="237.0" layoutY="136.0" prefHeight="35.0" prefWidth="538.0" promptText="Nombre encargado" styleClass="edittext" unFocusColor="#00796b" />
-      <Label layoutX="27.0" layoutY="175.0" text="Expediente">
-         <font>
-            <Font size="18.0" />
-         </font></Label>
-      <Separator layoutX="11.0" layoutY="203.0" prefHeight="0.0" prefWidth="927.0" />
+      <Separator layoutX="11.0" layoutY="205.0" prefHeight="0.0" prefWidth="927.0" />
       <JFXTextField fx:id="jtxfExpediente" alignment="CENTER_RIGHT" editable="false" focusTraversable="false" labelFloat="true" layoutX="31.0" layoutY="235.0" prefHeight="35.0" prefWidth="105.0" promptText="# Expediente" styleClass="edittext" />
-      <JFXComboBox fx:id="jcmbTipoAtencion" labelFloat="true" layoutX="144.0" layoutY="233.0" prefHeight="39.0" prefWidth="341.0" promptText="Tipo de atención" styleClass="edittext" />
-      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="496.0" layoutY="233.0" prefHeight="35.0" prefWidth="120.0" promptText="Estado" styleClass="edittext" />
-      <JFXDatePicker fx:id="jdtpFechaIngreso" layoutX="623.0" layoutY="237.0" overLay="true" prefHeight="35.0" prefWidth="162.0" promptText="Fecha de ingreso" styleClass="edittext" />
-      <JFXDatePicker fx:id="jdtpFechaSalida" layoutX="785.0" layoutY="237.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLay="true" prefHeight="35.0" prefWidth="162.0" promptText="Fecha de salida" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbTipoAtencion" labelFloat="true" layoutX="144.0" layoutY="235.0" prefHeight="39.0" prefWidth="277.0" promptText="Tipo de atención" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="429.0" layoutY="235.0" prefHeight="39.0" prefWidth="169.0" promptText="Estado" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaIngreso" layoutX="613.0" layoutY="235.0" prefHeight="39.0" prefWidth="150.0" promptText="Fecha de ingreso" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaSalida" layoutX="785.0" layoutY="235.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="150.0" promptText="Fecha de salida" styleClass="edittext" />
       <JFXTextField fx:id="jtxfCantidadPersonas" alignment="CENTER_RIGHT" labelFloat="true" layoutX="31.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="105.0" promptText="Habitantes" styleClass="edittext" />
       <JFXTextField fx:id="jtxfCantidadDependientes" alignment="CENTER_RIGHT" labelFloat="true" layoutX="144.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="105.0" promptText="Dependientes" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfIngresoPromedio" alignment="CENTER_RIGHT" labelFloat="true" layoutX="261.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="176.0" promptText="Ingreso promedio" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfNivelEconomico" labelFloat="true" layoutX="447.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="169.0" promptText="Nivel económico" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfMontoCuota" alignment="CENTER_RIGHT" labelFloat="true" layoutX="623.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="150.0" promptText="Cuota" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfIngresoPromedio" alignment="CENTER_RIGHT" labelFloat="true" layoutX="258.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="162.0" promptText="Ingreso promedio" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfNivelEconomico" labelFloat="true" layoutX="429.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="169.0" promptText="Nivel económico" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfMontoCuota" alignment="CENTER_RIGHT" labelFloat="true" layoutX="613.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="150.0" promptText="Cuota" styleClass="edittext" />
       <JFXComboBox fx:id="jcmbTipoPago" labelFloat="true" layoutX="785.0" layoutY="295.0" prefHeight="39.0" prefWidth="150.0" promptText="Tipo pago" styleClass="edittext" />
       <TabPane layoutX="30.0" layoutY="350.0" prefHeight="236.0" prefWidth="906.0" styleClass="form" tabClosingPolicy="UNAVAILABLE">
         <tabs>

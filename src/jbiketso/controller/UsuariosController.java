@@ -294,7 +294,7 @@ public class UsuariosController extends Controller implements Initializable {
         bindListaMedicamentos();
         this.jcmbEstado.getSelectionModel().selectFirst();
         this.jcmbTipoAtencion.getSelectionModel().selectFirst();
-
+        
         addListenerTablePadecimientos(tbvPadecimiento);
         addListenerTableMedicamentos(tbvMedicamentos);
     }
@@ -424,6 +424,12 @@ public class UsuariosController extends Controller implements Initializable {
     @FXML
     void guardarUsuario(ActionEvent event) {
         //guarda el expediente
+        if (!this.expediente.getExpEstado().equalsIgnoreCase("a")) {
+            if (!AppWindowController.getInstance().mensajeConfimacion("Actualizar estado del expediente", "El usuario se marcará como egresado, "
+                    + "una vez realizado el cambio no se podrá modificar más la información del expediente ni del usuario ¿Desea continuar?")) {
+                return;
+            }
+        }
         if (this.expediente.getExpUsucodigo().getUsuSedcodigo() == null || this.expediente.getExpUsucodigo().getUsuSedcodigo().getSedCodigo() == null || this.expediente.getExpUsucodigo().getUsuSedcodigo().getSedCodigo() <= 0) {
             this.expediente.getExpUsucodigo().setUsuSedcodigo(Aplicacion.getInstance().getDefaultSede());
         }
@@ -447,6 +453,7 @@ public class UsuariosController extends Controller implements Initializable {
 
     @FXML
     void limpiar(ActionEvent event) {
+        habilitaCampos(true);
         unbindExpediente();
         unbindPadecimiento();
         unbindMedicamento();
@@ -500,6 +507,9 @@ public class UsuariosController extends Controller implements Initializable {
         BikExpediente buscado = getExpediente(this.expediente.getExpUsucodigo());
         if (buscado != null && buscado.getExpCodigo() != null && buscado.getExpCodigo() > 0) {
             this.expediente = buscado;
+            this.jtxfCedula.setEditable(false);
+            habilitaCampos(this.expediente.getExpEstado().equalsIgnoreCase("a"));
+
             this.jtxfNivelEconomico.setText(listaNiveles.stream().filter(n -> n.getNseCodigo().equals(this.expediente.getExpNivelsocioeconomico())).findFirst().get().getNseDescripcion());
             //carga los padecimientos
             Resultado<ArrayList<BikPadecimiento>> padecimientosResult = ExpedienteDao.getInstance().getPadecimientosActivos(this.expediente);
@@ -626,5 +636,33 @@ public class UsuariosController extends Controller implements Initializable {
     @FXML
     void imprimirExpediente(ActionEvent event) {
 
+    }
+
+    private void habilitaCampos(boolean habilita) {
+        //botones
+        this.btnGuardar.setDisable(!habilita);
+        this.btnImpExpediente.setDisable(!habilita);
+        this.btnImpContrato.setDisable(!habilita);
+        this.jbtnAgregarPadecimiento.setDisable(!habilita);
+        this.jbtnEliminarPadecimiento.setDisable(!habilita);
+        this.jbtnAgregarMedicamento.setDisable(!habilita);
+        this.jbtnEliminarMedicamento.setDisable(!habilita);
+        
+        //campos de texto
+        this.jtxfCedula.setEditable(habilita);
+        this.jtxfCedulaEncargado.setEditable(habilita);
+        this.jdtpFechaIngreso.setEditable(habilita);
+        this.jdtpFechaSalida.setEditable(habilita);
+        this.jcmbEstado.setEditable(habilita);
+        this.jcmbTipoAtencion.setEditable(habilita);
+        this.jtxfCantidadPersonas.setEditable(habilita);
+        this.jtxfCantidadDependientes.setEditable(habilita);
+        this.jtxfIngresoPromedio.setEditable(habilita);
+        this.jtxfMontoCuota.setEditable(habilita);
+        this.jcmbTipoPago.setEditable(habilita);
+        this.jtxfMedicamento.setEditable(habilita);
+        this.jtxaObservacionesMedicamento.setEditable(habilita);
+        this.jtxfPadecimiento.setEditable(habilita);
+        this.jtxaObservacionesPadecimiento.setEditable(habilita);
     }
 }
