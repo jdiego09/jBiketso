@@ -17,10 +17,10 @@
       <JFXTextField fx:id="jtxfCedulaFuncionario" labelFloat="true" layoutX="14.0" layoutY="74.0" onKeyPressed="#cedulaFuncionarioOnEnterKey" prefHeight="35.0" prefWidth="155.0" promptText="Cédula funcionario" styleClass="edittext" />
       <JFXButton fx:id="jbtnBuscarFuncionario" layoutX="173.0" layoutY="71.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
       <JFXTextField fx:id="jtxfNombreFuncionario" labelFloat="true" layoutX="220.0" layoutY="74.0" prefHeight="35.0" prefWidth="431.0" promptText="Nombre funcionario" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfCodPuesto" labelFloat="true" layoutX="14.0" layoutY="129.0" prefHeight="25.0" prefWidth="155.0" promptText="Puesto" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfCodPuesto" labelFloat="true" layoutX="14.0" layoutY="129.0" onKeyPressed="#codigoPuestoOnEnterKey" prefHeight="25.0" prefWidth="155.0" promptText="Puesto" styleClass="edittext" />
       <JFXButton fx:id="jbtnBuscarPuesto" layoutX="173.0" layoutY="126.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
       <JFXTextField fx:id="jtxjDesPuesto" labelFloat="true" layoutX="220.0" layoutY="129.0" prefHeight="35.0" prefWidth="431.0" promptText="Descripción puesto" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfCodSede" labelFloat="true" layoutX="14.0" layoutY="186.0" prefHeight="35.0" prefWidth="155.0" promptText="Sede" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfCodSede" labelFloat="true" layoutX="14.0" layoutY="186.0" onKeyPressed="#codigoSedeOnEnterKey" prefHeight="35.0" prefWidth="155.0" promptText="Sede" styleClass="edittext" />
       <JFXButton fx:id="jbtnBuscarSede" layoutX="173.0" layoutY="183.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
       <JFXTextField fx:id="jtxfDesSede" labelFloat="true" layoutX="220.0" layoutY="186.0" prefHeight="35.0" prefWidth="431.0" promptText="Descripción sede" styleClass="edittext" />
       <JFXComboBox fx:id="jcmbTipo" labelFloat="true" layoutX="14.0" layoutY="248.0" prefHeight="39.0" prefWidth="155.0" promptText="Tipo" styleClass="edittext" />
@@ -41,7 +41,7 @@
                   <Tooltip text="Limpiar" />
                </tooltip>
             </Button>
-            <Button fx:id="btnGuardaFuncionario" layoutX="12.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="37.0" styleClass="actionbuttonguardar" text="Button" />
+            <Button fx:id="btnGuardaFuncionario" layoutX="12.0" layoutY="5.0" onAction="#guardarFuncionario" mnemonicParsing="false" prefHeight="30.0" prefWidth="37.0" styleClass="actionbuttonguardar" text="Button" />
             <Label layoutX="201.0" layoutY="8.0" text="Registro de funcionarios" textFill="#f8f8f8">
                <font>
                   <Font size="24.0" />

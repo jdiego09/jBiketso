@@ -6,12 +6,14 @@
 package jbiketso.model.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikFuncionario;
+import jbiketso.utils.Aplicacion;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -49,7 +51,7 @@ public class FuncionarioDao extends BaseDao<Integer, BikFuncionario> {
         return INSTANCE;
     }
 
-    public void setPersona(BikFuncionario funcionario) {
+    public void setFuncionario(BikFuncionario funcionario) {
         this.funcionario = funcionario;
     }
 
@@ -102,6 +104,29 @@ public class FuncionarioDao extends BaseDao<Integer, BikFuncionario> {
             resultado.setResultado(TipoResultado.ERROR);
             resultado.setMensaje("Error al traer la lista completa de funcionarios.");
             return resultado;
+        }
+    }
+    
+    public Resultado<BikFuncionario> save() {
+        Resultado<BikFuncionario> result = new Resultado<>();
+        try {
+            if (this.funcionario.getFunCodigo() == null || this.funcionario.getFunCodigo() <= 0) {
+                this.funcionario.setFunUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                this.funcionario.setFunFechaingresa(new Date());
+            } else {
+                this.funcionario.setFunUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
+                this.funcionario.setFunFechamodifica(new Date());
+            }
+            this.funcionario = (BikFuncionario) super.save(this.funcionario);
+            result.setResultado(TipoResultado.SUCCESS);
+            result.set(this.funcionario);
+            result.setMensaje("La información del funcionario se guardó correctamente.");
+            return result;
+        } catch (Exception ex) {
+            Logger.getLogger(ModuloDao.class.getName()).log(Level.SEVERE, null, ex);
+            result.setResultado(TipoResultado.ERROR);
+            result.setMensaje("Error al guardar la información del funcionario [" + this.funcionario.getFunPercodigo().getNombreCompleto() + "].");
+            return result;
         }
     }
 
