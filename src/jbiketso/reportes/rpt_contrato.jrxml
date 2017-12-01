@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-11-30T22:28:30 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_contrato" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="70" rightMargin="70" topMargin="56" bottomMargin="56" uuid="accd0558-cf98-41f4-ae09-d05bfc8af2fb">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Biketso"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<parameter name="codigoExpediente" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Código del expediente]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+    CONCAT(c.cen_nombre, ' ', s.sed_nombre) nombreCentro,
+    c.cen_cedulajuridica cedulaCentro,
+    s.sed_telefonos telefonoCentro,
+    s.sed_email correoCentro,
+    c.cen_logo urlLogo,
+    CONCAT(p.per_nombres,
+                    ' ',
+                    p.per_primerapellido,
+                    ' ',
+                    p.per_segundoapellido) nombreEncargado,
+    CONCAT('Por este medio yo, ',
+            CONCAT(p.per_nombres,
+                    ' ',
+                    p.per_primerapellido,
+                    ' ',
+                    p.per_segundoapellido),
+            ' con número de cédula, ',
+            p.per_cedula,
+            ' en calidad de encargado directo de la señor(a) ',
+            CONCAT(v.per_nombres,
+                    ' ',
+                    v.per_primerapellido,
+                    ' ',
+                    v.per_segundoapellido),
+            ', cédula ',
+            v.per_cedula,
+            'hago constar que fui informado por parte del Centro Casa de Reposo el Valle de los aspectos generales de Ingreso al centro, tales como las cuotas a cancelar según la modalidad escogida: ',
+            CASE
+                WHEN e.exp_tipoatencion = 'D' THEN 'diaria'
+                WHEN e.exp_tipoatencion = 'P' THEN ' usuario fijo '
+            END,
+            ' (cuota ',
+            CASE
+                WHEN e.exp_periodicidadpago = 'Q' THEN 'quincenal'
+                WHEN e.exp_periodicidadpago = 'M' THEN 'mensual'
+            END,
+            ' de ',
+            format(e.exp_montocuota,2),
+            ' colones), en caso de fallecimiento igual si utilizare pañales, y leche especial tratamientos especiales, me hago responsable, Las formalidades de trabajo con los adultos Mayores (actividades recreativas, charlas) y horarios de visita (de lunes a domingo de 12:00 am a 5:00pm) entre otros aspectos establecidos por dicha institución.',
+            '\n\nSe fija para los primeros al seis de cada mes el pago respectivo por los servicios brindados por el centro Casa de Reposo el Valle.',
+            '\n\nAceptada la información otorgada por el Centro Casa de Reposo el Valle dejo en pie el contrato entre la institución y mi persona el día ', date_format(curdate(),'%d'), ' de ', date_format(curdate(),'%M'),' del año ', date_format(curdate(),'%Y'), '.',
+'\n\nNota: Al incumplirse con el contrato este queda nulo entre las partes y al existir alguna deuda con la institución esta deberá ser cancelada, ') texto
+FROM
+    biketso.bik_centro c,
+    biketso.bik_sede s,
+    biketso.bik_expediente e,
+    biketso.bik_usuario u,
+    biketso.bik_persona p,
+    biketso.bik_persona v
+WHERE
+    c.cen_codigo = s.sed_cencodigo
+        AND s.sed_codigo = u.usu_sedcodigo
+        AND u.usu_codigo = e.exp_usucodigo
+        AND p.per_codigo = u.usu_codencargadolegal
+        AND v.per_codigo = u.usu_percodigo
+        AND e.exp_codigo =  $P{codigoExpediente}]]>
+	</queryString>
+	<field name="nombreCentro" class="java.lang.String"/>
+	<field name="cedulaCentro" class="java.lang.String"/>
+	<field name="telefonoCentro" class="java.lang.String"/>
+	<field name="correoCentro" class="java.lang.String"/>
+	<field name="urlLogo" class="java.lang.String"/>
+	<field name="nombreEncargado" class="java.lang.String"/>
+	<field name="texto" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="131" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="330" height="20" uuid="bab8ac3a-7571-4644-8ddd-964a391eca90"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreCentro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="330" height="19" uuid="6e790b14-9818-4e58-a0e5-893eeb41d0c0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cédula Jurídica: " + $F{cedulaCentro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="39" width="330" height="20" uuid="f4a0a7b8-18fe-4598-be21-e677c49c49e5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Teléfono: " + $F{telefonoCentro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="59" width="330" height="21" uuid="d1b24e74-2925-426a-baf8-213b29acf897"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Correo: " + $F{correoCentro}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+				<reportElement x="380" y="0" width="90" height="68" uuid="c036f738-653e-477b-9160-75fa6a8ff012"/>
+				<imageExpression><![CDATA[$F{urlLogo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="110" width="470" height="19" uuid="5ac48bba-adac-4c4a-a325-48c87968ed3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[CONTRATO INGRESO AL CENTRO CASA DE REPOSO EL VALLE]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="300" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="20" width="470" height="260" uuid="ac8c6e7e-4d9d-4974-8c9d-6948d69e1042"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="12"/>
+					<paragraph lineSpacing="1_1_2" lineSpacingSize="1.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{texto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="70" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="49" width="210" height="20" uuid="9b0726b2-f387-4c28-aee3-48c63075581d"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreEncargado}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="262" y="49" width="210" height="1" uuid="5b4686e7-44a1-4844-94c3-eb535f5723d3"/>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>
