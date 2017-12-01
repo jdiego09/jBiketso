@@ -85,7 +85,7 @@ public class BikFuncionario implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BikPuesto funPuecodigo;
     @JoinColumn(name = "fun_sedcodigo", referencedColumnName = "sed_codigo")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BikSede funSedcodigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deaFuncodigo", fetch = FetchType.LAZY)
     private List<BikDetalleAgenda> bikDetalleAgendaList;

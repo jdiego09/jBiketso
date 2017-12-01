@@ -8,9 +8,7 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -81,8 +79,6 @@ public class BikSede implements Serializable {
     @JoinColumn(name = "sed_codencargado", referencedColumnName = "per_codigo")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BikPersona sedCodencargado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pueSedcodigo", fetch = FetchType.LAZY)
-    private List<BikPuesto> bikPuestoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuSedcodigo", fetch = FetchType.LAZY)
     private List<BikUsuario> bikUsuarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ageSedcodigo", fetch = FetchType.LAZY)
@@ -295,15 +291,6 @@ public class BikSede implements Serializable {
 
     public void setSedCodencargado(BikPersona sedCodencargado) {
         this.sedCodencargado = sedCodencargado;
-    }
-
-    @XmlTransient
-    public List<BikPuesto> getBikPuestoList() {
-        return bikPuestoList;
-    }
-
-    public void setBikPuestoList(List<BikPuesto> bikPuestoList) {
-        this.bikPuestoList = bikPuestoList;
     }
 
     @XmlTransient

@@ -44,26 +44,16 @@ import jbiketso.utils.TipoResultado;
 public class FuncionarioController extends Controller {
 
     private BikFuncionario funcionario;
-    //private BikPersona personaFuncionario;
-    //private BikPuesto puesto;
-    //private BikSede sede;
 
     @FXML
     private JFXButton jbtnBuscarPuesto, jbtnBuscarSede, jbtnSalir, jbtnBuscarFuncionario;
 
-    /*@FXML
-    private TableColumn<BikPersona, String> tbcNombreFuncionario;
-    
-    @FXML
-    private TableColumn<BikPuesto, String> tbcPuesto;*/
     @FXML
     private Button btnLimpiar, btnGuardaFuncionario;
 
     @FXML
-    private JFXTextField jtxfCedulaFuncionario, jtxfCodSede, jtxfSalarioBase, jtxfNombreFuncionario, jtxfDesSede, jtxjDesPuesto, jtxfCodPuesto, jtxfObservacion;
+    private JFXTextField jtxfCedulaFuncionario, jtxfCodSede, jtxfSalarioBase, jtxfNombreFuncionario, jtxfDesSede, jtxfDesPuesto, jtxfCodPuesto, jtxfObservacion;
 
-    //@FXML
-    //private TableView<BikFuncionario> tbvFuncionarios;
     @FXML
     private AnchorPane acpRoot;
 
@@ -73,9 +63,6 @@ public class FuncionarioController extends Controller {
     @FXML
     private JFXDatePicker jdtpFechaIngreso, jdtpFechaSalida;
 
-    /*@XmlTransient
-    private ObservableList<BikFuncionario> funcionarios = FXCollections
-            .observableArrayList();*/
     @XmlTransient
     private ObservableList<GenValorCombo> tipos = FXCollections
             .observableArrayList();
@@ -96,30 +83,17 @@ public class FuncionarioController extends Controller {
         this.funcionario.setFunSedcodigo(new BikSede());
     }
 
-    /*private void nuevaPersonaFuncionario() {
-        this.personaFuncionario = new BikPersona();
-    }
-
-    private void nuevoPuesto() {
-        this.puesto = new BikPuesto();
-    }
-
-    private void nuevaSede() {
-        this.sede = new BikSede();
-    }*/
     private void iniciarForma() {
 
         this.tipos.clear();
         this.tipos.add(new GenValorCombo("P", "Permanente"));
         this.tipos.add(new GenValorCombo("V", "Voluntario"));
-        //jcmbTipo.getItems().clear();
         jcmbTipo.setItems(this.tipos);
         jcmbTipo.getSelectionModel().selectFirst();
 
         this.estados.clear();
         this.estados.add(new GenValorCombo("A", "Activo"));
         this.estados.add(new GenValorCombo("I", "Inactivo"));
-        //jcmbEstado.getItems().clear();
         jcmbEstado.setItems(this.estados);
         jcmbEstado.getSelectionModel().selectFirst();
 
@@ -127,19 +101,15 @@ public class FuncionarioController extends Controller {
             unbindFuncionario();
         }
 
-        //this.funcionarios.clear();
         nuevoFuncionario();
-        //nuevaPersonaFuncionario();
-        //nuevoPuesto();
-        //nuevaSede();
         bindFuncionario();
-        //bindListaFuncionarios();
 
-        //addListenerTable(tbvFuncionarios);
-        //Resultado<ArrayList<BikFuncionario>> funcionariosResult = FuncionarioDao.getInstance().getFuncionarios();
-        //funcionarios.clear();
-        //funcionariosResult.get().stream().forEach(funcionarios::add);
-        
+        // Se habilitan las campos.
+        this.jtxfNombreFuncionario.setDisable(false);
+        this.jtxfDesPuesto.setDisable(false);
+        this.jtxfDesSede.setDisable(false);
+        this.jdtpFechaIngreso.setDisable(false);
+
         this.jtxfCedulaFuncionario.requestFocus();
         
         this.jcmbEstado.valueProperty().addListener(new ChangeListener<GenValorCombo>() {
@@ -152,6 +122,7 @@ public class FuncionarioController extends Controller {
                 }
             }
         });
+
     }
 
     private void bindFuncionario() {
@@ -160,7 +131,7 @@ public class FuncionarioController extends Controller {
         jtxfNombreFuncionario.textProperty().bindBidirectional(this.funcionario.getFunPercodigo().getNombreCompletoProperty());
         // Puesto
         jtxfCodPuesto.textProperty().bindBidirectional(this.funcionario.getFunPuecodigo().getPueCodigoProperty(), new NumberStringConverter());
-        jtxjDesPuesto.textProperty().bindBidirectional(this.funcionario.getFunPuecodigo().getPueDescripcionProperty());
+        jtxfDesPuesto.textProperty().bindBidirectional(this.funcionario.getFunPuecodigo().getPueDescripcionProperty());
         // Sede
         jtxfCodSede.textProperty().bindBidirectional(this.funcionario.getFunSedcodigo().getSedCodigoProperty(), new NumberStringConverter());
         jtxfDesSede.textProperty().bindBidirectional(this.funcionario.getFunSedcodigo().getSedDescripcionProperty());
@@ -179,7 +150,7 @@ public class FuncionarioController extends Controller {
         jtxfNombreFuncionario.textProperty().unbindBidirectional(this.funcionario.getFunPercodigo().getNombreCompletoProperty());
         // Puesto
         jtxfCodPuesto.textProperty().unbindBidirectional(this.funcionario.getFunPuecodigo().getPueCodigoProperty());
-        jtxjDesPuesto.textProperty().unbindBidirectional(this.funcionario.getFunPuecodigo().getPueDescripcionProperty());
+        jtxfDesPuesto.textProperty().unbindBidirectional(this.funcionario.getFunPuecodigo().getPueDescripcionProperty());
         // Sede
         jtxfCodSede.textProperty().unbindBidirectional(this.funcionario.getFunSedcodigo().getSedCodigoProperty());
         jtxfDesSede.textProperty().unbindBidirectional(this.funcionario.getFunSedcodigo().getSedDescripcionProperty());
@@ -190,25 +161,6 @@ public class FuncionarioController extends Controller {
         jcmbEstado.valueProperty().unbindBidirectional(this.funcionario.getEstadoProperty());
     }
 
-    /*private void bindListaFuncionarios() {
-        if (this.funcionarios != null) {
-            tbvFuncionarios.setItems(this.funcionarios);
-            tbvFuncionarios.refresh();
-        }
-        tbcNombreFuncionario.setCellValueFactory(new PropertyValueFactory<>("nombreCompleto"));
-        tbcPuesto.setCellValueFactory(new PropertyValueFactory<>("pueDescripcion"));
-    }
-
-    private void addListenerTable(TableView table) {
-        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                unbindFuncionario();
-                //this.sede = (BikSede) newSelection;
-                //obtenerRepreLegal(this.sede.getSedCodencargado().getPerCedula(), "S");
-                bindFuncionario();
-            }
-        });
-    }*/
     private BikFuncionario getFuncionario(String cedula) {
         Resultado<BikFuncionario> resultado = FuncionarioDao.getInstance().getFuncionarioByCedula(cedula);
         if (resultado.getResultado().equals(TipoResultado.ERROR)) {
@@ -229,10 +181,17 @@ public class FuncionarioController extends Controller {
         BikFuncionario buscado = getFuncionario(this.funcionario.getFunPercodigo().getPerCedula());
         if (buscado != null && buscado.getFunCodigo() != null && buscado.getFunCodigo() > 0) {
             this.funcionario = buscado;
+            // Se deshabilitan las campos.
+            this.jtxfNombreFuncionario.setDisable(true);
+            this.jtxfDesPuesto.setDisable(true);
+            this.jtxfDesSede.setDisable(true);
+            this.jdtpFechaIngreso.setDisable(true);
         } else {
             BikPersona personaBuscada = PersonaDao.getInstance().getPersona(this.funcionario.getFunPercodigo().getPerCedula()).get();
             if (personaBuscada != null && personaBuscada.getPerCodigo() != null && personaBuscada.getPerCodigo() > 0) {
                 this.funcionario.setFunPercodigo(personaBuscada);
+                // Se deshabilita el campo.
+                this.jtxfNombreFuncionario.setDisable(true);
             } else {
                 AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Consultar funcionario", "No se ha registrado la persona con la cédula indicada, ingrese primero a la persona e intente nuevamente.");
             }
@@ -247,6 +206,7 @@ public class FuncionarioController extends Controller {
         BikPuesto puestoBuscado = PuestoDao.getInstance().getPuestoByCodigo(this.funcionario.getFunPuecodigo().getPueCodigo()).get();
         if (puestoBuscado != null && puestoBuscado.getPueCodigo() != null && puestoBuscado.getPueCodigo() > 0) {
             this.funcionario.setFunPuecodigo(puestoBuscado);
+            this.jtxfDesPuesto.setDisable(true);
         } else {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Consultar puesto", "No se ha registrado el puesto con el código indicado, ingrese primero el puesto e intente nuevamente.");
         }
@@ -262,6 +222,7 @@ public class FuncionarioController extends Controller {
         BikSede sedeBuscada = CentroDao.getInstance().findSedeByCodigo(this.funcionario.getFunSedcodigo().getSedCodigo()).get();
         if (sedeBuscada != null && sedeBuscada.getSedCodigo() != null && sedeBuscada.getSedCodigo() > 0) {
             this.funcionario.setFunSedcodigo(sedeBuscada);
+            this.jtxfDesSede.setDisable(true);
         } else {
             AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Consultar sede", "No se ha registrado la sede con el código indicado, ingrese primero la sede e intente nuevamente.");
         }
@@ -281,7 +242,7 @@ public class FuncionarioController extends Controller {
     @FXML
     void codigoPuestoOnEnterKey(KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.TAB)) {
-            if (this.jtxfCodPuesto.getText() != null) {
+            if (this.funcionario.getFunPuecodigo().getPueCodigo() != null && this.funcionario.getFunPuecodigo().getPueCodigo() != 0) {
                 traerPuesto();
             }
         }
@@ -290,7 +251,7 @@ public class FuncionarioController extends Controller {
     @FXML
     void codigoSedeOnEnterKey(KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.TAB)) {
-            if (this.jtxfCodSede.getText() != null) {
+            if (this.funcionario.getFunSedcodigo().getSedCodigo() != null && this.funcionario.getFunSedcodigo().getSedCodigo() != 0) {
                 traerSede();
             }
         }
@@ -310,6 +271,18 @@ public class FuncionarioController extends Controller {
         }
         AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Registrar Funcionario", resultado.getMensaje());
 
+    }
+
+    @FXML
+    void limpiar() {
+        unbindFuncionario();
+        nuevoFuncionario();
+        bindFuncionario();
+        // Se habilitan las campos.
+        this.jtxfNombreFuncionario.setDisable(false);
+        this.jtxfDesPuesto.setDisable(false);
+        this.jtxfDesSede.setDisable(false);
+        this.jdtpFechaIngreso.setDisable(false);
     }
 
     @FXML

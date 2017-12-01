@@ -73,9 +73,6 @@ public class BikPuesto implements Serializable {
     private Date pueFechamodifica;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funPuecodigo", fetch = FetchType.LAZY)
     private List<BikFuncionario> bikFuncionarioList;
-    @JoinColumn(name = "pue_sedcodigo", referencedColumnName = "sed_codigo")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikSede pueSedcodigo;
 
     public BikPuesto() {
         this.pueDescripcion = new SimpleStringProperty();
@@ -210,14 +207,6 @@ public class BikPuesto implements Serializable {
 
     public void setBikFuncionarioList(List<BikFuncionario> bikFuncionarioList) {
         this.bikFuncionarioList = bikFuncionarioList;
-    }
-
-    public BikSede getPueSedcodigo() {
-        return pueSedcodigo;
-    }
-
-    public void setPueSedcodigo(BikSede pueSedcodigo) {
-        this.pueSedcodigo = pueSedcodigo;
     }
 
     @Override
