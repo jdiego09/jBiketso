@@ -330,7 +330,7 @@ public class BusquedaController extends Controller implements Initializable {
         if (filtros.get("apellido2") == null) {
             filtros.put("apellido2", "");
         }
-        Resultado<ArrayList<BikUsuario>> usuarios = UsuarioDao.getInstance().getUsuarioFiltro(filtros.get("cedula").toString(), filtros.get("nombre").toString(), filtros.get("apellido1").toString(), filtros.get("apellido2").toString());
+        Resultado<ArrayList<BikPersona>> usuarios = UsuarioDao.getInstance().getUsuarioFiltro(filtros.get("cedula").toString(), filtros.get("nombre").toString(), filtros.get("apellido1").toString(), filtros.get("apellido2").toString());
         if (usuarios.getResultado().equals(TipoResultado.SUCCESS)) {
             tbvResultados.setItems(FXCollections.observableArrayList(usuarios.get()));
             tbvResultados.refresh();

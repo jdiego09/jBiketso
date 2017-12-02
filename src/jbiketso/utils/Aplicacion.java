@@ -5,9 +5,7 @@
  */
 package jbiketso.utils;
 
-import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
-import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
 import jbiketso.model.entities.BikModulos;
@@ -16,7 +14,6 @@ import jbiketso.model.entities.BikUsuariosSistema;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -24,8 +21,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
+import javafx.scene.input.MouseEvent;
 import jbiketso.model.dao.CentroDao;
-import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikCentro;
 import jbiketso.model.entities.BikSede;
 import net.sf.jasperreports.engine.JRException;
@@ -62,7 +59,8 @@ public class Aplicacion {
     private static String usuarioBD;
     private static String passwordBD;
 
-    private static JFXHamburger menuPrincipal;
+    private static MouseEvent eventoMenu;
+    private static JFXHamburger hamburgerMenu;
 
     private Aplicacion() {
     }
@@ -201,12 +199,20 @@ public class Aplicacion {
         Aplicacion.resultadoBusqueda = resultadoBusqueda;
     }
 
-    public JFXHamburger getMenuPrincipal() {
-        return menuPrincipal;
+    public MouseEvent getEventoMenu() {
+        return eventoMenu;
     }
 
-    public void setMenuPrincipal(JFXHamburger menuPrincipal) {
-        Aplicacion.menuPrincipal = menuPrincipal;
+    public void setEventoMenu(MouseEvent evento) {
+        Aplicacion.eventoMenu = evento;
+    }
+
+    public JFXHamburger getHamburgerMenu() {
+        return hamburgerMenu;
+    }
+
+    public void setHamburgerMenu(JFXHamburger hamburgerMenu) {
+        Aplicacion.hamburgerMenu = hamburgerMenu;
     }
 
     /*

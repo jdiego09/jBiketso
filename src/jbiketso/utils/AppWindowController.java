@@ -118,6 +118,10 @@ public class AppWindowController {
             Logger.getLogger(AppWindowController.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+        catch (Exception ex) {
+            Logger.getLogger(AppWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
         return true;
     }
 

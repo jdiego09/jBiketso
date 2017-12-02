@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2017-12-01T17:08:37 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_expediente" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="70" rightMargin="70" topMargin="56" bottomMargin="56" isIgnorePagination="true" uuid="accd0558-cf98-41f4-ae09-d05bfc8af2fb">
+<!-- 2017-12-01T20:13:42 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_expediente" pageWidth="612" pageHeight="792" whenNoDataType="NoDataSection" columnWidth="472" leftMargin="70" rightMargin="70" topMargin="56" bottomMargin="56" uuid="accd0558-cf98-41f4-ae09-d05bfc8af2fb">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Biketso"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -167,7 +167,7 @@ FROM
     biketso.bik_padecimiento
 WHERE
     pad_expcodigo =  $P{codigoExpediente} 
-    and pad_estado = 'A']]>
+    and pad_estado = 'A'    ]]>
 		</queryString>
 		<field name="padecimiento" class="java.lang.String"/>
 		<field name="observaciones" class="java.lang.String"/>

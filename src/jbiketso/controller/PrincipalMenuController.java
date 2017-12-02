@@ -146,9 +146,6 @@ public class PrincipalMenuController implements Initializable {
 
     private void accesaPantalla(String pantalla, String funcion) {
         AppWindowController.getInstance().abrirVentanaEnPrincipal(pantalla, "Center", funcion);
-        
-        Event.fireEvent(Aplicacion.getInstance().getMenuPrincipal(), new MouseEvent(MouseEvent.MOUSE_PRESSED, 0,
-                0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
-                true, true, true, true, true, true, null));
+        Event.fireEvent(Aplicacion.getInstance().getHamburgerMenu(), Aplicacion.getInstance().getEventoMenu());        
     }
 }

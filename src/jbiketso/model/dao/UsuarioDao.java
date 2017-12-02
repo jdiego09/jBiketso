@@ -114,10 +114,10 @@ public class UsuarioDao extends BaseDao<Integer, BikUsuario> {
         }
     }
 
-    public Resultado<ArrayList<BikUsuario>> getUsuarioFiltro(String cedula, String nombre, String primerApellido, String segundoApellido) {
-        Resultado<ArrayList<BikUsuario>> resultado = new Resultado<>();
-        ArrayList<BikUsuario> listaUsuarios = new ArrayList<>();
-        List<BikUsuario> usuarios;
+    public Resultado<ArrayList<BikPersona>> getUsuarioFiltro(String cedula, String nombre, String primerApellido, String segundoApellido) {
+        Resultado<ArrayList<BikPersona>> resultado = new Resultado<>();
+        ArrayList<BikPersona> listaUsuarios = new ArrayList<>();
+        List<BikPersona> usuarios;
         try {
             Query query = getEntityManager().createNamedQuery("BikUsuario.findUsuarios");
             query.setParameter("cedula", cedula + "%");
@@ -133,7 +133,7 @@ public class UsuarioDao extends BaseDao<Integer, BikUsuario> {
             resultado.setResultado(TipoResultado.WARNING);
             return resultado;
         } catch (Exception ex) {
-            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
             resultado.setResultado(TipoResultado.ERROR);
             resultado.setMensaje("Error al traer personas.");
             return resultado;

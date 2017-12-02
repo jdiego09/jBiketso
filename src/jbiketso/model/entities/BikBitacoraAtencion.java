@@ -36,9 +36,9 @@ import jbiketso.utils.GenValorCombo;
             + "    and p.perCedula = :cedula\n"
             + "  order by b.biaFechainicio desc")})
 public class BikBitacoraAtencion implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
-
+    
     protected BikBitacoraAtencionPK bikBitacoraAtencionPK;
     @Transient
     private SimpleObjectProperty<LocalDate> biaFechainicio;
@@ -46,7 +46,7 @@ public class BikBitacoraAtencion implements Serializable {
     private ObjectProperty<GenValorCombo> biaTipo;
     @Transient
     private SimpleStringProperty biaDetalle;
-
+    
     @Column(name = "bia_usuarioingresa")
     private String biaUsuarioingresa;
     @Column(name = "bia_fechaingresa")
@@ -60,25 +60,26 @@ public class BikBitacoraAtencion implements Serializable {
     @JoinColumn(name = "bia_codusuario", referencedColumnName = "usu_codigo", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BikUsuario bikUsuario;
-
+    
     public BikBitacoraAtencion() {
         this.bikBitacoraAtencionPK = new BikBitacoraAtencionPK();
         this.bikUsuario = new BikUsuario();
+        this.bikUsuario.setUsuPercodigo(new BikPersona());
         this.biaFechainicio = new SimpleObjectProperty(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        this.biaTipo = new SimpleObjectProperty(new GenValorCombo("T", "Toma de signos"));
+        this.biaTipo = new SimpleObjectProperty(new GenValorCombo("N", "Toma de signos"));
         this.biaDetalle = new SimpleStringProperty();
     }
-
+    
     @EmbeddedId
     @Access(AccessType.PROPERTY)
     public BikBitacoraAtencionPK getBikBitacoraAtencionPK() {
         return bikBitacoraAtencionPK;
     }
-
+    
     public void setBikBitacoraAtencionPK(BikBitacoraAtencionPK bikBitacoraAtencionPK) {
         this.bikBitacoraAtencionPK = bikBitacoraAtencionPK;
     }
-
+    
     @Basic(optional = false)
     @Column(name = "bia_fechainicio")
     @Temporal(TemporalType.TIMESTAMP)
@@ -93,14 +94,14 @@ public class BikBitacoraAtencion implements Serializable {
             return null;
         }
     }
-
+    
     public SimpleObjectProperty getFechaInicioProperty() {
         if (biaFechainicio == null) {
             biaFechainicio = new SimpleObjectProperty();
         }
         return this.biaFechainicio;
     }
-
+    
     public void setBiaFechainicio(Date biaFechainicio) {
         if (this.biaFechainicio == null) {
             this.biaFechainicio = new SimpleObjectProperty();
@@ -109,7 +110,7 @@ public class BikBitacoraAtencion implements Serializable {
             this.biaFechainicio.set(biaFechainicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         }
     }
-
+    
     @Basic(optional = false)
     @Column(name = "bia_tipo")
     @Access(AccessType.PROPERTY)
@@ -119,14 +120,14 @@ public class BikBitacoraAtencion implements Serializable {
         }
         return biaTipo.get().getCodigo();
     }
-
+    
     public ObjectProperty getTipoAtencionProperty() {
         if (this.biaTipo == null) {
             this.biaTipo = new SimpleObjectProperty();
         }
         return biaTipo;
     }
-
+    
     public void setBiaTipo(String biaTipo) {
         if (this.biaTipo == null) {
             this.biaTipo = new SimpleObjectProperty();
@@ -146,7 +147,7 @@ public class BikBitacoraAtencion implements Serializable {
         }
         this.biaTipo.set(valor);
     }
-
+    
     @Basic(optional = false)
     @Column(name = "bia_detalle")
     @Access(AccessType.PROPERTY)
@@ -156,68 +157,68 @@ public class BikBitacoraAtencion implements Serializable {
         }
         return biaDetalle.get();
     }
-
+    
     public SimpleStringProperty getDetalleProperty() {
         if (this.biaDetalle == null) {
             this.biaDetalle = new SimpleStringProperty();
         }
         return biaDetalle;
     }
-
+    
     public void setBiaDetalle(String biaDetalle) {
         if (this.biaDetalle == null) {
             this.biaDetalle = new SimpleStringProperty();
         }
         this.biaDetalle.set(biaDetalle);
     }
-
+    
     public String getBiaUsuarioingresa() {
         return biaUsuarioingresa;
     }
-
+    
     public void setBiaUsuarioingresa(String biaUsuarioingresa) {
         this.biaUsuarioingresa = biaUsuarioingresa;
     }
-
+    
     public Date getBiaFechaingresa() {
         return biaFechaingresa;
     }
-
+    
     public void setBiaFechaingresa(Date biaFechaingresa) {
         this.biaFechaingresa = biaFechaingresa;
     }
-
+    
     public String getBiaUsuariomodifica() {
         return biaUsuariomodifica;
     }
-
+    
     public void setBiaUsuariomodifica(String biaUsuariomodifica) {
         this.biaUsuariomodifica = biaUsuariomodifica;
     }
-
+    
     public Date getBiaFechamodifica() {
         return biaFechamodifica;
     }
-
+    
     public void setBiaFechamodifica(Date biaFechamodifica) {
         this.biaFechamodifica = biaFechamodifica;
     }
-
+    
     public BikUsuario getBikUsuario() {
         return bikUsuario;
     }
-
+    
     public void setBikUsuario(BikUsuario bikUsuario) {
         this.bikUsuario = bikUsuario;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (bikBitacoraAtencionPK != null ? bikBitacoraAtencionPK.hashCode() : 0);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -230,10 +231,10 @@ public class BikBitacoraAtencion implements Serializable {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
         return "jbiketso.model.BikBitacoraAtencion[ bikBitacoraAtencionPK=" + bikBitacoraAtencionPK + " ]";
     }
-
+    
 }

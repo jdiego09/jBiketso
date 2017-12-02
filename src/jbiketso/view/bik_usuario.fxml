@@ -48,32 +48,32 @@
             </Label>
          </children>
       </Pane>
-      <JFXTextField fx:id="jtxfCedula" labelFloat="true" layoutX="27.0" layoutY="76.0" onKeyPressed="#cedulaOnEnterKey" prefHeight="35.0" prefWidth="169.0" promptText="Cédula" styleClass="edittext" />
-      <JFXButton fx:id="jbtnBuscarUsuario" layoutX="196.0" layoutY="76.0" onAction="#buscarUsuario" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
-      <JFXTextField fx:id="jtxfNombre" editable="false" focusTraversable="false" labelFloat="true" layoutX="237.0" layoutY="78.0" prefHeight="35.0" prefWidth="538.0" promptText="Nombre" styleClass="edittext" unFocusColor="#00796b" />
-      <JFXTextField fx:id="jtxfCedulaEncargado" labelFloat="true" layoutX="27.0" layoutY="136.0" onKeyPressed="#encargadoOnEnterKey" prefHeight="35.0" prefWidth="169.0" promptText="Cédula encargado" styleClass="edittext" />
-      <JFXButton fx:id="jbtnBuscarEncargado" layoutX="196.0" layoutY="134.0" onAction="#buscarEncargado" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
-      <JFXTextField fx:id="jtxfNombreEncargado" editable="false" focusTraversable="false" labelFloat="true" layoutX="237.0" layoutY="136.0" prefHeight="35.0" prefWidth="538.0" promptText="Nombre encargado" styleClass="edittext" unFocusColor="#00796b" />
+      <JFXTextField fx:id="jtxfCedula" labelFloat="true" layoutX="27.0" layoutY="76.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#cedulaOnEnterKey" prefHeight="35.0" prefWidth="169.0" promptText="Cédula" styleClass="edittext" />
+      <JFXButton fx:id="jbtnBuscarUsuario" layoutX="197.0" layoutY="81.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#buscarUsuario" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
+      <JFXTextField fx:id="jtxfNombre" editable="false" focusTraversable="false" labelFloat="true" layoutX="237.0" layoutY="78.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="538.0" promptText="Nombre" styleClass="edittext" unFocusColor="#00796b" />
+      <JFXTextField fx:id="jtxfCedulaEncargado" labelFloat="true" layoutX="27.0" layoutY="136.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#encargadoOnEnterKey" prefHeight="35.0" prefWidth="169.0" promptText="Cédula encargado" styleClass="edittext" />
+      <JFXButton fx:id="jbtnBuscarEncargado" layoutX="197.0" layoutY="139.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#buscarEncargado" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
+      <JFXTextField fx:id="jtxfNombreEncargado" editable="false" focusTraversable="false" labelFloat="true" layoutX="237.0" layoutY="136.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="538.0" promptText="Nombre encargado" styleClass="edittext" unFocusColor="#00796b" />
       <Separator layoutX="11.0" layoutY="205.0" prefHeight="0.0" prefWidth="927.0" />
-      <JFXTextField fx:id="jtxfExpediente" alignment="CENTER_RIGHT" editable="false" focusTraversable="false" labelFloat="true" layoutX="31.0" layoutY="235.0" prefHeight="35.0" prefWidth="105.0" promptText="# Expediente" styleClass="edittext" />
-      <JFXComboBox fx:id="jcmbTipoAtencion" labelFloat="true" layoutX="144.0" layoutY="235.0" prefHeight="39.0" prefWidth="277.0" promptText="Tipo de atención" styleClass="edittext" />
-      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="429.0" layoutY="235.0" prefHeight="39.0" prefWidth="169.0" promptText="Estado" styleClass="edittext" />
-      <JFXDatePicker fx:id="jdtpFechaIngreso" layoutX="613.0" layoutY="235.0" prefHeight="39.0" prefWidth="150.0" promptText="Fecha de ingreso" styleClass="edittext" />
-      <JFXDatePicker fx:id="jdtpFechaSalida" layoutX="785.0" layoutY="235.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="150.0" promptText="Fecha de salida" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfExpediente" alignment="CENTER_RIGHT" editable="false" focusTraversable="false" labelFloat="true" layoutX="31.0" layoutY="239.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="105.0" promptText="# Expediente" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbTipoAtencion" labelFloat="true" layoutX="144.0" layoutY="235.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="277.0" promptText="Tipo de atención" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="429.0" layoutY="235.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="169.0" promptText="Estado" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaIngreso" layoutX="613.0" layoutY="235.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="150.0" promptText="Fecha de ingreso" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaSalida" layoutX="785.0" layoutY="239.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="150.0" promptText="Fecha de salida" styleClass="edittext" />
       <JFXTextField fx:id="jtxfCantidadPersonas" alignment="CENTER_RIGHT" labelFloat="true" layoutX="31.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="105.0" promptText="Habitantes" styleClass="edittext" />
       <JFXTextField fx:id="jtxfCantidadDependientes" alignment="CENTER_RIGHT" labelFloat="true" layoutX="144.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="105.0" promptText="Dependientes" styleClass="edittext" />
       <JFXTextField fx:id="jtxfIngresoPromedio" alignment="CENTER_RIGHT" labelFloat="true" layoutX="258.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="162.0" promptText="Ingreso promedio" styleClass="edittext" />
       <JFXTextField fx:id="jtxfNivelEconomico" labelFloat="true" layoutX="429.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="169.0" promptText="Nivel económico" styleClass="edittext" />
       <JFXTextField fx:id="jtxfMontoCuota" alignment="CENTER_RIGHT" labelFloat="true" layoutX="613.0" layoutY="299.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="150.0" promptText="Cuota" styleClass="edittext" />
-      <JFXComboBox fx:id="jcmbTipoPago" labelFloat="true" layoutX="785.0" layoutY="295.0" prefHeight="39.0" prefWidth="150.0" promptText="Tipo pago" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbTipoPago" labelFloat="true" layoutX="785.0" layoutY="295.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="150.0" promptText="Tipo pago" styleClass="edittext" />
       <TabPane layoutX="30.0" layoutY="350.0" prefHeight="236.0" prefWidth="906.0" styleClass="form" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab closable="false" text="Padecimientos">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTextField fx:id="jtxfPadecimiento" labelFloat="true" layoutX="19.0" layoutY="44.0" prefHeight="25.0" prefWidth="145.0" promptText="Padecimiento" styleClass="edittext" />
-                        <JFXTextArea fx:id="jtxaObservacionesPadecimiento" labelFloat="true" layoutX="172.0" layoutY="26.0" prefHeight="49.0" prefWidth="636.0" promptText="Observaciones" styleClass="edittext" />
+                        <JFXTextField fx:id="jtxfPadecimiento" labelFloat="true" layoutX="19.0" layoutY="52.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="145.0" promptText="Padecimiento" styleClass="edittext" />
+                        <JFXTextArea fx:id="jtxaObservacionesPadecimiento" labelFloat="true" layoutX="175.0" layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="636.0" promptText="Observaciones" styleClass="edittext" />
                         <JFXButton fx:id="jbtnAgregarPadecimiento" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="818.0" layoutY="47.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#agregarPadecimiento" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" textOverrun="WORD_ELLIPSIS">
                            <tooltip>
                               <Tooltip text="Agregar padecimiento" />
@@ -98,7 +98,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTextField fx:id="jtxfMedicamento" labelFloat="true" layoutX="14.0" layoutY="39.0" prefHeight="25.0" prefWidth="145.0" promptText="Medicamento" styleClass="edittext" />
+                        <JFXTextField fx:id="jtxfMedicamento" labelFloat="true" layoutX="14.0" layoutY="35.0" prefHeight="25.0" prefWidth="145.0" promptText="Medicamento" styleClass="edittext" />
                         <JFXTextArea fx:id="jtxaObservacionesMedicamento" labelFloat="true" layoutX="171.0" layoutY="24.0" prefHeight="46.0" prefWidth="644.0" promptText="Observaciones" styleClass="edittext" />
                         <JFXButton fx:id="jbtnAgregarMedicamento" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="825.0" layoutY="42.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#agregarMedicamento" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" textOverrun="WORD_ELLIPSIS">
                            <tooltip>

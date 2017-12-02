@@ -71,6 +71,7 @@ public class PrincipalController extends Controller implements Initializable {
                 -1);
         hmbMenu.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 (e) -> {
+                    Aplicacion.getInstance().setEventoMenu(e);                    
                     transition.setRate(transition.getRate() * -1);
                     transition.play();
 
@@ -86,7 +87,7 @@ public class PrincipalController extends Controller implements Initializable {
                     }
                 }
         );
-        Aplicacion.getInstance().setMenuPrincipal(hmbMenu);               
+        Aplicacion.getInstance().setHamburgerMenu(hmbMenu); 
     }
 
     private void loadImage() {

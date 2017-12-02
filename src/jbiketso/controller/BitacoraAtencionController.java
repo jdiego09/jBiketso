@@ -29,11 +29,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.model.dao.BitacoraAtencionDao;
 import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.dao.UsuarioDao;
 import jbiketso.model.entities.BikBitacoraAtencion;
+import jbiketso.model.entities.BikPersona;
 import jbiketso.model.entities.BikSede;
 import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.Aplicacion;
@@ -56,8 +58,9 @@ public class BitacoraAtencionController extends Controller implements Initializa
             .observableArrayList();
 
     @FXML
+    private AnchorPane acpRoot;
+    @FXML
     private JFXButton jbtnSalir;
-
     @FXML
     private Button btnGuardar, btnLimpiar;
     @FXML
@@ -89,7 +92,8 @@ public class BitacoraAtencionController extends Controller implements Initializa
 
     @FXML
     private TableColumn<BikBitacoraAtencion, String> tbcDetalle;
-
+    @FXML
+    private Button btnAgregar;
     @XmlTransient
     ObservableList<GenValorCombo> tipoAtencion = FXCollections
             .observableArrayList();
@@ -97,7 +101,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
     private void setTiposAtencion() {
         tipoAtencion.clear();
         if (this.getAccion().equalsIgnoreCase("q")) {
-            tipoAtencion.add(new GenValorCombo("A", "Asistencia"));
+            tipoAtencion.add(new GenValorCombo("A", "Control de asistencia"));
             tipoAtencion.add(new GenValorCombo("C", "Chequeo médico"));
             tipoAtencion.add(new GenValorCombo("I", "Ingreso al centro"));
             tipoAtencion.add(new GenValorCombo("S", "Salida del centro"));
@@ -153,7 +157,6 @@ public class BitacoraAtencionController extends Controller implements Initializa
 
     private void nuevaAtencion() {
         this.bitacora = new BikBitacoraAtencion();
-        this.bitacora.setBikUsuario(new BikUsuario());
     }
 
     /**
@@ -163,9 +166,6 @@ public class BitacoraAtencionController extends Controller implements Initializa
     public void initialize(URL url, ResourceBundle rb) {
         init();
     }
-
-    @FXML
-    private Button btnAgregar;
 
     @FXML
     void agregar(MouseEvent event) {
@@ -178,8 +178,18 @@ public class BitacoraAtencionController extends Controller implements Initializa
 
     @FXML
     void busqueda(ActionEvent event) {
+// Llamar ventana busqueda
+        BusquedaController busquedaController = (BusquedaController) AppWindowController.getInstance().getController("bik_busqueda");
+        busquedaController.busquedaUsuarios();
+        AppWindowController.getInstance().goViewInWindowModal("bik_busqueda", getStage());
+        BikUsuario buscado = (BikUsuario) busquedaController.getResultado();
 
+        if (buscado != null) {
+            this.jtxfCedula.setText(buscado.getUsuPercodigo().getPerCedula());
+            traerUsuario();
+        }
     }
+       
 
     @FXML
     void cedulaOnEnterKey(KeyEvent event) {
@@ -245,14 +255,16 @@ public class BitacoraAtencionController extends Controller implements Initializa
     @Override
     public void initialize() {
         init();
+        setTiposAtencion();
+        jcmbTipoAtencion.getSelectionModel().selectFirst();
     }
 
     private void init() {
-        setTiposAtencion();
+        // setTiposAtencion();
         nuevaAtencion();
         bindBitacora();
         bindDetalleBitacora();
-        jcmbTipoAtencion.getSelectionModel().selectFirst();
+        //jcmbTipoAtencion.getSelectionModel().selectFirst();
     }
 
     private void agregarAtencionALista(BikBitacoraAtencion bitacora) {
