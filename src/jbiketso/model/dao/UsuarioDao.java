@@ -5,12 +5,15 @@
  */
 package jbiketso.model.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikExpediente;
+import jbiketso.model.entities.BikPersona;
 import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.Resultado;
@@ -110,7 +113,31 @@ public class UsuarioDao extends BaseDao<Integer, BikUsuario> {
             return result;
         }
     }
-    
-    
+
+    public Resultado<ArrayList<BikUsuario>> getUsuarioFiltro(String cedula, String nombre, String primerApellido, String segundoApellido) {
+        Resultado<ArrayList<BikUsuario>> resultado = new Resultado<>();
+        ArrayList<BikUsuario> listaUsuarios = new ArrayList<>();
+        List<BikUsuario> usuarios;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikUsuario.findUsuarios");
+            query.setParameter("cedula", cedula + "%");
+            query.setParameter("nombre", nombre + "%");
+            query.setParameter("primerapellido", primerApellido + "%");
+            query.setParameter("segundoapellido", segundoApellido + "%");
+            usuarios = query.getResultList();
+            usuarios.stream().forEach(listaUsuarios::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaUsuarios);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer personas.");
+            return resultado;
+        }
+    }
 
 }

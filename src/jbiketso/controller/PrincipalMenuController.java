@@ -5,10 +5,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import jbiketso.model.entities.BikPermisoRol;
 import jbiketso.utils.Aplicacion;
@@ -143,5 +146,9 @@ public class PrincipalMenuController implements Initializable {
 
     private void accesaPantalla(String pantalla, String funcion) {
         AppWindowController.getInstance().abrirVentanaEnPrincipal(pantalla, "Center", funcion);
+        
+        Event.fireEvent(Aplicacion.getInstance().getMenuPrincipal(), new MouseEvent(MouseEvent.MOUSE_PRESSED, 0,
+                0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                true, true, true, true, true, true, null));
     }
 }

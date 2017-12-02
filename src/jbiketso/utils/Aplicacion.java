@@ -5,6 +5,8 @@
  */
 package jbiketso.utils;
 
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
 import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -59,6 +61,8 @@ public class Aplicacion {
     private static String urlBD;
     private static String usuarioBD;
     private static String passwordBD;
+
+    private static JFXHamburger menuPrincipal;
 
     private Aplicacion() {
     }
@@ -197,6 +201,14 @@ public class Aplicacion {
         Aplicacion.resultadoBusqueda = resultadoBusqueda;
     }
 
+    public JFXHamburger getMenuPrincipal() {
+        return menuPrincipal;
+    }
+
+    public void setMenuPrincipal(JFXHamburger menuPrincipal) {
+        Aplicacion.menuPrincipal = menuPrincipal;
+    }
+
     /*
    los parametros deben cargarse antes de cada llamado a reporte
    param.put("pEncFac", encabezado);
@@ -236,7 +248,7 @@ public class Aplicacion {
             connection = DriverManager.getConnection(this.urlBD,
                     this.usuarioBD, this.passwordBD); //hacer procedimiento para desencriptar
 
-            if (connection != null) {                
+            if (connection != null) {
                 JasperPrint print = JasperFillManager.fillReport(pathDir
                         + reporte + ".jasper", parametros, connection);
                 JasperViewer.viewReport(print, false);

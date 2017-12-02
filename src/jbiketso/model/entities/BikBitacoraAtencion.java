@@ -62,7 +62,8 @@ public class BikBitacoraAtencion implements Serializable {
     private BikUsuario bikUsuario;
 
     public BikBitacoraAtencion() {
-        this.bikBitacoraAtencionPK = null;
+        this.bikBitacoraAtencionPK = new BikBitacoraAtencionPK();
+        this.bikUsuario = new BikUsuario();
         this.biaFechainicio = new SimpleObjectProperty(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         this.biaTipo = new SimpleObjectProperty(new GenValorCombo("T", "Toma de signos"));
         this.biaDetalle = new SimpleStringProperty();

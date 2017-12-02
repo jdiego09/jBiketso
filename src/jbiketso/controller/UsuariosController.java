@@ -74,7 +74,7 @@ public class UsuariosController extends Controller implements Initializable {
     @FXML
     private JFXTextArea jtxaObservacionesPadecimiento;
     @FXML
-    private JFXButton jbtnEliminarPadecimiento;
+    private JFXButton jbtnEliminarPadecimiento, jbtnBuscarUsuario, jbtnBuscarEncargado;
 
     @FXML
     private JFXButton jbtnAgregarPadecimiento;
@@ -505,14 +505,15 @@ public class UsuariosController extends Controller implements Initializable {
         //busca el expediente por cédula del usuario, si no lo encuetra entonces carga el nombre del usuario con la cédula ingresada.
         BikExpediente buscado = getExpediente(this.expediente.getExpUsucodigo());
         if (buscado != null && buscado.getExpCodigo() != null && buscado.getExpCodigo() > 0) {
-            this.expediente = buscado;
-            this.jtxfCedula.setEditable(false);
+            this.expediente = buscado;            
             habilitaCampos(this.expediente.getExpEstado().equalsIgnoreCase("a"));
             //si fue egresado, si permite actualizar el estado solamente para reingreso.
             if (this.expediente.getExpEstado().equalsIgnoreCase("e")) {
                 this.jcmbEstado.setEditable(true);
                 this.btnGuardar.setDisable(false);
             }
+            this.jtxfCedula.setEditable(false);
+            this.jbtnBuscarUsuario.setDisable(true);
             this.jtxfNivelEconomico.setText(listaNiveles.stream().filter(n -> n.getNseCodigo().equals(this.expediente.getExpNivelsocioeconomico())).findFirst().get().getNseDescripcion());
             //carga los padecimientos
             Resultado<ArrayList<BikPadecimiento>> padecimientosResult = ExpedienteDao.getInstance().getPadecimientosActivos(this.expediente);
@@ -622,7 +623,6 @@ public class UsuariosController extends Controller implements Initializable {
         } else {
             return null;
         }
-
     }
 
     @FXML
@@ -656,6 +656,7 @@ public class UsuariosController extends Controller implements Initializable {
         this.jbtnEliminarPadecimiento.setDisable(!habilita);
         this.jbtnAgregarMedicamento.setDisable(!habilita);
         this.jbtnEliminarMedicamento.setDisable(!habilita);
+        this.jbtnBuscarUsuario.setDisable(!habilita);
 
         //campos de texto
         this.jtxfCedula.setEditable(habilita);
@@ -673,5 +674,23 @@ public class UsuariosController extends Controller implements Initializable {
         this.jtxaObservacionesMedicamento.setEditable(habilita);
         this.jtxfPadecimiento.setEditable(habilita);
         this.jtxaObservacionesPadecimiento.setEditable(habilita);
+    }
+
+    @FXML
+    void buscarEncargado(ActionEvent event) {
+        String encargado = buscarPersona();
+        if (encargado != null && !encargado.isEmpty()) {
+            this.jtxfCedulaEncargado.setText(encargado);
+            traerEncargado();
+        }
+    }
+
+    @FXML
+    void buscarUsuario(ActionEvent event) {
+        String usuario = buscarPersona();
+        if (usuario != null && !usuario.isEmpty()) {
+            this.jtxfCedula.setText(usuario);
+            traerUsuario();
+        }
     }
 }

@@ -86,6 +86,7 @@ public class PrincipalController extends Controller implements Initializable {
                     }
                 }
         );
+        Aplicacion.getInstance().setMenuPrincipal(hmbMenu);               
     }
 
     private void loadImage() {

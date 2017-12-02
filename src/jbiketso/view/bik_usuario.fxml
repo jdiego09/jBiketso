@@ -49,10 +49,10 @@
          </children>
       </Pane>
       <JFXTextField fx:id="jtxfCedula" labelFloat="true" layoutX="27.0" layoutY="76.0" onKeyPressed="#cedulaOnEnterKey" prefHeight="35.0" prefWidth="169.0" promptText="Cédula" styleClass="edittext" />
-      <JFXButton layoutX="196.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
+      <JFXButton fx:id="jbtnBuscarUsuario" layoutX="196.0" layoutY="76.0" onAction="#buscarUsuario" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
       <JFXTextField fx:id="jtxfNombre" editable="false" focusTraversable="false" labelFloat="true" layoutX="237.0" layoutY="78.0" prefHeight="35.0" prefWidth="538.0" promptText="Nombre" styleClass="edittext" unFocusColor="#00796b" />
       <JFXTextField fx:id="jtxfCedulaEncargado" labelFloat="true" layoutX="27.0" layoutY="136.0" onKeyPressed="#encargadoOnEnterKey" prefHeight="35.0" prefWidth="169.0" promptText="Cédula encargado" styleClass="edittext" />
-      <JFXButton layoutX="196.0" layoutY="134.0" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
+      <JFXButton fx:id="jbtnBuscarEncargado" layoutX="196.0" layoutY="134.0" onAction="#buscarEncargado" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
       <JFXTextField fx:id="jtxfNombreEncargado" editable="false" focusTraversable="false" labelFloat="true" layoutX="237.0" layoutY="136.0" prefHeight="35.0" prefWidth="538.0" promptText="Nombre encargado" styleClass="edittext" unFocusColor="#00796b" />
       <Separator layoutX="11.0" layoutY="205.0" prefHeight="0.0" prefWidth="927.0" />
       <JFXTextField fx:id="jtxfExpediente" alignment="CENTER_RIGHT" editable="false" focusTraversable="false" labelFloat="true" layoutX="31.0" layoutY="235.0" prefHeight="35.0" prefWidth="105.0" promptText="# Expediente" styleClass="edittext" />
@@ -81,7 +81,7 @@
                         </JFXButton>
                         <JFXButton fx:id="jbtnEliminarPadecimiento" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="861.0" layoutY="47.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#eliminarPadecimiento" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttoneliminar" textOverrun="WORD_ELLIPSIS">
                            <tooltip>
-                              <Tooltip text="Agregar padecimiento" />
+                              <Tooltip text="Eliminar padecimiento" />
                            </tooltip>
                         </JFXButton>
                         <TableView fx:id="tbvPadecimiento" layoutX="19.0" layoutY="89.0" prefHeight="111.0" prefWidth="872.0">
