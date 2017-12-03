@@ -66,8 +66,6 @@ public class BikUsuario implements Serializable {
     @Column(name = "usu_fechamodifica")
     @Temporal(TemporalType.TIMESTAMP)
     private Date usuFechamodifica;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bikUsuario", fetch = FetchType.LAZY)
-    private List<BikBitacoraAtencion> bikBitacoraAtencionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "expUsucodigo", fetch = FetchType.LAZY)
     private List<BikExpediente> bikExpedienteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deaCodusuario", fetch = FetchType.LAZY)
@@ -143,15 +141,6 @@ public class BikUsuario implements Serializable {
 
     public void setUsuFechamodifica(Date usuFechamodifica) {
         this.usuFechamodifica = usuFechamodifica;
-    }
-
-    @XmlTransient
-    public List<BikBitacoraAtencion> getBikBitacoraAtencionList() {
-        return bikBitacoraAtencionList;
-    }
-
-    public void setBikBitacoraAtencionList(List<BikBitacoraAtencion> bikBitacoraAtencionList) {
-        this.bikBitacoraAtencionList = bikBitacoraAtencionList;
     }
 
     @XmlTransient

@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -43,6 +44,8 @@ public class BusquedaController extends Controller implements Initializable {
     BikPersona personaSeleccionada;
     private static HashMap<String, Object> filtros = new HashMap<>();
 
+    @FXML
+    private Label lblTitulo;
     @FXML
     private JFXButton jbtnCancelar;
     @FXML
@@ -108,6 +111,7 @@ public class BusquedaController extends Controller implements Initializable {
     }
 
     public void busquedaPersonas() {
+        lblTitulo.setText("Búsqueda de personas");
         ArrayList<JFXTextField> criterios = new ArrayList<>();
 
         JFXTextField jtxfCedula = new JFXTextField();
@@ -223,6 +227,7 @@ public class BusquedaController extends Controller implements Initializable {
     }
 
     public void busquedaUsuarios() {
+        lblTitulo.setText("Búsqueda de usuarios");
         ArrayList<JFXTextField> criterios = new ArrayList<>();
 
         JFXTextField jtxfCedula = new JFXTextField();

@@ -100,50 +100,63 @@ public class BitacoraAtencionController extends Controller implements Initializa
 
     private void setTiposAtencion() {
         tipoAtencion.clear();
-        if (this.getAccion().equalsIgnoreCase("q")) {
-            tipoAtencion.add(new GenValorCombo("A", "Control de asistencia"));
-            tipoAtencion.add(new GenValorCombo("C", "Chequeo médico"));
-            tipoAtencion.add(new GenValorCombo("I", "Ingreso al centro"));
-            tipoAtencion.add(new GenValorCombo("S", "Salida del centro"));
-            tipoAtencion.add(new GenValorCombo("T", "Toma de signos"));
-            tipoAtencion.add(new GenValorCombo("%", "Todos"));
+        switch (this.getAccion().toLowerCase()) {
+            case "q":
+                //ingresó en modo consulta
+                tipoAtencion.add(new GenValorCombo("I", "Ingreso al centro"));
+                tipoAtencion.add(new GenValorCombo("S", "Salida del centro"));
+                tipoAtencion.add(new GenValorCombo("C", "Chequeo médico"));
+                tipoAtencion.add(new GenValorCombo("T", "Toma de signos"));
+                tipoAtencion.add(new GenValorCombo("A", "Atención brindada"));
+                tipoAtencion.add(new GenValorCombo("%", "Todos"));
+                break;
+            case "a":
+                //Asistencia
+                tipoAtencion.add(new GenValorCombo("I", "Ingreso al centro"));
+                tipoAtencion.add(new GenValorCombo("S", "Salida del centro"));
+                break;
+            case "c":
+                //chequeos médicos
+                tipoAtencion.add(new GenValorCombo("C", "Chequeo médico"));
+                break;
+            case "t":
+                //toma de signos
+                tipoAtencion.add(new GenValorCombo("T", "Toma de signos"));
+                break;
+            case "n":
+                //atención normal
+                tipoAtencion.add(new GenValorCombo("A", "Atención brindada"));
+                break;
         }
-        if (this.getAccion().equalsIgnoreCase("a")) {
-            tipoAtencion.add(new GenValorCombo("I", "Ingreso al centro"));
-            tipoAtencion.add(new GenValorCombo("S", "Salida del centro"));
-        }
-        if (this.getAccion().equalsIgnoreCase("c")) {
-            tipoAtencion.add(new GenValorCombo("C", "Chequeo médico"));
-        }
-        if (this.getAccion().equalsIgnoreCase("t")) {
-            tipoAtencion.add(new GenValorCombo("T", "Toma de signos"));
-        }
+
         jcmbTipoAtencion.setItems(tipoAtencion);
         if (!this.getAccion().equalsIgnoreCase("q")) {
             jcmbTipoAtencion.setEditable(false);
+            btnGuardar.setDisable(true);
+            btnAgregar.setDisable(true);
         }
     }
 
     private void bindBitacora() {
         jcmbTipoAtencion.valueProperty().bindBidirectional(this.bitacora.getTipoAtencionProperty());
-        jdtpFecha.valueProperty().bindBidirectional(this.bitacora.getFechaInicioProperty());
+        jdtpFecha.valueProperty().bindBidirectional(this.bitacora.getFechaProperty());
         jtxfDetalle.textProperty().bindBidirectional(this.bitacora.getDetalleProperty());
     }
 
     private void bindPersona() {
-        jtxfCedula.textProperty().bindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getPerCedulaProperty());
-        jtxfNombre.textProperty().bindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getNombreCompletoProperty());
+        jtxfCedula.textProperty().bindBidirectional(this.bitacora.getBiaCodusuario().getUsuPercodigo().getPerCedulaProperty());
+        jtxfNombre.textProperty().bindBidirectional(this.bitacora.getBiaCodusuario().getUsuPercodigo().getNombreCompletoProperty());
     }
 
     private void unbindBitacora() {
         jcmbTipoAtencion.valueProperty().unbindBidirectional(this.bitacora.getTipoAtencionProperty());
-        jdtpFecha.valueProperty().unbindBidirectional(this.bitacora.getFechaInicioProperty());
+        jdtpFecha.valueProperty().unbindBidirectional(this.bitacora.getFechaProperty());
         jtxfDetalle.textProperty().unbindBidirectional(this.bitacora.getDetalleProperty());
     }
 
     private void unbindPersona() {
-        jtxfCedula.textProperty().unbindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getPerCedulaProperty());
-        jtxfNombre.textProperty().unbindBidirectional(this.bitacora.getBikUsuario().getUsuPercodigo().getNombreCompletoProperty());
+        jtxfCedula.textProperty().unbindBidirectional(this.bitacora.getBiaCodusuario().getUsuPercodigo().getPerCedulaProperty());
+        jtxfNombre.textProperty().unbindBidirectional(this.bitacora.getBiaCodusuario().getUsuPercodigo().getNombreCompletoProperty());
     }
 
     private void bindDetalleBitacora() {
@@ -182,14 +195,13 @@ public class BitacoraAtencionController extends Controller implements Initializa
         BusquedaController busquedaController = (BusquedaController) AppWindowController.getInstance().getController("bik_busqueda");
         busquedaController.busquedaUsuarios();
         AppWindowController.getInstance().goViewInWindowModal("bik_busqueda", getStage());
-        BikUsuario buscado = (BikUsuario) busquedaController.getResultado();
+        BikPersona buscado = (BikPersona) busquedaController.getResultado();
 
         if (buscado != null) {
-            this.jtxfCedula.setText(buscado.getUsuPercodigo().getPerCedula());
+            this.jtxfCedula.setText(buscado.getPerCedula());
             traerUsuario();
         }
     }
-       
 
     @FXML
     void cedulaOnEnterKey(KeyEvent event) {
@@ -214,7 +226,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
             return;
         }
         if (resultado.get() != null && resultado.get().getUsuCodigo() != null && resultado.get().getUsuCodigo() > 0) {
-            this.bitacora.setBikUsuario(resultado.get());
+            this.bitacora.setBiaCodusuario(resultado.get());
             //carga el detalle de la atencion recibida
             Resultado<ArrayList<BikBitacoraAtencion>> atencionRecibida = BitacoraAtencionDao.getInstance().getDetalleBitacora(this.bitacora);
             detalleBitacora.clear();
@@ -222,7 +234,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
 
         } else {
             nuevaAtencion();
-            this.bitacora.getBikUsuario().getUsuPercodigo().setPerCedula(cedula);
+            this.bitacora.getBiaCodusuario().getUsuPercodigo().setPerCedula(cedula);
         }
         bindPersona();
         bindBitacora();
@@ -268,13 +280,12 @@ public class BitacoraAtencionController extends Controller implements Initializa
     }
 
     private void agregarAtencionALista(BikBitacoraAtencion bitacora) {
-        //                                                                   (bitacora.getBikBitacoraAtencionPK().getBiaCodigo() == null || bitacora.getBikBitacoraAtencionPK().getBiaCodigo() <= 0) &&
-        if (bitacora != null && bitacora.getBikBitacoraAtencionPK() != null && !bitacora.getBiaDetalle().isEmpty()) {
+        if (bitacora != null && !bitacora.getBiaDetalle().isEmpty()) {
             BikBitacoraAtencion nueva = new BikBitacoraAtencion();
             nueva.setBiaDetalle(bitacora.getBiaDetalle());
             nueva.setBiaUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
             nueva.setBiaFechaingresa(new Date());
-            nueva.setBikUsuario(this.bitacora.getBikUsuario());
+            nueva.setBiaCodusuario(this.bitacora.getBiaCodusuario());
             if (!this.detalleBitacora.contains(nueva)) {
                 this.detalleBitacora.add(nueva);
             }
@@ -283,6 +294,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
             bitacora.setBiaFechamodifica(new Date());
             this.detalleBitacora.set(this.detalleBitacora.indexOf(bitacora), bitacora);
         }
+
         tbvBitacora.refresh();
     }
 }
