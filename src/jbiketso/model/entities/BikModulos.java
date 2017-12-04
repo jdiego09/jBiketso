@@ -56,7 +56,7 @@ public class BikModulos implements Serializable {
     private ObjectProperty<GenValorCombo> estado;
     @Transient
     private SimpleIntegerProperty modOrden;
-    
+
     @Column(name = "mod_usuarioingresa")
     private String modUsuarioingresa;
     @Column(name = "mod_fechaingresa")
@@ -77,35 +77,6 @@ public class BikModulos implements Serializable {
         this.modDescripcion = new SimpleStringProperty();
         this.estado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
         this.modOrden = new SimpleIntegerProperty();
-    }
-
-    public BikModulos(String modCodigo) {
-        this.modCodigo = new SimpleStringProperty();
-        this.modCodigo.set(modCodigo);
-    }
-
-    public BikModulos(String modCodigo, String modDescripcion) {
-        this.modCodigo = new SimpleStringProperty();
-        this.modDescripcion = new SimpleStringProperty();
-        this.modOrden = new SimpleIntegerProperty();
-        this.modCodigo.set(modCodigo);
-        this.modDescripcion.set(modDescripcion);
-    }
-
-    public BikModulos(String modCodigo, String modDescripcion, String modEstado) {
-        this.modCodigo = new SimpleStringProperty();
-        this.modDescripcion = new SimpleStringProperty();
-        this.estado = new SimpleObjectProperty();
-
-        this.modCodigo.set(modCodigo);
-        this.modDescripcion.set(modDescripcion);
-        GenValorCombo valorEstado = null;
-        if (modEstado.equalsIgnoreCase("a")) {
-            valorEstado = new GenValorCombo("A", "Activo");
-        } else {
-            valorEstado = new GenValorCombo("I", "Inactivo");
-        }
-        this.estado.set(valorEstado);
     }
 
     @Id
@@ -196,15 +167,15 @@ public class BikModulos implements Serializable {
             this.modOrden = new SimpleIntegerProperty();
         }
         this.modOrden.set(modOrden);
-    }    
-    
+    }
+
     public SimpleIntegerProperty getModOrdenModuloProperty() {
         if (this.modOrden == null) {
             this.modOrden = new SimpleIntegerProperty();
         }
         return this.modOrden;
     }
-    
+
     public String getModUsuarioingresa() {
         return modUsuarioingresa;
     }

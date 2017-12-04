@@ -229,6 +229,18 @@
     -fx-alignment: center-right;
 }
 
+.buttonmenubia{
+    -fx-background-image:url("../view/images/bia.png");
+    -fx-background-repeat: no-repeat;
+}
+
+.buttonmenubia :hover{    
+    -fx-background-image:url("../view/images/bia.png");    
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 35px;
+    -fx-alignment: center-right;
+}
+
 .buttonDrawer{
     -fx-background-color: transparent;    
     -fx-text-fill: black;

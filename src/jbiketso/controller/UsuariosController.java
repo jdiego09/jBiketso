@@ -505,7 +505,7 @@ public class UsuariosController extends Controller implements Initializable {
         //busca el expediente por cédula del usuario, si no lo encuetra entonces carga el nombre del usuario con la cédula ingresada.
         BikExpediente buscado = getExpediente(this.expediente.getExpUsucodigo());
         if (buscado != null && buscado.getExpCodigo() != null && buscado.getExpCodigo() > 0) {
-            this.expediente = buscado;            
+            this.expediente = buscado;
             habilitaCampos(this.expediente.getExpEstado().equalsIgnoreCase("a"));
             //si fue egresado, si permite actualizar el estado solamente para reingreso.
             if (this.expediente.getExpEstado().equalsIgnoreCase("e")) {
@@ -657,19 +657,20 @@ public class UsuariosController extends Controller implements Initializable {
         this.jbtnAgregarMedicamento.setDisable(!habilita);
         this.jbtnEliminarMedicamento.setDisable(!habilita);
         this.jbtnBuscarUsuario.setDisable(!habilita);
-
+        //combos
+        this.jcmbEstado.setDisable(!habilita);
+        this.jcmbTipoAtencion.setDisable(!habilita);
+        this.jcmbTipoPago.setDisable(!habilita);
         //campos de texto
         this.jtxfCedula.setEditable(habilita);
         this.jtxfCedulaEncargado.setEditable(habilita);
         this.jdtpFechaIngreso.setEditable(habilita);
         this.jdtpFechaSalida.setEditable(habilita);
-        this.jcmbEstado.setEditable(habilita);
-        this.jcmbTipoAtencion.setEditable(habilita);
         this.jtxfCantidadPersonas.setEditable(habilita);
         this.jtxfCantidadDependientes.setEditable(habilita);
         this.jtxfIngresoPromedio.setEditable(habilita);
         this.jtxfMontoCuota.setEditable(habilita);
-        this.jcmbTipoPago.setEditable(habilita);
+
         this.jtxfMedicamento.setEditable(habilita);
         this.jtxaObservacionesMedicamento.setEditable(habilita);
         this.jtxfPadecimiento.setEditable(habilita);

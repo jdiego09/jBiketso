@@ -63,7 +63,6 @@ public class BikExpediente implements Serializable {
     private ObjectProperty<GenValorCombo> expEstado;
     @Transient
     private ObjectProperty<GenValorCombo> expTipoAtencion;
-
     @Transient
     private SimpleIntegerProperty expPersonasHogar;
     @Transient
@@ -239,9 +238,9 @@ public class BikExpediente implements Serializable {
     @Basic(optional = false)
     @Column(name = "exp_tipoatencion")
     @Access(AccessType.PROPERTY)
-    public String getExpTipoatencion() {
+    public String getExpTipoAtencion() {
         if (this.expTipoAtencion == null) {
-            this.expTipoAtencion = new SimpleObjectProperty();
+            this.expTipoAtencion = new SimpleObjectProperty(new GenValorCombo("P", "Permanente 24 horas"));
         }
         return expTipoAtencion.get().getCodigo();
     }
@@ -253,18 +252,17 @@ public class BikExpediente implements Serializable {
         return this.expTipoAtencion;
     }
 
-    public void setExpTipoatencion(String expTipoatencion) {
+    public void setExpTipoAtencion(String expTipoatencion) {
+        if (this.expTipoAtencion == null) {
+            this.expTipoAtencion = new SimpleObjectProperty();
+        }
         GenValorCombo valor = null;
-        switch (expTipoatencion.toLowerCase()) {
-            case "d":
-                valor = new GenValorCombo("D", "Días");
-                break;
-            case "p":
-                valor = new GenValorCombo("P", "Permanente 24 horas");
-                break;
-            default:
-                valor = new GenValorCombo("D", "Días");
-                break;
+        if (expTipoatencion.toLowerCase().equalsIgnoreCase("d")) {
+
+            valor = new GenValorCombo("D", "Días");
+        }
+        if (expTipoatencion.toLowerCase().equalsIgnoreCase("p")) {
+            valor = new GenValorCombo("P", "Permanente 24 horas");
         }
         this.expTipoAtencion.set(valor);
     }
