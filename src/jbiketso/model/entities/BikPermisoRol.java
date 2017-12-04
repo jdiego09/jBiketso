@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
             + "and x.modEstado = 'A'\n"
             + "and m.menCodigo = p.proCodigomenu.menCodigo\n"
             + "and m.menEstado = 'A'\n"
-            + "and p.proCodigorol.rolCodigo in :codigoRol")
+            + "and p.proCodigorol.rolCodigo in :codigoRol ORDER BY x.modOrden")
     , @NamedQuery(name = "BikPermisoRol.findMenuByRol", query = "select distinct p from BikModulos x, BikMenu m, BikPermisoRol p\n"
             + "            where x.modCodigo = m.menModcodigo.modCodigo\n"
             + "and x.modEstado = 'A'\n"

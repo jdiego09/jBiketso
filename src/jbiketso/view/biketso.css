@@ -205,6 +205,30 @@
     -fx-alignment: center-right;
 }
 
+.buttonmenuper{
+    -fx-background-image:url("../view/images/per.png");
+    -fx-background-repeat: no-repeat;
+}
+
+.buttonmenuper :hover{    
+    -fx-background-image:url("../view/images/per.png");    
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 35px;
+    -fx-alignment: center-right;
+}
+
+.buttonmenurch{
+    -fx-background-image:url("../view/images/rch.png");
+    -fx-background-repeat: no-repeat;
+}
+
+.buttonmenurch :hover{    
+    -fx-background-image:url("../view/images/rch.png");    
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 35px;
+    -fx-alignment: center-right;
+}
+
 .buttonDrawer{
     -fx-background-color: transparent;    
     -fx-text-fill: black;

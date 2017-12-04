@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Access;
@@ -53,7 +54,9 @@ public class BikModulos implements Serializable {
     private SimpleStringProperty modDescripcion;
     @Transient
     private ObjectProperty<GenValorCombo> estado;
-
+    @Transient
+    private SimpleIntegerProperty modOrden;
+    
     @Column(name = "mod_usuarioingresa")
     private String modUsuarioingresa;
     @Column(name = "mod_fechaingresa")
@@ -73,6 +76,7 @@ public class BikModulos implements Serializable {
         this.modCodigo = new SimpleStringProperty();
         this.modDescripcion = new SimpleStringProperty();
         this.estado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
+        this.modOrden = new SimpleIntegerProperty();
     }
 
     public BikModulos(String modCodigo) {
@@ -83,7 +87,7 @@ public class BikModulos implements Serializable {
     public BikModulos(String modCodigo, String modDescripcion) {
         this.modCodigo = new SimpleStringProperty();
         this.modDescripcion = new SimpleStringProperty();
-
+        this.modOrden = new SimpleIntegerProperty();
         this.modCodigo.set(modCodigo);
         this.modDescripcion.set(modDescripcion);
     }
@@ -181,6 +185,26 @@ public class BikModulos implements Serializable {
         return this.estado;
     }
 
+    @Column(name = "mod_orden")
+    @Access(AccessType.PROPERTY)
+    public Integer getModOrden() {
+        return modOrden.get();
+    }
+
+    public void setModOrden(Integer modOrden) {
+        if (this.modOrden == null) {
+            this.modOrden = new SimpleIntegerProperty();
+        }
+        this.modOrden.set(modOrden);
+    }    
+    
+    public SimpleIntegerProperty getModOrdenModuloProperty() {
+        if (this.modOrden == null) {
+            this.modOrden = new SimpleIntegerProperty();
+        }
+        return this.modOrden;
+    }
+    
     public String getModUsuarioingresa() {
         return modUsuarioingresa;
     }
