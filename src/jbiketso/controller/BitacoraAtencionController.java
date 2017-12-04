@@ -53,9 +53,6 @@ public class BitacoraAtencionController extends Controller implements Initializa
 
     BikBitacoraAtencion bitacora;
     BikSede sede;
-    @XmlTransient
-    public ObservableList<BikBitacoraAtencion> detalleBitacora = FXCollections
-            .observableArrayList();
 
     @FXML
     private AnchorPane acpRoot;
@@ -94,6 +91,10 @@ public class BitacoraAtencionController extends Controller implements Initializa
     private TableColumn<BikBitacoraAtencion, String> tbcDetalle;
     @FXML
     private Button btnAgregar;
+
+    @XmlTransient
+    public ObservableList<BikBitacoraAtencion> detalleBitacora = FXCollections
+            .observableArrayList();
     @XmlTransient
     ObservableList<GenValorCombo> tipoAtencion = FXCollections
             .observableArrayList();
@@ -128,13 +129,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
                 tipoAtencion.add(new GenValorCombo("A", "Atención brindada"));
                 break;
         }
-
         jcmbTipoAtencion.setItems(tipoAtencion);
-        if (!this.getAccion().equalsIgnoreCase("q")) {
-            jcmbTipoAtencion.setEditable(false);
-            btnGuardar.setDisable(true);
-            btnAgregar.setDisable(true);
-        }
     }
 
     private void bindBitacora() {
@@ -269,6 +264,11 @@ public class BitacoraAtencionController extends Controller implements Initializa
         init();
         setTiposAtencion();
         jcmbTipoAtencion.getSelectionModel().selectFirst();
+        jcmbTipoAtencion.setDisable(true);
+        if (this.getAccion().equalsIgnoreCase("q")) {
+            btnGuardar.setDisable(true);
+            btnAgregar.setDisable(true);
+        }
     }
 
     private void init() {

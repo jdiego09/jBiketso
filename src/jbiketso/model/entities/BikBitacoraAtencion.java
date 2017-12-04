@@ -44,7 +44,13 @@ import jbiketso.utils.GenValorCombo;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikBitacoraAtencion.findAll", query = "SELECT b FROM BikBitacoraAtencion b")
-    })
+    , @NamedQuery(name = "BikBitacoraAtencion.findByCedulaDesc", query = "select b from BikBitacoraAtencion b\n"
+            + "     join b.biaCodusuario u\n"
+            + "     join u.usuPercodigo p\n"
+            + "    where b.biaTipo = :tipo\n"
+            + "      and p.perCedula = :cedula\n"
+            + "    order by b.biaFechainicio desc")
+})
 public class BikBitacoraAtencion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -77,6 +83,7 @@ public class BikBitacoraAtencion implements Serializable {
         this.biaCodusuario = new BikUsuario();
         this.biaFechainicio = new SimpleObjectProperty(LocalDate.now());
         this.biaDetalle = new SimpleStringProperty();
+        this.biaTipo = new SimpleObjectProperty(new GenValorCombo("N", "Atención"));
     }
 
     @Id
