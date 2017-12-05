@@ -121,7 +121,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
                 tipoAtencion.add(new GenValorCombo("S", "Salida del centro"));
                 tipoAtencion.add(new GenValorCombo("C", "Chequeo médico"));
                 tipoAtencion.add(new GenValorCombo("T", "Toma de signos"));
-                tipoAtencion.add(new GenValorCombo("A", "Atención brindada"));
+                tipoAtencion.add(new GenValorCombo("N", "Atención brindada"));
                 tipoAtencion.add(new GenValorCombo("%", "Todos"));
                 break;
             case "a":
@@ -281,10 +281,9 @@ public class BitacoraAtencionController extends Controller implements Initializa
         init();
         setTiposAtencion();
         jcmbTipoAtencion.getSelectionModel().selectFirst();
-        jcmbTipoAtencion.setDisable(true);
         if (this.getAccion().equalsIgnoreCase("q")) {
-            btnGuardarAtencion.setDisable(true);
             btnAgregarAtencion.setDisable(true);
+            jcmbTipoAtencion.setDisable(false);
         }
     }
 
@@ -307,7 +306,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
                 AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Registrar atención", resultado.getMensaje());
                 return;
             } else {
-                 AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Registrar atención", resultado.getMensaje());
+                AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Registrar atención", resultado.getMensaje());
                 if (!this.detalleBitacora.contains(bitacora)) {
                     this.detalleBitacora.add(bitacora);
                 }

@@ -48,7 +48,7 @@ import jbiketso.utils.GenValorCombo;
     , @NamedQuery(name = "BikBitacoraAtencion.findByCedulaDesc", query = "select b from BikBitacoraAtencion b\n"
             + "     join b.biaCodusuario u\n"
             + "     join u.usuPercodigo p\n"
-            + "    where b.biaTipo = :tipo\n"
+            + "    where b.biaTipo like :tipo\n"
             + "      and p.perCedula = :cedula\n"
             + "    order by b.biaFechainicio desc")
 })

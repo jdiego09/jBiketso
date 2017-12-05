@@ -47,12 +47,12 @@
             </Button>
          </children>
       </Pane>
-      <JFXComboBox fx:id="jcmbTipoAtencion" labelFloat="true" layoutX="24.0" layoutY="82.0" prefHeight="39.0" prefWidth="400.0" promptText="Tipo" styleClass="edittext" visibleRowCount="2">
+      <JFXComboBox fx:id="jcmbTipoAtencion" disable="true" labelFloat="true" layoutX="24.0" layoutY="82.0" prefHeight="39.0" prefWidth="400.0" promptText="Tipo" styleClass="edittext" visibleRowCount="2">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </JFXComboBox>
-      <JFXDatePicker fx:id="jdtpFecha" editable="false" layoutX="517.0" layoutY="84.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLay="true" prefHeight="35.0" prefWidth="202.0" promptText="Fecha" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFecha" disable="true" editable="false" layoutX="517.0" layoutY="84.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLay="true" prefHeight="35.0" prefWidth="202.0" promptText="Fecha" styleClass="edittext" />
       <JFXTextField fx:id="jtxfCedula" labelFloat="true" layoutX="24.0" layoutY="152.0" onKeyPressed="#cedulaOnEnterKey" prefHeight="35.0" prefWidth="175.0" promptText="Cédula" styleClass="edittext" />
       <JFXButton fx:id="btnBusqueda" layoutX="199.0" layoutY="152.0" onAction="#busqueda" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
       <JFXTextField fx:id="jtxfNombre" editable="false" focusTraversable="false" labelFloat="true" layoutX="245.0" layoutY="154.0" prefHeight="35.0" prefWidth="474.0" promptText="Nombre" styleClass="edittext" unFocusColor="#00796b" />
