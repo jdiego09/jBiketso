@@ -291,6 +291,7 @@ public class UsuariosController extends Controller implements Initializable {
       bindExpediente();
       bindListaPadecimientos();
       bindListaMedicamentos();
+      this.jcmbTipoPago.getSelectionModel().selectFirst();
       this.jcmbEstado.getSelectionModel().selectFirst();
       this.jcmbTipoAtencion.getSelectionModel().selectFirst();
 
@@ -423,8 +424,8 @@ public class UsuariosController extends Controller implements Initializable {
    @FXML
    void guardarUsuario(ActionEvent event) {
       //guarda el expediente
-      if (!this.expediente.getExpEstado().equalsIgnoreCase("a")) {
-         if (!AppWindowController.getInstance().mensajeConfimacion("Actualizar estado del expediente", "El usuario se marcará como egresado, "
+      if (this.expediente.getExpEstado().equalsIgnoreCase("f")) {
+         if (!AppWindowController.getInstance().mensajeConfimacion("Actualizar estado del expediente", "El usuario se marcará como fallecido, "
                  + "una vez realizado el cambio no se podrá modificar más la información del expediente ni del usuario ¿Desea continuar?")) {
             return;
          }

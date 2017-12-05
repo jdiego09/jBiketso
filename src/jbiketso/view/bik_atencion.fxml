@@ -30,29 +30,29 @@
                   <Tooltip text="Regresar" />
                </tooltip>
             </JFXButton>
-            <Button fx:id="btnGuardar" layoutX="14.0" layoutY="7.0" mnemonicParsing="false" onAction="#guardar" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonguardar" text="Button">
-               <tooltip>
-                  <Tooltip text="Guardar" />
-               </tooltip>
-            </Button>
-            <Button fx:id="btnLimpiar" layoutX="58.0" layoutY="7.0" mnemonicParsing="false" onAction="#limpiar" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonlimpiar" text="Button">
-               <tooltip>
-                  <Tooltip text="Limpiar" />
-               </tooltip>
-            </Button>
             <Label fx:id="lblTitulo" alignment="CENTER" layoutX="254.0" layoutY="11.0" text="Bitácora de Atención" textFill="WHITE">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
+            <Button fx:id="btnLimpiarDatos" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" onAction="#limpiarDatos" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonlimpiar" text="Button">
+               <tooltip>
+                  <Tooltip text="Limpiar datos" />
+               </tooltip>
+            </Button>
+            <Button fx:id="btnImprimir" layoutX="62.0" layoutY="8.0" mnemonicParsing="false" onAction="#imprimir" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonimprimir" text="Button" visible="false">
+               <tooltip>
+                  <Tooltip text="Imprimir" />
+               </tooltip>
+            </Button>
          </children>
       </Pane>
-      <JFXComboBox fx:id="jcmbTipoAtencion" labelFloat="true" layoutX="24.0" layoutY="82.0" prefHeight="39.0" prefWidth="400.0" promptText="Tipo" styleClass="edittext" visibleRowCount="2">
+      <JFXComboBox fx:id="jcmbTipoAtencion" disable="true" labelFloat="true" layoutX="24.0" layoutY="82.0" prefHeight="39.0" prefWidth="400.0" promptText="Tipo" styleClass="edittext" visibleRowCount="2">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </JFXComboBox>
-      <JFXDatePicker fx:id="jdtpFecha" editable="false" layoutX="517.0" layoutY="84.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLay="true" prefHeight="35.0" prefWidth="202.0" promptText="Fecha" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFecha" disable="true" editable="false" layoutX="517.0" layoutY="84.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLay="true" prefHeight="35.0" prefWidth="202.0" promptText="Fecha" styleClass="edittext" />
       <JFXTextField fx:id="jtxfCedula" labelFloat="true" layoutX="24.0" layoutY="152.0" onKeyPressed="#cedulaOnEnterKey" prefHeight="35.0" prefWidth="175.0" promptText="Cédula" styleClass="edittext" />
       <JFXButton fx:id="btnBusqueda" layoutX="199.0" layoutY="152.0" onAction="#busqueda" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
       <JFXTextField fx:id="jtxfNombre" editable="false" focusTraversable="false" labelFloat="true" layoutX="245.0" layoutY="154.0" prefHeight="35.0" prefWidth="474.0" promptText="Nombre" styleClass="edittext" unFocusColor="#00796b" />
@@ -69,9 +69,9 @@
          </font>
       </Label>
       <JFXTextArea fx:id="jtxfDetalle" labelFloat="true" layoutX="24.0" layoutY="217.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#detalleOnKeyPress" prefHeight="65.0" prefWidth="656.0" promptText="Detalle" styleClass="edittext" />
-      <Button fx:id="btnAgregar" layoutX="689.0" layoutY="255.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#agregar" onDragDetected="#agregar" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" text="Agregar atención">
+      <Button fx:id="btnAgregarAtencion" layoutX="680.0" layoutY="250.0" mnemonicParsing="false" onAction="#agregarAtencion" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" text="Button">
          <tooltip>
-            <Tooltip text="Agregar dirección" />
+            <Tooltip text="Agregar atención" />
          </tooltip>
       </Button>
    </children>
