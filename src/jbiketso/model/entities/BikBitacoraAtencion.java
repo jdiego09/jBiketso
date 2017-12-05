@@ -6,6 +6,7 @@
 package jbiketso.model.entities;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -63,6 +64,9 @@ public class BikBitacoraAtencion implements Serializable {
     private ObjectProperty<GenValorCombo> biaTipo;
     @Transient
     private SimpleStringProperty biaDetalle;
+
+    @Transient
+    SimpleStringProperty fechaString;
 
     @Column(name = "bia_usuarioingresa")
     private String biaUsuarioingresa;
@@ -130,6 +134,31 @@ public class BikBitacoraAtencion implements Serializable {
         }
         return this.biaFechainicio;
     }
+
+    public String getfechaString() {
+        if (this.fechaString == null) {
+            fechaString = new SimpleStringProperty();
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mi:ss");
+        if (this.biaFechainicio != null && this.biaFechainicio.get() != null) {
+            fechaString.set(sdf.format(Date.from(this.biaFechainicio.get().atStartOfDay(ZoneId.systemDefault()).toInstant())));
+        } else {
+            return null;
+        }
+        return fechaString.get();
+    }
+
+    public void setFechaString() {
+        if (this.fechaString == null) {
+            fechaString = new SimpleStringProperty();
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mi:ss");
+        if (this.biaFechainicio != null && this.biaFechainicio.get() != null) {
+            fechaString.set(sdf.format(Date.from(this.biaFechainicio.get().atStartOfDay(ZoneId.systemDefault()).toInstant())));
+        }
+    }
+    
+    
 
     public void setBiaFechainicio(Date biaFechainicio) {
         if (biaFechainicio != null) {

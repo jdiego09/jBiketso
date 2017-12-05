@@ -30,21 +30,21 @@
                   <Tooltip text="Regresar" />
                </tooltip>
             </JFXButton>
-            <Button fx:id="btnGuardar" layoutX="14.0" layoutY="7.0" mnemonicParsing="false" onAction="#guardar" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonguardar" text="Button">
-               <tooltip>
-                  <Tooltip text="Guardar" />
-               </tooltip>
-            </Button>
-            <Button fx:id="btnLimpiar" layoutX="58.0" layoutY="7.0" mnemonicParsing="false" onAction="#limpiar" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonlimpiar" text="Button">
-               <tooltip>
-                  <Tooltip text="Limpiar" />
-               </tooltip>
-            </Button>
             <Label fx:id="lblTitulo" alignment="CENTER" layoutX="254.0" layoutY="11.0" text="Bitácora de Atención" textFill="WHITE">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
+            <Button fx:id="btnLimpiarDatos" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" onAction="#limpiarDatos" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonlimpiar" text="Button">
+               <tooltip>
+                  <Tooltip text="Limpiar datos" />
+               </tooltip>
+            </Button>
+            <Button fx:id="btnImprimir" layoutX="62.0" layoutY="8.0" mnemonicParsing="false" onAction="#imprimir" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonimprimir" text="Button" visible="false">
+               <tooltip>
+                  <Tooltip text="Imprimir" />
+               </tooltip>
+            </Button>
          </children>
       </Pane>
       <JFXComboBox fx:id="jcmbTipoAtencion" labelFloat="true" layoutX="24.0" layoutY="82.0" prefHeight="39.0" prefWidth="400.0" promptText="Tipo" styleClass="edittext" visibleRowCount="2">
@@ -69,9 +69,9 @@
          </font>
       </Label>
       <JFXTextArea fx:id="jtxfDetalle" labelFloat="true" layoutX="24.0" layoutY="217.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#detalleOnKeyPress" prefHeight="65.0" prefWidth="656.0" promptText="Detalle" styleClass="edittext" />
-      <Button fx:id="btnAgregar" layoutX="689.0" layoutY="255.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#agregar" onDragDetected="#agregar" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" text="Agregar atención">
+      <Button fx:id="btnAgregarAtencion" layoutX="680.0" layoutY="250.0" mnemonicParsing="false" onAction="#agregarAtencion" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" text="Button">
          <tooltip>
-            <Tooltip text="Agregar dirección" />
+            <Tooltip text="Agregar atención" />
          </tooltip>
       </Button>
    </children>

@@ -48,7 +48,7 @@ public class BitacoraAtencionDao extends BaseDao<Integer, BikBitacoraAtencion> {
         return INSTANCE;
     }
 
-    public void setPersona(BikBitacoraAtencion bitacora) {
+    public void setBitacora(BikBitacoraAtencion bitacora) {
         this.bitacora = bitacora;
     }
 
