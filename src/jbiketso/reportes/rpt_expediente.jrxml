@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2017-12-04T23:43:37 -->
+<!-- 2017-12-05T13:05:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_expediente" pageWidth="612" pageHeight="792" whenNoDataType="NoDataSection" columnWidth="472" leftMargin="70" rightMargin="70" topMargin="56" bottomMargin="56" uuid="accd0558-cf98-41f4-ae09-d05bfc8af2fb">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Biketso"/>
@@ -128,11 +128,12 @@
 			<defaultValueExpression><![CDATA[$P{codigoEncargado}]]></defaultValueExpression>
 		</parameter>
 		<queryString>
-			<![CDATA[SELECT dir_detalle FROM biketso.bik_direccion
-where dir_percodigo =  $P{codigoEncargado}]]>
+			<![CDATA[SELECT dir_detalle 
+  FROM biketso.bik_direccion
+WHERE dir_percodigo =  $P{codigoEncargado}
+ORDER BY dir_detalle]]>
 		</queryString>
 		<field name="dir_detalle" class="java.lang.String"/>
-		<sortField name="dir_detalle"/>
 	</subDataset>
 	<subDataset name="dtsContactos" uuid="07c027d9-27ae-4a63-8d69-260b4572a0d2">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -149,11 +150,11 @@ where dir_percodigo =  $P{codigoEncargado}]]>
     con_detalle detalleContacto
 FROM
     biketso.bik_contacto
-    where con_percodigo =  $P{codigoEncargado}]]>
+    where con_percodigo =  $P{codigoEncargado}
+ORDER BY con_tipo    ]]>
 		</queryString>
 		<field name="tipoContacto" class="java.lang.String"/>
 		<field name="detalleContacto" class="java.lang.String"/>
-		<sortField name="tipoContacto"/>
 	</subDataset>
 	<subDataset name="dtsPadecimientos" uuid="cae3fa8d-e334-4c1f-834d-574e0d29d35b">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -167,11 +168,11 @@ FROM
     biketso.bik_padecimiento
 WHERE
     pad_expcodigo =  $P{codigoExpediente} 
-    and pad_estado = 'A']]>
+    and pad_estado = 'A'
+ORDER BY pad_padecimiento    ]]>
 		</queryString>
 		<field name="padecimiento" class="java.lang.String"/>
 		<field name="observaciones" class="java.lang.String"/>
-		<sortField name="padecimiento"/>
 	</subDataset>
 	<subDataset name="dtsMedicamentos" uuid="0bfe7d77-2bfa-4fb9-a9e4-7fa7fa9b9529">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -185,11 +186,11 @@ FROM
     biketso.bik_medicamento
 WHERE
     med_expcodigo =  $P{codigoExpediente} 
-    and med_estado = 'A']]>
+    and med_estado = 'A'
+ORDER BY med_medicamento]]>
 		</queryString>
 		<field name="medicamento" class="java.lang.String"/>
 		<field name="observaciones" class="java.lang.String"/>
-		<sortField name="medicamento"/>
 	</subDataset>
 	<subDataset name="dtsAtencion" uuid="044c7efa-ea16-4781-970a-dd8b48491699">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -197,7 +198,7 @@ WHERE
 		<parameter name="codigoUsuario" class="java.lang.Integer"/>
 		<queryString>
 			<![CDATA[SELECT 
-    DATE_FORMAT(bia_fechainicio, '%d/%m/%Y') fecha,
+    DATE_FORMAT(bia_fechainicio, '%d/%m/%Y %h:%i:%s %p') fecha,
     CASE
         WHEN bia_tipo = 'A' THEN 'Control de asistencia'
         WHEN bia_tipo = 'T' THEN 'Toma de signos'
@@ -209,12 +210,12 @@ WHERE
 FROM
     biketso.bik_bitacora_atencion
 WHERE 
-    bia_codusuario =  $P{codigoUsuario}]]>
+    bia_codusuario =  $P{codigoUsuario}
+ORDER BY bia_fechainicio]]>
 		</queryString>
 		<field name="fecha" class="java.lang.String"/>
 		<field name="tipo" class="java.lang.String"/>
 		<field name="detalle" class="java.lang.String"/>
-		<sortField name="fecha" order="Descending"/>
 	</subDataset>
 	<parameter name="codigoExpediente" class="java.lang.Integer">
 		<parameterDescription><![CDATA[Código del expediente]]></parameterDescription>

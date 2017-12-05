@@ -91,7 +91,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
     private TableView<BikBitacoraAtencion> tbvBitacora;
 
     @FXML
-    private TableColumn<BikBitacoraAtencion, LocalDate> tbcFecha;
+    private TableColumn<BikBitacoraAtencion, String> tbcFecha;
 
     @FXML
     private TableColumn<BikBitacoraAtencion, String> tbcDetalle;
@@ -121,7 +121,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
                 tipoAtencion.add(new GenValorCombo("S", "Salida del centro"));
                 tipoAtencion.add(new GenValorCombo("C", "Chequeo médico"));
                 tipoAtencion.add(new GenValorCombo("T", "Toma de signos"));
-                tipoAtencion.add(new GenValorCombo("N", "Atención brindada"));
+                tipoAtencion.add(new GenValorCombo("A", "Atención brindada"));
                 tipoAtencion.add(new GenValorCombo("%", "Todos"));
                 break;
             case "a":
