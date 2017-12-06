@@ -8,6 +8,7 @@ package jbiketso.model.entities;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
@@ -59,7 +60,7 @@ public class BikBitacoraAtencion implements Serializable {
     @Transient
     private SimpleIntegerProperty biaCodigo;
     @Transient
-    private SimpleObjectProperty<LocalDate> biaFechainicio;
+    private SimpleObjectProperty<LocalDateTime> biaFechainicio;
     @Transient
     private ObjectProperty<GenValorCombo> biaTipo;
     @Transient
@@ -122,7 +123,7 @@ public class BikBitacoraAtencion implements Serializable {
     @Access(AccessType.PROPERTY)
     public Date getBiaFechainicio() {
         if (this.biaFechainicio != null && this.biaFechainicio.get() != null) {
-            return Date.from(this.biaFechainicio.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            return Date.from(this.biaFechainicio.get().atZone(ZoneId.systemDefault()).toInstant());
         } else {
             return null;
         }
@@ -135,13 +136,19 @@ public class BikBitacoraAtencion implements Serializable {
         return this.biaFechainicio;
     }
 
+    public void setBiaFechainicio(Date biaFechainicio) {
+        if (biaFechainicio != null) {
+            this.biaFechainicio.set(LocalDateTime.ofInstant(biaFechainicio.toInstant(), ZoneId.systemDefault()));
+        }
+    }
+
     public String getfechaString() {
         if (this.fechaString == null) {
             fechaString = new SimpleStringProperty();
         }
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mi:ss");
         if (this.biaFechainicio != null && this.biaFechainicio.get() != null) {
-            fechaString.set(sdf.format(Date.from(this.biaFechainicio.get().atStartOfDay(ZoneId.systemDefault()).toInstant())));
+            fechaString.set(sdf.format(this.biaFechainicio.get()));
         } else {
             return null;
         }
@@ -154,15 +161,7 @@ public class BikBitacoraAtencion implements Serializable {
         }
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mi:ss");
         if (this.biaFechainicio != null && this.biaFechainicio.get() != null) {
-            fechaString.set(sdf.format(Date.from(this.biaFechainicio.get().atStartOfDay(ZoneId.systemDefault()).toInstant())));
-        }
-    }
-    
-    
-
-    public void setBiaFechainicio(Date biaFechainicio) {
-        if (biaFechainicio != null) {
-            this.biaFechainicio.set(biaFechainicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            fechaString.set(sdf.format(this.biaFechainicio.get()));
         }
     }
 

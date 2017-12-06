@@ -7,6 +7,7 @@ package jbiketso.utils;
 
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.Temporal;
@@ -30,6 +31,10 @@ public class Formater {
 
     private static Formater INSTANCE = null;
 
+    public SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm a");
+    public SimpleDateFormat formatFecha = new SimpleDateFormat("dd-MM-yyyy");
+    public SimpleDateFormat formatFechaHora = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+    public DateTimeFormatter formatterFechaHora = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     public DateTimeFormatter formatDateShort = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT); 
     public DateTimeFormatter formatDateMedium = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
     public DecimalFormat decimalFormat = new DecimalFormat("#,###,###,##0.00");

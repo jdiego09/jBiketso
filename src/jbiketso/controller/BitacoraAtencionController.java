@@ -10,11 +10,15 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,9 +44,11 @@ import jbiketso.model.entities.BikSede;
 import jbiketso.model.entities.BikUsuario;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
+import jbiketso.utils.Formater;
 import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
+import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 /**
  * FXML Controller class
@@ -51,8 +57,9 @@ import jbiketso.utils.TipoResultado;
  */
 public class BitacoraAtencionController extends Controller implements Initializable {
 
-    BikBitacoraAtencion bitacora;
-    BikSede sede;
+    private BikBitacoraAtencion bitacora;
+    private BikSede sede;
+    private String cedula;
 
     @FXML
     private AnchorPane acpRoot;
@@ -78,6 +85,8 @@ public class BitacoraAtencionController extends Controller implements Initializa
     @FXML
     private JFXDatePicker jdtpFecha;
 
+    @FXML
+    private JFXTimePicker jtpHora;
     @FXML
     private JFXTextField jtxfCedula;
 
@@ -111,12 +120,14 @@ public class BitacoraAtencionController extends Controller implements Initializa
 
     private void setTiposAtencion() {
         tipoAtencion.clear();
+        btnGuardarAtencion.setDisable(false);
+        btnAgregarAtencion.setDisable(false);
         switch (this.getAccion().toLowerCase()) {
             case "q":
                 //ingresó en modo consulta
                 lblTitulo.setText("Consulta de atención");
+                btnGuardarAtencion.setDisable(true);
                 btnAgregarAtencion.setDisable(true);
-                btnImprimir.setVisible(true);
                 tipoAtencion.add(new GenValorCombo("I", "Ingreso al centro"));
                 tipoAtencion.add(new GenValorCombo("S", "Salida del centro"));
                 tipoAtencion.add(new GenValorCombo("C", "Chequeo médico"));
@@ -176,7 +187,8 @@ public class BitacoraAtencionController extends Controller implements Initializa
             tbvBitacora.setItems(detalleBitacora);
             tbvBitacora.refresh();
         }
-        tbcFecha.setCellValueFactory(new PropertyValueFactory<>("fechaString"));
+        tbcFecha.setCellValueFactory(new PropertyValueFactory<>("biaFechainicio"));
+        tbcFecha.setCellValueFactory(b -> new SimpleStringProperty(Formater.getInstance().formatFechaHora.format(b.getValue().getBiaFechainicio())));
         tbcDetalle.setCellValueFactory(new PropertyValueFactory<>("biaDetalle"));
     }
 
@@ -198,7 +210,10 @@ public class BitacoraAtencionController extends Controller implements Initializa
         unbindBitacora();
         nuevaAtencion();
         bindBitacora();
-        this.jcmbTipoAtencion.requestFocus();
+        if (this.cedula != null && !this.cedula.isEmpty()) {
+            this.jtxfCedula.setText(cedula);
+        }
+        this.jtxfDetalle.requestFocus();
     }
 
     @FXML
@@ -223,7 +238,7 @@ public class BitacoraAtencionController extends Controller implements Initializa
     }
 
     private void traerUsuario() {
-        String cedula = jtxfCedula.getText();
+        cedula = jtxfCedula.getText();
         Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(cedula);
         if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
             AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula", cedulaValida.getMensaje());
@@ -259,15 +274,25 @@ public class BitacoraAtencionController extends Controller implements Initializa
 
     @FXML
     void guardarAtencion(ActionEvent event) {
-
+        agregarAtencionALista(bitacora);
+        unbindBitacora();
+        nuevaAtencion();
+        bindBitacora();
+        if (this.cedula != null && !this.cedula.isEmpty()) {
+            this.jtxfCedula.setText(cedula);
+        }
+        this.jtxfDetalle.requestFocus();
     }
 
     @FXML
     void limpiarDatos(ActionEvent event) {
-        unbindBitacora();
+        this.cedula = null;
+        unbindBitacora();        
         this.detalleBitacora.clear();
         nuevaAtencion();
+        setTiposAtencion();
         bindBitacora();
+        jcmbTipoAtencion.getSelectionModel().selectFirst();
         this.jcmbTipoAtencion.requestFocus();
     }
 
@@ -288,6 +313,12 @@ public class BitacoraAtencionController extends Controller implements Initializa
     }
 
     private void init() {
+        this.cedula = null;
+        this.jdtpFecha.setValue(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        if (this.getAccion() != null && !this.getAccion().isEmpty()) {
+            setTiposAtencion();
+        }
+        
         nuevaAtencion();
         bindBitacora();
         bindDetalleBitacora();
@@ -296,7 +327,10 @@ public class BitacoraAtencionController extends Controller implements Initializa
     private void agregarAtencionALista(BikBitacoraAtencion bitacora) {
         if (bitacora != null && !bitacora.getBiaDetalle().isEmpty()) {
             bitacora.setBiaUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
-            bitacora.setBiaFechainicio(new Date());
+
+            String fecha = jdtpFecha.getValue().toString() + " " + jtpHora.getValue().toString();
+            LocalDateTime dateTime = LocalDateTime.parse(fecha, Formater.getInstance().formatterFechaHora);
+            bitacora.setBiaFechainicio(Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant()));
             bitacora.setBiaFechaingresa(new Date());
             bitacora.setBiaCodusuario(bitacora.getBiaCodusuario());
             BitacoraAtencionDao.getInstance().setBitacora(bitacora);
