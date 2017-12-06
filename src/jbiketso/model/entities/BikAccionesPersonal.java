@@ -1,8 +1,16 @@
 package jbiketso.model.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,12 +27,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
+import jbiketso.utils.GenValorCombo;
 
 @Entity
-@Table(name = "bik_acciones_personal",schema = "biketso")
+@Access(AccessType.FIELD)
+@Table(name = "bik_acciones_personal", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikAccionesPersonal.findAll", query = "SELECT b FROM BikAccionesPersonal b")
@@ -46,27 +56,19 @@ import javax.xml.bind.annotation.XmlTransient;
 public class BikAccionesPersonal implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "acc_codigo")
-    private Integer accCodigo;
-    @Basic(optional = false)
-    @Column(name = "acc_tipo")
-    private String accTipo;
-    @Basic(optional = false)
-    @Column(name = "acc_fechainicio")
-    @Temporal(TemporalType.DATE)
-    private Date accFechainicio;
-    @Basic(optional = false)
-    @Column(name = "acc_fechafinal")
-    @Temporal(TemporalType.DATE)
-    private Date accFechafinal;
-    @Basic(optional = false)
-    @Column(name = "acc_estado")
-    private String accEstado;
-    @Column(name = "acc_observaciones")
-    private String accObservaciones;
+
+    @Transient
+    private SimpleIntegerProperty accCodigo;
+    @Transient
+    private ObjectProperty<GenValorCombo> accTipo;
+    @Transient
+    private SimpleObjectProperty<LocalDate> accFechainicio;
+    @Transient
+    private SimpleObjectProperty<LocalDate> accFechafinal;
+    @Transient
+    private ObjectProperty<GenValorCombo> accEstado;
+    @Transient
+    private SimpleStringProperty accObservaciones;
     @Column(name = "acc_calificacion")
     private Integer accCalificacion;
     @Column(name = "acc_usuarioaplica")
@@ -96,9 +98,15 @@ public class BikAccionesPersonal implements Serializable {
     private List<BikEvaluacion> bikEvaluacionList;
 
     public BikAccionesPersonal() {
+        this.accCodigo = new SimpleIntegerProperty();
+        this.accTipo = new SimpleObjectProperty(new GenValorCombo("ING", "Ingreso"));
+        this.accFechainicio = new SimpleObjectProperty();
+        this.accFechafinal = new SimpleObjectProperty();
+        this.accEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
+        this.accObservaciones = new SimpleStringProperty();
     }
 
-    public BikAccionesPersonal(Integer accCodigo) {
+    /*public BikAccionesPersonal(Integer accCodigo) {
         this.accCodigo = accCodigo;
     }
 
@@ -108,54 +116,174 @@ public class BikAccionesPersonal implements Serializable {
         this.accFechainicio = accFechainicio;
         this.accFechafinal = accFechafinal;
         this.accEstado = accEstado;
-    }
-
+    }*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "acc_codigo")
+    @Access(AccessType.PROPERTY)
     public Integer getAccCodigo() {
-        return accCodigo;
+        if (this.accCodigo == null) {
+            this.accCodigo = new SimpleIntegerProperty();
+        }
+        return accCodigo.get();
     }
 
     public void setAccCodigo(Integer accCodigo) {
-        this.accCodigo = accCodigo;
+        if (this.accCodigo == null) {
+            this.accCodigo = new SimpleIntegerProperty();
+        }
+        this.accCodigo.set(accCodigo);
     }
 
+    public SimpleIntegerProperty getAccCodigoProperty() {
+        if (this.accCodigo == null) {
+            this.accCodigo = new SimpleIntegerProperty();
+        }
+        return this.accCodigo;
+    }
+
+    @Basic(optional = false)
+    @Column(name = "acc_tipo")
+    @Access(AccessType.PROPERTY)
     public String getAccTipo() {
-        return accTipo;
+        if (this.accTipo == null) {
+            this.accTipo = new SimpleObjectProperty();
+        }
+        return accTipo.get().getCodigo();
     }
 
     public void setAccTipo(String accTipo) {
-        this.accTipo = accTipo;
+        if (this.accTipo == null) {
+            this.accTipo = new SimpleObjectProperty();
+        }
+        GenValorCombo valor = null;
+        if (accTipo.equalsIgnoreCase("ing")) {
+            valor = new GenValorCombo(accTipo, "Ingreso");
+        } else if (accTipo.equalsIgnoreCase("vac")) {
+            valor = new GenValorCombo(accTipo, "Vacaciones");
+        } else if (accTipo.equalsIgnoreCase("ren")) {
+            valor = new GenValorCombo(accTipo, "Renuncia");
+        } else if (accTipo.equalsIgnoreCase("des")) {
+            valor = new GenValorCombo(accTipo, "Despido");
+        } else if (accTipo.equalsIgnoreCase("cal")) {
+            valor = new GenValorCombo(accTipo, "Calificación funcionario");
+        } else if (accTipo.equalsIgnoreCase("inc")) {
+            valor = new GenValorCombo(accTipo, "Incapacidad");
+        } else if (accTipo.equalsIgnoreCase("per")) {
+            valor = new GenValorCombo(accTipo, "Permiso");
+        }
+        this.accTipo.set(valor);
     }
 
+    public ObjectProperty getAccTipoProperty() {
+        if (this.accTipo == null) {
+            this.accTipo = new SimpleObjectProperty();
+        }
+        return accTipo;
+    }
+
+    @Basic(optional = false)
+    @Column(name = "acc_fechainicio")
+    @Temporal(TemporalType.DATE)
+    @Access(AccessType.PROPERTY)
     public Date getAccFechainicio() {
-        return accFechainicio;
+        if (accFechainicio != null && accFechainicio.get() != null) {
+            return Date.from(accFechainicio.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } else {
+            return null;
+        }
     }
 
     public void setAccFechainicio(Date accFechainicio) {
-        this.accFechainicio = accFechainicio;
+        if (accFechainicio != null) {
+            this.accFechainicio.set(accFechainicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        }
     }
 
+    public SimpleObjectProperty getAccFechainicioProperty() {
+        if (this.accFechainicio == null) {
+            this.accFechainicio = new SimpleObjectProperty();
+        }
+        return this.accFechainicio;
+    }
+
+    @Basic(optional = false)
+    @Column(name = "acc_fechafinal")
+    @Temporal(TemporalType.DATE)
+    @Access(AccessType.PROPERTY)
     public Date getAccFechafinal() {
-        return accFechafinal;
+        if (accFechafinal != null && accFechafinal.get() != null) {
+            return Date.from(accFechafinal.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } else {
+            return null;
+        }
     }
 
     public void setAccFechafinal(Date accFechafinal) {
-        this.accFechafinal = accFechafinal;
+        if (accFechafinal != null) {
+            this.accFechafinal.set(accFechafinal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        }
     }
 
+    public SimpleObjectProperty getAccFechafinalProperty() {
+        if (this.accFechafinal == null) {
+            this.accFechafinal = new SimpleObjectProperty();
+        }
+        return this.accFechafinal;
+    }
+
+    @Basic(optional = false)
+    @Column(name = "acc_estado")
+    @Access(AccessType.PROPERTY)
     public String getAccEstado() {
-        return accEstado;
+        if (this.accEstado == null) {
+            this.accEstado = new SimpleObjectProperty();
+        }
+        return accEstado.get().getCodigo();
     }
 
     public void setAccEstado(String accEstado) {
-        this.accEstado = accEstado;
+        GenValorCombo valorEstado = null;
+        if (this.accEstado == null) {
+            this.accEstado = new SimpleObjectProperty();
+        }
+        if (accEstado.equalsIgnoreCase("a")) {
+            valorEstado = new GenValorCombo("A", "Activo");
+        } else if (accEstado.equalsIgnoreCase("i")) {
+            valorEstado = new GenValorCombo("I", "Inactivo");
+        }
+        this.accEstado.set(valorEstado);
+    }
+    
+    public ObjectProperty getAccEstadoProperty() {
+        if (this.accEstado == null) {
+            this.accEstado = new SimpleObjectProperty();
+        }
+        return this.accEstado;
     }
 
+    @Column(name = "acc_observaciones")
+    @Access(AccessType.PROPERTY)
     public String getAccObservaciones() {
-        return accObservaciones;
+        if (this.accObservaciones == null) {
+            this.accObservaciones = new SimpleStringProperty();
+        }
+        return accObservaciones.get();
     }
 
     public void setAccObservaciones(String accObservaciones) {
-        this.accObservaciones = accObservaciones;
+        if (this.accObservaciones == null) {
+            this.accObservaciones = new SimpleStringProperty();
+        }
+        this.accObservaciones.set(accObservaciones);
+    }
+    
+    public SimpleStringProperty getAccObservacionesProperty() {
+        if (this.accObservaciones == null) {
+            this.accObservaciones = new SimpleStringProperty();
+        }
+        return this.accObservaciones;
     }
 
     public Integer getAccCalificacion() {
@@ -271,5 +399,5 @@ public class BikAccionesPersonal implements Serializable {
     public String toString() {
         return "jbiketso.model.BikAccionesPersonal[ accCodigo=" + accCodigo + " ]";
     }
-    
+
 }

@@ -6,6 +6,7 @@
 package jbiketso.model.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -29,6 +30,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import jbiketso.utils.GenValorCombo;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -48,9 +50,9 @@ public class BikEvaluacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Transient
-    private Integer evaCodigo;
+    private SimpleIntegerProperty evaCodigo;
     @Transient
-    private SimpleStringProperty evaTipo;
+    private ObjectProperty<GenValorCombo> evaTipo;
     @Transient
     private SimpleIntegerProperty evaCalificacion;
     @Transient
@@ -71,8 +73,9 @@ public class BikEvaluacion implements Serializable {
     private BikAccionesPersonal evaAcccodigo;
 
     public BikEvaluacion() {
-        this.evaTipo = new SimpleStringProperty();
-        this.evaCalificacion = new SimpleIntegerProperty(0);
+        this.evaCodigo = new SimpleIntegerProperty();
+        this.evaTipo = new SimpleObjectProperty(new GenValorCombo("Q", "Quincenal"));
+        this.evaCalificacion = new SimpleIntegerProperty(BigDecimal.ZERO.intValue());
         this.evaObservaciones = new SimpleStringProperty();
     }
 
@@ -82,25 +85,59 @@ public class BikEvaluacion implements Serializable {
     @Column(name = "eva_codigo")
     @Access(AccessType.PROPERTY)
     public Integer getEvaCodigo() {
-        return evaCodigo;
+        if (this.evaCodigo == null) {
+            this.evaCodigo = new SimpleIntegerProperty();
+        }
+        return evaCodigo.get();
     }
 
     public void setEvaCodigo(Integer evaCodigo) {
-        this.evaCodigo = evaCodigo;
+        if (this.evaCodigo == null) {
+            this.evaCodigo = new SimpleIntegerProperty();
+        }
+        this.evaCodigo.set(evaCodigo);
+    }
+    
+    public SimpleIntegerProperty getEvaCodigoProperty() {
+        if (this.evaCodigo == null) {
+            this.evaCodigo = new SimpleIntegerProperty();
+        }
+        return this.evaCodigo;
     }
 
     @Basic(optional = false)
     @Column(name = "eva_tipo")
     @Access(AccessType.PROPERTY)
     public String getEvaTipo() {
-        return evaTipo.get();
+        if (this.evaTipo == null) {
+            this.evaTipo = new SimpleObjectProperty();
+        }
+        return evaTipo.get().getCodigo();
     }
 
     public void setEvaTipo(String evaTipo) {
-        this.evaTipo.set(evaTipo);
+        if (this.evaTipo == null) {
+            this.evaTipo = new SimpleObjectProperty();
+        }
+        GenValorCombo valor = null;
+        if (evaTipo.equalsIgnoreCase("q")) {
+            valor = new GenValorCombo(evaTipo, "Quincenal");
+        } else if (evaTipo.equalsIgnoreCase("m")) {
+            valor = new GenValorCombo(evaTipo, "Mensual");
+        } else if (evaTipo.equalsIgnoreCase("t")) {
+            valor = new GenValorCombo(evaTipo, "Trimestral");
+        } else if (evaTipo.equalsIgnoreCase("s")) {
+            valor = new GenValorCombo(evaTipo, "Semestral");
+        } else if (evaTipo.equalsIgnoreCase("a")) {
+            valor = new GenValorCombo(evaTipo, "Anual");
+        }
+        this.evaTipo.set(valor);
     }
     
-    public SimpleStringProperty getCenEstadoProperty() {
+    public ObjectProperty getEvaTipoProperty() {
+        if (this.evaTipo == null) {
+            this.evaTipo = new SimpleObjectProperty();
+        }
         return this.evaTipo;
     }
 
@@ -108,10 +145,16 @@ public class BikEvaluacion implements Serializable {
     @Column(name = "eva_calificacion")
     @Access(AccessType.PROPERTY)
     public int getEvaCalificacion() {
+        if (this.evaCalificacion == null) {
+            this.evaCalificacion = new SimpleIntegerProperty();
+        }
         return evaCalificacion.get();
     }
 
     public void setEvaCalificacion(int evaCalificacion) {
+        if (this.evaCalificacion == null) {
+            this.evaCalificacion = new SimpleIntegerProperty();
+        }
         this.evaCalificacion.set(evaCalificacion);
     }
     
@@ -125,15 +168,24 @@ public class BikEvaluacion implements Serializable {
     @Column(name = "eva_observaciones")
     @Access(AccessType.PROPERTY)
     public String getEvaObservaciones() {
+        if (this.evaObservaciones == null) {
+            this.evaObservaciones = new SimpleStringProperty();
+        }
         return evaObservaciones.get();
     }
 
     public void setEvaObservaciones(String evaObservaciones) {
+        if (this.evaObservaciones == null) {
+            this.evaObservaciones = new SimpleStringProperty();
+        }
         this.evaObservaciones.set(evaObservaciones);
     }
     
     public SimpleStringProperty getEvaObservacionesProperty() {
-        return evaObservaciones;
+        if (this.evaObservaciones == null){
+            this.evaObservaciones = new SimpleStringProperty();
+        }
+        return this.evaObservaciones;
     }
 
     public String getEvaUsuarioingresa() {
