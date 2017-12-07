@@ -63,7 +63,7 @@
       <JFXTextField fx:id="jtxfCedula" labelFloat="true" layoutX="24.0" layoutY="154.0" onKeyPressed="#cedulaOnEnterKey" prefHeight="35.0" prefWidth="175.0" promptText="Cédula" styleClass="edittext" />
       <JFXButton fx:id="btnBusqueda" layoutX="199.0" layoutY="155.0" onAction="#busqueda" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
       <JFXTextField fx:id="jtxfNombre" editable="false" focusTraversable="false" labelFloat="true" layoutX="245.0" layoutY="154.0" prefHeight="35.0" prefWidth="474.0" promptText="Nombre" styleClass="edittext" unFocusColor="#00796b" />
-      <JFXTextArea fx:id="jtxfDetalle" labelFloat="true" layoutX="25.0" layoutY="217.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#detalleOnKeyPress" prefHeight="65.0" prefWidth="656.0" promptText="Detalle" styleClass="edittext" />
+      <JFXTextArea fx:id="jtxfDetalle" labelFloat="true" layoutX="25.0" layoutY="217.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="656.0" promptText="Detalle" styleClass="edittext" />
       <Button fx:id="btnAgregarAtencion" layoutX="680.0" layoutY="250.0" mnemonicParsing="false" onAction="#agregarAtencion" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonagregar" text="Button">
          <tooltip>
             <Tooltip text="Agregar atención" />
