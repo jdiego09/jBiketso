@@ -5,21 +5,20 @@
  */
 package jbiketso.controller;
 
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.CalendarSource;
-import com.calendarfx.view.CalendarView;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
+import jfxtras.icalendarfx.VCalendar;
+import jfxtras.internal.scene.control.skin.agenda.AgendaDaySkin;
 import jfxtras.scene.control.CalendarPicker;
 import jfxtras.scene.control.agenda.Agenda;
+import jfxtras.scene.control.agenda.icalendar.ICalendarAgenda;
 
 /**
  * FXML Controller class
@@ -28,16 +27,8 @@ import jfxtras.scene.control.agenda.Agenda;
  */
 public class AgendaController extends Controller implements Initializable {
 
-   CalendarView calendarView = new CalendarView();
-   Calendar calendario = new Calendar("citas");
-
    @FXML
    private JFXButton jbtnSalir;
-
-   @FXML
-   private Agenda agdAgenda;
-   @FXML
-   private CalendarPicker cldCalendario;
 
    @FXML
    private AnchorPane acpRoot;
@@ -52,42 +43,52 @@ public class AgendaController extends Controller implements Initializable {
     */
    @Override
    public void initialize(URL url, ResourceBundle rb) {
-      Thread updateTimeThread;
-      // TODO
-      updateTimeThread = new Thread("Calendar: Update Time Thread") {
-         @Override
-         public void run() {
-            while (true) {
-               Platform.runLater(() -> {
-                  calendarView.setToday(LocalDate.now());
-                  calendarView.setTime(LocalTime.now());
-               });
+      VCalendar vCalendar = new VCalendar();
+      ICalendarAgenda agenda = new ICalendarAgenda(vCalendar);
+      CalendarPicker calendarPicker = new CalendarPicker();
+      calendarPicker.setCalendar(java.util.Calendar.getInstance()); // set to today
+      calendarPicker.setPrefWidth(300);
+      calendarPicker.setPrefHeight(250);
+      calendarPicker.setLayoutX(30);
+      calendarPicker.setLayoutY(70);
+      // bind picker to agenda
+      agenda.displayedCalendar().bind(calendarPicker.calendarProperty());
 
-               try {
-                  // update every 10 seconds
-                  sleep(10000);
-               } catch (InterruptedException e) {
-                  e.printStackTrace();
+      // bind picker to agenda
+      //agenda.displayedCalendar().bind(cldCalendario.calendarProperty());
+      agenda.selectedAppointments().addListener((ListChangeListener.Change<? extends Agenda.Appointment> c) -> {
+         while (c.next()) {
+            if (c.wasAdded()) {
+               System.out.println("jota-nuevo evento-" + c.toString());
+            }
+            if (c.wasPermutated()) {
+               for (int i = c.getFrom(); i < c.getTo(); ++i) {
+                  //permutate
                }
+            } else if (c.wasUpdated()) {
+               System.out.println("jota-actualiza evento-" + c.toString());
+            } else {
+               for (Agenda.Appointment a : c.getRemoved()) {
+               }
+               c.getAddedSubList().forEach((a) -> {
+                  System.out.println("jota-" + a.toString());
+               });
             }
          }
-      };
-      updateTimeThread.setPriority(Thread.MIN_PRIORITY);
-      updateTimeThread.setDaemon(true);
-      updateTimeThread.start();
-      
+      });
+
+      agenda.setSkin(new AgendaDaySkin(agenda));
+      agenda.setPrefWidth(500);
+      agenda.setPrefHeight(500);
+      agenda.setLayoutX(345);
+      agenda.setLayoutY(70);
+
+      acpRoot.getChildren().addAll(agenda, calendarPicker);
    }
 
    @Override
    public void initialize() {
       throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-   }
-
-   private void init() {
-      CalendarSource fuente = new CalendarSource("origen");
-
-      fuente.getCalendars().add(calendario);
-      this.agdAgenda = new Agenda();
    }
 
 }
