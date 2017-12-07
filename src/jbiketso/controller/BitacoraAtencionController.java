@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -333,12 +334,23 @@ public class BitacoraAtencionController extends Controller implements Initializa
                 }
             }
         }
-
         tbvBitacora.refresh();
     }
 
     @FXML
     void imprimir(ActionEvent event) {
-
+        if (this.cedula != null && !this.cedula.isEmpty()) {
+            traerUsuario();
+        }
+        if (this.bitacora.getBiaCodusuario().getUsuCodigo() != null && this.bitacora.getBiaCodusuario().getUsuCodigo() > 0) {
+            HashMap<String, Object> parametros = new HashMap<>();
+            parametros.put("codusuario", this.bitacora.getBiaCodusuario().getUsuCodigo());
+            parametros.put("tipoAtencion", this.bitacora.getBiaTipo());
+            parametros.put("fechaInicio", jdtpFecha.getValue());
+            parametros.put("fechaFin", jdtpFecha.getValue().plusDays(1));
+            Aplicacion.getInstance().generarReporte("rpt_bitacora_atencion", parametros);
+        } else {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Imprimir detalle atención", "No se ha indicado ningún usuario para consultar.");
+        }
     }
 }
