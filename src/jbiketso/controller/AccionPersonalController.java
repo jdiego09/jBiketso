@@ -9,7 +9,9 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import java.util.ArrayList;
 import java.util.Date;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +26,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.converter.NumberStringConverter;
 import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.model.dao.AccionPersonalDao;
 import jbiketso.model.dao.FuncionarioDao;
 import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikAccionesPersonal;
@@ -33,6 +36,7 @@ import jbiketso.model.entities.BikFuncionario;
 import jbiketso.model.entities.BikPersona;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
+import jbiketso.utils.Formater;
 import jbiketso.utils.GenValorCombo;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
@@ -113,6 +117,8 @@ public class AccionPersonalController extends Controller {
     private void nuevaAccion() {
         this.accionPersonal = new BikAccionesPersonal();
         this.accionPersonal.setAccFuncodigo(new BikFuncionario());
+        this.accionPersonal.getAccFuncodigo().setFunPercodigo(new BikPersona());
+        this.accionPersonal.setBikEvaluacionList(new ArrayList<>());
     }
 
     private void nuevaEvaluacion() {
@@ -232,9 +238,10 @@ public class AccionPersonalController extends Controller {
             tbvAccionesPersonal.setItems(this.accionesPersonal);
             tbvAccionesPersonal.refresh();
         }
-        tbcTipo.setCellValueFactory(new PropertyValueFactory<>("accTipo"));
-        tbcEstado.setCellValueFactory(new PropertyValueFactory<>("accEstado"));
+        tbcTipo.setCellValueFactory(new PropertyValueFactory<>("descripcionTipoAccion"));
+        tbcEstado.setCellValueFactory(new PropertyValueFactory<>("descripcionEstado"));
         tbcFechaInicial.setCellValueFactory(new PropertyValueFactory<>("accFechainicio"));
+        //tbcFechaInicial.setCellValueFactory(b -> new SimpleStringProperty(Formater.getInstance().formatFecha.format(b.getValue().getAccFechainicio())));
         tbcFechaFinal.setCellValueFactory(new PropertyValueFactory<>("accFechafinal"));
     }
 
@@ -243,7 +250,7 @@ public class AccionPersonalController extends Controller {
             tbvEvaluaciones.setItems(this.evaluaciones);
             tbvEvaluaciones.refresh();
         }
-        tbcTipoEvaluacion.setCellValueFactory(new PropertyValueFactory<>("evaTipo"));
+        tbcTipoEvaluacion.setCellValueFactory(new PropertyValueFactory<>("descripcionTipoEvaluacion"));
         tbcCalificacion.setCellValueFactory(new PropertyValueFactory<>("evaCalificacion"));
         tbcObservacionEvaluacion.setCellValueFactory(new PropertyValueFactory<>("evaObservaciones"));
     }
@@ -312,6 +319,10 @@ public class AccionPersonalController extends Controller {
             this.accionPersonal.setAccFuncodigo(buscado);
             // Se deshabilitan las campos.
             this.jtxfNombreFuncionario.setDisable(true);
+            // Se cargan las acciones de personal
+            Resultado<ArrayList<BikAccionesPersonal>> acciones = AccionPersonalDao.getInstance().findAccionesPersonal(this.accionPersonal.getAccFuncodigo().getFunPercodigo().getPerCedula());
+            this.accionesPersonal.clear();
+            acciones.get().stream().forEach(this.accionesPersonal::add);
         } else {
             BikPersona personaBuscada = PersonaDao.getInstance().getPersona(this.accionPersonal.getAccFuncodigo().getFunPercodigo().getPerCedula()).get();
             if (personaBuscada != null && personaBuscada.getPerCodigo() != null && personaBuscada.getPerCodigo() > 0) {
@@ -340,14 +351,12 @@ public class AccionPersonalController extends Controller {
     }
 
     @FXML
-    void agregarEvaluacionOnKeyPress(KeyEvent event) {
-        if (event.getCode().equals(KeyCode.ENTER)) {
-            agregarEvaluacionALista(this.evaluacion);
-            unbindEvaluacion();
-            nuevaEvaluacion();
-            bindEvaluacion();
-            this.jcmbTipoEvaluacion.requestFocus();
-        }
+    void agregarEvaluacionOnKeyPress(ActionEvent event) {
+        agregarEvaluacionALista(this.evaluacion);
+        unbindEvaluacion();
+        nuevaEvaluacion();
+        bindEvaluacion();
+        this.jcmbTipoEvaluacion.requestFocus();
     }
 
 }

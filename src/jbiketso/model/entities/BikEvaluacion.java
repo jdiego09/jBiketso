@@ -34,7 +34,7 @@ import jbiketso.utils.GenValorCombo;
 
 @Entity
 @Access(AccessType.FIELD)
-@Table(name = "bik_evaluacion",schema = "biketso")
+@Table(name = "bik_evaluacion", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikEvaluacion.findAll", query = "SELECT b FROM BikEvaluacion b")
@@ -42,10 +42,7 @@ import jbiketso.utils.GenValorCombo;
     , @NamedQuery(name = "BikEvaluacion.findByEvaTipo", query = "SELECT b FROM BikEvaluacion b WHERE b.evaTipo = :evaTipo")
     , @NamedQuery(name = "BikEvaluacion.findByEvaCalificacion", query = "SELECT b FROM BikEvaluacion b WHERE b.evaCalificacion = :evaCalificacion")
     , @NamedQuery(name = "BikEvaluacion.findByEvaObservaciones", query = "SELECT b FROM BikEvaluacion b WHERE b.evaObservaciones = :evaObservaciones")
-    , @NamedQuery(name = "BikEvaluacion.findByEvaUsuarioingresa", query = "SELECT b FROM BikEvaluacion b WHERE b.evaUsuarioingresa = :evaUsuarioingresa")
-    , @NamedQuery(name = "BikEvaluacion.findByEvaFechaingresa", query = "SELECT b FROM BikEvaluacion b WHERE b.evaFechaingresa = :evaFechaingresa")
-    , @NamedQuery(name = "BikEvaluacion.findByEvaUsuariomodifica", query = "SELECT b FROM BikEvaluacion b WHERE b.evaUsuariomodifica = :evaUsuariomodifica")
-    , @NamedQuery(name = "BikEvaluacion.findByEvaFechamodifica", query = "SELECT b FROM BikEvaluacion b WHERE b.evaFechamodifica = :evaFechamodifica")})
+    , @NamedQuery(name = "BikEvaluacion.findByCodigoAccion", query = "SELECT e FROM BikEvaluacion e JOIN e.evaAcccodigo a WHERE a.accCodigo = :codAccion")})
 public class BikEvaluacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,7 +54,7 @@ public class BikEvaluacion implements Serializable {
     private SimpleIntegerProperty evaCalificacion;
     @Transient
     private SimpleStringProperty evaObservaciones;
-    
+
     @Column(name = "eva_usuarioingresa")
     private String evaUsuarioingresa;
     @Column(name = "eva_fechaingresa")
@@ -97,7 +94,7 @@ public class BikEvaluacion implements Serializable {
         }
         this.evaCodigo.set(evaCodigo);
     }
-    
+
     public SimpleIntegerProperty getEvaCodigoProperty() {
         if (this.evaCodigo == null) {
             this.evaCodigo = new SimpleIntegerProperty();
@@ -133,12 +130,19 @@ public class BikEvaluacion implements Serializable {
         }
         this.evaTipo.set(valor);
     }
-    
+
     public ObjectProperty getEvaTipoProperty() {
         if (this.evaTipo == null) {
             this.evaTipo = new SimpleObjectProperty();
         }
         return this.evaTipo;
+    }
+
+    public String getDescripcionTipoEvaluacion() {
+        if (this.evaTipo == null) {
+            this.evaTipo = new SimpleObjectProperty();
+        }
+        return this.evaTipo.get().getDescripcion();
     }
 
     @Basic(optional = false)
@@ -157,9 +161,9 @@ public class BikEvaluacion implements Serializable {
         }
         this.evaCalificacion.set(evaCalificacion);
     }
-    
+
     public SimpleIntegerProperty getEvaCalificacionProperty() {
-        if (this.evaCalificacion == null){
+        if (this.evaCalificacion == null) {
             this.evaCalificacion = new SimpleIntegerProperty();
         }
         return this.evaCalificacion;
@@ -180,9 +184,9 @@ public class BikEvaluacion implements Serializable {
         }
         this.evaObservaciones.set(evaObservaciones);
     }
-    
+
     public SimpleStringProperty getEvaObservacionesProperty() {
-        if (this.evaObservaciones == null){
+        if (this.evaObservaciones == null) {
             this.evaObservaciones = new SimpleStringProperty();
         }
         return this.evaObservaciones;
@@ -252,5 +256,5 @@ public class BikEvaluacion implements Serializable {
     public String toString() {
         return "jbiketso.model.BikEvaluacion[ evaCodigo=" + evaCodigo + " ]";
     }
-    
+
 }

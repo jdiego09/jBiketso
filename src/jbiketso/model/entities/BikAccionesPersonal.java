@@ -45,14 +45,7 @@ import jbiketso.utils.GenValorCombo;
     , @NamedQuery(name = "BikAccionesPersonal.findByAccEstado", query = "SELECT b FROM BikAccionesPersonal b WHERE b.accEstado = :accEstado")
     , @NamedQuery(name = "BikAccionesPersonal.findByAccObservaciones", query = "SELECT b FROM BikAccionesPersonal b WHERE b.accObservaciones = :accObservaciones")
     , @NamedQuery(name = "BikAccionesPersonal.findByAccCalificacion", query = "SELECT b FROM BikAccionesPersonal b WHERE b.accCalificacion = :accCalificacion")
-    , @NamedQuery(name = "BikAccionesPersonal.findByAccUsuarioaplica", query = "SELECT b FROM BikAccionesPersonal b WHERE b.accUsuarioaplica = :accUsuarioaplica")
-    , @NamedQuery(name = "BikAccionesPersonal.findByAccFechaaplica", query = "SELECT b FROM BikAccionesPersonal b WHERE b.accFechaaplica = :accFechaaplica")
-    , @NamedQuery(name = "BikAccionesPersonal.findByAccUsuarioanula", query = "SELECT b FROM BikAccionesPersonal b WHERE b.accUsuarioanula = :accUsuarioanula")
-    , @NamedQuery(name = "BikAccionesPersonal.findByAccFechaanula", query = "SELECT b FROM BikAccionesPersonal b WHERE b.accFechaanula = :accFechaanula")
-    , @NamedQuery(name = "BikAccionesPersonal.findByAccUsuarioingresa", query = "SELECT b FROM BikAccionesPersonal b WHERE b.accUsuarioingresa = :accUsuarioingresa")
-    , @NamedQuery(name = "BikAccionesPersonal.findByAccFechaingresa", query = "SELECT b FROM BikAccionesPersonal b WHERE b.accFechaingresa = :accFechaingresa")
-    , @NamedQuery(name = "BikAccionesPersonal.findByAccUsuariomodifica", query = "SELECT b FROM BikAccionesPersonal b WHERE b.accUsuariomodifica = :accUsuariomodifica")
-    , @NamedQuery(name = "BikAccionesPersonal.findByAccFechamodifica", query = "SELECT b FROM BikAccionesPersonal b WHERE b.accFechamodifica = :accFechamodifica")})
+    , @NamedQuery(name = "BikAccionesPersonal.findByCedula", query = "SELECT a FROM BikAccionesPersonal a JOIN a.accFuncodigo f JOIN f.funPercodigo p WHERE p.perCedula = :cedula")})
 public class BikAccionesPersonal implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -183,6 +176,13 @@ public class BikAccionesPersonal implements Serializable {
         return accTipo;
     }
 
+    public String getDescripcionTipoAccion() {
+        if (this.accTipo == null) {
+            this.accTipo = new SimpleObjectProperty();
+        }
+        return this.accTipo.get().getDescripcion();
+    }
+
     @Basic(optional = false)
     @Column(name = "acc_fechainicio")
     @Temporal(TemporalType.DATE)
@@ -255,12 +255,19 @@ public class BikAccionesPersonal implements Serializable {
         }
         this.accEstado.set(valorEstado);
     }
-    
+
     public ObjectProperty getAccEstadoProperty() {
         if (this.accEstado == null) {
             this.accEstado = new SimpleObjectProperty();
         }
         return this.accEstado;
+    }
+
+    public String getDescripcionEstado() {
+        if (this.accEstado == null) {
+            this.accEstado = new SimpleObjectProperty();
+        }
+        return this.accEstado.get().getDescripcion();
     }
 
     @Column(name = "acc_observaciones")
@@ -278,7 +285,7 @@ public class BikAccionesPersonal implements Serializable {
         }
         this.accObservaciones.set(accObservaciones);
     }
-    
+
     public SimpleStringProperty getAccObservacionesProperty() {
         if (this.accObservaciones == null) {
             this.accObservaciones = new SimpleStringProperty();
