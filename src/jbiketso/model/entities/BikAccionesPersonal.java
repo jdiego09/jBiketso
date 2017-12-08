@@ -95,7 +95,7 @@ public class BikAccionesPersonal implements Serializable {
         this.accTipo = new SimpleObjectProperty(new GenValorCombo("ING", "Ingreso"));
         this.accFechainicio = new SimpleObjectProperty();
         this.accFechafinal = new SimpleObjectProperty();
-        this.accEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
+        this.accEstado = new SimpleObjectProperty(new GenValorCombo("P", "Pendiente"));
         this.accObservaciones = new SimpleStringProperty();
     }
 
@@ -248,10 +248,12 @@ public class BikAccionesPersonal implements Serializable {
         if (this.accEstado == null) {
             this.accEstado = new SimpleObjectProperty();
         }
-        if (accEstado.equalsIgnoreCase("a")) {
-            valorEstado = new GenValorCombo("A", "Activo");
-        } else if (accEstado.equalsIgnoreCase("i")) {
-            valorEstado = new GenValorCombo("I", "Inactivo");
+        if (accEstado.equalsIgnoreCase("p")) {
+            valorEstado = new GenValorCombo("P", "Pendiente");
+        } else if (accEstado.equalsIgnoreCase("a")) {
+            valorEstado = new GenValorCombo("A", "Aplicada");
+        } else if (accEstado.equalsIgnoreCase("n")) {
+            valorEstado = new GenValorCombo("N", "Nula");
         }
         this.accEstado.set(valorEstado);
     }

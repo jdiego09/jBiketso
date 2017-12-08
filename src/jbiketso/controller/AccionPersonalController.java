@@ -9,9 +9,12 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -134,10 +137,10 @@ public class AccionPersonalController extends Controller {
         nuevaEvaluacion();
 
         this.estados.clear();
-        this.estados.add(new GenValorCombo("A", "Activo"));
-        this.estados.add(new GenValorCombo("I", "Inactivo"));
+        this.estados.add(new GenValorCombo("P", "Pendiente"));
+        this.estados.add(new GenValorCombo("A", "Aplicada"));
+        this.estados.add(new GenValorCombo("N", "Nula"));
         jcmbEstado.setItems(this.estados);
-        jcmbEstado.getSelectionModel().selectFirst();
 
         this.tiposAccion.clear();
         this.tiposAccion.add(new GenValorCombo("ING", "Ingreso"));
@@ -148,7 +151,6 @@ public class AccionPersonalController extends Controller {
         this.tiposAccion.add(new GenValorCombo("INC", "Incapacidad"));
         this.tiposAccion.add(new GenValorCombo("PER", "Permiso"));
         jcmbTipoAccion.setItems(this.tiposAccion);
-        jcmbTipoAccion.getSelectionModel().selectFirst();
 
         this.tiposEvaluacion.clear();
         this.tiposEvaluacion.add(new GenValorCombo("Q", "Quincenal"));
@@ -157,7 +159,6 @@ public class AccionPersonalController extends Controller {
         this.tiposEvaluacion.add(new GenValorCombo("S", "Semestral"));
         this.tiposEvaluacion.add(new GenValorCombo("A", "Anual funcionario"));
         jcmbTipoEvaluacion.setItems(this.tiposEvaluacion);
-        jcmbTipoEvaluacion.getSelectionModel().selectFirst();
 
         if (this.accionPersonal != null) {
             unbindAccionPersonal();
@@ -173,11 +174,43 @@ public class AccionPersonalController extends Controller {
         bindListaAccionesPersonal();
         bindListaEvaluaciones();
 
+        jcmbEstado.getSelectionModel().selectFirst();
+        jcmbTipoAccion.getSelectionModel().selectFirst();
+        jcmbTipoEvaluacion.getSelectionModel().selectFirst();
+
         addListenerTableAccionesPersonal(tbvAccionesPersonal);
         addListenerTableEvaluaciones(tbvEvaluaciones);
 
         this.jtxfNombreFuncionario.setDisable(false);
         this.jtxfCedulaFuncionario.setDisable(false);
+        jdtpFechaInicial.setDisable(false);
+        jdtpFechaFinal.setDisable(false);
+
+        this.jcmbTipoAccion.valueProperty().addListener(new ChangeListener<GenValorCombo>() {
+            @Override
+            public void changed(ObservableValue<? extends GenValorCombo> observable, GenValorCombo oldValue, GenValorCombo newValue) {
+                if (accionPersonal.getAccTipo() != null && newValue != null && newValue.getCodigo().equalsIgnoreCase("cal")) {
+                    tabEvaluaciones.setDisable(false);
+                } else {
+                    tabEvaluaciones.setDisable(true);
+                }
+
+                if (accionPersonal.getAccTipo() != null && newValue != null) {
+                    if (newValue.getCodigo().equalsIgnoreCase("ing") || newValue.getCodigo().equalsIgnoreCase("ren") || newValue.getCodigo().equalsIgnoreCase("des") || newValue.getCodigo().equalsIgnoreCase("cal")) {
+                        jdtpFechaInicial.setDisable(true);
+                        jdtpFechaFinal.setDisable(true);
+                        accionPersonal.setAccFechainicio(new Date());
+                        accionPersonal.setAccFechafinal(new Date());
+                    } else {
+                        jdtpFechaInicial.setDisable(false);
+                        jdtpFechaFinal.setDisable(false);
+                        accionPersonal.setAccFechainicio(null);
+                        accionPersonal.setAccFechafinal(null);
+                    }
+                }
+
+            }
+        });
 
         this.jtxfCedulaFuncionario.requestFocus();
 
@@ -224,6 +257,12 @@ public class AccionPersonalController extends Controller {
             if (newSelection != null) {
                 unbindAccionPersonal();
                 this.accionPersonal = (BikAccionesPersonal) newSelection;
+                if (this.accionPersonal.getAccTipo().equalsIgnoreCase("cal")) {
+                    this.evaluaciones.clear();
+                    tbvEvaluaciones.getItems().clear();
+                    Resultado<ArrayList<BikEvaluacion>> evaluaciones = AccionPersonalDao.getInstance().findEvaluaciones(this.accionPersonal.getAccCodigo());
+                    evaluaciones.get().stream().forEach(this.evaluaciones::add);
+                }
                 bindAccionPersonal();
             }
         });
@@ -263,19 +302,20 @@ public class AccionPersonalController extends Controller {
     }
 
     private void agregarAccionPersonalALista(BikAccionesPersonal accionPersonal) {
-        if (this.accionPersonal != null && (this.accionPersonal.getAccCodigo() == null || this.accionPersonal.getAccCodigo() <= 0)) {
-            BikAccionesPersonal nueva = new BikAccionesPersonal();
-            nueva.setAccTipo(this.accionPersonal.getAccTipo());
-            nueva.setAccFechainicio(this.accionPersonal.getAccFechainicio());
-            nueva.setAccFechafinal(this.accionPersonal.getAccFechafinal());
-            nueva.setAccEstado(this.accionPersonal.getAccTipo());
-            nueva.setAccUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
-            nueva.setAccFechaingresa(new Date());
-            nueva.setAccFuncodigo(this.accionPersonal.getAccFuncodigo());
-            if (!this.accionesPersonal.contains(nueva)) {
-                this.accionesPersonal.add(nueva);
-            }
-        } else {
+        //if (this.accionPersonal != null && (this.accionPersonal.getAccCodigo() == null || this.accionPersonal.getAccCodigo() <= 0)) {
+        /*BikAccionesPersonal nueva = new BikAccionesPersonal();
+        nueva.setAccCodigo(this.accionPersonal.getAccCodigo());
+        nueva.setAccTipo(this.accionPersonal.getAccTipo());
+        nueva.setAccFechainicio(this.accionPersonal.getAccFechainicio());
+        nueva.setAccFechafinal(this.accionPersonal.getAccFechafinal());
+        nueva.setAccEstado(this.accionPersonal.getAccEstado());
+        nueva.setAccObservaciones(this.accionPersonal.getAccObservaciones());
+        nueva.setAccUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+        nueva.setAccFechaingresa(new Date());
+        nueva.setAccFuncodigo(this.accionPersonal.getAccFuncodigo());*/
+        if (!this.accionesPersonal.contains(accionPersonal)) {
+            this.accionesPersonal.add(accionPersonal);
+        } /*}*/ else {
             this.accionPersonal.setAccUsuariomodifica(Aplicacion.getInstance().getUsuario().getUssCodigo());
             this.accionPersonal.setAccFechamodifica(new Date());
             this.accionesPersonal.set(this.accionesPersonal.indexOf(accionPersonal), accionPersonal);
@@ -347,23 +387,34 @@ public class AccionPersonalController extends Controller {
 
     @FXML
     private void guardarAccionPersonal() {
-        AccionPersonalDao.getInstance().setAccionPersonal(this.accionPersonal);
-        Resultado<BikAccionesPersonal> resultado = AccionPersonalDao.getInstance().save();
+        if (this.accionPersonal.getAccFechainicio().compareTo(this.accionPersonal.getAccFechafinal()) > 0) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar acciòn personal", "La fecha inicial no puede ser mayor que la final.");
+        } else {
+            if (this.accionPersonal.getAccFechafinal().compareTo(this.accionPersonal.getAccFechainicio()) < 0) {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar acciòn personal", "La fecha final no puede ser menor que la inicial.");
+            } else {
+                AccionPersonalDao.getInstance().setAccionPersonal(this.accionPersonal);
+                Resultado<BikAccionesPersonal> resultado = AccionPersonalDao.getInstance().save();
 
-        if (resultado.getResultado().equals(TipoResultado.ERROR)) {
-            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar persona", resultado.getMensaje());
-            return;
+                if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+                    AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar acciòn personal", resultado.getMensaje());
+                    return;
+                }
+                AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Guardar acciòn personal", resultado.getMensaje());
+                agregarAccionPersonalALista(resultado.get());
+            }
         }
-        AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Guardar persona", resultado.getMensaje());
     }
 
     @FXML
-    void regresar(ActionEvent event) {
+    void regresar(ActionEvent event
+    ) {
         AppWindowController.getInstance().goHome();
     }
 
     @FXML
-    void cedulaFuncionarioOnEnterKey(KeyEvent event) {
+    void cedulaFuncionarioOnEnterKey(KeyEvent event
+    ) {
         if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.TAB)) {
             if (this.accionPersonal.getAccFuncodigo().getFunPercodigo().getPerCedula() != null) {
                 traerFuncionario();
@@ -372,7 +423,8 @@ public class AccionPersonalController extends Controller {
     }
 
     @FXML
-    void agregarEvaluacionOnKeyPress(ActionEvent event) {
+    void agregarEvaluacionOnKeyPress(ActionEvent event
+    ) {
         agregarEvaluacionALista(this.evaluacion);
         unbindEvaluacion();
         nuevaEvaluacion();
@@ -385,13 +437,17 @@ public class AccionPersonalController extends Controller {
         unbindAccionPersonal();
         unbindEvaluacion();
         this.accionesPersonal.clear();
+        this.evaluaciones.clear();
         nuevaAccion();
         nuevaEvaluacion();
         bindAccionPersonal();
         bindEvaluacion();
         this.jtxfCedulaFuncionario.setDisable(false);
         this.jtxfNombreFuncionario.setDisable(false);
+        jdtpFechaInicial.setDisable(false);
+        jdtpFechaFinal.setDisable(false);
         tbvAccionesPersonal.getItems().clear();
+        tbvEvaluaciones.getItems().clear();
     }
 
 }

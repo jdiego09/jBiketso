@@ -83,6 +83,13 @@ public class BikUsuariosSistema implements Serializable {
         this.ussCodigo.set(ussCodigo);
     }
 
+    public SimpleStringProperty getUssCodigoProperty() {
+        if (this.ussCodigo == null) {
+            this.ussCodigo = new SimpleStringProperty();
+        }
+        return this.ussCodigo;
+    }
+
     @Basic(optional = false)
     @Column(name = "uss_estado")
     @Access(AccessType.PROPERTY)
@@ -107,6 +114,20 @@ public class BikUsuariosSistema implements Serializable {
         this.ussEstado.set(valor);
     }
 
+    public ObjectProperty getUssEstadoProperty() {
+        if (this.ussEstado == null) {
+            this.ussEstado = new SimpleObjectProperty();
+        }
+        return this.ussEstado;
+    }
+
+    public String getDescripcionEstado() {
+        if (this.ussEstado == null) {
+            this.ussEstado = new SimpleObjectProperty();
+        }
+        return this.ussEstado.get().getDescripcion();
+    }
+    
     public String getUssUsuarioingresa() {
         return ussUsuarioingresa;
     }

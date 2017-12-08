@@ -41,14 +41,14 @@
             </Label>
          </children>
       </Pane>
-      <JFXTextField fx:id="jtxfCedulaFuncionario" labelFloat="true" layoutX="10.0" layoutY="70.0" onKeyPressed="#cedulaFuncionarioOnEnterKey" prefHeight="35.0" prefWidth="209.0" promptText="Cédula funcionario" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfNombreFuncionario" labelFloat="true" layoutX="276.0" layoutY="70.0" prefHeight="35.0" prefWidth="411.0" promptText="Nombre funcionario" styleClass="edittext" />
-      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="14.0" layoutY="200.0" prefHeight="25.0" prefWidth="202.0" promptText="Estado" styleClass="edittext" />
-      <JFXDatePicker fx:id="jdtpFechaFinal" layoutX="482.0" layoutY="139.0" prefHeight="25.0" prefWidth="202.0" promptText="Fecha final" styleClass="edittext" />
-      <JFXDatePicker fx:id="jdtpFechaInicial" layoutX="277.0" layoutY="139.0" prefHeight="25.0" prefWidth="202.0" promptText="Fecha inicial" styleClass="edittext" />
-      <JFXComboBox fx:id="jcmbTipoAccion" labelFloat="true" layoutX="11.0" layoutY="133.0" prefHeight="39.0" prefWidth="209.0" promptText="Tipo de acción" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfObservacionesAccion" labelFloat="true" layoutX="277.0" layoutY="202.0" prefHeight="35.0" prefWidth="411.0" promptText="Observación" styleClass="edittext" />
-      <JFXButton fx:id="jbtnBuscarFuncionario" layoutX="229.0" layoutY="67.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
+      <JFXTextField fx:id="jtxfCedulaFuncionario" labelFloat="true" layoutX="10.0" layoutY="70.0" onKeyPressed="#cedulaFuncionarioOnEnterKey" prefHeight="35.0" prefWidth="234.0" promptText="Cédula funcionario" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfNombreFuncionario" labelFloat="true" layoutX="295.0" layoutY="70.0" prefHeight="35.0" prefWidth="392.0" promptText="Nombre funcionario" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="14.0" layoutY="200.0" prefHeight="39.0" prefWidth="265.0" promptText="Estado" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaFinal" layoutX="501.0" layoutY="139.0" prefHeight="35.0" prefWidth="183.0" promptText="Fecha final" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaInicial" layoutX="296.0" layoutY="139.0" prefHeight="35.0" prefWidth="183.0" promptText="Fecha inicial" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbTipoAccion" labelFloat="true" layoutX="11.0" layoutY="133.0" prefHeight="39.0" prefWidth="265.0" promptText="Tipo de acción" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfObservacionesAccion" labelFloat="true" layoutX="296.0" layoutY="202.0" prefHeight="35.0" prefWidth="392.0" promptText="Observación" styleClass="edittext" />
+      <JFXButton fx:id="jbtnBuscarFuncionario" layoutX="251.0" layoutY="67.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
       <TabPane layoutX="10.0" layoutY="250.0" prefHeight="307.0" prefWidth="682.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab closable="false" text="Acciones de personal">
