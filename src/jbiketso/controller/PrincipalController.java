@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -18,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import jbiketso.model.dao.SeguridadDao;
 import jbiketso.model.entities.BikCentro;
@@ -29,6 +31,9 @@ public class PrincipalController extends Controller implements Initializable {
 
     @FXML
     private BorderPane root;
+
+    @FXML
+    private VBox vbxContainer;
     @FXML
     private ImageView imgLogo;
     @FXML
@@ -47,7 +52,6 @@ public class PrincipalController extends Controller implements Initializable {
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
     public void init() {
-        loadImage();
         lblUsuario.setText("Usuario: " + Parametros.getInstance().getParametro("Usuario"));
 
         lblFecha.setText("Fecha: " + sdf.format(new Date()));
@@ -71,7 +75,7 @@ public class PrincipalController extends Controller implements Initializable {
                 -1);
         hmbMenu.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 (e) -> {
-                    Aplicacion.getInstance().setEventoMenu(e);                    
+                    Aplicacion.getInstance().setEventoMenu(e);
                     transition.setRate(transition.getRate() * -1);
                     transition.play();
 
@@ -87,25 +91,17 @@ public class PrincipalController extends Controller implements Initializable {
                     }
                 }
         );
-        Aplicacion.getInstance().setHamburgerMenu(hmbMenu); 
+        Aplicacion.getInstance().setHamburgerMenu(hmbMenu);
     }
 
     private void loadImage() {
+        root.getStyleClass().clear();
         BikCentro centro = Aplicacion.getInstance().getDefaultCentro();
         if (centro != null && centro.getCenLogo() != null && !centro.getCenLogo().isEmpty()) {
-            imgLogo.setImage(null);
-            try {
-                Image img = new Image("file:" + centro.getCenLogo());
-                if (!img.isError()) {
-                    imgLogo.setImage(img);
-                } else {
-                    imgLogo.setImage(new Image(getClass().getResourceAsStream("/logo.png")));
-                }
-            } catch (Exception ex) {
-                imgLogo.setImage(new Image(getClass().getResourceAsStream("/logo.png")));
-            }
+            root.getStyleClass().add("-fx-background-image: url('" + centro.getCenLogo() + "'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center;");
         } else {
-            imgLogo.setImage(new Image(getClass().getResourceAsStream("/logo.png")));
+            root.getStyleClass().add("-fx-background-image: url('../view/images/biketso.png'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center;");
+
         }
     }
 
@@ -119,11 +115,17 @@ public class PrincipalController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-        
+        init();
+        loadImage();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         init();
+    }
+
+    @FXML
+    void irAgenda(ActionEvent event) {
+        AppWindowController.getInstance().abrirVentanaEnPrincipal("bik_agenda", "Center");
     }
 }

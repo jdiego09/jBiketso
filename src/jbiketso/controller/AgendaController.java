@@ -27,68 +27,67 @@ import jfxtras.scene.control.agenda.icalendar.ICalendarAgenda;
  */
 public class AgendaController extends Controller implements Initializable {
 
-   @FXML
-   private JFXButton jbtnSalir;
+    @FXML
+    private JFXButton jbtnSalir;
 
-   @FXML
-   private AnchorPane acpRoot;
+    @FXML
+    private AnchorPane acpRoot;
 
-   @FXML
-   void regresar(ActionEvent event) {
+    @FXML
+    void regresar(ActionEvent event) {
 
-   }
+    }
 
-   /**
-    * Initializes the controller class.
-    */
-   @Override
-   public void initialize(URL url, ResourceBundle rb) {
-      VCalendar vCalendar = new VCalendar();
-      ICalendarAgenda agenda = new ICalendarAgenda(vCalendar);
-      CalendarPicker calendarPicker = new CalendarPicker();
-      calendarPicker.setCalendar(java.util.Calendar.getInstance()); // set to today
-      calendarPicker.setPrefWidth(300);
-      calendarPicker.setPrefHeight(250);
-      calendarPicker.setLayoutX(30);
-      calendarPicker.setLayoutY(70);
-      // bind picker to agenda
-      agenda.displayedCalendar().bind(calendarPicker.calendarProperty());
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        VCalendar vCalendar = new VCalendar();
+        ICalendarAgenda agenda = new ICalendarAgenda(vCalendar);
+        CalendarPicker calendarPicker = new CalendarPicker();
+        calendarPicker.setCalendar(java.util.Calendar.getInstance()); // set to today
+        calendarPicker.setPrefWidth(300);
+        calendarPicker.setPrefHeight(250);
+        calendarPicker.setLayoutX(30);
+        calendarPicker.setLayoutY(70);
+        // bind picker to agenda
+        agenda.displayedCalendar().bind(calendarPicker.calendarProperty());
 
-      // bind picker to agenda
-      //agenda.displayedCalendar().bind(cldCalendario.calendarProperty());
-      agenda.selectedAppointments().addListener((ListChangeListener.Change<? extends Agenda.Appointment> c) -> {
-         while (c.next()) {
-            if (c.wasAdded()) {
-               System.out.println("jota-nuevo evento-" + c.toString());
+        // bind picker to agenda
+        //agenda.displayedCalendar().bind(cldCalendario.calendarProperty());
+        agenda.selectedAppointments().addListener((ListChangeListener.Change<? extends Agenda.Appointment> c) -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    System.out.println("jota-nuevo evento-" + c.toString());
+                }
+                if (c.wasPermutated()) {
+                    for (int i = c.getFrom(); i < c.getTo(); ++i) {
+                        //permutate
+                    }
+                } else if (c.wasUpdated()) {
+                    System.out.println("jota-actualiza evento-" + c.toString());
+                } else {
+                    for (Agenda.Appointment a : c.getRemoved()) {
+                    }
+                    c.getAddedSubList().forEach((a) -> {
+                        System.out.println("jota-" + a.toString());
+                    });
+                }
             }
-            if (c.wasPermutated()) {
-               for (int i = c.getFrom(); i < c.getTo(); ++i) {
-                  //permutate
-               }
-            } else if (c.wasUpdated()) {
-               System.out.println("jota-actualiza evento-" + c.toString());
-            } else {
-               for (Agenda.Appointment a : c.getRemoved()) {
-               }
-               c.getAddedSubList().forEach((a) -> {
-                  System.out.println("jota-" + a.toString());
-               });
-            }
-         }
-      });
+        });
 
-      agenda.setSkin(new AgendaDaySkin(agenda));
-      agenda.setPrefWidth(500);
-      agenda.setPrefHeight(500);
-      agenda.setLayoutX(345);
-      agenda.setLayoutY(70);
+        agenda.setSkin(new AgendaDaySkin(agenda));
+        agenda.setPrefWidth(500);
+        agenda.setPrefHeight(500);
+        agenda.setLayoutX(345);
+        agenda.setLayoutY(70);
 
-      acpRoot.getChildren().addAll(agenda, calendarPicker);
-   }
+        acpRoot.getChildren().addAll(agenda, calendarPicker);
+    }
 
-   @Override
-   public void initialize() {
-      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-   }
+    @Override
+    public void initialize() {
+    }
 
 }
