@@ -339,18 +339,22 @@ public class BitacoraAtencionController extends Controller implements Initializa
 
     @FXML
     void imprimir(ActionEvent event) {
-        if (this.cedula != null && !this.cedula.isEmpty()) {
+        try{
+            if (this.cedula != null && !this.cedula.isEmpty()) {
             traerUsuario();
         }
         if (this.bitacora.getBiaCodusuario().getUsuCodigo() != null && this.bitacora.getBiaCodusuario().getUsuCodigo() > 0) {
             HashMap<String, Object> parametros = new HashMap<>();
             parametros.put("codusuario", this.bitacora.getBiaCodusuario().getUsuCodigo());
             parametros.put("tipoAtencion", this.bitacora.getBiaTipo());
-            parametros.put("fechaInicio", jdtpFecha.getValue());
-            parametros.put("fechaFin", jdtpFecha.getValue().plusDays(1));
+            parametros.put("fechaInicio", Date.from(jdtpFecha.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            parametros.put("fechaFin", Date.from(jdtpFecha.getValue().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()));
             Aplicacion.getInstance().generarReporte("rpt_bitacora_atencion", parametros);
         } else {
             AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Imprimir detalle atención", "No se ha indicado ningún usuario para consultar.");
+        }
+        }catch (Exception ex){
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Reporte atención", "Error al generar el reporte de atención brindada");
         }
     }
 }
