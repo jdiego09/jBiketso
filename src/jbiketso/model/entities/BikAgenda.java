@@ -70,7 +70,7 @@ public class BikAgenda implements Serializable {
    public BikAgenda() {
       this.ageCodigo = new SimpleIntegerProperty();
       this.ageDescripcion = new SimpleStringProperty();
-      this.ageTipo = new SimpleObjectProperty(new GenValorCombo("C", "Citas"));
+      this.ageTipo = new SimpleObjectProperty(new GenValorCombo("A", "Agenda"));
       this.ageEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activa"));
    }
 
@@ -136,7 +136,7 @@ public class BikAgenda implements Serializable {
 
    public ObjectProperty getTipoProperty() {
       if (this.ageTipo == null) {
-         this.ageTipo = new SimpleObjectProperty(new GenValorCombo("C", "Citas"));
+         this.ageTipo = new SimpleObjectProperty(new GenValorCombo("A", "Agenda"));
       }
       return this.ageTipo;
    }
@@ -146,8 +146,8 @@ public class BikAgenda implements Serializable {
          this.ageTipo = new SimpleObjectProperty();
       }
       GenValorCombo valor = null;
-      if (ageTipo.equalsIgnoreCase("c")) {
-         valor = new GenValorCombo("C", "Citas");
+      if (ageTipo.equalsIgnoreCase("a")) {
+         valor = new GenValorCombo("A", "Agenda");
       }
       this.ageTipo.set(valor);
    }

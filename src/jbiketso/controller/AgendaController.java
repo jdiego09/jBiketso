@@ -7,13 +7,24 @@ package jbiketso.controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
+import jbiketso.model.dao.AgendaDao;
+import jbiketso.model.entities.BikDetalleAgenda;
+import jbiketso.utils.EventoAgenda;
+import jbiketso.utils.Formater;
+import jbiketso.utils.Resultado;
+import jbiketso.utils.TipoResultado;
 import jfxtras.icalendarfx.VCalendar;
 import jfxtras.icalendarfx.components.VEvent;
 import jfxtras.internal.scene.control.skin.CalendarPickerControlSkin;
@@ -29,6 +40,9 @@ import jfxtras.scene.control.agenda.icalendar.ICalendarAgenda;
  */
 public class AgendaController extends Controller implements Initializable {
 
+    VCalendar vCalendar;
+    ICalendarAgenda agenda;
+    CalendarPicker calendarPicker;
     @FXML
     private JFXButton jbtnSalir;
 
@@ -45,18 +59,18 @@ public class AgendaController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        VCalendar vCalendar = new VCalendar();
-        ICalendarAgenda agenda = new ICalendarAgenda(vCalendar);
-        CalendarPicker calendarPicker = new CalendarPicker();
+        vCalendar = new VCalendar();
+        agenda = new ICalendarAgenda(vCalendar);
+        calendarPicker = new CalendarPicker();
         calendarPicker.setCalendar(java.util.Calendar.getInstance()); // set to today
         calendarPicker.setPrefWidth(300);
         calendarPicker.setPrefHeight(250);
         calendarPicker.setLayoutX(30);
         calendarPicker.setLayoutY(70);
         calendarPicker.setSkin(new CalendarPickerControlSkin(calendarPicker));
-        
+
         agenda.getCategories().clear();
-        
+
         // bind picker to agenda
         agenda.displayedCalendar().bind(calendarPicker.calendarProperty());
         /*VEvent evento = new VEvent();
@@ -92,12 +106,30 @@ public class AgendaController extends Controller implements Initializable {
         agenda.setPrefHeight(450);
         agenda.setLayoutX(345);
         agenda.setLayoutY(70);
-
+        traerEventos();
         acpRoot.getChildren().addAll(agenda, calendarPicker);
     }
 
     @Override
     public void initialize() {
+    }
+
+    private void traerEventos() {
+        Resultado<ArrayList<BikDetalleAgenda>> detalleAgenda = AgendaDao.getInstance().getDetalleAgenda(Date.valueOf(LocalDate.now().withDayOfMonth(1)), Date.valueOf(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())));
+        if (detalleAgenda.getResultado().equals(TipoResultado.SUCCESS)) {
+            ArrayList<VEvent> eventos = new ArrayList<>();
+
+            detalleAgenda.get().stream().forEach(d -> {
+                VEvent evento = new VEvent();
+                evento.setSummary(d.getDeaTitulo());
+                evento.setDescription(d.getDeaDetalle());
+                evento.setDateTimeStart(nFormater.getInstance().formatterFechaHora.format((TemporalAccessor) d.getDeaFechainicio()));
+                //evento.setDateTimeEnd(Formater.getInstance().formatterFechaHora.format(d.getDeaFechafin()));
+                eventos.add(evento);
+            });
+            vCalendar.getVEvents().addAll(eventos);
+        }
+
     }
 
 }

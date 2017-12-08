@@ -13,6 +13,26 @@ import jfxtras.icalendarfx.components.VEvent;
  * @author jcalvo
  */
 public class EventoAgenda extends VEvent {
+
     BikDetalleAgenda eventoBD;
 
+    public EventoAgenda() {
+    }
+
+    public EventoAgenda(VEvent source) {
+        super(source);
+    }
+
+    public BikDetalleAgenda getEventoBD() {
+        return eventoBD;
+    }
+
+    public void setEventoBD(BikDetalleAgenda eventoBD) {
+        this.eventoBD = eventoBD;
+        
+        this.setSummary(this.eventoBD.getDeaTitulo());
+        this.setDescription(this.eventoBD.getDeaDetalle());
+        this.setDateTimeStart(this.eventoBD.getDeaFechainicio().toString());
+        this.setDateTimeEnd(this.eventoBD.getDeaFechafin().toString());
+    }
 }

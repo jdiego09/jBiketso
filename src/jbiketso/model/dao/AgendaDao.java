@@ -6,12 +6,14 @@
 package jbiketso.model.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import jbiketso.model.entities.BikBitacoraAtencion;
+import jbiketso.model.entities.BikAgenda;
+import jbiketso.model.entities.BikDetalleAgenda;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -19,12 +21,12 @@ import jbiketso.utils.TipoResultado;
  *
  * @author jdiego
  */
-public class BitacoraAtencionDao extends BaseDao<Integer, BikBitacoraAtencion> {
+public class AgendaDao extends BaseDao<Integer, BikAgenda> {
 
-    private static BitacoraAtencionDao INSTANCE;
-    private BikBitacoraAtencion bitacora;
+    private static AgendaDao INSTANCE;
+    private BikAgenda agenda;
 
-    private BitacoraAtencionDao() {
+    private AgendaDao() {
     }
 
     private static void createInstance() {
@@ -35,21 +37,21 @@ public class BitacoraAtencionDao extends BaseDao<Integer, BikBitacoraAtencion> {
                 // En la zona sincronizada sería necesario volver
                 // a comprobar que no se ha creado la instancia
                 if (INSTANCE == null) {
-                    INSTANCE = new BitacoraAtencionDao();
+                    INSTANCE = new AgendaDao();
                 }
             }
         }
     }
 
-    public static BitacoraAtencionDao getInstance() {
+    public static AgendaDao getInstance() {
         if (INSTANCE == null) {
             createInstance();
         }
         return INSTANCE;
     }
 
-    public void setBitacora(BikBitacoraAtencion bitacora) {
-        this.bitacora = bitacora;
+    public void setAgenda(BikAgenda agenda) {
+        this.agenda = agenda;
     }
 
     //para que solamente exista una instancia del objeto
@@ -58,14 +60,14 @@ public class BitacoraAtencionDao extends BaseDao<Integer, BikBitacoraAtencion> {
         throw new CloneNotSupportedException();
     }
 
-    public Resultado<ArrayList<BikBitacoraAtencion>> getDetalleBitacora(BikBitacoraAtencion atencion) {
-        Resultado<ArrayList<BikBitacoraAtencion>> resultado = new Resultado<>();
-        ArrayList<BikBitacoraAtencion> listaAtencion = new ArrayList<>();
-        List<BikBitacoraAtencion> atenciones;
+    public Resultado<ArrayList<BikDetalleAgenda>> getDetalleAgenda(Date fechaInicio, Date fechaFin) {
+        Resultado<ArrayList<BikDetalleAgenda>> resultado = new Resultado<>();
+        ArrayList<BikDetalleAgenda> listaAtencion = new ArrayList<>();
+        List<BikDetalleAgenda> atenciones;
         try {
-            Query query = getEntityManager().createNamedQuery("BikBitacoraAtencion.findByCedulaDesc");
-            query.setParameter("tipo", atencion.getBiaTipo());
-            query.setParameter("cedula", atencion.getBiaCodusuario().getUsuPercodigo().getPerCedula());
+            Query query = getEntityManager().createNamedQuery("BikDetalleAgenda.findPendientesFecha");
+            query.setParameter("fechaInicio", fechaInicio);
+            query.setParameter("fechaFin", fechaFin);
             atenciones = query.getResultList();
             atenciones.stream().forEach(listaAtencion::add);
             resultado.setResultado(TipoResultado.SUCCESS);
@@ -77,26 +79,26 @@ public class BitacoraAtencionDao extends BaseDao<Integer, BikBitacoraAtencion> {
         } catch (Exception ex) {
             Logger.getLogger(BitacoraAtencionDao.class.getName()).log(Level.SEVERE, null, ex);
             resultado.setResultado(TipoResultado.ERROR);
-            resultado.setMensaje("Error al traer el detalle de la atención recibida por el usuario [" + atencion.getBiaCodusuario().getUsuPercodigo().getNombreCompleto() + "].");
+            resultado.setMensaje("Error al traer el detalle de la agenda.");
             return resultado;
         }
     }
 
     // Procedimiento para guardar la información de la persona.
-    public Resultado<BikBitacoraAtencion> save() {
-        Resultado<BikBitacoraAtencion> resultado = new Resultado<>();
+    public Resultado<BikAgenda> save() {
+        Resultado<BikAgenda> resultado = new Resultado<>();
         try {
-            bitacora = (BikBitacoraAtencion) super.save(bitacora);
+            agenda = (BikAgenda) super.save(agenda);
 
-            if (bitacora.getBiaCodigo() != null && bitacora.getBiaCodigo() > 0) {
+            if (agenda.getAgeCodigo() != null && agenda.getAgeCodigo() > 0) {
                 resultado.setResultado(TipoResultado.SUCCESS);
-                resultado.set(bitacora);
-                resultado.setMensaje("Atención guardada correctamente.");
+                resultado.set(agenda);
+                resultado.setMensaje("Agenda guardada correctamente.");
 
             } else {
                 resultado.setResultado(TipoResultado.ERROR);
-                resultado.set(bitacora);
-                resultado.setMensaje("No se pudo guardar la atención brindada.");
+                resultado.set(agenda);
+                resultado.setMensaje("No se pudo guardar la agenda.");
             }
 
             return resultado;
