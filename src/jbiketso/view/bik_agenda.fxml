@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import jfxtras.scene.control.*?>
-<?import jfxtras.scene.control.agenda.*?>
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="860.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.AgendaController">
+<AnchorPane id="AnchorPane" fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="900.0" styleClass="form" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.AgendaController">
    <stylesheets>
       <URL value="@biketso.css" />
    </stylesheets>
    <children>
-      <Pane prefHeight="55.0" prefWidth="860.0" styleClass="actionbar">
+      <Pane prefHeight="55.0" prefWidth="900.0" styleClass="actionbar">
          <children>
-            <JFXButton fx:id="jbtnSalir" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="820.0" layoutY="9.0" onAction="#regresar" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonsalir" textOverrun="WORD_ELLIPSIS">
+            <JFXButton fx:id="jbtnSalir" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="860.0" layoutY="9.0" onAction="#regresar" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonsalir" textOverrun="WORD_ELLIPSIS">
                <tooltip>
                   <Tooltip text="Regresar" />
                </tooltip>
             </JFXButton>
-            <Label layoutX="389.0" layoutY="11.0" text="Agenda" textFill="WHITE">
+            <Label layoutX="409.0" layoutY="11.0" text="Agenda" textFill="WHITE">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Agenda fx:id="agdAgenda" layoutX="345.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="441.0" prefWidth="500.0" />
-      <CalendarPicker fx:id="cldCalendario" layoutX="35.0" layoutY="70.0" prefHeight="250.0" prefWidth="300.0" />
    </children>
+   <effect>
+      <DropShadow />
+   </effect>
 </AnchorPane>
