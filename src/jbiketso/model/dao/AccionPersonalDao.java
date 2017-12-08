@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikAccionesPersonal;
 import jbiketso.model.entities.BikEvaluacion;
-import jbiketso.model.entities.BikModulos;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
@@ -102,6 +101,33 @@ public class AccionPersonalDao extends BaseDao<Integer, BikAccionesPersonal> {
             result.setResultado(TipoResultado.ERROR);
             result.setMensaje("Error consultando las evaluaciones.");
             return result;
+        }
+    }
+
+    // Procedimiento para guardar la información de la acción personal.
+    public Resultado<BikAccionesPersonal> save() {
+        Resultado<BikAccionesPersonal> resultado = new Resultado<>();
+        try {
+            this.accionPersonal = (BikAccionesPersonal) super.save(this.accionPersonal);
+
+            if (this.accionPersonal.getAccCodigo() != null) {
+                resultado.setResultado(TipoResultado.SUCCESS);
+                resultado.set(this.accionPersonal);
+                resultado.setMensaje("Acción personal guardada correctamente.");
+
+            } else {
+                resultado.setResultado(TipoResultado.ERROR);
+                resultado.set(this.accionPersonal);
+                resultado.setMensaje("No se pudo guardar la acción personal.");
+            }
+
+            return resultado;
+
+        } catch (Exception ex) {
+            Logger.getLogger(PersonaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al guardar la persona.");
+            return resultado;
         }
     }
 

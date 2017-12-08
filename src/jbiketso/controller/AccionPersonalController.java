@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -30,7 +31,6 @@ import jbiketso.model.dao.AccionPersonalDao;
 import jbiketso.model.dao.FuncionarioDao;
 import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.entities.BikAccionesPersonal;
-import jbiketso.model.entities.BikDireccion;
 import jbiketso.model.entities.BikEvaluacion;
 import jbiketso.model.entities.BikFuncionario;
 import jbiketso.model.entities.BikPersona;
@@ -75,7 +75,7 @@ public class AccionPersonalController extends Controller {
     private TableColumn<BikAccionesPersonal, String> tbcTipo, tbcEstado;
 
     @FXML
-    private TableColumn<BikAccionesPersonal, Date> tbcFechaInicial, tbcFechaFinal;
+    private TableColumn<BikAccionesPersonal, String> tbcFechaInicial, tbcFechaFinal;
 
     @FXML
     private TableView<BikEvaluacion> tbvEvaluaciones;
@@ -88,6 +88,9 @@ public class AccionPersonalController extends Controller {
 
     @FXML
     private TableColumn<BikEvaluacion, String> tbcObservacionEvaluacion;
+
+    @FXML
+    private Tab tabEvaluaciones;
 
     @XmlTransient
     private ObservableList<BikAccionesPersonal> accionesPersonal = FXCollections
@@ -173,6 +176,9 @@ public class AccionPersonalController extends Controller {
         addListenerTableAccionesPersonal(tbvAccionesPersonal);
         addListenerTableEvaluaciones(tbvEvaluaciones);
 
+        this.jtxfNombreFuncionario.setDisable(false);
+        this.jtxfCedulaFuncionario.setDisable(false);
+
         this.jtxfCedulaFuncionario.requestFocus();
 
     }
@@ -241,8 +247,9 @@ public class AccionPersonalController extends Controller {
         tbcTipo.setCellValueFactory(new PropertyValueFactory<>("descripcionTipoAccion"));
         tbcEstado.setCellValueFactory(new PropertyValueFactory<>("descripcionEstado"));
         tbcFechaInicial.setCellValueFactory(new PropertyValueFactory<>("accFechainicio"));
-        //tbcFechaInicial.setCellValueFactory(b -> new SimpleStringProperty(Formater.getInstance().formatFecha.format(b.getValue().getAccFechainicio())));
+        tbcFechaInicial.setCellValueFactory(b -> new SimpleStringProperty(Formater.getInstance().formatFecha.format(b.getValue().getAccFechainicio())));
         tbcFechaFinal.setCellValueFactory(new PropertyValueFactory<>("accFechafinal"));
+        tbcFechaFinal.setCellValueFactory(b -> new SimpleStringProperty(Formater.getInstance().formatFecha.format(b.getValue().getAccFechafinal())));
     }
 
     private void bindListaEvaluaciones() {
@@ -318,6 +325,7 @@ public class AccionPersonalController extends Controller {
         if (buscado != null && buscado.getFunCodigo() != null && buscado.getFunCodigo() > 0) {
             this.accionPersonal.setAccFuncodigo(buscado);
             // Se deshabilitan las campos.
+            this.jtxfCedulaFuncionario.setDisable(true);
             this.jtxfNombreFuncionario.setDisable(true);
             // Se cargan las acciones de personal
             Resultado<ArrayList<BikAccionesPersonal>> acciones = AccionPersonalDao.getInstance().findAccionesPersonal(this.accionPersonal.getAccFuncodigo().getFunPercodigo().getPerCedula());
@@ -328,12 +336,25 @@ public class AccionPersonalController extends Controller {
             if (personaBuscada != null && personaBuscada.getPerCodigo() != null && personaBuscada.getPerCodigo() > 0) {
                 this.accionPersonal.getAccFuncodigo().setFunPercodigo(personaBuscada);
                 // Se deshabilita el campo.
+                this.jtxfCedulaFuncionario.setDisable(true);
                 this.jtxfNombreFuncionario.setDisable(true);
             } else {
                 AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Consultar funcionario", "No se ha registrado la persona con la cédula indicada, ingrese primero a la persona e intente nuevamente.");
             }
         }
         bindAccionPersonal();
+    }
+
+    @FXML
+    private void guardarAccionPersonal() {
+        AccionPersonalDao.getInstance().setAccionPersonal(this.accionPersonal);
+        Resultado<BikAccionesPersonal> resultado = AccionPersonalDao.getInstance().save();
+
+        if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Guardar persona", resultado.getMensaje());
+            return;
+        }
+        AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Guardar persona", resultado.getMensaje());
     }
 
     @FXML
@@ -357,6 +378,20 @@ public class AccionPersonalController extends Controller {
         nuevaEvaluacion();
         bindEvaluacion();
         this.jcmbTipoEvaluacion.requestFocus();
+    }
+
+    @FXML
+    private void limpiarAccionPersonal() {
+        unbindAccionPersonal();
+        unbindEvaluacion();
+        this.accionesPersonal.clear();
+        nuevaAccion();
+        nuevaEvaluacion();
+        bindAccionPersonal();
+        bindEvaluacion();
+        this.jtxfCedulaFuncionario.setDisable(false);
+        this.jtxfNombreFuncionario.setDisable(false);
+        tbvAccionesPersonal.getItems().clear();
     }
 
 }

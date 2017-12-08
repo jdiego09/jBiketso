@@ -28,12 +28,12 @@
                   <Tooltip text="Regresar" />
                </tooltip>
             </JFXButton>
-            <Button fx:id="btnLimpiar" layoutX="58.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonlimpiar" text="Button">
+            <Button fx:id="btnLimpiar" layoutX="58.0" layoutY="6.0" mnemonicParsing="false" onAction="#limpiarAccionPersonal" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonlimpiar" text="Button">
                <tooltip>
                   <Tooltip text="Limpiar" />
                </tooltip>
             </Button>
-            <Button fx:id="btnGuardaAccion" layoutX="12.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="37.0" styleClass="actionbuttonguardar" text="Button" />
+            <Button fx:id="btnGuardaAccion" layoutX="12.0" layoutY="5.0" mnemonicParsing="false" onAction="#guardarAccionPersonal" prefHeight="30.0" prefWidth="37.0" styleClass="actionbuttonguardar" text="Button" />
             <Label layoutX="188.0" layoutY="8.0" text="Registro de acciones de personal" textFill="#f8f8f8">
                <font>
                   <Font size="24.0" />
@@ -55,19 +55,19 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="168.0">
                      <children>
-                        <TableView fx:id="tbvAccionesPersonal" layoutX="1.0" layoutY="6.0" prefHeight="267.0" prefWidth="682.0">
+                        <TableView fx:id="tbvAccionesPersonal" layoutX="1.0" layoutY="6.0" prefHeight="267.0" prefWidth="676.0" styleClass="tableview">
                           <columns>
-                            <TableColumn fx:id="tbcTipo" prefWidth="135.0" text="Tipo" />
-                            <TableColumn fx:id="tbcFechaInicial" prefWidth="105.0" text="Fecha inicial" />
-                              <TableColumn fx:id="tbcFechaFinal" prefWidth="75.0" text="Fecha final" />
-                              <TableColumn fx:id="tbcEstado" prefWidth="75.0" text="Estado" />
+                            <TableColumn fx:id="tbcTipo" prefWidth="243.0" text="Tipo" />
+                            <TableColumn fx:id="tbcFechaInicial" prefWidth="156.0" text="Fecha inicial" />
+                              <TableColumn fx:id="tbcFechaFinal" prefWidth="162.0" text="Fecha final" />
+                              <TableColumn fx:id="tbcEstado" prefWidth="120.0" text="Estado" />
                           </columns>
                         </TableView>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab closable="false" text="Evaluaciones">
+          <Tab fx:id="tabEvaluaciones" closable="false" disable="true" text="Evaluaciones">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
