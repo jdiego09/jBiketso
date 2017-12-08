@@ -15,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import jfxtras.icalendarfx.VCalendar;
+import jfxtras.icalendarfx.components.VEvent;
+import jfxtras.internal.scene.control.skin.CalendarPickerControlSkin;
 import jfxtras.internal.scene.control.skin.agenda.AgendaDaySkin;
 import jfxtras.scene.control.CalendarPicker;
 import jfxtras.scene.control.agenda.Agenda;
@@ -51,9 +53,17 @@ public class AgendaController extends Controller implements Initializable {
         calendarPicker.setPrefHeight(250);
         calendarPicker.setLayoutX(30);
         calendarPicker.setLayoutY(70);
+        calendarPicker.setSkin(new CalendarPickerControlSkin(calendarPicker));
+        
+        agenda.getCategories().clear();
+        
         // bind picker to agenda
         agenda.displayedCalendar().bind(calendarPicker.calendarProperty());
-
+        /*VEvent evento = new VEvent();
+        evento.setSummary(summary);
+        evento.setDescription(description);
+        evento.setDateTimeStart(dateTimeStart);
+        evento.setDateTimeEnd(dateTimeEnd);*/
         // bind picker to agenda
         //agenda.displayedCalendar().bind(cldCalendario.calendarProperty());
         agenda.selectedAppointments().addListener((ListChangeListener.Change<? extends Agenda.Appointment> c) -> {
@@ -79,7 +89,7 @@ public class AgendaController extends Controller implements Initializable {
 
         agenda.setSkin(new AgendaDaySkin(agenda));
         agenda.setPrefWidth(500);
-        agenda.setPrefHeight(500);
+        agenda.setPrefHeight(450);
         agenda.setLayoutX(345);
         agenda.setLayoutY(70);
 
