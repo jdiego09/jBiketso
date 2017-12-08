@@ -5,26 +5,14 @@
  */
 package jbiketso.utils;
 
-import com.calendarfx.model.Entry;
 import jbiketso.model.entities.BikDetalleAgenda;
+import jfxtras.icalendarfx.components.VEvent;
 
 /**
  *
  * @author jcalvo
  */
-public class EventoAgenda extends Entry {
-
-   private BikDetalleAgenda agenda;
-
-   public EventoAgenda() {
-   }
-
-   public BikDetalleAgenda getAgenda() {
-      return agenda;
-   }
-
-   public void setAgenda(BikDetalleAgenda agenda) {
-      this.agenda = agenda;
-   }
+public class EventoAgenda extends VEvent {
+    BikDetalleAgenda eventoBD;
 
 }
