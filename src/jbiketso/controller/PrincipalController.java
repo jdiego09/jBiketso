@@ -141,8 +141,8 @@ public class PrincipalController extends Controller implements Initializable {
             tbvEventos.refresh();
         }
         tbcHora.setCellValueFactory(new PropertyValueFactory<>("biaFechainicio"));
-        tbcHora.setCellValueFactory(b -> new SimpleStringProperty(Formater.getInstance().formatFechaHora.format(b.getValue().getDeaFechainicio())));
-        tbcHora.setCellValueFactory(new PropertyValueFactory<>("biaFechainicio"));
+        tbcHora.setCellValueFactory(b -> new SimpleStringProperty(Formater.getInstance().formatHour.format(b.getValue().getDeaFechainicio())));
+        tbcEvento.setCellValueFactory(new PropertyValueFactory<>("deaTitulo"));
     }
 
     private void cargarSeguridad() {

@@ -11,12 +11,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,13 +20,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import jbiketso.model.dao.AgendaDao;
 import jbiketso.model.entities.BikDetalleAgenda;
-import jbiketso.utils.EventoAgenda;
-import jbiketso.utils.Formater;
+import jbiketso.utils.AppWindowController;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 import jfxtras.icalendarfx.VCalendar;
 import jfxtras.icalendarfx.components.VEvent;
-import jfxtras.icalendarfx.properties.component.time.DateTimeStart;
 import jfxtras.internal.scene.control.skin.CalendarPickerControlSkin;
 import jfxtras.internal.scene.control.skin.agenda.AgendaDaySkin;
 import jfxtras.scene.control.CalendarPicker;
@@ -55,7 +49,7 @@ public class AgendaController extends Controller implements Initializable {
 
     @FXML
     void regresar(ActionEvent event) {
-
+AppWindowController.getInstance().goHome();
     }
 
     /**

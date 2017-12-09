@@ -87,6 +87,8 @@ public class BikDetalleAgenda implements Serializable {
         this.deaDetalle = new SimpleStringProperty();
         this.deaFechainicio = new SimpleObjectProperty(LocalDate.now());
         this.deaFechafin = new SimpleObjectProperty();
+        this.deaCodusuario = new BikUsuario();
+        this.deaFuncodigo = new BikFuncionario();
     }
 
     @Id
