@@ -9,7 +9,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import javafx.beans.property.SimpleStringProperty;

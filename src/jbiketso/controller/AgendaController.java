@@ -123,7 +123,7 @@ public class AgendaController extends Controller implements Initializable {
                 VEvent evento = new VEvent();
                 evento.setSummary(d.getDeaTitulo());
                 evento.setDescription(d.getDeaDetalle());
-                evento.setDateTimeStart(nFormater.getInstance().formatterFechaHora.format((TemporalAccessor) d.getDeaFechainicio()));
+                //evento.setDateTimeStart(nFormater.getInstance().formatterFechaHora.format((TemporalAccessor) d.getDeaFechainicio()));
                 //evento.setDateTimeEnd(Formater.getInstance().formatterFechaHora.format(d.getDeaFechafin()));
                 eventos.add(evento);
             });

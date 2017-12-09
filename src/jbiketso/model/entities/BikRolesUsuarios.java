@@ -7,11 +7,13 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -23,25 +25,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author jdiego
+ * @author Luis Diego
  */
 @Entity
-@Table(name = "bik_roles_usuarios",schema = "biketso")
+@Table(name = "bik_roles_usuarios")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BikRolesUsuarios.findAll", query = "SELECT b FROM BikRolesUsuarios b")
-    , @NamedQuery(name = "BikRolesUsuarios.findByRouUsscodigo", query = "SELECT b FROM BikRolesUsuarios b WHERE b.bikRolesUsuariosPK.rouUsscodigo = :rouUsscodigo")
-    , @NamedQuery(name = "BikRolesUsuarios.findByRouRolcodigo", query = "SELECT b FROM BikRolesUsuarios b WHERE b.bikRolesUsuariosPK.rouRolcodigo = :rouRolcodigo")
     , @NamedQuery(name = "BikRolesUsuarios.findByRouEstado", query = "SELECT b FROM BikRolesUsuarios b WHERE b.rouEstado = :rouEstado")
-    , @NamedQuery(name = "BikRolesUsuarios.findByRouUsuarioingresa", query = "SELECT b FROM BikRolesUsuarios b WHERE b.rouUsuarioingresa = :rouUsuarioingresa")
-    , @NamedQuery(name = "BikRolesUsuarios.findByRouFechaingresa", query = "SELECT b FROM BikRolesUsuarios b WHERE b.rouFechaingresa = :rouFechaingresa")
-    , @NamedQuery(name = "BikRolesUsuarios.findByRouUsuariomodifica", query = "SELECT b FROM BikRolesUsuarios b WHERE b.rouUsuariomodifica = :rouUsuariomodifica")
-    , @NamedQuery(name = "BikRolesUsuarios.findByRouFechamodifica", query = "SELECT b FROM BikRolesUsuarios b WHERE b.rouFechamodifica = :rouFechamodifica")})
+    , @NamedQuery(name = "BikRolesUsuarios.findByRouCodigo", query = "SELECT b FROM BikRolesUsuarios b WHERE b.rouCodigo = :rouCodigo")
+    , @NamedQuery(name = "BikRolesUsuarios.findByCodigoUsuario", query = "SELECT r FROM BikRolesUsuarios r  JOIN r.rouUsscodigo u WHERE u.ussCodigo = :codUsuario")})
 public class BikRolesUsuarios implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected BikRolesUsuariosPK bikRolesUsuariosPK;
     @Basic(optional = false)
     @Column(name = "rou_estado")
     private String rouEstado;
@@ -55,35 +51,24 @@ public class BikRolesUsuarios implements Serializable {
     @Column(name = "rou_fechamodifica")
     @Temporal(TemporalType.TIMESTAMP)
     private Date rouFechamodifica;
-    @JoinColumn(name = "rou_rolcodigo", referencedColumnName = "rol_codigo", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikRoles bikRoles;
-    @JoinColumn(name = "rou_usscodigo", referencedColumnName = "uss_codigo", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private BikUsuariosSistema bikUsuariosSistema;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "rou_codigo")
+    private Integer rouCodigo;
+    @JoinColumn(name = "rou_rolcodigo", referencedColumnName = "rol_codigo")
+    @ManyToOne(optional = false)
+    private BikRoles rouRolcodigo;
+    @JoinColumn(name = "rou_usscodigo", referencedColumnName = "uss_codigo")
+    @ManyToOne(optional = false)
+    private BikUsuariosSistema rouUsscodigo;
 
     public BikRolesUsuarios() {
     }
 
-    public BikRolesUsuarios(BikRolesUsuariosPK bikRolesUsuariosPK) {
-        this.bikRolesUsuariosPK = bikRolesUsuariosPK;
-    }
-
-    public BikRolesUsuarios(BikRolesUsuariosPK bikRolesUsuariosPK, String rouEstado) {
-        this.bikRolesUsuariosPK = bikRolesUsuariosPK;
-        this.rouEstado = rouEstado;
-    }
-
-    public BikRolesUsuarios(String rouUsscodigo, String rouRolcodigo) {
-        this.bikRolesUsuariosPK = new BikRolesUsuariosPK(rouUsscodigo, rouRolcodigo);
-    }
-
-    public BikRolesUsuariosPK getBikRolesUsuariosPK() {
-        return bikRolesUsuariosPK;
-    }
-
-    public void setBikRolesUsuariosPK(BikRolesUsuariosPK bikRolesUsuariosPK) {
-        this.bikRolesUsuariosPK = bikRolesUsuariosPK;
+    public BikRolesUsuarios(BikUsuariosSistema usuario, BikRoles rol) {
+        this.rouUsscodigo = usuario;
+        this.rouRolcodigo = rol;
     }
 
     public String getRouEstado() {
@@ -126,37 +111,54 @@ public class BikRolesUsuarios implements Serializable {
         this.rouFechamodifica = rouFechamodifica;
     }
 
-    public BikRoles getBikRoles() {
-        return bikRoles;
+    public Integer getRouCodigo() {
+        return rouCodigo;
     }
 
-    public void setBikRoles(BikRoles bikRoles) {
-        this.bikRoles = bikRoles;
+    public void setRouCodigo(Integer rouCodigo) {
+        this.rouCodigo = rouCodigo;
     }
 
-    public BikUsuariosSistema getBikUsuariosSistema() {
-        return bikUsuariosSistema;
+    public BikRoles getRouRolcodigo() {
+        return rouRolcodigo;
     }
 
-    public void setBikUsuariosSistema(BikUsuariosSistema bikUsuariosSistema) {
-        this.bikUsuariosSistema = bikUsuariosSistema;
+    public void setRouRolcodigo(BikRoles rouRolcodigo) {
+        this.rouRolcodigo = rouRolcodigo;
+    }
+
+    public BikUsuariosSistema getRouUsscodigo() {
+        return rouUsscodigo;
+    }
+
+    public void setRouUsscodigo(BikUsuariosSistema rouUsscodigo) {
+        this.rouUsscodigo = rouUsscodigo;
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (bikRolesUsuariosPK != null ? bikRolesUsuariosPK.hashCode() : 0);
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this.rouRolcodigo);
+        hash = 17 * hash + Objects.hashCode(this.rouUsscodigo);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BikRolesUsuarios)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        BikRolesUsuarios other = (BikRolesUsuarios) object;
-        if ((this.bikRolesUsuariosPK == null && other.bikRolesUsuariosPK != null) || (this.bikRolesUsuariosPK != null && !this.bikRolesUsuariosPK.equals(other.bikRolesUsuariosPK))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BikRolesUsuarios other = (BikRolesUsuarios) obj;
+        if (!Objects.equals(this.rouRolcodigo, other.rouRolcodigo)) {
+            return false;
+        }
+        if (!Objects.equals(this.rouUsscodigo, other.rouUsscodigo)) {
             return false;
         }
         return true;
@@ -164,7 +166,7 @@ public class BikRolesUsuarios implements Serializable {
 
     @Override
     public String toString() {
-        return "jbiketso.model.entities.BikRolesUsuarios[ bikRolesUsuariosPK=" + bikRolesUsuariosPK + " ]";
+        return "jbiketso.model.entities.BikRolesUsuarios[ rouCodigo=" + rouCodigo + " ]";
     }
-    
+
 }

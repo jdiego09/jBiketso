@@ -6,8 +6,10 @@
 package jbiketso.model.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,6 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "BikRoles.findByRolUsuariomodifica", query = "SELECT b FROM BikRoles b WHERE b.rolUsuariomodifica = :rolUsuariomodifica")
     , @NamedQuery(name = "BikRoles.findByRolFechamodifica", query = "SELECT b FROM BikRoles b WHERE b.rolFechamodifica = :rolFechamodifica")})
 public class BikRoles implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rouRolcodigo")
+    private Collection<BikRolesUsuarios> bikRolesUsuariosCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -84,6 +89,12 @@ public class BikRoles implements Serializable {
 
     public void setRolCodigo(String rolCodigo) {
         this.rolCodigo = rolCodigo;
+    }
+    
+    public SimpleStringProperty getRolCodigoProperty() {
+        SimpleStringProperty codigoRol = new SimpleStringProperty();
+        codigoRol.set(rolCodigo);
+        return codigoRol;
     }
 
     public String getRolDescripcion() {
@@ -166,6 +177,15 @@ public class BikRoles implements Serializable {
     @Override
     public String toString() {
         return "jbiketso.model.entities.BikRoles[ rolCodigo=" + rolCodigo + " ]";
+    }
+
+    @XmlTransient
+    public Collection<BikRolesUsuarios> getBikRolesUsuariosCollection() {
+        return bikRolesUsuariosCollection;
+    }
+
+    public void setBikRolesUsuariosCollection(Collection<BikRolesUsuarios> bikRolesUsuariosCollection) {
+        this.bikRolesUsuariosCollection = bikRolesUsuariosCollection;
     }
     
 }

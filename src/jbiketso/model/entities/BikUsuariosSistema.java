@@ -35,7 +35,8 @@ import jbiketso.utils.GenValorCombo;
 @Table(name = "bik_usuarios_sistema", schema = "biketso")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BikUsuariosSistema.findByUssCodigo", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussCodigo = :ussCodigo")
+    @NamedQuery(name = "BikUsuariosSistema.findAll", query = "SELECT b FROM BikUsuariosSistema b")
+    , @NamedQuery(name = "BikUsuariosSistema.findByUssCodigo", query = "SELECT b FROM BikUsuariosSistema b WHERE b.ussCodigo = :ussCodigo")
 })
 public class BikUsuariosSistema implements Serializable {
 
@@ -44,6 +45,8 @@ public class BikUsuariosSistema implements Serializable {
     private SimpleStringProperty ussCodigo;
     @Transient
     private ObjectProperty<GenValorCombo> ussEstado;
+    @Transient
+    private SimpleStringProperty ussContrasena;
 
     @Column(name = "uss_usuarioingresa")
     private String ussUsuarioingresa;
@@ -55,14 +58,13 @@ public class BikUsuariosSistema implements Serializable {
     @Column(name = "uss_fechamodifica")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ussFechamodifica;
-    @Column(name = "uss_contrasena")
-    private String ussContrasena;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bikUsuariosSistema", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rouUsscodigo", fetch = FetchType.LAZY)
     private List<BikRolesUsuarios> bikRolesUsuariosList;
 
     public BikUsuariosSistema() {
         this.ussCodigo = new SimpleStringProperty();
         this.ussEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
+        this.ussContrasena = new SimpleStringProperty();
     }
 
     @Id
@@ -127,6 +129,29 @@ public class BikUsuariosSistema implements Serializable {
         }
         return this.ussEstado.get().getDescripcion();
     }
+
+    @Column(name = "uss_contrasena")
+    @Access(AccessType.PROPERTY)
+    public String getUssContrasena() {
+        if (this.ussContrasena == null) {
+            this.ussContrasena = new SimpleStringProperty();
+        }
+        return ussContrasena.get();
+    }
+
+    public void setUssContrasena(String ussContrasena) {
+        if (this.ussContrasena == null) {
+            this.ussContrasena = new SimpleStringProperty();
+        }
+        this.ussContrasena.set(ussContrasena);
+    }
+
+    public SimpleStringProperty getUssContrasenaProperty() {
+        if (this.ussContrasena == null) {
+            this.ussContrasena = new SimpleStringProperty();
+        }
+        return this.ussContrasena;
+    }
     
     public String getUssUsuarioingresa() {
         return ussUsuarioingresa;
@@ -158,14 +183,6 @@ public class BikUsuariosSistema implements Serializable {
 
     public void setUssFechamodifica(Date ussFechamodifica) {
         this.ussFechamodifica = ussFechamodifica;
-    }
-
-    public String getUssContrasena() {
-        return ussContrasena;
-    }
-
-    public void setUssContrasena(String ussContrasena) {
-        this.ussContrasena = ussContrasena;
     }
 
     @XmlTransient

@@ -10,9 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import javax.persistence.Query;
-import jbiketso.model.entities.BikModulos;
 import jbiketso.model.entities.BikRolesUsuarios;
-import jbiketso.model.entities.BikUsuariosSistema;
 import jbiketso.utils.AppWindowController;
 
 /**
@@ -22,7 +20,7 @@ import jbiketso.utils.AppWindowController;
 public class RolesUsuarioDao extends BaseDao{    
     public BikRolesUsuarios save(BikRolesUsuarios rolUsuario) {
         try {
-            if (rolUsuario.getBikRolesUsuariosPK().getRouRolcodigo()!= null && !rolUsuario.getBikRolesUsuariosPK().getRouRolcodigo().isEmpty()) {
+            if (rolUsuario.getRouRolcodigo()!= null && !rolUsuario.getRouRolcodigo().getRolCodigo().isEmpty()) {
                 rolUsuario = (BikRolesUsuarios) super.save(rolUsuario);
             } else {
                 AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Error guardando rol por usuario", "No hay información que guardar.");
