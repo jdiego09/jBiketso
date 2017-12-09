@@ -39,8 +39,8 @@
          </children>
       </Pane>
       <JFXTextField fx:id="jtxfCodigo" labelFloat="true" layoutX="21.0" layoutY="74.0" onKeyPressed="#codigoUsuarioOnEnterKey" prefHeight="35.0" prefWidth="232.0" promptText="Código de usuario" styleClass="edittext" />
-      <JFXPasswordField fx:id="jtpfContrasena" labelFloat="true" layoutX="21.0" layoutY="135.0" prefHeight="35.0" prefWidth="232.0" promptText="Contraseña" styleClass="edittext" />
       <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="282.0" layoutY="70.0" prefHeight="39.0" prefWidth="202.0" promptText="Estado" styleClass="edittext" />
+      <JFXPasswordField fx:id="jtpfContrasena" labelFloat="true" layoutX="21.0" layoutY="135.0" prefHeight="35.0" prefWidth="232.0" promptText="Contraseña" styleClass="edittext" />
       <JFXPasswordField fx:id="jtpfRepeContrasena" labelFloat="true" layoutX="282.0" layoutY="135.0" promptText="Repita contraseña" styleClass="edittext" />
       <TabPane layoutX="8.0" layoutY="186.0" prefHeight="248.0" prefWidth="492.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
