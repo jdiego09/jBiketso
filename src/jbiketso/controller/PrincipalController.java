@@ -15,8 +15,10 @@ import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -60,9 +62,6 @@ public class PrincipalController extends Controller implements Initializable {
     private TableColumn<BikDetalleAgenda, String> tbcHora;
     @FXML
     private TableColumn<BikDetalleAgenda, String> tbcEvento;
-    @XmlTransient
-    public ObservableList<BikDetalleAgenda> detalleAgenda = FXCollections
-            .observableArrayList();
 
     @FXML
     private ImageView imgLogo;
@@ -121,7 +120,22 @@ public class PrincipalController extends Controller implements Initializable {
                     }
                 }
         );
-        Aplicacion.getInstance().setHamburgerMenu(hmbMenu);        
+        Aplicacion.getInstance().setHamburgerMenu(hmbMenu);
+
+        Aplicacion.getInstance().getDetalleAgenda().addListener((ListChangeListener.Change<? extends BikDetalleAgenda> c) -> {
+            while (c.next()) {
+                if (c.wasAdded()) {                    
+                    tbvEventos.refresh();
+                }
+                if (c.wasPermutated()) {
+                    tbvEventos.refresh();
+                } else if (c.wasUpdated()) {
+                    tbvEventos.refresh();
+                } else {
+                    tbvEventos.refresh();
+                }
+            }
+        });
     }
 
     private void loadImage() {
@@ -136,8 +150,8 @@ public class PrincipalController extends Controller implements Initializable {
     }
 
     private void bindEventos() {
-        if (detalleAgenda != null) {
-            tbvEventos.setItems(detalleAgenda);
+        if (Aplicacion.getInstance().getDetalleAgenda() != null) {
+            tbvEventos.setItems(Aplicacion.getInstance().getDetalleAgenda());
             tbvEventos.refresh();
         }
         tbcHora.setCellValueFactory(new PropertyValueFactory<>("biaFechainicio"));
@@ -155,8 +169,8 @@ public class PrincipalController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-        init();        
-        traerEventos();
+        init();
+        Aplicacion.getInstance().traerEventos();
         bindEventos();
         loadImage();
     }
@@ -171,16 +185,4 @@ public class PrincipalController extends Controller implements Initializable {
         AppWindowController.getInstance().abrirVentanaEnPrincipal("bik_agenda", "Center");
     }
 
-    private void traerEventos() {
-        Resultado<ArrayList<BikDetalleAgenda>> resultado;
-        try {
-            resultado = AgendaDao.getInstance().getDetalleAgenda(Formater.getInstance().formatFecha.parse(Formater.getInstance().formatFecha.format(new Date())), Formater.getInstance().formatFecha.parse(Formater.getInstance().formatFecha.format(DateUtil.addDays(new Date(), 1))));
-            if (resultado.getResultado().equals(TipoResultado.SUCCESS)) {
-                detalleAgenda.clear();
-                resultado.get().stream().forEach(detalleAgenda::add);
-            }
-        } catch (ParseException ex) {
-            Logger.getLogger(PrincipalController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }

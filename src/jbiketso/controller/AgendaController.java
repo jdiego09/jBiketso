@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import jbiketso.model.dao.AgendaDao;
 import jbiketso.model.entities.BikDetalleAgenda;
+import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
@@ -94,7 +95,7 @@ AppWindowController.getInstance().goHome();
             }
         });
 
-        traerEventos();
+        Aplicacion.getInstance().traerEventos();
         agenda.setSkin(new AgendaDaySkin(agenda));
         agenda.setPrefWidth(500);
         agenda.setPrefHeight(450);
@@ -112,7 +113,7 @@ AppWindowController.getInstance().goHome();
         Resultado<ArrayList<BikDetalleAgenda>> detalleAgenda = AgendaDao.getInstance().getDetalleAgenda(Date.valueOf(LocalDate.now().withDayOfMonth(1)), Date.valueOf(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())));
         if (detalleAgenda.getResultado().equals(TipoResultado.SUCCESS)) {
             ArrayList<VEvent> eventos = new ArrayList<>();
-
+            Aplicacion.getInstance().setDetalleAgenda(detalleAgenda.get());
             detalleAgenda.get().stream().forEach(d -> {
                 VEvent evento = new VEvent();
                 evento.setSummary(d.getDeaTitulo());

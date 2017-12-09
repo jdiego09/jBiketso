@@ -7,7 +7,6 @@ package jbiketso.model.dao;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jbiketso.model.entities.BikAgenda;
 import jbiketso.model.entities.BikDetalleAgenda;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;

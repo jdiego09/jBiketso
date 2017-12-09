@@ -37,7 +37,7 @@ import jbiketso.utils.GenValorCombo;
 @XmlRootElement
 @NamedQueries({
    @NamedQuery(name = "BikAgenda.findAll", query = "SELECT b FROM BikAgenda b")
-   , @NamedQuery(name = "BikAgenda.findByAgeCodigo", query = "SELECT b FROM BikAgenda b WHERE b.ageCodigo = :ageCodigo")})
+   , @NamedQuery(name = "BikAgenda.findByCodigo", query = "SELECT b FROM BikAgenda b WHERE b.ageCodigo = :codigoAgenda")})
 public class BikAgenda implements Serializable {
 
    private static final long serialVersionUID = 1L;

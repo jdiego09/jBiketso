@@ -19,6 +19,10 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -27,15 +31,20 @@ import jbiketso.model.dao.DetalleAgendaDao;
 import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.dao.UsuarioDao;
 import jbiketso.model.entities.BikDetalleAgenda;
+import jbiketso.model.entities.BikFuncionario;
 import jbiketso.model.entities.BikPersona;
 import jbiketso.model.entities.BikUsuario;
+import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
+import jbiketso.utils.Formater;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
 public class RegistroAgendaController extends Controller implements Initializable {
 
     BikDetalleAgenda detalle;
+    BikUsuario usuario;
+    BikFuncionario funcionario;
     @FXML
     private AnchorPane acpRoot;
 
@@ -87,31 +96,36 @@ public class RegistroAgendaController extends Controller implements Initializabl
 
     private void nuevoDetalleAgenda() {
         this.detalle = new BikDetalleAgenda();
+        this.usuario = new BikUsuario();
+        this.funcionario = new BikFuncionario();
+        this.funcionario.setFunPercodigo(new BikPersona());
     }
 
     private void bindUsuario() {
-        jtxfCedulaUsuario.textProperty().bindBidirectional(this.detalle.getDeaCodusuario().getUsuPercodigo().getPerCedulaProperty());
-        jtxfNombreUsuario.textProperty().bindBidirectional(this.detalle.getDeaCodusuario().getUsuPercodigo().getNombreCompletoProperty());
+        jtxfCedulaUsuario.textProperty().bindBidirectional(this.usuario.getUsuPercodigo().getPerCedulaProperty());
+        jtxfNombreUsuario.textProperty().bindBidirectional(this.usuario.getUsuPercodigo().getNombreCompletoProperty());
     }
 
     private void bindDetalleAgenda() {
         jtxfTitulo.textProperty().bindBidirectional(this.detalle.getTituloProperty());
         jtxaDescripcion.textProperty().bindBidirectional(this.detalle.getDetalleProperty());
+        jdpFechaInicio.setValue(LocalDate.now());
+        jdpFechaFin.setValue(LocalDate.now());
     }
 
     private void unbindUsuario() {
-        jtxfCedulaUsuario.textProperty().unbindBidirectional(this.detalle.getDeaCodusuario().getUsuPercodigo().getPerCedulaProperty());
-        jtxfNombreUsuario.textProperty().unbindBidirectional(this.detalle.getDeaCodusuario().getUsuPercodigo().getNombreCompletoProperty());
+        jtxfCedulaUsuario.textProperty().unbindBidirectional(this.usuario.getUsuPercodigo().getPerCedulaProperty());
+        jtxfNombreUsuario.textProperty().unbindBidirectional(this.usuario.getUsuPercodigo().getNombreCompletoProperty());
     }
 
     private void bindFuncionario() {
-        jtxfCedulaFuncionario.textProperty().bindBidirectional(this.detalle.getDeaFuncodigo().getFunPercodigo().getPerCedulaProperty());
-        jtxfNombreFuncionario.textProperty().bindBidirectional(this.detalle.getDeaFuncodigo().getFunPercodigo().getNombreCompletoProperty());
+        jtxfCedulaFuncionario.textProperty().bindBidirectional(this.funcionario.getFunPercodigo().getPerCedulaProperty());
+        jtxfNombreFuncionario.textProperty().bindBidirectional(this.funcionario.getFunPercodigo().getNombreCompletoProperty());
     }
 
     private void unbindFuncionario() {
-        jtxfCedulaFuncionario.textProperty().unbindBidirectional(this.detalle.getDeaFuncodigo().getFunPercodigo().getPerCedulaProperty());
-        jtxfNombreFuncionario.textProperty().unbindBidirectional(this.detalle.getDeaFuncodigo().getFunPercodigo().getNombreCompletoProperty());
+        jtxfCedulaFuncionario.textProperty().unbindBidirectional(this.funcionario.getFunPercodigo().getPerCedulaProperty());
+        jtxfNombreFuncionario.textProperty().unbindBidirectional(this.funcionario.getFunPercodigo().getNombreCompletoProperty());
     }
 
     private void unbindDetalleAgenda() {
@@ -134,7 +148,6 @@ public class RegistroAgendaController extends Controller implements Initializabl
         }
         if (resultado.get() != null && resultado.get().getUsuCodigo() != null && resultado.get().getUsuCodigo() > 0) {
             this.detalle.setDeaCodusuario(resultado.get());
-
         }
         bindUsuario();
     }
@@ -159,14 +172,40 @@ public class RegistroAgendaController extends Controller implements Initializabl
 
     @FXML
     void guardarDetalleAgenda(ActionEvent event) {
-        DetalleAgendaDao.getInstance().setAgenda(detalle);
-        Resultado<BikDetalleAgenda> resultado = DetalleAgendaDao.getInstance().save();
+        if (jdpFechaInicio.getValue() != null && jtpHoraInicio.getValue() != null
+                && (detalle.getDeaTitulo() != null && !detalle.getDeaTitulo().isEmpty())
+                && (detalle.getDeaDetalle() != null && !detalle.getDeaDetalle().isEmpty())) {
+            detalle.setDeaAgecodigo(Aplicacion.getInstance().getDefaultAgenda());
 
-        if (resultado.getResultado().equals(TipoResultado.ERROR)) {
-            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Registrar detalle agenda", resultado.getMensaje());
+            String fechaInicio = jdpFechaInicio.getValue().toString() + " " + jtpHoraInicio.getValue().toString();
+            LocalDateTime dateTimeInicio = LocalDateTime.parse(fechaInicio, Formater.getInstance().formatterFechaHora);
+            detalle.setDeaFechainicio(Date.from(dateTimeInicio.atZone(ZoneId.systemDefault()).toInstant()));
+            String fechaFin = jdpFechaFin.getValue().toString() + " " + jtpHoraFin.getValue().toString();
+            LocalDateTime dateTimeFin = LocalDateTime.parse(fechaFin, Formater.getInstance().formatterFechaHora);
+            detalle.setDeaFechafin(Date.from(dateTimeInicio.atZone(ZoneId.systemDefault()).toInstant()));
+            detalle.setDeaUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
+            detalle.setDeaFechaingresa(new Date());
+            DetalleAgendaDao.getInstance().setAgenda(detalle);
+            Resultado<BikDetalleAgenda> resultado = DetalleAgendaDao.getInstance().save();
+
+            if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Registrar detalle agenda", resultado.getMensaje());
+            } else {
+                Aplicacion.getInstance().getDetalleAgenda().add(detalle);
+                AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Registrar detalle agenda", resultado.getMensaje());
+                Aplicacion.getInstance().traerEventos();
+                unbindDetalleAgenda();
+                unbindUsuario();
+                unbindFuncionario();
+                nuevoDetalleAgenda();
+                bindDetalleAgenda();
+                bindUsuario();
+                bindFuncionario();
+            }
         } else {
-            AppWindowController.getInstance().mensaje(Alert.AlertType.INFORMATION, "Registrar detalle agenda", resultado.getMensaje());
+            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Registrar detalle agenda", "Debe completar la información del evento.");
         }
+
     }
 
     @FXML

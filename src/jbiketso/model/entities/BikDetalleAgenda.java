@@ -51,7 +51,6 @@ public class BikDetalleAgenda implements Serializable {
 
     @Transient
     private SimpleIntegerProperty deaCodigo;
-
     @Transient
     private SimpleObjectProperty<LocalDateTime> deaFechainicio;
     @Transient
@@ -83,12 +82,11 @@ public class BikDetalleAgenda implements Serializable {
     private BikUsuario deaCodusuario;
 
     public BikDetalleAgenda() {
+        this.deaCodigo = new SimpleIntegerProperty();
         this.deaEstado = new SimpleObjectProperty(new GenValorCombo("P", "Pendiente"));
         this.deaDetalle = new SimpleStringProperty();
-        this.deaFechainicio = new SimpleObjectProperty(LocalDate.now());
+        this.deaFechainicio = new SimpleObjectProperty();
         this.deaFechafin = new SimpleObjectProperty();
-        this.deaCodusuario = new BikUsuario();
-        this.deaFuncodigo = new BikFuncionario();
     }
 
     @Id
@@ -188,7 +186,6 @@ public class BikDetalleAgenda implements Serializable {
         this.deaTitulo.set(deaTitulo);
     }
 
-    @Basic(optional = false)
     @Column(name = "dea_detalle")
     @Access(AccessType.PROPERTY)
     public String getDeaDetalle() {

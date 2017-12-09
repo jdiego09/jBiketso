@@ -60,6 +60,27 @@ public class AgendaDao extends BaseDao<Integer, BikAgenda> {
         throw new CloneNotSupportedException();
     }
 
+    public Resultado<BikAgenda> getAgendaByCodigo(Integer codigoAgenda) {
+        Resultado<BikAgenda> resultado = new Resultado<>();
+        BikAgenda agenda;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikAgenda.findByCodigo");
+            query.setParameter("codigoAgenda", codigoAgenda);
+            agenda = (BikAgenda) query.getSingleResult();
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(agenda);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(AgendaDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer la agenda.");
+            return resultado;
+        }
+    }
+
     public Resultado<ArrayList<BikDetalleAgenda>> getDetalleAgenda(Date fechaInicio, Date fechaFin) {
         Resultado<ArrayList<BikDetalleAgenda>> resultado = new Resultado<>();
         ArrayList<BikDetalleAgenda> listaAtencion = new ArrayList<>();
@@ -77,7 +98,7 @@ public class AgendaDao extends BaseDao<Integer, BikAgenda> {
             resultado.setResultado(TipoResultado.WARNING);
             return resultado;
         } catch (Exception ex) {
-            Logger.getLogger(BitacoraAtencionDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AgendaDao.class.getName()).log(Level.SEVERE, null, ex);
             resultado.setResultado(TipoResultado.ERROR);
             resultado.setMensaje("Error al traer el detalle de la agenda.");
             return resultado;
@@ -104,9 +125,9 @@ public class AgendaDao extends BaseDao<Integer, BikAgenda> {
             return resultado;
 
         } catch (Exception ex) {
-            Logger.getLogger(BitacoraAtencionDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AgendaDao.class.getName()).log(Level.SEVERE, null, ex);
             resultado.setResultado(TipoResultado.ERROR);
-            resultado.setMensaje("Error al guardar la persona.");
+            resultado.setMensaje("Error al guardar agenda.");
             return resultado;
         }
     }
