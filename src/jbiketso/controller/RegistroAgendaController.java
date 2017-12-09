@@ -41,98 +41,98 @@ import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 
 public class RegistroAgendaController extends Controller implements Initializable {
-
+    
     BikDetalleAgenda detalle;
     BikUsuario usuario;
     BikFuncionario funcionario;
     @FXML
     private AnchorPane acpRoot;
-
+    
     @FXML
     private JFXButton jbtnSalir;
-
+    
     @FXML
     private JFXDatePicker jdpFechaInicio;
-
+    
     @FXML
     private JFXDatePicker jdpFechaFin;
-
+    
     @FXML
     private JFXTextField jtxfTitulo;
-
+    
     @FXML
     private JFXTextArea jtxaDescripcion;
-
+    
     @FXML
     private JFXTextField jtxfCedulaUsuario;
-
+    
     @FXML
     private JFXTextField jtxfNombreUsuario;
-
+    
     @FXML
     private JFXTextField jtxfCedulaFuncionario;
-
+    
     @FXML
     private JFXTextField jtxfNombreFuncionario;
-
+    
     @FXML
     private JFXTimePicker jtpHoraInicio;
-
+    
     @FXML
     private JFXTimePicker jtpHoraFin;
-
+    
     @FXML
     private JFXButton btnBuscaUsuario;
-
+    
     @FXML
     private JFXButton btnBuscaFuncionario;
-
+    
     private void init() {
         nuevoDetalleAgenda();
         bindDetalleAgenda();
         bindUsuario();
         bindFuncionario();
     }
-
+    
     private void nuevoDetalleAgenda() {
         this.detalle = new BikDetalleAgenda();
         this.usuario = new BikUsuario();
         this.funcionario = new BikFuncionario();
         this.funcionario.setFunPercodigo(new BikPersona());
     }
-
+    
     private void bindUsuario() {
         jtxfCedulaUsuario.textProperty().bindBidirectional(this.usuario.getUsuPercodigo().getPerCedulaProperty());
         jtxfNombreUsuario.textProperty().bindBidirectional(this.usuario.getUsuPercodigo().getNombreCompletoProperty());
     }
-
+    
     private void bindDetalleAgenda() {
         jtxfTitulo.textProperty().bindBidirectional(this.detalle.getTituloProperty());
         jtxaDescripcion.textProperty().bindBidirectional(this.detalle.getDetalleProperty());
         jdpFechaInicio.setValue(LocalDate.now());
         jdpFechaFin.setValue(LocalDate.now());
     }
-
+    
     private void unbindUsuario() {
         jtxfCedulaUsuario.textProperty().unbindBidirectional(this.usuario.getUsuPercodigo().getPerCedulaProperty());
         jtxfNombreUsuario.textProperty().unbindBidirectional(this.usuario.getUsuPercodigo().getNombreCompletoProperty());
     }
-
+    
     private void bindFuncionario() {
         jtxfCedulaFuncionario.textProperty().bindBidirectional(this.funcionario.getFunPercodigo().getPerCedulaProperty());
         jtxfNombreFuncionario.textProperty().bindBidirectional(this.funcionario.getFunPercodigo().getNombreCompletoProperty());
     }
-
+    
     private void unbindFuncionario() {
         jtxfCedulaFuncionario.textProperty().unbindBidirectional(this.funcionario.getFunPercodigo().getPerCedulaProperty());
         jtxfNombreFuncionario.textProperty().unbindBidirectional(this.funcionario.getFunPercodigo().getNombreCompletoProperty());
     }
-
+    
     private void unbindDetalleAgenda() {
         jtxfTitulo.textProperty().unbindBidirectional(this.detalle.getTituloProperty());
         jtxaDescripcion.textProperty().unbindBidirectional(this.detalle.getDetalleProperty());
     }
-
+    
     private void traerUsuario() {
         Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(jtxfCedulaUsuario.getText());
         if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
@@ -151,12 +151,12 @@ public class RegistroAgendaController extends Controller implements Initializabl
         }
         bindUsuario();
     }
-
+    
     @FXML
     void buscaFuncionario(ActionEvent event) {
-
+        
     }
-
+    
     @FXML
     void buscaUsuario(ActionEvent event) {
 // Llamar ventana busqueda
@@ -169,25 +169,33 @@ public class RegistroAgendaController extends Controller implements Initializabl
             traerUsuario();
         }
     }
-
+    
     @FXML
     void guardarDetalleAgenda(ActionEvent event) {
         if (jdpFechaInicio.getValue() != null && jtpHoraInicio.getValue() != null
                 && (detalle.getDeaTitulo() != null && !detalle.getDeaTitulo().isEmpty())
                 && (detalle.getDeaDetalle() != null && !detalle.getDeaDetalle().isEmpty())) {
             detalle.setDeaAgecodigo(Aplicacion.getInstance().getDefaultAgenda());
-
+            
             String fechaInicio = jdpFechaInicio.getValue().toString() + " " + jtpHoraInicio.getValue().toString();
             LocalDateTime dateTimeInicio = LocalDateTime.parse(fechaInicio, Formater.getInstance().formatterFechaHora);
-            detalle.setDeaFechainicio(Date.from(dateTimeInicio.atZone(ZoneId.systemDefault()).toInstant()));
             String fechaFin = jdpFechaFin.getValue().toString() + " " + jtpHoraFin.getValue().toString();
             LocalDateTime dateTimeFin = LocalDateTime.parse(fechaFin, Formater.getInstance().formatterFechaHora);
-            detalle.setDeaFechafin(Date.from(dateTimeInicio.atZone(ZoneId.systemDefault()).toInstant()));
+            /*
+            Resultado<Boolean> existeEvento = DetalleAgendaDao.getInstance().existeEvento(Date.from(LocalDateTime.parse(fechaInicio, Formater.getInstance().formatterFechaHora)..atZone(ZoneId.systemDefault())), java.sql.Date.valueOf(fechaFin));
+            if (existeEvento.getResultado().equals(TipoResultado.ERROR)) {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Validar fechas evento", existeEvento.getMensaje());
+            }
+            if (existeEvento.get()) {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Validar fechas evento", existeEvento.getMensaje());
+            }*/
+            detalle.setDeaFechainicio(Date.from(dateTimeInicio.atZone(ZoneId.systemDefault()).toInstant()));
+            detalle.setDeaFechafin(Date.from(dateTimeFin.atZone(ZoneId.systemDefault()).toInstant()));
             detalle.setDeaUsuarioingresa(Aplicacion.getInstance().getUsuario().getUssCodigo());
             detalle.setDeaFechaingresa(new Date());
             DetalleAgendaDao.getInstance().setAgenda(detalle);
             Resultado<BikDetalleAgenda> resultado = DetalleAgendaDao.getInstance().save();
-
+            
             if (resultado.getResultado().equals(TipoResultado.ERROR)) {
                 AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Registrar detalle agenda", resultado.getMensaje());
             } else {
@@ -205,22 +213,21 @@ public class RegistroAgendaController extends Controller implements Initializabl
         } else {
             AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Registrar detalle agenda", "Debe completar la información del evento.");
         }
-
     }
-
+    
     @FXML
     void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
     }
-
+    
     @Override
     public void initialize() {
         init();
     }
-
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         init();
     }
-
+    
 }
