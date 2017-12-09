@@ -9,11 +9,10 @@ import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAccessor;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,8 +20,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import jbiketso.model.dao.AgendaDao;
 import jbiketso.model.entities.BikDetalleAgenda;
-import jbiketso.utils.EventoAgenda;
-import jbiketso.utils.Formater;
+import jbiketso.utils.Aplicacion;
+import jbiketso.utils.AppWindowController;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
 import jfxtras.icalendarfx.VCalendar;
@@ -51,7 +50,7 @@ public class AgendaController extends Controller implements Initializable {
 
     @FXML
     void regresar(ActionEvent event) {
-
+AppWindowController.getInstance().goHome();
     }
 
     /**
@@ -60,6 +59,7 @@ public class AgendaController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         vCalendar = new VCalendar();
+        vCalendar.setVEvents(new ArrayList<>());
         agenda = new ICalendarAgenda(vCalendar);
         calendarPicker = new CalendarPicker();
         calendarPicker.setCalendar(java.util.Calendar.getInstance()); // set to today
@@ -69,17 +69,11 @@ public class AgendaController extends Controller implements Initializable {
         calendarPicker.setLayoutY(70);
         calendarPicker.setSkin(new CalendarPickerControlSkin(calendarPicker));
 
-        agenda.getCategories().clear();
-
         // bind picker to agenda
         agenda.displayedCalendar().bind(calendarPicker.calendarProperty());
-        /*VEvent evento = new VEvent();
-        evento.setSummary(summary);
-        evento.setDescription(description);
-        evento.setDateTimeStart(dateTimeStart);
-        evento.setDateTimeEnd(dateTimeEnd);*/
+                
+                
         // bind picker to agenda
-        //agenda.displayedCalendar().bind(cldCalendario.calendarProperty());
         agenda.selectedAppointments().addListener((ListChangeListener.Change<? extends Agenda.Appointment> c) -> {
             while (c.next()) {
                 if (c.wasAdded()) {
@@ -101,12 +95,13 @@ public class AgendaController extends Controller implements Initializable {
             }
         });
 
+        Aplicacion.getInstance().traerEventos();
         agenda.setSkin(new AgendaDaySkin(agenda));
         agenda.setPrefWidth(500);
         agenda.setPrefHeight(450);
         agenda.setLayoutX(345);
         agenda.setLayoutY(70);
-        traerEventos();
+
         acpRoot.getChildren().addAll(agenda, calendarPicker);
     }
 
@@ -118,16 +113,16 @@ public class AgendaController extends Controller implements Initializable {
         Resultado<ArrayList<BikDetalleAgenda>> detalleAgenda = AgendaDao.getInstance().getDetalleAgenda(Date.valueOf(LocalDate.now().withDayOfMonth(1)), Date.valueOf(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())));
         if (detalleAgenda.getResultado().equals(TipoResultado.SUCCESS)) {
             ArrayList<VEvent> eventos = new ArrayList<>();
-
+            Aplicacion.getInstance().setDetalleAgenda(detalleAgenda.get());
             detalleAgenda.get().stream().forEach(d -> {
                 VEvent evento = new VEvent();
                 evento.setSummary(d.getDeaTitulo());
                 evento.setDescription(d.getDeaDetalle());
-                //evento.setDateTimeStart(nFormater.getInstance().formatterFechaHora.format((TemporalAccessor) d.getDeaFechainicio()));
-                //evento.setDateTimeEnd(Formater.getInstance().formatterFechaHora.format(d.getDeaFechafin()));
-                eventos.add(evento);
+                evento.setDateTimeStart(LocalDateTime.ofInstant(d.getDeaFechainicio().toInstant(), ZoneId.systemDefault()));
+                evento.setDateTimeEnd(LocalDateTime.ofInstant(d.getDeaFechafin().toInstant(), ZoneId.systemDefault()));
+                eventos.add(evento);                           
             });
-            vCalendar.getVEvents().addAll(eventos);
+             vCalendar.getVEvents().addAll(eventos);    
         }
 
     }

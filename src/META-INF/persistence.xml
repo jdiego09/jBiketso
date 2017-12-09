@@ -26,6 +26,7 @@
     <class>jbiketso.model.entities.BikSede</class>
     <class>jbiketso.model.entities.BikUsuario</class>
     <class>jbiketso.model.entities.BikUsuariosSistema</class>
+    <class>jbiketso.model.entities.BikNivelSocioeconomico</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/biketso?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

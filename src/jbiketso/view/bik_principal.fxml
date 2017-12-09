@@ -6,13 +6,13 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -72,33 +72,17 @@
    <right>
       <VBox prefHeight="493.0" prefWidth="201.0" styleClass="form" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="212.0" text="Eventos del día" textAlignment="CENTER">
+            <Label alignment="CENTER" prefHeight="84.0" prefWidth="201.0" text="Eventos del día" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Pane prefHeight="434.0" prefWidth="201.0">
-               <children>
-                  <ScrollPane layoutX="1.0" layoutY="-1.0" prefHeight="430.0" prefWidth="200.0">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="410.0" prefWidth="200.0">
-                           <children>
-                              <Label alignment="CENTER" layoutX="68.0" prefHeight="17.0" prefWidth="132.0" text="Evento">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER" prefHeight="17.0" prefWidth="56.0" text="Hora">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </ScrollPane>
-               </children>
-            </Pane>
+            <TableView fx:id="tbvEventos" prefHeight="383.0" prefWidth="201.0" styleClass="form">
+              <columns>
+                <TableColumn fx:id="tbcHora" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" text="Hora" />
+                <TableColumn fx:id="tbcEvento" editable="false" maxWidth="118.0" minWidth="118.0" prefWidth="118.0" sortable="false" text="Evento" />
+              </columns>
+            </TableView>
             <JFXButton onAction="#irAgenda" prefHeight="39.0" prefWidth="217.0" text="AGENDA">
                <styleClass>
                   <String fx:value="buttonDrawer" />

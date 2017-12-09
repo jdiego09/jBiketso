@@ -4,28 +4,50 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
+import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.model.dao.AgendaDao;
 import jbiketso.model.dao.SeguridadDao;
 import jbiketso.model.entities.BikCentro;
+import jbiketso.model.entities.BikDetalleAgenda;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.AppWindowController;
+import jbiketso.utils.DateUtil;
+import jbiketso.utils.Formater;
 import jbiketso.utils.Parametros;
+import jbiketso.utils.Resultado;
+import jbiketso.utils.TipoResultado;
+import jfxtras.icalendarfx.components.VEvent;
 
 public class PrincipalController extends Controller implements Initializable {
 
@@ -34,6 +56,13 @@ public class PrincipalController extends Controller implements Initializable {
 
     @FXML
     private VBox vbxContainer;
+    @FXML
+    private TableView<BikDetalleAgenda> tbvEventos;
+    @FXML
+    private TableColumn<BikDetalleAgenda, String> tbcHora;
+    @FXML
+    private TableColumn<BikDetalleAgenda, String> tbcEvento;
+
     @FXML
     private ImageView imgLogo;
     @FXML
@@ -92,6 +121,21 @@ public class PrincipalController extends Controller implements Initializable {
                 }
         );
         Aplicacion.getInstance().setHamburgerMenu(hmbMenu);
+
+        Aplicacion.getInstance().getDetalleAgenda().addListener((ListChangeListener.Change<? extends BikDetalleAgenda> c) -> {
+            while (c.next()) {
+                if (c.wasAdded()) {                    
+                    tbvEventos.refresh();
+                }
+                if (c.wasPermutated()) {
+                    tbvEventos.refresh();
+                } else if (c.wasUpdated()) {
+                    tbvEventos.refresh();
+                } else {
+                    tbvEventos.refresh();
+                }
+            }
+        });
     }
 
     private void loadImage() {
@@ -105,6 +149,16 @@ public class PrincipalController extends Controller implements Initializable {
         }
     }
 
+    private void bindEventos() {
+        if (Aplicacion.getInstance().getDetalleAgenda() != null) {
+            tbvEventos.setItems(Aplicacion.getInstance().getDetalleAgenda());
+            tbvEventos.refresh();
+        }
+        tbcHora.setCellValueFactory(new PropertyValueFactory<>("biaFechainicio"));
+        tbcHora.setCellValueFactory(b -> new SimpleStringProperty(Formater.getInstance().formatHour.format(b.getValue().getDeaFechainicio())));
+        tbcEvento.setCellValueFactory(new PropertyValueFactory<>("deaTitulo"));
+    }
+
     private void cargarSeguridad() {
         SeguridadDao seguridadDao = new SeguridadDao();
 
@@ -116,6 +170,8 @@ public class PrincipalController extends Controller implements Initializable {
     @Override
     public void initialize() {
         init();
+        Aplicacion.getInstance().traerEventos();
+        bindEventos();
         loadImage();
     }
 
@@ -128,4 +184,5 @@ public class PrincipalController extends Controller implements Initializable {
     void irAgenda(ActionEvent event) {
         AppWindowController.getInstance().abrirVentanaEnPrincipal("bik_agenda", "Center");
     }
+
 }

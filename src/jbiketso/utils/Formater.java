@@ -5,6 +5,7 @@
  */
 package jbiketso.utils;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -31,11 +32,12 @@ public class Formater {
 
     private static Formater INSTANCE = null;
 
-    public SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm a");
+    public SimpleDateFormat formatHour = new SimpleDateFormat("hh:mm a");
     public SimpleDateFormat formatFecha = new SimpleDateFormat("dd-MM-yyyy");
     public SimpleDateFormat formatFechaHora = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+    public DateFormat formatoHora = new SimpleDateFormat("hh:mm a");
     public DateTimeFormatter formatterFechaHora = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    public DateTimeFormatter formatDateShort = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT); 
+    public DateTimeFormatter formatDateShort = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
     public DateTimeFormatter formatDateMedium = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
     public DecimalFormat decimalFormat = new DecimalFormat("#,###,###,##0.00");
     public DecimalFormat integerFormat = new DecimalFormat("#,###,###,##0");
@@ -220,7 +222,7 @@ public class Formater {
             }
 
             c.setText(c.getText().toUpperCase());
-            
+
             if (length != null) {
                 if (((TextInputControl) c.getControl()).getLength() >= length && !c.isDeleted()) {
                     return null;
@@ -249,7 +251,7 @@ public class Formater {
             };
         };
     }
-    
+
     public StringConverter<String> stringConverter() {
 
         StringConverter<String> converter = new StringConverter<String>() {

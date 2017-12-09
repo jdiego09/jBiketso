@@ -17,14 +17,23 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
+import javax.xml.bind.annotation.XmlTransient;
+import jbiketso.controller.PrincipalController;
+import jbiketso.model.dao.AgendaDao;
 import jbiketso.model.dao.CentroDao;
+import jbiketso.model.entities.BikAgenda;
 import jbiketso.model.entities.BikCentro;
+import jbiketso.model.entities.BikDetalleAgenda;
 import jbiketso.model.entities.BikSede;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -37,186 +46,229 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author jdiego
  */
 public class Aplicacion {
+    
+    private static Aplicacion INSTANCE;
+    
+    private static BikUsuariosSistema usuario;
+    private static String rolesUsuario;
+    private static ArrayList<BikPermisoRol> accesosUsuario;
+    private static ArrayList<BikModulos> modulosUsuario;
+    
+    private static BikSede sede;
+    private static BikCentro centro;
+    private static BikAgenda agenda;
+    
+    @XmlTransient
+    private ObservableList<BikDetalleAgenda> detalleAgenda = FXCollections
+            .observableArrayList();
+    
+    private static Resultado<Object> resultadoBusqueda;
+    
+    final String pathDir = System.getProperty("user.dir") + "/src/jbiketso/reportes/";
 
-   private static Aplicacion INSTANCE;
-
-   private static BikUsuariosSistema usuario;
-   private static String rolesUsuario;
-   private static ArrayList<BikPermisoRol> accesosUsuario;
-   private static ArrayList<BikModulos> modulosUsuario;
-
-   private static BikSede sede;
-   private static BikCentro centro;
-
-   private static Resultado<Object> resultadoBusqueda;
-
-   final String pathDir = System.getProperty("user.dir") + "/src/jbiketso/reportes/";
-
-   //parámetros
-   private static Integer defaultCentro;
-   private static Integer defaultSede;
-
-   private static String urlBD;
-   private static String usuarioBD;
-   private static String passwordBD;
-
-   private static MouseEvent eventoMenu;
-   private static JFXHamburger hamburgerMenu;
-
-   private Aplicacion() {
-   }
-
-   private static void createInstance() {
-      if (INSTANCE == null) {
-         // Sólo se accede a la zona sincronizada
-         // cuando la instancia no está creada
-         synchronized (Aplicacion.class) {
-            // En la zona sincronizada sería necesario volver
-            // a comprobar que no se ha creado la instancia
-            if (INSTANCE == null) {
-               INSTANCE = new Aplicacion();
+    //parámetros
+    private static Integer defaultCentro;
+    private static Integer defaultSede;
+    private static Integer defaultAgenda;
+    
+    private static String urlBD;
+    private static String usuarioBD;
+    private static String passwordBD;
+    
+    private static MouseEvent eventoMenu;
+    private static JFXHamburger hamburgerMenu;
+    
+    private Aplicacion() {
+    }
+    
+    private static void createInstance() {
+        if (INSTANCE == null) {
+            // Sólo se accede a la zona sincronizada
+            // cuando la instancia no está creada
+            synchronized (Aplicacion.class) {
+                // En la zona sincronizada sería necesario volver
+                // a comprobar que no se ha creado la instancia
+                if (INSTANCE == null) {
+                    INSTANCE = new Aplicacion();
+                }
             }
-         }
-      }
-   }
-
-   public static Aplicacion getInstance() {
-      if (INSTANCE == null) {
-         createInstance();
-      }
-      return INSTANCE;
-   }
-
-   public BikSede getDefaultSede() {
-      if (sede == null) {
-         Resultado<BikSede> defSede = CentroDao.getInstance().findSedeByCodigo(defaultSede);
-         if (!defSede.getResultado().equals(TipoResultado.SUCCESS)) {
-            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Traer sede por defecto", defSede.getMensaje());
-            return null;
-         }
-         sede = defSede.get();
-      }
-      return sede;
-   }
-
-   public BikCentro getDefaultCentro() {
-      if (centro == null) {
-         Resultado<BikCentro> defCentro = CentroDao.getInstance().findCentroByCodigo(defaultCentro);
-         if (!defCentro.getResultado().equals(TipoResultado.SUCCESS)) {
-            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Traer centro por defecto", defCentro.getMensaje());
-            return null;
-         }
-         centro = defCentro.get();
-      }
-      return centro;
-   }
-
-   public void cargaProperties() {
-      Properties prop = new Properties();
-      InputStream input = null;
-
-      try {
-
-         String filename = "biketso.properties";
-         input = Aplicacion.class.getClassLoader().getResourceAsStream(filename);
-         if (input == null) {
-            System.out.println("Error al cargar archivo de configuración" + filename);
-            return;
-         }
-
-         //load a properties file from class path, inside static method
-         prop.load(input);
-         if (prop.containsKey("default.centro")) {
-            defaultCentro = Integer.valueOf(prop.getProperty("default.centro"));
-         }
-         if (prop.containsKey("default.sede")) {
-            defaultSede = Integer.valueOf(prop.getProperty("default.sede"));
-         }
-         if (prop.containsKey("conexion.url")) {
-            urlBD = prop.getProperty("conexion.url");
-         }
-         if (prop.containsKey("conexion.usuario")) {
-            usuarioBD = prop.getProperty("conexion.usuario");
-         }
-         if (prop.containsKey("conexion.password")) {
-            passwordBD = prop.getProperty("conexion.password");
-         }
-      } catch (IOException ex) {
-         ex.printStackTrace();
-      } finally {
-         if (input != null) {
-            try {
-               input.close();
-            } catch (IOException e) {
-               e.printStackTrace();
+        }
+    }
+    
+    public static Aplicacion getInstance() {
+        if (INSTANCE == null) {
+            createInstance();
+        }
+        return INSTANCE;
+    }
+    
+    public ObservableList<BikDetalleAgenda> getDetalleAgenda() {
+        return detalleAgenda;
+    }
+    
+    public void setDetalleAgenda(ArrayList<BikDetalleAgenda> detalleAgenda) {
+        this.detalleAgenda.clear();
+        detalleAgenda.forEach(this.detalleAgenda::add);        
+    }
+    
+    public void traerEventos() {
+        Resultado<ArrayList<BikDetalleAgenda>> resultado;
+        try {
+            resultado = AgendaDao.getInstance().getDetalleAgenda(Formater.getInstance().formatFecha.parse(Formater.getInstance().formatFecha.format(new Date())), Formater.getInstance().formatFecha.parse(Formater.getInstance().formatFecha.format(DateUtil.addDays(new Date(), 1))));
+            if (resultado.getResultado().equals(TipoResultado.SUCCESS)) {
+                detalleAgenda.clear();
+                resultado.get().stream().forEach(detalleAgenda::add);
             }
-         }
-      }
-   }
+        } catch (ParseException ex) {
+            Logger.getLogger(Aplicacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public BikSede getDefaultSede() {
+        if (sede == null) {
+            Resultado<BikSede> defSede = CentroDao.getInstance().findSedeByCodigo(defaultSede);
+            if (!defSede.getResultado().equals(TipoResultado.SUCCESS)) {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Traer sede por defecto", defSede.getMensaje());
+                return null;
+            }
+            sede = defSede.get();
+        }
+        return sede;
+    }
+    
+    public BikCentro getDefaultCentro() {
+        if (centro == null) {
+            Resultado<BikCentro> defCentro = CentroDao.getInstance().findCentroByCodigo(defaultCentro);
+            if (!defCentro.getResultado().equals(TipoResultado.SUCCESS)) {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Traer centro por defecto", defCentro.getMensaje());
+                return null;
+            }
+            centro = defCentro.get();
+        }
+        return centro;
+    }
+    
+    public BikAgenda getDefaultAgenda() {
+        if (agenda == null) {
+            Resultado<BikAgenda> defAgenda = AgendaDao.getInstance().getAgendaByCodigo(defaultAgenda);
+            if (!defAgenda.getResultado().equals(TipoResultado.SUCCESS)) {
+                AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Traer agenda por defecto", defAgenda.getMensaje());
+                return null;
+            }
+            agenda = defAgenda.get();
+        }
+        return agenda;
+    }
+    
+    public void cargaProperties() {
+        Properties prop = new Properties();
+        InputStream input = null;
+        
+        try {
+            
+            String filename = "biketso.properties";
+            input = Aplicacion.class.getClassLoader().getResourceAsStream(filename);
+            if (input == null) {
+                System.out.println("Error al cargar archivo de configuración" + filename);
+                return;
+            }
 
-   //para que solamente exista una instancia del objeto
-   @Override
-   public Object clone() throws CloneNotSupportedException {
-      throw new CloneNotSupportedException();
-   }
+            //load a properties file from class path, inside static method
+            prop.load(input);
+            if (prop.containsKey("default.centro")) {
+                defaultCentro = Integer.valueOf(prop.getProperty("default.centro"));
+            }
+            if (prop.containsKey("default.sede")) {
+                defaultSede = Integer.valueOf(prop.getProperty("default.sede"));
+            }
+            if (prop.containsKey("default.agenda")) {
+                defaultAgenda = Integer.valueOf(prop.getProperty("default.agenda"));
+            }
+            if (prop.containsKey("conexion.url")) {
+                urlBD = prop.getProperty("conexion.url");
+            }
+            if (prop.containsKey("conexion.usuario")) {
+                usuarioBD = prop.getProperty("conexion.usuario");
+            }
+            if (prop.containsKey("conexion.password")) {
+                passwordBD = prop.getProperty("conexion.password");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
-   public BikUsuariosSistema getUsuario() {
-      return usuario;
-   }
+    //para que solamente exista una instancia del objeto
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
+    }
+    
+    public BikUsuariosSistema getUsuario() {
+        return usuario;
+    }
+    
+    public void setUsuario(BikUsuariosSistema usuario) {
+        Aplicacion.usuario = usuario;
+    }
+    
+    public String getRolesUsuario() {
+        return rolesUsuario;
+    }
+    
+    public void setRolesUsuario(String rolesUsuario) {
+        Aplicacion.rolesUsuario = rolesUsuario;
+    }
+    
+    public ArrayList<BikPermisoRol> getAccesosUsuario() {
+        return accesosUsuario;
+    }
+    
+    public void setAccesosUsuario(ArrayList<BikPermisoRol> accesosUsuario) {
+        Aplicacion.accesosUsuario = accesosUsuario;
+    }
+    
+    public ArrayList<BikModulos> getModulosUsuario() {
+        return modulosUsuario;
+    }
+    
+    public void setModulosUsuario(ArrayList<BikModulos> modulosUsuario) {
+        Aplicacion.modulosUsuario = modulosUsuario;
+    }
+    
+    public Resultado<Object> getResultadoBusqueda() {
+        return resultadoBusqueda;
+    }
+    
+    public void setResultadoBusqueda(Resultado<Object> resultadoBusqueda) {
+        Aplicacion.resultadoBusqueda = resultadoBusqueda;
+    }
+    
+    public MouseEvent getEventoMenu() {
+        return eventoMenu;
+    }
+    
+    public void setEventoMenu(MouseEvent evento) {
+        Aplicacion.eventoMenu = evento;
+    }
+    
+    public JFXHamburger getHamburgerMenu() {
+        return hamburgerMenu;
+    }
+    
+    public void setHamburgerMenu(JFXHamburger hamburgerMenu) {
+        Aplicacion.hamburgerMenu = hamburgerMenu;
+    }
 
-   public void setUsuario(BikUsuariosSistema usuario) {
-      Aplicacion.usuario = usuario;
-   }
-
-   public String getRolesUsuario() {
-      return rolesUsuario;
-   }
-
-   public void setRolesUsuario(String rolesUsuario) {
-      Aplicacion.rolesUsuario = rolesUsuario;
-   }
-
-   public ArrayList<BikPermisoRol> getAccesosUsuario() {
-      return accesosUsuario;
-   }
-
-   public void setAccesosUsuario(ArrayList<BikPermisoRol> accesosUsuario) {
-      Aplicacion.accesosUsuario = accesosUsuario;
-   }
-
-   public ArrayList<BikModulos> getModulosUsuario() {
-      return modulosUsuario;
-   }
-
-   public void setModulosUsuario(ArrayList<BikModulos> modulosUsuario) {
-      Aplicacion.modulosUsuario = modulosUsuario;
-   }
-
-   public Resultado<Object> getResultadoBusqueda() {
-      return resultadoBusqueda;
-   }
-
-   public void setResultadoBusqueda(Resultado<Object> resultadoBusqueda) {
-      Aplicacion.resultadoBusqueda = resultadoBusqueda;
-   }
-
-   public MouseEvent getEventoMenu() {
-      return eventoMenu;
-   }
-
-   public void setEventoMenu(MouseEvent evento) {
-      Aplicacion.eventoMenu = evento;
-   }
-
-   public JFXHamburger getHamburgerMenu() {
-      return hamburgerMenu;
-   }
-
-   public void setHamburgerMenu(JFXHamburger hamburgerMenu) {
-      Aplicacion.hamburgerMenu = hamburgerMenu;
-   }
-
-   /*
+    /*
    los parametros deben cargarse antes de cada llamado a reporte
    param.put("pEncFac", encabezado);
 		param.put("pIdVox", id);
@@ -227,42 +279,42 @@ public class Aplicacion {
 		param.put("pVenta", venta);
 		param.put("pCodCia", Parametros.codcia);
 		param.put("pCodInv", Parametros.codinv);
-    */
-   public void imprimirReporte(String reporte, HashMap<String, Object> parametros) {
-      try {
-         Class.forName("com.mysql.jdbc.Driver");
-         // Crea la conexión para el reporte
-         Connection connection = null;
-         connection = DriverManager.getConnection(this.urlBD,
-                 this.usuarioBD, this.passwordBD); //hacer procedimiento para desencriptar
+     */
+    public void imprimirReporte(String reporte, HashMap<String, Object> parametros) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            // Crea la conexión para el reporte
+            Connection connection = null;
+            connection = DriverManager.getConnection(this.urlBD,
+                    this.usuarioBD, this.passwordBD); //hacer procedimiento para desencriptar
 
-         if (connection != null) {
-            JasperPrint print = JasperFillManager.fillReport(pathDir
-                    + reporte + ".jasper", parametros, connection);
-            JasperPrintManager.printReport(print, false);
-            connection.close();
-         }
-      } catch (ClassNotFoundException | SQLException | JRException ex) {
-         Logger.getLogger(Aplicacion.class.getName()).log(Level.SEVERE, null, ex);
-      }
-   }
+            if (connection != null) {
+                JasperPrint print = JasperFillManager.fillReport(pathDir
+                        + reporte + ".jasper", parametros, connection);
+                JasperPrintManager.printReport(print, false);
+                connection.close();
+            }
+        } catch (ClassNotFoundException | SQLException | JRException ex) {
+            Logger.getLogger(Aplicacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void generarReporte(String reporte, HashMap<String, Object> parametros) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            // Crea la conexión para el reporte
+            Connection connection = null;
+            connection = DriverManager.getConnection(this.urlBD,
+                    this.usuarioBD, this.passwordBD); //hacer procedimiento para desencriptar
 
-   public void generarReporte(String reporte, HashMap<String, Object> parametros) {
-      try {
-         Class.forName("com.mysql.jdbc.Driver");
-         // Crea la conexión para el reporte
-         Connection connection = null;
-         connection = DriverManager.getConnection(this.urlBD,
-                 this.usuarioBD, this.passwordBD); //hacer procedimiento para desencriptar
-
-         if (connection != null) {
-            JasperPrint print = JasperFillManager.fillReport(pathDir
-                    + reporte + ".jasper", parametros, connection);
-            JasperViewer.viewReport(print, false);
-            connection.close();
-         }
-      } catch (ClassNotFoundException | SQLException | JRException ex) {
-         Logger.getLogger(Aplicacion.class.getName()).log(Level.SEVERE, null, ex);
-      }
-   }
+            if (connection != null) {
+                JasperPrint print = JasperFillManager.fillReport(pathDir
+                        + reporte + ".jasper", parametros, connection);
+                JasperViewer.viewReport(print, false);
+                connection.close();
+            }
+        } catch (ClassNotFoundException | SQLException | JRException ex) {
+            Logger.getLogger(Aplicacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

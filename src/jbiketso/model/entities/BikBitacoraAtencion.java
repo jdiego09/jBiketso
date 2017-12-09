@@ -65,10 +65,8 @@ public class BikBitacoraAtencion implements Serializable {
     private ObjectProperty<GenValorCombo> biaTipo;
     @Transient
     private SimpleStringProperty biaDetalle;
-
     @Transient
     SimpleStringProperty fechaString;
-
     @Column(name = "bia_usuarioingresa")
     private String biaUsuarioingresa;
     @Column(name = "bia_fechaingresa")

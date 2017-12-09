@@ -7,6 +7,7 @@ package jbiketso.model.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import javafx.beans.property.ObjectProperty;
@@ -42,18 +43,18 @@ import jbiketso.utils.GenValorCombo;
     , @NamedQuery(name = "BikDetalleAgenda.findPendientesFecha", query = "select a from BikDetalleAgenda a\n"
             + "where a.deaFechainicio > :fechaInicio\n"
             + "and a.deaFechafin < :fechaFin\n"
-            + "and a.deaEstado = 'P'")})
+            + "and a.deaEstado = 'P'\n"
+            + "order by a.deaFechainicio")})
 public class BikDetalleAgenda implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Transient
     private SimpleIntegerProperty deaCodigo;
-
     @Transient
-    private SimpleObjectProperty<LocalDate> deaFechainicio;
+    private SimpleObjectProperty<LocalDateTime> deaFechainicio;
     @Transient
-    private SimpleObjectProperty<LocalDate> deaFechafin;
+    private SimpleObjectProperty<LocalDateTime> deaFechafin;
     @Transient
     private SimpleStringProperty deaTitulo;
     @Transient
@@ -81,9 +82,10 @@ public class BikDetalleAgenda implements Serializable {
     private BikUsuario deaCodusuario;
 
     public BikDetalleAgenda() {
+        this.deaCodigo = new SimpleIntegerProperty();
         this.deaEstado = new SimpleObjectProperty(new GenValorCombo("P", "Pendiente"));
         this.deaDetalle = new SimpleStringProperty();
-        this.deaFechainicio = new SimpleObjectProperty(LocalDate.now());
+        this.deaFechainicio = new SimpleObjectProperty();
         this.deaFechafin = new SimpleObjectProperty();
     }
 
@@ -118,7 +120,7 @@ public class BikDetalleAgenda implements Serializable {
     @Access(AccessType.PROPERTY)
     public Date getDeaFechainicio() {
         if (deaFechainicio != null && deaFechainicio.get() != null) {
-            return Date.from(deaFechainicio.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            return Date.from(this.deaFechainicio.get().atZone(ZoneId.systemDefault()).toInstant());
         } else {
             return null;
         }
@@ -133,7 +135,7 @@ public class BikDetalleAgenda implements Serializable {
 
     public void setDeaFechainicio(Date deaFechainicio) {
         if (deaFechainicio != null) {
-            this.deaFechainicio.set(deaFechainicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            this.deaFechainicio.set(LocalDateTime.ofInstant(deaFechainicio.toInstant(), ZoneId.systemDefault()));
         }
     }
 
@@ -142,7 +144,7 @@ public class BikDetalleAgenda implements Serializable {
     @Access(AccessType.PROPERTY)
     public Date getDeaFechafin() {
         if (deaFechafin != null && deaFechafin.get() != null) {
-            return Date.from(deaFechafin.get().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            return Date.from(this.deaFechafin.get().atZone(ZoneId.systemDefault()).toInstant());
         } else {
             return null;
         }
@@ -157,7 +159,7 @@ public class BikDetalleAgenda implements Serializable {
 
     public void setDeaFechafin(Date deaFechafin) {
         if (deaFechafin != null) {
-            this.deaFechafin.set(deaFechafin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            this.deaFechafin.set(LocalDateTime.ofInstant(deaFechafin.toInstant(), ZoneId.systemDefault()));
         }
     }
 
@@ -184,7 +186,6 @@ public class BikDetalleAgenda implements Serializable {
         this.deaTitulo.set(deaTitulo);
     }
 
-    @Basic(optional = false)
     @Column(name = "dea_detalle")
     @Access(AccessType.PROPERTY)
     public String getDeaDetalle() {
