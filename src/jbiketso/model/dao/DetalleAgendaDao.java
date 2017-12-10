@@ -112,7 +112,6 @@ public class DetalleAgendaDao extends BaseDao<Integer, BikDetalleAgenda> {
     public Resultado<String> deleteEvento(BikDetalleAgenda agenda) {
         Resultado<String> resultado = new Resultado<>();
         try {
-
             getEntityManager().getTransaction().begin();
             Integer id = (Integer) Parametros.PERSISTENCEUTIL.getIdentifier(agenda);
             BikDetalleAgenda existe = (BikDetalleAgenda) getEntityManager().find(BikDetalleAgenda.class, id);

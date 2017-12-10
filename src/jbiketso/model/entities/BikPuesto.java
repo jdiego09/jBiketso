@@ -73,18 +73,9 @@ public class BikPuesto implements Serializable {
 
     public BikPuesto() {
         this.pueDescripcion = new SimpleStringProperty();
-        this.pueEstado = new SimpleObjectProperty();
+        this.pueEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
     }
 
-    /*public BikPuesto(Integer pueCodigo) {
-        this.pueCodigo = pueCodigo;
-    }
-
-    public BikPuesto(Integer pueCodigo, String pueDescripcion, String pueEstado) {
-        this.pueCodigo = pueCodigo;
-        this.pueDescripcion = pueDescripcion;
-        this.pueEstado = pueEstado;
-    }*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -162,11 +153,18 @@ public class BikPuesto implements Serializable {
         this.pueEstado.set(valorEstado);
     }
 
-    public ObjectProperty getCenEstadoProperty() {
+    public ObjectProperty getEstadoProperty() {
         if (this.pueEstado == null) {
             this.pueEstado = new SimpleObjectProperty();
         }
         return pueEstado;
+    }
+    
+    public String getDescripcionEstado() {
+        if (this.pueEstado == null) {
+            this.pueEstado = new SimpleObjectProperty();
+        }
+        return this.pueEstado.get().getDescripcion();
     }
 
     public String getPueUsuarioingresa() {
