@@ -123,6 +123,16 @@
         </tabs>
       </TabPane>
       <Button fx:id="btnImpContrato" layoutX="794.0" layoutY="76.0" mnemonicParsing="false" onAction="#imprimirContrato" prefHeight="39.0" prefWidth="150.0" styleClass="actionbuttonaceptar" text="CONTRATO" />
+      <Label layoutX="613.0" layoutY="214.0" text="Fecha de ingreso">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="785.0" layoutY="214.0" text="Fecha de salida">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
    </children>
    <effect>
       <DropShadow />

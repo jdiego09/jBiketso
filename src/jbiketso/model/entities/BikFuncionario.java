@@ -46,7 +46,14 @@ import jbiketso.utils.GenValorCombo;
 @NamedQueries({
     @NamedQuery(name = "BikFuncionario.findAll", query = "SELECT b FROM BikFuncionario b")
     , @NamedQuery(name = "BikFuncionario.findByFunCodigo", query = "SELECT b FROM BikFuncionario b WHERE b.funCodigo = :funCodigo")
-    , @NamedQuery(name = "BikFuncionari.findByCedula", query = "SELECT f FROM BikFuncionario f join f.funPercodigo p where p.perCedula = :cedula")})
+    , @NamedQuery(name = "BikFuncionari.findByCedula", query = "SELECT f FROM BikFuncionario f join f.funPercodigo p where p.perCedula = :cedula")
+    , @NamedQuery(name = "BikFuncionario.findFuncionarios", query = "select p from BikFuncionario f join f.funPercodigo p\n"
+            + "            where p.perCedula like :cedula\n"
+            + "              and p.perNombres like :nombre\n"
+            + "              and p.perPrimerapellido like :primerapellido\n"
+            + "              and p.perSegundoapellido like :segundoapellido\n"
+            + "              and f.funEstado = 'A'")
+})
 public class BikFuncionario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -98,6 +105,7 @@ public class BikFuncionario implements Serializable {
         this.funFechaingreso = new SimpleObjectProperty(LocalDate.now());
         this.funFechasalida = new SimpleObjectProperty();
         this.funObservaciones = new SimpleStringProperty();
+        this.funPercodigo = new BikPersona();
     }
 
     @Id
@@ -138,7 +146,7 @@ public class BikFuncionario implements Serializable {
 
     public ObjectProperty getEstadoProperty() {
         if (this.funEstado == null) {
-            this.funEstado = new SimpleObjectProperty();
+            this.funEstado = new SimpleObjectProperty(new GenValorCombo("A", "Activo"));
         }
         return funEstado;
     }
@@ -161,7 +169,7 @@ public class BikFuncionario implements Serializable {
     @Access(AccessType.PROPERTY)
     public String getFunTipo() {
         if (this.funTipo == null) {
-            this.funTipo = new SimpleObjectProperty();
+            this.funTipo = new SimpleObjectProperty(new GenValorCombo("P", "Propiedad"));
         }
         return funTipo.get().getCodigo();
     }

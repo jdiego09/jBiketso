@@ -13,6 +13,9 @@ import java.util.logging.Logger;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import jbiketso.model.entities.BikFuncionario;
+import jbiketso.model.entities.BikPersona;
+import jbiketso.model.entities.BikPuesto;
+import jbiketso.model.entities.BikSede;
 import jbiketso.utils.Aplicacion;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
@@ -106,7 +109,7 @@ public class FuncionarioDao extends BaseDao<Integer, BikFuncionario> {
             return resultado;
         }
     }
-    
+
     public Resultado<BikFuncionario> save() {
         Resultado<BikFuncionario> result = new Resultado<>();
         try {
@@ -127,6 +130,79 @@ public class FuncionarioDao extends BaseDao<Integer, BikFuncionario> {
             result.setResultado(TipoResultado.ERROR);
             result.setMensaje("Error al guardar la información del funcionario [" + this.funcionario.getFunPercodigo().getNombreCompleto() + "].");
             return result;
+        }
+    }
+
+    public Resultado<ArrayList<BikPersona>> getFuncionarioFiltro(String cedula, String nombre, String primerApellido, String segundoApellido) {
+        Resultado<ArrayList<BikPersona>> resultado = new Resultado<>();
+        ArrayList<BikPersona> listaFuncionarios = new ArrayList<>();
+        List<BikPersona> funcionarios;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikFuncionario.findFuncionarios");
+            query.setParameter("cedula", cedula + "%");
+            query.setParameter("nombre", nombre + "%");
+            query.setParameter("primerapellido", primerApellido + "%");
+            query.setParameter("segundoapellido", segundoApellido + "%");
+            funcionarios = query.getResultList();
+            funcionarios.stream().forEach(listaFuncionarios::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaFuncionarios);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer personas.");
+            return resultado;
+        }
+    }
+
+    public Resultado<ArrayList<BikPuesto>> getPuestoFiltro(String nombre) {
+        Resultado<ArrayList<BikPuesto>> resultado = new Resultado<>();
+        ArrayList<BikPuesto> listaPuestos = new ArrayList<>();
+        List<BikPuesto> puestos;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikPuesto.findPuestos");
+            query.setParameter("puesto", nombre + "%");
+            puestos = query.getResultList();
+            puestos.stream().forEach(listaPuestos::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaPuestos);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer puestos.");
+            return resultado;
+        }
+    }
+
+    public Resultado<ArrayList<BikSede>> getSedeFiltro(String nombre) {
+        Resultado<ArrayList<BikSede>> resultado = new Resultado<>();
+        ArrayList<BikSede> listaSedes = new ArrayList<>();
+        List<BikSede> sedes;
+        try {
+            Query query = getEntityManager().createNamedQuery("BikSede.findSedes");
+            query.setParameter("centro", Aplicacion.getInstance().getDefaultCentro().getCenCodigo());
+            query.setParameter("sede", nombre + "%");
+            sedes = query.getResultList();
+            sedes.stream().forEach(listaSedes::add);
+            resultado.setResultado(TipoResultado.SUCCESS);
+            resultado.set(listaSedes);
+            return resultado;
+        } catch (NoResultException nre) {
+            resultado.setResultado(TipoResultado.WARNING);
+            return resultado;
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            resultado.setResultado(TipoResultado.ERROR);
+            resultado.setMensaje("Error al traer sedes.");
+            return resultado;
         }
     }
 

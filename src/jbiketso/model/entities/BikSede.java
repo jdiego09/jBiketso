@@ -44,7 +44,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "BikSede.findAll", query = "SELECT b FROM BikSede b")
     , @NamedQuery(name = "BikSede.findBySedCodigo", query = "SELECT b FROM BikSede b WHERE b.sedCodigo = :sedCodigo")
     , @NamedQuery(name = "BikSede.findBySedNombre", query = "SELECT b FROM BikSede b WHERE b.sedNombre = :sedNombre")
-    , @NamedQuery(name = "BikSede.findByCodigoCentro", query = "SELECT s FROM BikSede s join s.sedCencodigo c WHERE c.cenCodigo = :codigoCentro")})
+    , @NamedQuery(name = "BikSede.findByCodigoCentro", query = "SELECT s FROM BikSede s join s.sedCencodigo c WHERE c.cenCodigo = :codigoCentro")
+    ,
+@NamedQuery(name = "BikSede.findSedes", query = "SELECT s FROM BikSede s join s.sedCencodigo c\n"
+            + "where c.cenCodigo = :centro\n"            
+            + "and s.sedNombre like :sede")})
 public class BikSede implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -116,6 +120,10 @@ public class BikSede implements Serializable {
             this.sedCodigo = new SimpleIntegerProperty();
         }
         return this.sedCodigo;
+    }
+    
+    public SimpleStringProperty getCodigoStringProperty() {
+        return new SimpleStringProperty(String.valueOf(this.sedCodigo.get()));
     }
 
     @Basic(optional = false)

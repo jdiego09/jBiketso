@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="561.0" prefWidth="697.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.AccionPersonalController">
+<AnchorPane id="AnchorPane" fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="561.0" prefWidth="697.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.AccionPersonalController">
    <effect>
       <DropShadow />
    </effect>
@@ -48,7 +48,7 @@
       <JFXDatePicker fx:id="jdtpFechaInicial" layoutX="296.0" layoutY="139.0" prefHeight="35.0" prefWidth="183.0" promptText="Fecha inicial" styleClass="edittext" />
       <JFXComboBox fx:id="jcmbTipoAccion" labelFloat="true" layoutX="11.0" layoutY="133.0" prefHeight="39.0" prefWidth="265.0" promptText="Tipo de acción" styleClass="edittext" />
       <JFXTextField fx:id="jtxfObservacionesAccion" labelFloat="true" layoutX="296.0" layoutY="202.0" prefHeight="35.0" prefWidth="392.0" promptText="Observación" styleClass="edittext" />
-      <JFXButton fx:id="jbtnBuscarFuncionario" layoutX="251.0" layoutY="67.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
+      <JFXButton fx:id="jbtnBuscarFuncionario" layoutX="251.0" layoutY="70.0" onAction="#buscarFuncionario" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
       <TabPane layoutX="10.0" layoutY="250.0" prefHeight="307.0" prefWidth="682.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab closable="false" text="Acciones de personal">

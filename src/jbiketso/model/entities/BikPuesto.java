@@ -46,12 +46,9 @@ import jbiketso.utils.GenValorCombo;
 @NamedQueries({
     @NamedQuery(name = "BikPuesto.findAll", query = "SELECT b FROM BikPuesto b")
     , @NamedQuery(name = "BikPuesto.findByPueCodigo", query = "SELECT b FROM BikPuesto b WHERE b.pueCodigo = :pueCodigo")
-    , @NamedQuery(name = "BikPuesto.findByPueDescripcion", query = "SELECT b FROM BikPuesto b WHERE b.pueDescripcion = :pueDescripcion")
-    , @NamedQuery(name = "BikPuesto.findByPueEstado", query = "SELECT b FROM BikPuesto b WHERE b.pueEstado = :pueEstado")
-    , @NamedQuery(name = "BikPuesto.findByPueUsuarioingresa", query = "SELECT b FROM BikPuesto b WHERE b.pueUsuarioingresa = :pueUsuarioingresa")
-    , @NamedQuery(name = "BikPuesto.findByPueFechaingresa", query = "SELECT b FROM BikPuesto b WHERE b.pueFechaingresa = :pueFechaingresa")
-    , @NamedQuery(name = "BikPuesto.findByPueUsuariomodifica", query = "SELECT b FROM BikPuesto b WHERE b.pueUsuariomodifica = :pueUsuariomodifica")
-    , @NamedQuery(name = "BikPuesto.findByPueFechamodifica", query = "SELECT b FROM BikPuesto b WHERE b.pueFechamodifica = :pueFechamodifica")})
+    , @NamedQuery(name = "BikPuesto.findPuestos", query = "select p from BikPuesto p\n"
+            + "Where p.pueDescripcion like :puesto\n"
+            + "and p.pueEstado = 'A'")})
 public class BikPuesto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -112,6 +109,10 @@ public class BikPuesto implements Serializable {
             this.pueCodigo = new SimpleIntegerProperty();
         }
         return this.pueCodigo;
+    }
+
+    public SimpleStringProperty getCodigoStringProperty() {
+        return new SimpleStringProperty(String.valueOf(this.pueCodigo.get()));
     }
 
     @Basic(optional = false)

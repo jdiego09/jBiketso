@@ -406,14 +406,12 @@ public class AccionPersonalController extends Controller {
     }
 
     @FXML
-    void regresar(ActionEvent event
-    ) {
+    void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
     }
 
     @FXML
-    void cedulaFuncionarioOnEnterKey(KeyEvent event
-    ) {
+    void cedulaFuncionarioOnEnterKey(KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.TAB)) {
             if (this.accionPersonal.getAccFuncodigo().getFunPercodigo().getPerCedula() != null) {
                 traerFuncionario();
@@ -422,8 +420,7 @@ public class AccionPersonalController extends Controller {
     }
 
     @FXML
-    void agregarEvaluacionOnKeyPress(ActionEvent event
-    ) {
+    void agregarEvaluacionOnKeyPress(ActionEvent event) {
         agregarEvaluacionALista(this.evaluacion);
         unbindEvaluacion();
         nuevaEvaluacion();
@@ -447,6 +444,20 @@ public class AccionPersonalController extends Controller {
         jdtpFechaFinal.setDisable(false);
         tbvAccionesPersonal.getItems().clear();
         tbvEvaluaciones.getItems().clear();
+    }
+
+    @FXML
+    void buscarFuncionario(ActionEvent event) {
+// Llamar ventana busqueda
+        BusquedaController busquedaController = (BusquedaController) AppWindowController.getInstance().getController("bik_busqueda");
+        busquedaController.busquedaFuncionarios();
+        AppWindowController.getInstance().goViewInWindowModal("bik_busqueda", getStage());
+        BikPersona buscado = (BikPersona) busquedaController.getResultado();
+
+        if (buscado != null) {
+            this.jtxfCedulaFuncionario.setText(buscado.getPerCedula());
+            traerFuncionario();
+        }
     }
 
 }

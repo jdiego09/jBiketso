@@ -313,14 +313,6 @@ public class UsuariosController extends Controller implements Initializable {
          }
       });
       this.jtxfCedula.requestFocus();
-      //listener del boton buscar usuario
-      /*btnFinFac.setOnAction(new EventHandler<ActionEvent>() {
-
-         @Override
-         public void handle(ActionEvent event) {
-         }
-      }
-       */
    }
 
    private void addListenerTablePadecimientos(TableView table) {

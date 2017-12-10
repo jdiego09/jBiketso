@@ -12,23 +12,23 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="666.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.FuncionarioController">
+<AnchorPane id="AnchorPane" fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="666.0" styleClass="form" stylesheets="@biketso.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.FuncionarioController">
    <children>
-      <JFXTextField fx:id="jtxfCedulaFuncionario" labelFloat="true" layoutX="14.0" layoutY="74.0" onKeyPressed="#cedulaFuncionarioOnEnterKey" prefHeight="35.0" prefWidth="155.0" promptText="Cédula funcionario" styleClass="edittext" />
-      <JFXButton fx:id="jbtnBuscarFuncionario" layoutX="173.0" layoutY="71.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
-      <JFXTextField fx:id="jtxfNombreFuncionario" labelFloat="true" layoutX="220.0" layoutY="74.0" prefHeight="35.0" prefWidth="431.0" promptText="Nombre funcionario" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfCodPuesto" labelFloat="true" layoutX="14.0" layoutY="129.0" onKeyPressed="#codigoPuestoOnEnterKey" prefHeight="25.0" prefWidth="155.0" promptText="Puesto" styleClass="edittext" />
-      <JFXButton fx:id="jbtnBuscarPuesto" layoutX="173.0" layoutY="126.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
-      <JFXTextField fx:id="jtxfDesPuesto" labelFloat="true" layoutX="220.0" layoutY="129.0" prefHeight="35.0" prefWidth="431.0" promptText="Descripción puesto" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfCodSede" labelFloat="true" layoutX="14.0" layoutY="186.0" onKeyPressed="#codigoSedeOnEnterKey" prefHeight="35.0" prefWidth="155.0" promptText="Sede" styleClass="edittext" />
-      <JFXButton fx:id="jbtnBuscarSede" layoutX="173.0" layoutY="183.0" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
-      <JFXTextField fx:id="jtxfDesSede" labelFloat="true" layoutX="220.0" layoutY="186.0" prefHeight="35.0" prefWidth="431.0" promptText="Descripción sede" styleClass="edittext" />
-      <JFXComboBox fx:id="jcmbTipo" labelFloat="true" layoutX="14.0" layoutY="248.0" prefHeight="39.0" prefWidth="198.0" promptText="Tipo" styleClass="edittext" />
-      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="235.0" layoutY="248.0" prefHeight="39.0" prefWidth="179.0" promptText="Estado" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfSalarioBase" labelFloat="true" layoutX="431.0" layoutY="252.0" prefHeight="25.0" prefWidth="219.0" promptText="Salario base" styleClass="edittext" />
-      <JFXDatePicker fx:id="jdtpFechaIngreso" layoutX="221.0" layoutY="306.0" overLay="true" prefHeight="39.0" prefWidth="179.0" promptText="Fecha de ingreso" styleClass="edittext" />
-      <JFXDatePicker fx:id="jdtpFechaSalida" layoutX="431.0" layoutY="306.0" overLay="true" prefHeight="39.0" prefWidth="219.0" promptText="Fecha de salida" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfObservacion" labelFloat="true" layoutX="14.0" layoutY="362.0" prefHeight="39.0" prefWidth="637.0" promptText="Observación" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfCedulaFuncionario" labelFloat="true" layoutX="14.0" layoutY="78.0" onKeyPressed="#cedulaFuncionarioOnEnterKey" prefHeight="35.0" prefWidth="155.0" promptText="Cédula funcionario" styleClass="edittext" />
+      <JFXButton fx:id="jbtnBuscarFuncionario" layoutX="174.0" layoutY="78.0" onAction="#buscarFuncionario" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
+      <JFXTextField fx:id="jtxfNombreFuncionario" labelFloat="true" layoutX="220.0" layoutY="78.0" prefHeight="35.0" prefWidth="431.0" promptText="Nombre funcionario" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfCodPuesto" labelFloat="true" layoutX="15.0" layoutY="154.0" onKeyPressed="#codigoPuestoOnEnterKey" prefHeight="25.0" prefWidth="155.0" promptText="Puesto" styleClass="edittext" />
+      <JFXButton fx:id="jbtnBuscarPuesto" layoutX="174.0" layoutY="154.0" onAction="#buscarPuesto" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
+      <JFXTextField fx:id="jtxfDesPuesto" labelFloat="true" layoutX="221.0" layoutY="154.0" prefHeight="35.0" prefWidth="431.0" promptText="Descripción puesto" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfCodSede" labelFloat="true" layoutX="15.0" layoutY="214.0" onKeyPressed="#codigoSedeOnEnterKey" prefHeight="35.0" prefWidth="155.0" promptText="Sede" styleClass="edittext" />
+      <JFXButton fx:id="jbtnBuscarSede" layoutX="174.0" layoutY="214.0" onAction="#buscarSede" prefHeight="30.0" prefWidth="37.0" styleClass="buttonbuscar" text="Button" />
+      <JFXTextField fx:id="jtxfDesSede" labelFloat="true" layoutX="221.0" layoutY="214.0" prefHeight="35.0" prefWidth="431.0" promptText="Descripción sede" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbTipo" labelFloat="true" layoutX="15.0" layoutY="283.0" prefHeight="39.0" prefWidth="198.0" promptText="Tipo" styleClass="edittext" />
+      <JFXComboBox fx:id="jcmbEstado" labelFloat="true" layoutX="236.0" layoutY="283.0" prefHeight="39.0" prefWidth="179.0" promptText="Estado" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfSalarioBase" labelFloat="true" layoutX="432.0" layoutY="283.0" prefHeight="25.0" prefWidth="219.0" promptText="Salario base" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaIngreso" layoutX="222.0" layoutY="362.0" overLay="true" prefHeight="39.0" prefWidth="179.0" promptText="Fecha de ingreso" styleClass="edittext" />
+      <JFXDatePicker fx:id="jdtpFechaSalida" layoutX="432.0" layoutY="362.0" overLay="true" prefHeight="39.0" prefWidth="219.0" promptText="Fecha de salida" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfObservacion" labelFloat="true" layoutX="15.0" layoutY="433.0" prefHeight="39.0" prefWidth="637.0" promptText="Observación" styleClass="edittext" />
       <Pane prefHeight="50.0" prefWidth="666.0" styleClass="actionbar" stylesheets="@biketso.css">
          <children>
             <JFXButton fx:id="jbtnSalir" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" layoutX="633.0" layoutY="4.0" onAction="#regresar" prefHeight="25.0" prefWidth="26.0" styleClass="actionbuttonsalir" textOverrun="WORD_ELLIPSIS">
@@ -49,6 +49,16 @@
             </Label>
          </children>
       </Pane>
+      <Label layoutX="222.0" layoutY="341.0" text="Fecha de ingreso">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="432.0" layoutY="341.0" text="Fecha de salida">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
    </children>
    <effect>
       <DropShadow />

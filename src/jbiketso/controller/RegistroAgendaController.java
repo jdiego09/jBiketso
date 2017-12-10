@@ -41,6 +41,7 @@ import javafx.scene.layout.AnchorPane;
 import javax.xml.bind.annotation.XmlTransient;
 import jbiketso.model.dao.AgendaDao;
 import jbiketso.model.dao.DetalleAgendaDao;
+import jbiketso.model.dao.FuncionarioDao;
 import jbiketso.model.dao.PersonaDao;
 import jbiketso.model.dao.UsuarioDao;
 import jbiketso.model.entities.BikDetalleAgenda;
@@ -204,7 +205,35 @@ public class RegistroAgendaController extends Controller implements Initializabl
 
     @FXML
     void buscaFuncionario(ActionEvent event) {
+// Llamar ventana busqueda
+        BusquedaController busquedaController = (BusquedaController) AppWindowController.getInstance().getController("bik_busqueda");
+        busquedaController.busquedaFuncionarios();
+        AppWindowController.getInstance().goViewInWindowModal("bik_busqueda", getStage());
+        BikPersona buscado = (BikPersona) busquedaController.getResultado();
 
+        if (buscado != null) {
+            this.jtxfCedulaFuncionario.setText(buscado.getPerCedula());
+            traerFuncionario();
+        }
+    }
+
+    private void traerFuncionario() {
+        Resultado<String> cedulaValida = PersonaDao.getInstance().cedulaValida(jtxfCedulaUsuario.getText());
+        if (cedulaValida.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.WARNING, "Cédula", cedulaValida.getMensaje());
+            this.jtxfCedulaUsuario.requestFocus();
+            return;
+        }
+        unbindUsuario();
+        Resultado<BikFuncionario> resultado = FuncionarioDao.getInstance().getFuncionarioByCedula(this.jtxfCedulaFuncionario.getText());
+        if (resultado.getResultado().equals(TipoResultado.ERROR)) {
+            AppWindowController.getInstance().mensaje(Alert.AlertType.ERROR, "Buscar funcionario", resultado.getMensaje());
+            return;
+        }
+        if (resultado.get() != null && resultado.get().getFunCodigo() != null && resultado.get().getFunCodigo() > 0) {
+            this.detalle.setDeaFuncodigo(resultado.get());
+        }
+        bindFuncionario();
     }
 
     @FXML

@@ -111,7 +111,7 @@ public class FuncionarioController extends Controller {
         this.jdtpFechaIngreso.setDisable(false);
 
         this.jtxfCedulaFuncionario.requestFocus();
-        
+
         this.jcmbEstado.valueProperty().addListener(new ChangeListener<GenValorCombo>() {
             @Override
             public void changed(ObservableValue<? extends GenValorCombo> observable, GenValorCombo oldValue, GenValorCombo newValue) {
@@ -288,6 +288,48 @@ public class FuncionarioController extends Controller {
     @FXML
     void regresar(ActionEvent event) {
         AppWindowController.getInstance().goHome();
+    }
+
+    @FXML
+    void buscarFuncionario(ActionEvent event) {
+// Llamar ventana busqueda
+        BusquedaController busquedaController = (BusquedaController) AppWindowController.getInstance().getController("bik_busqueda");
+        busquedaController.busquedaPersonas();
+        AppWindowController.getInstance().goViewInWindowModal("bik_busqueda", getStage());
+        BikPersona buscado = (BikPersona) busquedaController.getResultado();
+
+        if (buscado != null) {
+            this.jtxfCedulaFuncionario.setText(buscado.getPerCedula());
+            traerFuncionario();
+        }
+    }
+
+    @FXML
+    void buscarPuesto(ActionEvent event) {
+// Llamar ventana busqueda
+        BusquedaController busquedaController = (BusquedaController) AppWindowController.getInstance().getController("bik_busqueda");
+        busquedaController.busquedaPuestos();
+        AppWindowController.getInstance().goViewInWindowModal("bik_busqueda", getStage());
+        BikPuesto buscado = (BikPuesto) busquedaController.getResultado();
+
+        if (buscado != null) {
+            this.jtxfCodPuesto.setText(String.valueOf(buscado.getPueCodigo()));
+            traerPuesto();
+        }
+    }
+
+    @FXML
+    void buscarSede(ActionEvent event) {
+// Llamar ventana busqueda
+        BusquedaController busquedaController = (BusquedaController) AppWindowController.getInstance().getController("bik_busqueda");
+        busquedaController.busquedaSedes();
+        AppWindowController.getInstance().goViewInWindowModal("bik_busqueda", getStage());
+        BikSede buscado = (BikSede) busquedaController.getResultado();
+
+        if (buscado != null) {
+            this.jtxfCodSede.setText(String.valueOf(buscado.getSedCodigo()));
+            traerSede();
+        }
     }
 
 }
