@@ -34,6 +34,7 @@ public class Formater {
 
     public SimpleDateFormat formatHour = new SimpleDateFormat("hh:mm a");
     public SimpleDateFormat formatFecha = new SimpleDateFormat("dd-MM-yyyy");
+    public SimpleDateFormat formatFechaCorta = new SimpleDateFormat("dd/MM/yyyy");
     public SimpleDateFormat formatFechaHora = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
     public DateFormat formatoHora = new SimpleDateFormat("hh:mm a");
     public DateTimeFormatter formatterFechaHora = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

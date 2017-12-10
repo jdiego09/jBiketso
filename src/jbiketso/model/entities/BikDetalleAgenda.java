@@ -41,10 +41,13 @@ import jbiketso.utils.GenValorCombo;
 @NamedQueries({
     @NamedQuery(name = "BikDetalleAgenda.findAll", query = "SELECT b FROM BikDetalleAgenda b")
     , @NamedQuery(name = "BikDetalleAgenda.findPendientesFecha", query = "select a from BikDetalleAgenda a\n"
-            + "where a.deaFechainicio > :fechaInicio\n"
+            + "where a.deaFechainicio >= :fechaInicio\n"
             + "and a.deaFechafin < :fechaFin\n"
             + "and a.deaEstado = 'P'\n"
-            + "order by a.deaFechainicio")})
+            + "order by a.deaFechainicio")
+    , @NamedQuery(name = "BikDetalleAgenda.findEntreFechas", query = "SELECT d FROM BikDetalleAgenda d\n"
+            + "where (:fechaInicio between d.deaFechainicio and d.deaFechafin)\n"
+            + "or (:fechaFin between d.deaFechainicio and d.deaFechafin)")})
 public class BikDetalleAgenda implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -8,6 +8,7 @@ package jbiketso.controller;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -20,7 +21,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import jbiketso.model.dao.AgendaDao;
 import jbiketso.model.entities.BikDetalleAgenda;
-import jbiketso.utils.Aplicacion;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import jbiketso.utils.AppWindowController;
 import jbiketso.utils.Resultado;
 import jbiketso.utils.TipoResultado;
@@ -38,19 +41,19 @@ import jfxtras.scene.control.agenda.icalendar.ICalendarAgenda;
  * @author jcalvo
  */
 public class AgendaController extends Controller implements Initializable {
-
+    
     VCalendar vCalendar;
     ICalendarAgenda agenda;
     CalendarPicker calendarPicker;
     @FXML
     private JFXButton jbtnSalir;
-
+    
     @FXML
     private AnchorPane acpRoot;
-
+    
     @FXML
     void regresar(ActionEvent event) {
-AppWindowController.getInstance().goHome();
+        AppWindowController.getInstance().goHome();
     }
 
     /**
@@ -71,8 +74,7 @@ AppWindowController.getInstance().goHome();
 
         // bind picker to agenda
         agenda.displayedCalendar().bind(calendarPicker.calendarProperty());
-                
-                
+
         // bind picker to agenda
         agenda.selectedAppointments().addListener((ListChangeListener.Change<? extends Agenda.Appointment> c) -> {
             while (c.next()) {
@@ -94,37 +96,38 @@ AppWindowController.getInstance().goHome();
                 }
             }
         });
-
-        Aplicacion.getInstance().traerEventos();
+        
+        traerEventos();
+        
         agenda.setSkin(new AgendaDaySkin(agenda));
         agenda.setPrefWidth(500);
         agenda.setPrefHeight(450);
         agenda.setLayoutX(345);
         agenda.setLayoutY(70);
-
+        
         acpRoot.getChildren().addAll(agenda, calendarPicker);
     }
-
+    
     @Override
     public void initialize() {
     }
-
+    
     private void traerEventos() {
         Resultado<ArrayList<BikDetalleAgenda>> detalleAgenda = AgendaDao.getInstance().getDetalleAgenda(Date.valueOf(LocalDate.now().withDayOfMonth(1)), Date.valueOf(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())));
         if (detalleAgenda.getResultado().equals(TipoResultado.SUCCESS)) {
             ArrayList<VEvent> eventos = new ArrayList<>();
-            Aplicacion.getInstance().setDetalleAgenda(detalleAgenda.get());
-            detalleAgenda.get().stream().forEach(d -> {
+            detalleAgenda.get().forEach(d -> {
                 VEvent evento = new VEvent();
+                evento.setUniqueIdentifier(d.getDeaAgecodigo().getAgeCodigo() + "-" + d.getDeaCodigo());
                 evento.setSummary(d.getDeaTitulo());
                 evento.setDescription(d.getDeaDetalle());
                 evento.setDateTimeStart(LocalDateTime.ofInstant(d.getDeaFechainicio().toInstant(), ZoneId.systemDefault()));
                 evento.setDateTimeEnd(LocalDateTime.ofInstant(d.getDeaFechafin().toInstant(), ZoneId.systemDefault()));
-                eventos.add(evento);                           
+                eventos.add(evento);
             });
-             vCalendar.getVEvents().addAll(eventos);    
+            vCalendar.getVEvents().addAll(eventos);
         }
-
+        
     }
-
+    
 }

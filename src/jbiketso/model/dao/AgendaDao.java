@@ -83,16 +83,16 @@ public class AgendaDao extends BaseDao<Integer, BikAgenda> {
 
     public Resultado<ArrayList<BikDetalleAgenda>> getDetalleAgenda(Date fechaInicio, Date fechaFin) {
         Resultado<ArrayList<BikDetalleAgenda>> resultado = new Resultado<>();
-        ArrayList<BikDetalleAgenda> listaAtencion = new ArrayList<>();
-        List<BikDetalleAgenda> atenciones;
+        ArrayList<BikDetalleAgenda> listaEventos = new ArrayList<>();
+        List<BikDetalleAgenda> eventos;
         try {
             Query query = getEntityManager().createNamedQuery("BikDetalleAgenda.findPendientesFecha");
             query.setParameter("fechaInicio", fechaInicio);
             query.setParameter("fechaFin", fechaFin);
-            atenciones = query.getResultList();
-            atenciones.stream().forEach(listaAtencion::add);
+            eventos = query.getResultList();
+            eventos.stream().forEach(listaEventos::add);
             resultado.setResultado(TipoResultado.SUCCESS);
-            resultado.set(listaAtencion);
+            resultado.set(listaEventos);
             return resultado;
         } catch (NoResultException nre) {
             resultado.setResultado(TipoResultado.WARNING);

@@ -115,6 +115,26 @@
     -fx-background-position:  center;
 }
 
+.actionbuttonanterior{
+    -fx-background-color: transparent;
+    -fx-text-fill: transparent;
+    -fx-fill: transparent;
+    -fx-background-image: url("../view/images/anterior.png");
+    -fx-background-size: 32px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:  center;
+}
+
+.actionbuttonsiguiente{
+    -fx-background-color: transparent;
+    -fx-text-fill: transparent;
+    -fx-fill: transparent;
+    -fx-background-image: url("../view/images/siguiente.png");
+    -fx-background-size: 32px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:  center;
+}
+
 .actionbuttonaceptar{
     -fx-background-color: #00796b;
     -fx-text-fill: whitesmoke;

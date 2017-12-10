@@ -8,13 +8,16 @@
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="860.0" styleClass="form" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.102" fx:controller="jbiketso.controller.RegistroAgendaController">
+<AnchorPane id="AnchorPane" fx:id="acpRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="860.0" styleClass="form" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jbiketso.controller.RegistroAgendaController">
     <stylesheets>
         <URL value="@biketso.css" />
     </stylesheets>
@@ -31,31 +34,62 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Button layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#guardarDetalleAgenda" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonguardar" text="Button" />
+            <Button layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#guardarDetalleAgenda" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonguardar" text="Button">
+               <tooltip>
+                  <Tooltip text="Registrar evento" />
+               </tooltip></Button>
          </children>
       </Pane>
-      <JFXDatePicker fx:id="jdpFechaInicio" layoutX="87.0" layoutY="101.0" prefHeight="39.0" prefWidth="172.0" styleClass="edittext" />
-      <JFXDatePicker fx:id="jdpFechaFin" layoutX="407.0" layoutY="101.0" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfTitulo" labelFloat="true" layoutX="85.0" layoutY="167.0" prefHeight="39.0" prefWidth="294.0" promptText="Título" styleClass="edittext" />
-      <JFXTextArea fx:id="jtxaDescripcion" labelFloat="true" layoutX="85.0" layoutY="243.0" prefHeight="86.0" prefWidth="682.0" promptText="Descripción" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfCedulaUsuario" labelFloat="true" layoutX="85.0" layoutY="368.0" prefHeight="39.0" prefWidth="163.0" promptText="Cédula usuario" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfNombreUsuario" layoutX="288.0" layoutY="368.0" prefHeight="39.0" prefWidth="483.0" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfCedulaFuncionario" labelFloat="true" layoutX="85.0" layoutY="441.0" prefHeight="39.0" prefWidth="163.0" promptText="Cédula funcionario" styleClass="edittext" />
-      <JFXTextField fx:id="jtxfNombreFuncionario" layoutX="288.0" layoutY="441.0" prefHeight="39.0" prefWidth="483.0" styleClass="edittext" />
-      <Label layoutX="87.0" layoutY="79.0" text="Fecha de inicio">
+      <Label layoutX="85.0" layoutY="60.0" text="Fecha de inicio">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <JFXTimePicker fx:id="jtpHoraInicio" layoutX="258.0" layoutY="101.0" prefHeight="39.0" prefWidth="131.0" styleClass="edittext" />
-      <Label layoutX="410.0" layoutY="79.0" text="Fecha de fin">
+      <JFXDatePicker fx:id="jdpFechaInicio" layoutX="87.0" layoutY="82.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="172.0" styleClass="edittext" />
+      <JFXTimePicker fx:id="jtpHoraInicio" layoutX="258.0" layoutY="82.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="131.0" styleClass="edittext" />
+      <Label layoutX="410.0" layoutY="60.0" text="Fecha de fin">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <JFXTimePicker fx:id="jtpHoraFin" layoutX="645.0" layoutY="101.0" prefHeight="39.0" prefWidth="131.0" styleClass="edittext" />
-      <JFXButton fx:id="btnBuscaUsuario" layoutX="248.0" layoutY="368.0" onAction="#buscaUsuario" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
-      <JFXButton fx:id="btnBuscaFuncionario" layoutX="248.0" layoutY="441.0" onAction="#buscaFuncionario" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
+      <JFXDatePicker fx:id="jdpFechaFin" layoutX="407.0" layoutY="82.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="edittext" />
+      <JFXTimePicker fx:id="jtpHoraFin" layoutX="645.0" layoutY="82.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="131.0" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfTitulo" labelFloat="true" layoutX="85.0" layoutY="145.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="294.0" promptText="Título" styleClass="edittext" />
+      <JFXTextArea fx:id="jtxaDescripcion" labelFloat="true" layoutX="87.0" layoutY="213.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="682.0" promptText="Descripción" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfCedulaUsuario" labelFloat="true" layoutX="90.0" layoutY="281.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="163.0" promptText="Cédula usuario" styleClass="edittext" />
+      <JFXButton fx:id="btnBuscaUsuario" layoutX="253.0" layoutY="286.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#buscaUsuario" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
+      <JFXTextField fx:id="jtxfNombreUsuario" layoutX="293.0" layoutY="281.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="477.0" styleClass="edittext" />
+      <JFXTextField fx:id="jtxfCedulaFuncionario" labelFloat="true" layoutX="90.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="163.0" promptText="Cédula funcionario" styleClass="edittext" />
+      <JFXButton fx:id="btnBuscaFuncionario" layoutX="253.0" layoutY="350.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#buscaFuncionario" prefHeight="30.0" prefWidth="30.0" styleClass="buttonbuscar" />
+      <JFXTextField fx:id="jtxfNombreFuncionario" layoutX="289.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="477.0" styleClass="edittext" />
+      <Line endX="575.0" layoutX="191.0" layoutY="400.0" startX="-100.0" />
+      <JFXButton fx:id="btnAnterior" layoutX="90.0" layoutY="404.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#irAtras" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonanterior">
+         <tooltip>
+            <Tooltip text="Día anterior" />
+         </tooltip>
+      </JFXButton>
+      <Label fx:id="lblEventos" layoutX="134.0" layoutY="404.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="370.0" text="Eventos del día: ">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnSiguiente" layoutX="511.0" layoutY="404.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#irAdelante" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttonsiguiente">
+         <tooltip>
+            <Tooltip text="Siguiente día" />
+         </tooltip>
+      </JFXButton>
+      <JFXButton fx:id="btnEliminar" layoutX="741.0" layoutY="404.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#eliminarEvento" prefHeight="30.0" prefWidth="30.0" styleClass="actionbuttoneliminar">
+         <tooltip>
+            <Tooltip text="Eliminar evento" />
+         </tooltip>
+      </JFXButton>
+      <TableView fx:id="tbvEventos" layoutX="89.0" layoutY="439.0" prefHeight="148.0" prefWidth="682.0">
+        <columns>
+          <TableColumn fx:id="tbcHora" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" resizable="false" sortable="false" text="Hora" />
+          <TableColumn fx:id="tbcTitulo" editable="false" maxWidth="166.0" minWidth="166.0" prefWidth="166.0" resizable="false" sortable="false" text="Evento" />
+            <TableColumn fx:id="tbcDescripcion" editable="false" maxWidth="410.0" minWidth="410.0" prefWidth="410.0" resizable="false" sortable="false" text="Descripción" />
+        </columns>
+      </TableView>
    </children>
    <effect>
       <DropShadow />
