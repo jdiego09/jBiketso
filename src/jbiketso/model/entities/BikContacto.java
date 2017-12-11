@@ -134,9 +134,12 @@ public class BikContacto implements Serializable {
         }
         this.conTipo.set(new GenValorCombo(conTipo, valor));
     }
-    
-    public String getDescripcionTipoContacto(){        
-        return this.conTipo.get().getDescripcion();        
+
+    public String getDescripcionTipoContacto() {
+        if (this.conTipo == null) {
+            this.conTipo = new SimpleObjectProperty(new GenValorCombo("T", "Teléfono"));
+        }
+        return this.conTipo.get().getDescripcion();
     }
 
     public ObjectProperty getTipoContactoProperty() {
