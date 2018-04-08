@@ -93,35 +93,13 @@ public class PrincipalController extends Controller implements Initializable {
         cargarSeguridad();
 
         panMenu = (Pane) AppWindowController.getInstance().getView("bik_principal_menu");
-
+        panMenu.setPrefWidth(250);
         jdrwMenu.setSidePane(panMenu);
-        jdrwMenu.setPrefWidth(200);
+        jdrwMenu.setPrefWidth(250);
         jdrwMenu.setOverLayVisible(false);
         jdrwMenu.setResizableOnDrag(true);
-        HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hmbMenu);
-
-        transition.setRate(
-                -1);
-        hmbMenu.addEventHandler(MouseEvent.MOUSE_PRESSED,
-                (e) -> {
-                    Aplicacion.getInstance().setEventoMenu(e);
-                    transition.setRate(transition.getRate() * -1);
-                    transition.play();
-
-                    if (jdrwMenu.isShown()) {
-                        jdrwMenu.close();
-                        panMenu.setPrefWidth(0);
-                        jdrwMenu.setPrefWidth(0);
-                    } else {
-                        panMenu.setPrefWidth(200);
-                        jdrwMenu.setPrefWidth(200);
-                        jdrwMenu.setDefaultDrawerSize(200);
-                        jdrwMenu.open();
-                    }
-                }
-        );
-        Aplicacion.getInstance().setHamburgerMenu(hmbMenu);
-
+        jdrwMenu.open();
+               
         Aplicacion.getInstance().getDetalleAgenda().addListener((ListChangeListener.Change<? extends BikDetalleAgenda> c) -> {
             while (c.next()) {
                 if (c.wasAdded()) {                    

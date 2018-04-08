@@ -139,7 +139,7 @@ public class PrincipalMenuController implements Initializable {
             AppWindowController.getInstance().goHome();
             setMenuModulos();
         } else {
-            accesaPantalla(pantalla, funcion);
+            accesaPantalla(pantalla, funcion);            
         }
         event.consume();
     };
